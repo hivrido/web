@@ -8,9 +8,9 @@ const LOADER_EXPIRY = 1000 * 60 * 30; // 30 minutes
 // Persists across component unmounts within the same JS session (survives navigation)
 let hasShownThisSession = false;
 
-const getInitialSkip = () => {
+/** Solo se llama dentro de un efecto, nunca durante el render. */
+const shouldSkip = () => {
   if (hasShownThisSession) return true;
-  if (typeof window === "undefined") return false;
   try {
     const seen = localStorage.getItem(LOADER_KEY);
     return !!seen && Date.now() - parseInt(seen, 10) < LOADER_EXPIRY;
@@ -20,19 +20,27 @@ const getInitialSkip = () => {
 };
 
 export default function Loader({ onDone }: { onDone: () => void }) {
-  const [skip] = useState(getInitialSkip);
   const [bar, setBar] = useState(false);
-  const [hidden, setHidden] = useState(skip);
-  const [count, setCount] = useState(skip ? 100 : 0);
+  const [hidden, setHidden] = useState(false);
+  const [instant, setInstant] = useState(false);
+  const [count, setCount] = useState(0);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    if (skip) {
-      onDone();
-      return;
+    // La decisión se toma acá y no en el render: leer localStorage mientras
+    // se renderiza hace que el servidor y el cliente produzcan HTML distinto,
+    // React aborta la hidratación y el loader queda congelado en 0%.
+    if (shouldSkip()) {
+      // Se retira en el siguiente frame, sin transición.
+      const id = requestAnimationFrame(() => {
+        setInstant(true);
+        setHidden(true);
+        onDone();
+      });
+      return () => cancelAnimationFrame(id);
     }
 
-    // Mark as shown immediately so any re-mount skips the loader
+    // Marcado apenas se muestra, para que cualquier re-montaje lo saltee
     hasShownThisSession = true;
     try { localStorage.setItem(LOADER_KEY, String(Date.now())); } catch { /* ignore */ }
 
@@ -59,12 +67,10 @@ export default function Loader({ onDone }: { onDone: () => void }) {
       clearTimeout(t3);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [skip, onDone]);
-
-  if (skip) return null;
+  }, [onDone]);
 
   return (
-    <div className={`loader-wrap${hidden ? " hidden" : ""}`}>
+    <div className={`loader-wrap${instant ? " instant" : ""}${hidden ? " hidden" : ""}`}>
       <div className="loader-inner">
         <div className="loader-logo">
           {/* Draw animation starts at 0ms — logo draws itself during loader */}

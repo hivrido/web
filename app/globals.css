@@ -109,6 +109,11 @@ a { text-decoration: none; color: inherit; }
     visibility: hidden;
   }
 }
+/* Visitante que ya vio el loader: se retira sin transición ni failsafe. */
+.loader-wrap.instant {
+  transition: none;
+  animation: none;
+}
 .loader-wrap.hidden {
   /* El JS llegó a tiempo: cancela el failsafe y usa la transición. */
   animation: none;
