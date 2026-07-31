@@ -43,7 +43,7 @@ if (!$nombre || !$instagram || !$telefono || !$es_artista || !$asistencia || !$m
     exit;
 }
 
-$to      = 'hivrida@gmail.com';
+$to      = 'hividroads@gmail.com';
 $subject = '=?UTF-8?B?' . base64_encode("Nuevo registro Follow Fest — $nombre") . '?=';
 
 $message  = "NUEVO REGISTRO — FOLLOW FEST\n";

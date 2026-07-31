@@ -41,7 +41,7 @@ if (!$nombre || !$instagram || !$telefono || !$es_artista || !$asistencia || !$m
 }
 
 // Destinatario
-$to = 'hivrida@gmail.com';
+$to = 'hividroads@gmail.com';
 
 // Asunto con UTF-8
 $subject = '=?UTF-8?B?' . base64_encode("Nuevo registro Follow Fest — $nombre") . '?=';

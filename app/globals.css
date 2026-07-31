@@ -31,6 +31,18 @@
   /* ─ Layout ─ */
   --header-h: 90px;
   --col-w: 320px;
+
+  /* ─ Forma de botón (identidad Fuxxia): esquinas biseladas ─
+     Sobrescribí --bevel en cualquier botón para ajustar el corte. */
+  --bevel: 10px;
+  --clip-bevel: polygon(
+    0 0,
+    calc(100% - var(--bevel)) 0,
+    100% var(--bevel),
+    100% 100%,
+    var(--bevel) 100%,
+    0 calc(100% - var(--bevel))
+  );
 }
 
 @theme inline {
@@ -600,30 +612,14 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 14px 28px;
+  min-height: 48px;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
+  clip-path: var(--clip-bevel);
 }
 .btn-violet:hover { background: #6d28d9; transform: translateX(3px); box-shadow: 0 0 28px rgba(124,58,237,0.4), 0 0 6px rgba(201,168,76,0.15); }
-.btn-violet:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  color: var(--violet-light);
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 13px 28px;
-  border: 1px solid var(--violet);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.btn-outline:hover { background: var(--violet-dim); border-color: var(--gold); color: var(--gold-light); box-shadow: 0 0 16px rgba(201,168,76,0.12); }
-.btn-outline:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* .btn-outline se define una sola vez, junto al resto de los botones Fuxxia */
 
 /* ── Gold button variant ── */
 .btn-gold {
@@ -638,9 +634,12 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 13px 28px;
+  min-height: 48px;
   border: 1px solid var(--gold);
   cursor: pointer;
   transition: all 0.3s ease;
+  --bevel: 8px;
+  clip-path: var(--clip-bevel);
 }
 .btn-gold:hover { background: var(--gold-dim); border-color: var(--gold-light); color: #fff; }
 
@@ -797,6 +796,8 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  --bevel: 7px;
+  clip-path: var(--clip-bevel);
 }
 .hero-ctrl-btn:hover { background: var(--violet); border-color: var(--violet); }
 .hero-progress {
@@ -1182,8 +1183,10 @@ a { text-decoration: none; color: inherit; }
   background: linear-gradient(135deg, rgba(124,58,237,0.7), rgba(124,58,237,0.4));
   border: 1px solid rgba(124,58,237,0.5);
   padding: 14px 28px;
+  min-height: 48px;
   cursor: pointer;
   transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  clip-path: var(--clip-bevel);
 }
 .modal-cta:hover {
   background: linear-gradient(135deg, rgba(124,58,237,0.9), rgba(124,58,237,0.6));
@@ -1341,14 +1344,16 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 12px 22px;
+  min-height: 44px;
   background: var(--violet);
   color: #fff;
   border: 1px solid var(--violet);
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
+  --bevel: 8px;
+  clip-path: var(--clip-bevel);
 }
 .proj-btn-play:hover { background: var(--violet-light); border-color: var(--violet-light); transform: translateY(-2px); }
-.proj-btn-play:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .proj-btn-pdf {
   display: inline-flex;
   align-items: center;
@@ -1359,14 +1364,16 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 12px 22px;
+  min-height: 44px;
   border: 1px solid rgba(201,168,76,0.4);
   color: var(--gold-light);
   background: transparent;
   text-decoration: none;
   transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+  --bevel: 8px;
+  clip-path: var(--clip-bevel);
 }
 .proj-btn-pdf:hover { border-color: var(--gold-light); background: rgba(201,168,76,0.08); transform: translateY(-2px); }
-.proj-btn-pdf:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* Video modal */
 .proj-modal {
@@ -1394,6 +1401,8 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: center;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  --bevel: 7px;
+  clip-path: var(--clip-bevel);
   z-index: 1;
 }
 .proj-modal-close:hover { background: var(--violet); border-color: var(--violet); color: #fff; }
@@ -2250,6 +2259,8 @@ html.lenis { height: auto; }
   justify-content: center;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
+  --bevel: 6px;
+  clip-path: var(--clip-bevel);
 }
 .svc-modal-close:hover {
   color: #fff;
@@ -2456,7 +2467,7 @@ html.lenis { height: auto; }
   transition: box-shadow 0.35s ease;
   position: relative;
   overflow: hidden;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  clip-path: var(--clip-bevel);
 }
 
 .btn-primary::before {
@@ -2497,7 +2508,8 @@ html.lenis { height: auto; }
   transition: color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  --bevel: 8px;
+  clip-path: var(--clip-bevel);
 }
 
 .btn-outline::before {
@@ -2512,12 +2524,141 @@ html.lenis { height: auto; }
 }
 
 .btn-outline:hover {
+  background: var(--violet-dim);
   border-color: rgba(255,10,130,0.5);
   color: #FF0A82;
   box-shadow: 0 0 18px rgba(255,10,130,0.12);
 }
 
 .btn-outline:hover::before { transform: scaleX(1); }
+
+/* ── Epic section title ── */
+.epic-title {
+  position: relative;
+  text-align: left;
+  margin-bottom: 90px;
+  padding-top: 8px;
+}
+/* Bloom de fondo — se enciende al entrar en viewport */
+.epic-title::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: -60px;
+  width: 520px;
+  height: 260px;
+  background: radial-gradient(ellipse at center, rgba(124,58,237,0.18), transparent 68%);
+  filter: blur(38px);
+  opacity: 0;
+  transition: opacity 1.4s ease 0.3s;
+  pointer-events: none;
+  z-index: 0;
+}
+.epic-title.is-visible::before { opacity: 1; }
+
+.epic-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+}
+.epic-eyebrow-line {
+  display: block;
+  width: 54px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--violet));
+  transform-origin: left center;
+}
+.epic-eyebrow-text {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #FF1B8D;
+  text-shadow: 0 0 14px rgba(255,27,141,0.45);
+}
+
+.epic-heading {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 7vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+.epic-line { display: block; }
+/* Máscara: el inner sube desde abajo */
+.epic-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+}
+.epic-word-inner {
+  display: inline-block;
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: epicSheen 7s ease-in-out infinite;
+}
+/* La segunda línea arranca el barrido desfasado */
+.epic-line:nth-child(2) .epic-word-inner { animation-delay: -2.4s; }
+
+@keyframes epicSheen {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+.epic-rule {
+  display: block;
+  position: relative;
+  z-index: 1;
+  width: 120px;
+  height: 2px;
+  margin-top: 28px;
+  background: linear-gradient(90deg, var(--gold), var(--violet) 55%, #FF1B8D);
+  transform-origin: left center;
+  box-shadow: 0 0 18px rgba(124,58,237,0.5);
+}
+
+@media (max-width: 768px) {
+  .epic-title { margin-bottom: 56px; }
+  .epic-title::before { width: 300px; height: 180px; left: -30px; }
+  .epic-eyebrow-line { width: 32px; }
+  .epic-eyebrow-text { font-size: 0.56rem; letter-spacing: 0.26em; }
+  .epic-rule { width: 84px; margin-top: 20px; }
+}
+
+/* Fallback: si GSAP no llegó a correr, el texto igual se ve */
+@media (prefers-reduced-motion: reduce) {
+  .epic-word-inner { animation: none; background-position: 30% 50%; }
+}
+
+/* ── Foco en botones biselados ──
+   clip-path recorta el outline externo, así que el anillo va hacia adentro
+   (outline-offset negativo) para que siga siendo visible. */
+.btn-primary:focus-visible,
+.btn-outline:focus-visible,
+.btn-violet:focus-visible,
+.btn-gold:focus-visible,
+.proj-btn-play:focus-visible,
+.proj-btn-pdf:focus-visible,
+.modal-cta:focus-visible,
+.hero-ctrl-btn:focus-visible,
+.proj-modal-close:focus-visible,
+.svc-modal-close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -5px;
+}
 
 /* ── Accessibility: touch targets (44x44 min on touch devices) ── */
 @media (pointer: coarse) {

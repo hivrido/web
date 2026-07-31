@@ -63,7 +63,7 @@ function getToggleStyle(active: boolean): React.CSSProperties {
   return {
     padding: "11px 22px",
     minHeight: "44px",
-    borderRadius: "100px",
+    clipPath: "var(--clip-bevel)",
     fontSize: "13px",
     cursor: "pointer",
     transition: "all .2s ease",
@@ -361,7 +361,7 @@ export default function FollowFestForm() {
             style={{
               width: "100%",
               padding: "18px",
-              borderRadius: "100px",
+              clipPath: "var(--clip-bevel)",
               border: "none",
               background: loading ? "rgba(182,69,214,.35)" : "linear-gradient(135deg, #B645D6, #7B61FF, #00D9FF)",
               color: "#fff",
@@ -406,10 +406,14 @@ export default function FollowFestForm() {
         @keyframes ff-form-spin { to { transform: rotate(360deg); } }
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,.42); }
         form input:focus-visible,
-        form textarea:focus-visible,
-        form button:focus-visible {
+        form textarea:focus-visible {
           outline: 2px solid #00D9FF;
           outline-offset: 2px;
+        }
+        /* clip-path recorta el outline externo → anillo hacia adentro */
+        form button:focus-visible {
+          outline: 2px solid #00D9FF;
+          outline-offset: -5px;
         }
       `}</style>
     </div>

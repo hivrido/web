@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import ScrollReveal from "../ui/ScrollReveal";
+import SectionTitle from "../ui/SectionTitle";
 
 const MATRIX = "アイウエオカキクケコサシスセソ0123456789ABCDEF@#$%<>/|\\";
 const BLANK_COL = Array(6).fill(" ");
@@ -503,12 +503,7 @@ export default function Services() {
           }}
         >
           <div className="svc-list-header">
-            <ScrollReveal>
-              <span className="section-label">Lo que hacemos</span>
-              <h2 className="section-title" style={{ marginBottom: "80px" }}>
-                <span>Servicios & Soluciones</span>
-              </h2>
-            </ScrollReveal>
+            <SectionTitle eyebrow="Servicios" lines={["Creamos", "universos"]} />
           </div>
 
           <div className="svc-list" ref={listRef}>
