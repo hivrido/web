@@ -1,0 +1,51 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp /c/Users/fuxx-/skynet/hivrida/fuxxia-old/images/bg/*.jpg /c/Users/fuxx-/skynet/hivrida/public/images/bg/)",
+      "Bash(cp /c/Users/fuxx-/skynet/hivrida/fuxxia-old/images/folio/*.jpg /c/Users/fuxx-/skynet/hivrida/public/images/folio/)",
+      "Bash(cp /c/Users/fuxx-/skynet/hivrida/fuxxia-old/images/team/*.jpg /c/Users/fuxx-/skynet/hivrida/public/images/team/)",
+      "Bash(cp /c/Users/fuxx-/skynet/hivrida/fuxxia-old/images/clients/*.svg /c/Users/fuxx-/skynet/hivrida/public/images/clients/)",
+      "Bash(cp /c/Users/fuxx-/skynet/hivrida/fuxxia-old/images/clients/*.png /c/Users/fuxx-/skynet/hivrida/public/images/clients/)",
+      "Bash(npm run:*)",
+      "Read(//c/Users/fuxx-/skynet/**)",
+      "Bash(python3 -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "Bash(python -c \"from PIL import Image; print\\('PIL OK'\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python -c \"from PIL import Image; print\\('OK'\\)\")",
+      "Bash(where python:*)",
+      "Bash(where node:*)",
+      "Bash(where magick:*)",
+      "Bash(node -e \"require\\('sharp'\\)\")",
+      "Bash(node -e \"require\\('jimp'\\)\")",
+      "Bash(python3 -c ':*)",
+      "Bash(node -e ':*)",
+      "Bash(curl -s \"https://cdn.svgator.com/assets/landing-pages/svg-animation-tool/5th-fold-magic.svg\" -o /tmp/reference-char.svg)",
+      "Read(//tmp/**)",
+      "Bash(curl -L -A \"Mozilla/5.0\" \"https://cdn.svgator.com/assets/landing-pages/svg-animation-tool/5th-fold-magic.svg\" -o reference-char.svg)",
+      "Bash(curl -L -A \"Mozilla/5.0\" \"https://cdn.svgator.com/assets/landing-pages/animate-svg-along-path/fold2/examples/robot-light-path-animation.svg\" -o /tmp/robot-ref.svg)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/)",
+      "Bash(netstat -ano)",
+      "Bash(npm audit:*)",
+      "Bash(npm update:*)",
+      "Bash(grep -E \"hivrida\\\\\\\\\\\\\\\\app\")",
+      "Bash(rm:*)",
+      "Bash(taskkill /PID 22932 /F)",
+      "Bash(cmd:*)",
+      "Read(//c/Users/fuxx-/AppData/Local/Temp/claude/C--Users-fuxx--skynet-hivrida/ee9b3e2d-5e8f-40ae-9af9-608cc0b8a58f/tasks/**)",
+      "Bash(mv caldera1.png reparacion-caldera-peisa.png)",
+      "Bash(mv caldera2.jpg reparacion-calderas-baxi.jpg)",
+      "Bash(mv caldera3.webp service-oficial-caldaia.webp)",
+      "Bash(mv caldera4.webp reparacion-caldera-ariston.webp)",
+      "Bash(mv caldera5.jpg reparacion-caldera-euterma.jpg)",
+      "Bash(mv piscinas1.jpg climatizacion-piscinas-hayward.jpg)",
+      "Bash(mv piscinas2.jpg reparacion-climatizador-peisa.jpg)",
+      "Bash(mv piscinas3.webp climatizacion-piscinas-tameco.webp)",
+      "Read(//c/c/Users/fuxx-/skynet/aquaclimas/web/public/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\fuxx-\\skynet\\autosfranco\\src\\app\\cotizador"
+    ]
+  }
+}

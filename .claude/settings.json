@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(npx next *)",
+      "Bash(npm install *)",
+      "Bash(taskkill /PID 4928 /F)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(python3 -c \"import sys,json; [print\\(l['level'],l.get\\('message',''\\)[:200]\\) for line in sys.stdin for l in [json.loads\\(line\\)] if l.get\\('level'\\) in \\('ERROR','WARN','error','warn'\\)]\")",
+      "Bash(npx create-next-app@latest fuxxia-next --typescript --no-tailwind --no-eslint --no-src-dir --no-app --no-import-alias --no-turbopack)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/fuxxia/fuxxia-old/images/bg c:/Users/fuxx-/skynet/fuxxia/fuxxia-next/public/images/)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/fuxxia/fuxxia-old/images/folio c:/Users/fuxx-/skynet/fuxxia/fuxxia-next/public/images/)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/fuxxia/fuxxia-old/images/clients c:/Users/fuxx-/skynet/fuxxia/fuxxia-next/public/images/)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/fuxxia/fuxxia-old/images/team c:/Users/fuxx-/skynet/fuxxia/fuxxia-next/public/images/)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/fuxxia/fuxxia-old/images/avatar c:/Users/fuxx-/skynet/fuxxia/fuxxia-next/public/images/)",
+      "Bash(xargs grep *)",
+      "Bash(ffmpeg -version)",
+      "Bash(npx --yes ttf2woff2 --version)",
+      "Bash(python3 -c \"import fonttools\")",
+      "Bash(npx ttf2woff2 *)",
+      "Bash(npx create-next-app@latest web --typescript --app --no-tailwind --no-src-dir --no-import-alias --yes)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/aquaclimas/calderas c:/Users/fuxx-/skynet/aquaclimas/web/public/calderas)",
+      "Bash(cp -r c:/Users/fuxx-/skynet/aquaclimas/piscinas c:/Users/fuxx-/skynet/aquaclimas/web/public/piscinas)",
+      "Bash(cp c:/Users/fuxx-/skynet/aquaclimas/logo/logo.svg c:/Users/fuxx-/skynet/aquaclimas/web/public/logo.svg)",
+      "Bash(cp c:/Users/fuxx-/skynet/aquaclimas/caldera.mov c:/Users/fuxx-/skynet/aquaclimas/web/public/caldera.mp4)",
+      "Bash(cp c:/Users/fuxx-/skynet/aquaclimas/piscina.mp4 c:/Users/fuxx-/skynet/aquaclimas/web/public/piscina.mp4)",
+      "Bash(where ffmpeg *)",
+      "Bash(where HandBrakeCLI)",
+      "Bash(npx @ffmpeg-installer/ffmpeg --version)",
+      "Bash(where ffmpeg.exe)",
+      "Read(//c/Program Files/**)",
+      "Read(//c//**)",
+      "Bash(winget install *)",
+      "Bash(\"/c/Users/fuxx-/AppData/Local/Microsoft/WinGet/Links/ffmpeg.exe\" -i \"c:/Users/fuxx-/skynet/aquaclimas/caldera.mov\" -c:v libx264 -crf 23 -preset fast -an -movflags +faststart \"c:/Users/fuxx-/skynet/aquaclimas/web/public/caldera.mp4\" -y)",
+      "PowerShell(ffmpeg -i \"c:\\\\Users\\\\fuxx-\\\\skynet\\\\aquaclimas\\\\caldera.mov\" -c:v libx264 -crf 23 -preset fast -an -movflags +faststart \"c:\\\\Users\\\\fuxx-\\\\skynet\\\\aquaclimas\\\\web\\\\public\\\\caldera.mp4\" -y 2>&1)",
+      "Read(//c/Users/fuxx-/AppData/Local/Microsoft/WinGet/**)",
+      "Read(//c/ProgramData/chocolatey/bin/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\fuxx-\\skynet\\autosfranco\\src\\app\\modelos",
+      "C:\\Users\\fuxx-\\skynet\\autosfranco\\public\\images\\logo",
+      "c:\\Users\\fuxx-\\skynet\\autosfranco",
+      "c:\\Users\\fuxx-\\skynet\\fuxxia\\fuxxia-next",
+      "c:\\Users\\fuxx-\\skynet\\fuxxia\\fuente\\Cemen-Font",
+      "c:\\Users\\fuxx-\\skynet\\aquaclimas\\web"
+    ]
+  }
+}
