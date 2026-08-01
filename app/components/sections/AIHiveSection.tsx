@@ -293,7 +293,7 @@ export default function AIHiveSection() {
               }}
             >
               <a
-                href="https://api.whatsapp.com/send?phone=541156072460&text=Hola!%20Me%20interesa%20activar%20la%20colmena%20de%20agentes%20PUNY%20%F0%9F%9A%80"
+                href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20Me%20interesa%20activar%20la%20colmena%20de%20agentes%20PUNY%20%F0%9F%9A%80"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

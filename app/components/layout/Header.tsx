@@ -13,7 +13,7 @@ const NAV_ITEMS = [
 ];
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
-const WA_URL = "https://api.whatsapp.com/send?phone=5491154960104&text=Hola%20H%C3%ADvrido!";
+const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
 function ScrambleLink({ label, href, delay, onClick }: {
   label: string; href: string; delay: string; onClick: () => void; index: number;

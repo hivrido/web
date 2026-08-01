@@ -1,7 +1,7 @@
 "use client";
 
 const WA_URL =
-  "https://api.whatsapp.com/send?phone=5491154960104&text=Hola%20Hivrido!%20%F0%9F%91%8B";
+  "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20Hivrido!%20%F0%9F%91%8B";
 
 export default function WhatsAppBtn() {
   return (

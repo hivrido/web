@@ -865,7 +865,7 @@ export default function FollowFest() {
               ⚡️ Asegurar mi lugar
             </a>
             <a
-              href="https://wa.me/5491154960104?text=Hola!%20Quiero%20info%20sobre%20Follow%20Fest%20%F0%9F%8E%89"
+              href="https://wa.me/5491156072460?text=Hola!%20Quiero%20info%20sobre%20Follow%20Fest%20%F0%9F%8E%89"
               target="_blank" rel="noopener noreferrer"
               style={{ display: "inline-flex", alignItems: "center", gap: "10px", padding: "20px 36px", borderRadius: "100px", background: "rgba(37,211,102,.1)", border: "1px solid rgba(37,211,102,.35)", color: "#25D366", fontWeight: 700, fontSize: "14px", letterSpacing: ".04em", textDecoration: "none", transition: "transform .2s ease, background .2s ease, border-color .2s ease" }}
               onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.transform = "translateY(-2px)"; el.style.background = "rgba(37,211,102,.18)"; el.style.borderColor = "rgba(37,211,102,.55)"; }}
