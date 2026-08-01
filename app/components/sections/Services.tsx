@@ -495,13 +495,7 @@ export default function Services() {
           position: "relative",
         }}
       >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            padding: "0 60px",
-          }}
-        >
+        <div className="section-container">
           <div className="svc-list-header">
             <SectionTitle eyebrow="Servicios" lines={["Creamos", "universos"]} />
           </div>

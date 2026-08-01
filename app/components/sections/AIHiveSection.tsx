@@ -1,6 +1,7 @@
 "use client";
 
 import ScrollReveal from "../ui/ScrollReveal";
+import SectionTitle from "../ui/SectionTitle";
 import OrbitalHive from "../ui/OrbitalHive";
 
 const IcoNetwork = () => (
@@ -119,27 +120,14 @@ export default function AIHiveSection() {
         }}
       />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 60px" }}>
+      <div className="section-container">
 
-        <ScrollReveal>
-          <span className="section-label" style={{ color: "rgba(255,10,130,0.8)", fontSize: "0.75rem", fontFamily: "var(--font-display)", letterSpacing: "0.15em" }}>Puny • Ai Agent System</span>
-          <h2 className="section-title" style={{ marginBottom: "70px" }}>
-            <span style={{ color: "var(--text)" }}>Colmena de agentes</span>
-            <br />
-            <span style={{ color: "rgba(255,10,130,0.9)" }}>que analizan, crean y ejecutan</span>
-          </h2>
-        </ScrollReveal>
+        <SectionTitle
+          eyebrow="Puny · AI Agent System"
+          lines={["Colmena", "de agentes"]}
+        />
 
-        <div
-          className="aih-intro-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "80px",
-            alignItems: "start",
-            marginBottom: "100px",
-          }}
-        >
+        <div className="aih-intro-grid">
           <ScrollReveal>
             <p
               style={{
@@ -186,12 +174,7 @@ export default function AIHiveSection() {
           </ScrollReveal>
         </div>
 
-        <div className="aih-grid" style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "32px",
-          marginBottom: "80px",
-        }}>
+        <div className="aih-grid">
           {cards.map((card, i) => (
             <ScrollReveal key={i} delay={i * 70}>
               <div className="aih-card" style={{
