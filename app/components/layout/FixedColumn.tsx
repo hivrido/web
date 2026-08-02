@@ -3,7 +3,7 @@ export default function FixedColumn() {
     <div className="fixed-column">
       <div
         className="bg"
-        style={{ backgroundImage: "url('/images/bg/17.jpg')" }}
+        style={{ backgroundImage: "url('/images/bg/17.png')" }}
       />
       <div className="overlay" />
       <div className="col-accent-bar" />
