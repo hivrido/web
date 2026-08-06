@@ -14,8 +14,22 @@
 import * as THREE from "three";
 import type { Project } from "./projects";
 
-const W = 1024;
-const H = 656;
+export interface CardSize { w: number; h: number }
+
+/**
+ * Lienzo de referencia. Toda la tipografía se dimensiona contra este ancho,
+ * así que cualquier otro tamaño mantiene las proporciones.
+ */
+const REF_W = 1024;
+
+/**
+ * Ocho texturas a 1024 son unos 28 MB de VRAM contando mipmaps: de más para
+ * un teléfono de gama baja. A 640 el mismo set baja a 11 MB y en pantalla no
+ * se nota, porque ahí la tarjeta nunca ocupa más de 640 px físicos.
+ */
+export function cardTextureSize(coarse: boolean): CardSize {
+  return coarse ? { w: 640, h: 410 } : { w: REF_W, h: 656 };
+}
 
 /** Nunca rechaza: resuelve en null y el llamador dibuja el fallback. */
 function loadImage(src?: string): Promise<HTMLImageElement | null> {
@@ -33,7 +47,7 @@ function loadImage(src?: string): Promise<HTMLImageElement | null> {
 }
 
 /** Equivalente a object-fit: cover. */
-function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement) {
+function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement, W: number, H: number) {
   const ir = img.width / img.height;
   const cr = W / H;
   let w: number, h: number, x: number, y: number;
@@ -43,7 +57,7 @@ function drawCover(ctx: CanvasRenderingContext2D, img: HTMLImageElement) {
 }
 
 /** Fondo generativo en la paleta del proyecto. */
-function drawProcedural(ctx: CanvasRenderingContext2D, accent: string) {
+function drawProcedural(ctx: CanvasRenderingContext2D, accent: string, W: number, H: number) {
   const g = ctx.createLinearGradient(0, 0, W, H);
   g.addColorStop(0, "#111a33");
   g.addColorStop(0.5, "#070c1a");
@@ -128,8 +142,14 @@ const FALLBACK_FONTS: CardFonts = {
 
 export async function makeCardTexture(
   project: Project,
-  fonts: CardFonts = FALLBACK_FONTS
+  fonts: CardFonts = FALLBACK_FONTS,
+  size: CardSize = cardTextureSize(false)
 ): Promise<THREE.CanvasTexture> {
+  const { w: W, h: H } = size;
+  // Todo lo tipográfico se mide contra el lienzo de referencia: cambiar el
+  // tamaño no puede cambiar la composición.
+  const s = W / REF_W;
+
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
@@ -144,7 +164,7 @@ export async function makeCardTexture(
     // Muy oscura a propósito: varias fotos traen texto quemado y el título
     // que componemos encima tiene que ganar siempre.
     ctx.filter = "grayscale(1) contrast(1.05) brightness(0.42)";
-    drawCover(ctx, img);
+    drawCover(ctx, img, W, H);
     ctx.filter = "none";
 
     // Duotono: multiplica hacia el acento, levanta las sombras al azul
@@ -160,7 +180,7 @@ export async function makeCardTexture(
     ctx.fillStyle = "rgba(5,10,24,0.38)";
     ctx.fillRect(0, 0, W, H);
   } else {
-    drawProcedural(ctx, project.accent);
+    drawProcedural(ctx, project.accent, W, H);
   }
 
   const grain = getGrain(ctx);
@@ -181,12 +201,12 @@ export async function makeCardTexture(
   ctx.fillRect(0, 0, W, H);
 
   /* ── Tipografía ── */
-  const PAD = 46;
+  const PAD = 46 * s;
   const cx = W / 2;
 
   ctx.textBaseline = "top";
   ctx.fillStyle = project.accent;
-  ctx.font = `500 22px ${fonts.mono}`;
+  ctx.font = `500 ${22 * s}px ${fonts.mono}`;
   ctx.fillText(project.index, PAD, PAD);
 
   ctx.fillStyle = "rgba(255,255,255,0.42)";
@@ -197,38 +217,38 @@ export async function makeCardTexture(
   // Cliente, chico y separado, arriba del título: da escala al bloque grande.
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "rgba(255,255,255,0.62)";
-  ctx.font = `500 20px ${fonts.mono}`;
-  drawTrackedCenter(ctx, project.client.toUpperCase(), cx, H * 0.42, 5);
+  ctx.font = `500 ${20 * s}px ${fonts.mono}`;
+  drawTrackedCenter(ctx, project.client.toUpperCase(), cx, H * 0.42, 5 * s);
 
   // El título se achica solo hasta entrar, tracking incluido. Peso 500 y no
   // 700: en una cara geométrica ancha, el bold macizo se empasta y el
   // interletrado deja de leerse.
   const TRACK = 0.12;
-  let size = 92;
+  let type = 92 * s;
   const fits = () => {
-    ctx.font = `500 ${size}px ${fonts.display}`;
-    return measureTracked(ctx, project.title, size * TRACK) <= W - PAD * 2.4;
+    ctx.font = `500 ${type}px ${fonts.display}`;
+    return measureTracked(ctx, project.title, type * TRACK) <= W - PAD * 2.4;
   };
-  while (!fits() && size > 34) size -= 3;
+  while (!fits() && type > 34 * s) type -= 3 * s;
 
   ctx.save();
   // Blanco cálido contra una escena fría: el contraste de temperatura es lo
   // que hace que el título flote en vez de quedar pegado a la imagen.
   ctx.fillStyle = "#fdf7ec";
   ctx.strokeStyle = "rgba(255,255,255,0.30)";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = Math.max(1, s);
   ctx.shadowColor = project.accent;
-  ctx.shadowBlur = 34;
-  drawTrackedCenter(ctx, project.title, cx, H * 0.58, size * TRACK, true);
+  ctx.shadowBlur = 34 * s;
+  drawTrackedCenter(ctx, project.title, cx, H * 0.58, type * TRACK, true);
   ctx.restore();
 
   // Regla y disciplina al pie, centradas: cierran la composición.
   ctx.fillStyle = project.accent;
-  ctx.fillRect(cx - 26, H * 0.66, 52, 2);
+  ctx.fillRect(cx - 26 * s, H * 0.66, 52 * s, Math.max(1, 2 * s));
 
   ctx.fillStyle = "rgba(255,255,255,0.5)";
-  ctx.font = `500 17px ${fonts.mono}`;
-  drawTrackedCenter(ctx, project.category.toUpperCase(), cx, H - PAD, 4);
+  ctx.font = `500 ${17 * s}px ${fonts.mono}`;
+  drawTrackedCenter(ctx, project.category.toUpperCase(), cx, H - PAD, 4 * s);
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;

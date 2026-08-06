@@ -19,7 +19,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type * as THREE from "three";
 import { PROJECTS } from "./projects";
-import { makeCardTexture, readCardFonts, waitForFonts } from "./cards";
+import { cardTextureSize, makeCardTexture, readCardFonts, waitForFonts } from "./cards";
 import { useOrbitalInput } from "./useOrbitalInput";
 import type { OrbitConfig } from "./orbital-math";
 import type { OrbitalScene } from "./OrbitalScene";
@@ -110,10 +110,11 @@ export default function OrbitalGallery() {
 
       // Las familias reales salen de las variables que inyecta next/font
       const fonts = readCardFonts(canvas.parentElement ?? document.documentElement);
+      const size = cardTextureSize(matchMedia("(pointer: coarse)").matches);
 
       const textures: THREE.Texture[] = [];
       for (let i = 0; i < PROJECTS.length; i++) {
-        textures.push(await makeCardTexture(PROJECTS[i], fonts));
+        textures.push(await makeCardTexture(PROJECTS[i], fonts, size));
         if (cancelled) return;
         setProgress(Math.round(((i + 1) / PROJECTS.length) * 100));
       }
@@ -219,12 +220,12 @@ export default function OrbitalGallery() {
 
         <div className="flex-1" />
 
-        <footer className="flex flex-wrap items-end justify-between gap-x-8 gap-y-9 px-[clamp(18px,4vw,52px)] pb-[clamp(20px,4vh,44px)]">
+        <footer className="orbital-foot">
           {/* Entradas por disciplina */}
-          <div className="pointer-events-auto">
-            <p className="orbital-mono mb-4 text-[#4a5372]">¿Qué estás buscando?</p>
+          <div className="orbital-foot-nav pointer-events-auto">
+            <p className="orbital-mono orbital-foot-label">¿Qué estás buscando?</p>
 
-            <ul className="mb-7 flex flex-col gap-[7px]">
+            <ul className="orbital-entries">
               {entries.map((e) => (
                 <li key={e.id}>
                   <button
@@ -251,8 +252,8 @@ export default function OrbitalGallery() {
           </div>
 
           {/* Proyecto activo y posición en el aro */}
-          <div className="pointer-events-auto flex flex-col items-end gap-4">
-            <div className="text-right" key={project.id}>
+          <div className="orbital-foot-now pointer-events-auto">
+            <div className="orbital-now-head" key={project.id}>
               <p className="orbital-mono orbital-enter text-[var(--ac)]">{project.category}</p>
               <h1
                 className="orbital-techno orbital-enter mt-2 text-[clamp(1.1rem,2.4vw,1.6rem)] font-bold tracking-[.14em]"
@@ -266,8 +267,8 @@ export default function OrbitalGallery() {
               Ver proyecto <span aria-hidden>→</span>
             </button>
 
-            <div className="mt-1 flex items-center gap-4">
-              <span className="orbital-mono text-[#4a5372]">
+            <div className="orbital-now-meta">
+              <span className="orbital-mono text-[var(--faint)]">
                 <b className="text-white">{pad(active + 1)}</b> / {pad(PROJECTS.length)}
               </span>
               <div className="flex gap-2">

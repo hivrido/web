@@ -105,6 +105,43 @@
   background: rgba(255, 255, 255, 0.22);
 }
 
+/* ── Pie del HUD ──
+   En apaisado son dos bloques a los extremos. En vertical se apilan y el
+   proyecto activo sube al primer lugar: es la información que acompaña lo que
+   se está mirando, y tiene que quedar pegada a la escena y no al borde. */
+.orbital-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 36px 32px;
+  padding: 0 clamp(18px, 4vw, 52px) clamp(20px, 4vh, 44px);
+}
+
+.orbital-foot-nav { display: flex; flex-direction: column; }
+.orbital-foot-label { color: var(--faint); margin-bottom: 16px; }
+
+.orbital-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 28px;
+}
+
+.orbital-foot-now {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  text-align: right;
+}
+.orbital-now-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
 /* ── Entradas por disciplina ── */
 .orbital-entry {
   display: flex;
@@ -256,10 +293,79 @@
   padding: 6px 12px;
 }
 
+/* ═══════════ Responsive ═══════════ */
+
+/* ── Compacto ──
+   La lista de cinco disciplinas más la cápsula se comen media pantalla en un
+   teléfono. Pasa a una fila con scroll horizontal: conserva la función de
+   navegación y ocupa una línea en vez de siete.
+
+   El alto entra en la condición además del ancho: un teléfono apaisado mide
+   852×393 y pasaría el filtro de ancho con holgura, pero en 393 px de alto la
+   lista en columna deja la escena en una franja de cien píxeles. */
+@media (max-width: 720px), (max-height: 560px) {
+  .orbital-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+  /* El proyecto activo primero: es lo que describe la tarjeta de adelante. */
+  .orbital-foot-now { order: 1; }
+  .orbital-foot-nav { order: 2; }
+
+  .orbital-foot-label { display: none; }
+
+  .orbital-entries {
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    /* Que el gesto lateral no se propague al aro ni tire del historial. */
+    overscroll-behavior-x: contain;
+  }
+  .orbital-entries::-webkit-scrollbar { display: none; }
+  .orbital-entry { white-space: nowrap; }
+  /* En fila, la flecha solo come ancho. */
+  .orbital-entry-arrow { display: none; }
+  .orbital-entry:hover { transform: none; }
+
+  .orbital-pill { justify-content: center; }
+
+  /* Título a la izquierda, contador y flechas a la derecha, en una línea. */
+  .orbital-foot-now {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 12px;
+    text-align: left;
+  }
+  .orbital-now-head { grid-column: 1; grid-row: 1; min-width: 0; }
+  .orbital-now-meta { grid-column: 2; grid-row: 1; margin-top: 0; }
+  .orbital-more { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+}
+
 /* ── Pantallas bajas: el HUD cede antes que la escena ── */
 @media (max-height: 640px) {
   .orbital-pill { display: none; }
   .orbital-entry { padding: 1px 0; }
+  .orbital-foot { gap: 14px; }
+}
+
+/* ── Táctiles ──
+   44 px es el mínimo con el que un dedo acierta sin pelearse. La lista en
+   columna medía 14 px de alto y las flechas 38: las dos por debajo. */
+@media (pointer: coarse) {
+  .orbital-mono { font-size: 11px; }
+  .orbital-entry { min-height: 44px; }
+  .orbital-more { min-height: 44px; }
+  .orbital-nav { padding: 10px 0; }
+  .orbital-arrow { width: 46px; height: 46px; }
+  .orbital-arrow svg { width: 16px; height: 16px; }
+  .orbital-panel-close { width: 46px; height: 46px; }
+  /* El hover no existe: sin esto el estado queda pegado tras el toque. */
+  .orbital-entry:hover { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

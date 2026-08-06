@@ -322,14 +322,33 @@ export async function createOrbitalScene({
   }
 
   /* ────────── Encuadre responsivo ──────────
-     La cámara se acerca hasta que la tarjeta del frente ocupa dos tercios del
-     cuadro. Las vecinas quedan cortadas por los bordes a propósito: ese
-     desborde es lo que hace que se lea como un espacio y no como un carrusel. */
+     La cámara se acerca hasta que la tarjeta del frente ocupa la fracción de
+     cuadro que le toca. Las vecinas quedan cortadas por los bordes a propósito:
+     ese desborde es lo que hace que se lea como un espacio y no como un
+     carrusel.
+
+     En vertical hay que cambiar de estrategia. Una tarjeta apaisada en una
+     pantalla alta obliga a la cámara a irse muy atrás para que entre a lo
+     ancho, y queda diminuta flotando en una columna vacía. Abrir el campo la
+     deja acercarse: se recupera la escala y, de paso, la perspectiva marca
+     más la espira, que es lo que llena el alto. */
+  let baseZ = 0;
+
   function fit() {
+    const portrait = camera.aspect < 1;
+
+    camera.fov = portrait ? 50 : 38;
+    camera.updateProjectionMatrix();
+
+    const fillW = portrait ? 0.88 : 0.78;
+    const fillH = portrait ? 0.42 : 0.62;
+
     const halfTan = Math.tan((camera.fov * Math.PI) / 360);
-    const needW = CARD_W / 0.78 / (2 * halfTan * camera.aspect);
-    const needH = CARD_H / 0.62 / (2 * halfTan);
-    camera.position.set(0, 0.35, config.radius + Math.max(needW, needH));
+    const needW = CARD_W / fillW / (2 * halfTan * camera.aspect);
+    const needH = CARD_H / fillH / (2 * halfTan);
+
+    baseZ = config.radius + Math.max(needW, needH);
+    camera.position.set(0, 0.35, baseZ);
     camera.lookAt(0, 0.02, 0);
   }
   fit();
@@ -398,7 +417,6 @@ export async function createOrbitalScene({
   let time = 0;
   let openMix = 0;
   let opened = false;
-  const baseZ = camera.position.z;
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 
   const onPointerMove = (e: PointerEvent) => {
