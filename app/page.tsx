@@ -7,7 +7,6 @@ import Hero from "./components/sections/Hero";
 const Portfolio = dynamic(() => import("./components/sections/Portfolio"));
 const About = dynamic(() => import("./components/sections/About"));
 const Services = dynamic(() => import("./components/sections/Services"));
-const WebDesign = dynamic(() => import("./components/sections/WebDesign"));
 const AIHiveSection = dynamic(() => import("./components/sections/AIHiveSection"));
 const Artists = dynamic(() => import("./components/sections/Artists"));
 const Clients = dynamic(() => import("./components/sections/Clients"));
@@ -32,7 +31,6 @@ export default function Home() {
         <OkupasFeature />
         <About />
         <Services />
-        <WebDesign />
         <AIHiveSection />
         <Artists />
         <Clients />

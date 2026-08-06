@@ -62,9 +62,9 @@ export default function DisenoWebPage() {
             </h1>
 
             <p className="dw-hero-text">
-              Diseñamos y programamos sitios a medida: desde el diseño de una página web
-              hasta desarrollo de sistemas y colmenas de agentes IA. Código propio, carga
-              rápida y una estructura pensada para vender.
+              Transformamos tu presencia digital en una máquina de generar clientes.
+              Diseño de página web, desarrollo web y programación a medida: desde una
+              landing hasta sistemas de gestión y colmenas de agentes IA.
             </p>
 
             <div className="dw-hero-actions">
