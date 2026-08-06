@@ -27,11 +27,18 @@ export default function LogoAnimated({
   accent = "#C9A84C",
   /** El centro del barrido, un punto más claro que los extremos. */
   accentBright = "#DCB95A",
+  /**
+   * Arranca al entrar en pantalla en lugar de por reloj. Para el logo del pie:
+   * con un retardo fijo se dibujaría mientras nadie lo está mirando y quien
+   * llega hasta abajo encuentra la animación ya terminada.
+   */
+  startOnView = false,
 }: {
   delay?: number;
   height?: number;
   accent?: string;
   accentBright?: string;
+  startOnView?: boolean;
 }) {
   // Los ids del <defs> tienen que ser únicos por instancia: el logo se monta
   // dos veces a la vez (loader y header) y con ids fijos las dos referencias
@@ -64,7 +71,7 @@ export default function LogoAnimated({
     sweep.style.transform = "translateX(-100px)";
 
     // Lazy-load GSAP only for this animation — not in the critical path
-    const t = setTimeout(() => {
+    const draw = () => {
       import("gsap").then(({ gsap }) => {
         const tl = gsap.timeline();
 
@@ -81,10 +88,33 @@ export default function LogoAnimated({
         tl.to(strokes, { opacity: 0, duration: 0.35, ease: "power2.in", stagger: 0.05 }, "-=0.4");
         tl.to(fills, { opacity: 1, duration: 0.45, ease: "power2.out", stagger: 0.05 }, "-=0.35");
       });
-    }, delay);
+    };
 
-    return () => clearTimeout(t);
-  }, [delay]);
+    let t: ReturnType<typeof setTimeout> | undefined;
+    let observer: IntersectionObserver | undefined;
+
+    if (startOnView && svgRef.current) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          draw();
+          observer?.disconnect();
+        },
+        { threshold: 0.4 }
+      );
+      observer.observe(svgRef.current);
+      // Red de seguridad: si el observador nunca dispara —pantalla muy baja,
+      // navegador sin soporte—, el logo no puede quedar invisible para siempre.
+      t = setTimeout(draw, 4000);
+    } else {
+      t = setTimeout(draw, delay);
+    }
+
+    return () => {
+      clearTimeout(t);
+      observer?.disconnect();
+    };
+  }, [delay, startOnView]);
 
   const onEnter = () => {
     if (!svgRef.current) return;

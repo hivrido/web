@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LogoAnimated from "../ui/LogoAnimated";
 
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
@@ -8,15 +8,10 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div>
+            {/* El mismo logo animado del menú. El SVG estático que había acá
+                decía HIVRIDA, con A final. */}
             <div className="footer-logo">
-              <Image
-                src="/images/logo/logofinal.svg"
-                alt="Hivrido"
-                width={120}
-                height={42}
-                style={{ objectFit: "contain", width: "auto", height: 42 }}
-                unoptimized
-              />
+              <LogoAnimated height={40} startOnView />
             </div>
             <p className="footer-desc">
               Conectamos marcas con artistas talentosos para crear eventos,

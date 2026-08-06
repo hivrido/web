@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
+import LogoAnimated from "../components/ui/LogoAnimated";
 
 /* ── DATA ── */
 const FEATURED = [
@@ -161,7 +162,7 @@ function Header() {
   return (
     <header className={`mp-header${scrolled ? " scrolled" : ""}`}>
       <Link href="/movie" className="mp-logo">
-        <NextImage src="/images/logo/logofinal.svg" alt="Hivrido" width={120} height={28} style={{ display: "block", height: "28px", width: "auto", maxWidth: "120px" }} unoptimized />
+        <LogoAnimated height={26} delay={300} />
         <span className="mp-logo-badge">PLAY</span>
       </Link>
 

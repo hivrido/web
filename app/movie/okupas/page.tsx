@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import LogoAnimated from "../../components/ui/LogoAnimated";
 
 export default OkupasPageLegacy;
 
@@ -43,7 +44,7 @@ function OkupasPageLegacy() {
         style={{ background: scrolled ? "rgba(10,10,14,.97)" : "linear-gradient(to bottom, rgba(10,10,14,.95) 0%, transparent 100%)" }}
       >
         <Link href="/movie" className="mp-logo">
-          <Image src="/images/logo/logofinal.svg" alt="Hivrido" width={120} height={28} style={{ display: "block", height: "28px", width: "auto", maxWidth: "120px" }} unoptimized />
+          <LogoAnimated height={26} delay={300} />
           <span className="mp-logo-badge">PLAY</span>
         </Link>
         <nav className="mp-nav">
