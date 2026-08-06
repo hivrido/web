@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 
 const PATHS = [
   // H
@@ -18,7 +18,26 @@ const PATHS = [
   "M751.832,126.266c-3.046-1.281-6.09-2.559-9.13-3.833c-3.134-2.382-6.262-4.76-9.384-7.136c-1.65-2.294-3.299-4.588-4.943-6.881c-1.419-17.708-2.839-35.416-4.258-53.125c1.265-2.147,2.525-4.295,3.783-6.442c2.699-2.055,5.392-4.108,8.078-6.159c2.78-0.943,5.557-1.884,8.33-2.823c22.957,1.351,45.906,2.875,68.846,4.571c3.005,1.322,6.012,2.647,9.022,3.975c3.118,2.436,6.243,4.875,9.374,7.318c1.694,2.343,3.392,4.687,5.092,7.031c2.061,17.75,4.122,35.501,6.183,53.252c-1.208,2.104-2.42,4.207-3.635,6.312c-2.683,1.99-5.373,3.982-8.069,5.977c-2.836,0.885-5.676,1.771-8.519,2.661C799.021,129.221,775.43,127.655,751.832,126.266z M816.03,110.684c-1.674-15.522-3.348-31.044-5.021-46.566c-20.204-1.475-40.414-2.817-60.631-4.025c1.372,15.502,2.743,31.004,4.114,46.506C775.011,107.825,795.524,109.187,816.03,110.684z",
 ];
 
-export default function LogoAnimated({ delay = 2200, height = 44 }: { delay?: number; height?: number }) {
+export default function LogoAnimated({
+  delay = 2200,
+  height = 44,
+  /** Trazo y barrido. Por defecto, el dorado de la marca. Hex, por el hover. */
+  accent = "#C9A84C",
+  /** El centro del barrido, un punto más claro que los extremos. */
+  accentBright = "#DCB95A",
+}: {
+  delay?: number;
+  height?: number;
+  accent?: string;
+  accentBright?: string;
+}) {
+  // Los ids del <defs> tienen que ser únicos por instancia: el logo se monta
+  // dos veces a la vez (loader y header) y con ids fijos las dos referencias
+  // apuntan al primer degradado que exista en el documento.
+  const uid = useId().replace(/:/g, "");
+  const gradientId = `hv-sweep-${uid}`;
+  const glowId = `hv-glow-${uid}`;
+
   const svgRef = useRef<SVGSVGElement>(null);
   const strokeRefs = useRef<(SVGPathElement | null)[]>([]);
   const fillRefs = useRef<(SVGPathElement | null)[]>([]);
@@ -67,7 +86,7 @@ export default function LogoAnimated({ delay = 2200, height = 44 }: { delay?: nu
 
   const onEnter = () => {
     if (!svgRef.current) return;
-    svgRef.current.style.filter = "drop-shadow(0 0 14px rgba(201,168,76,0.4))";
+    svgRef.current.style.filter = `drop-shadow(0 0 14px ${accent}66)`;
     svgRef.current.style.transition = "filter 0.35s ease";
   };
   const onLeave = () => {
@@ -92,12 +111,12 @@ export default function LogoAnimated({ delay = 2200, height = 44 }: { delay?: nu
       onMouseLeave={onLeave}
     >
       <defs>
-        <linearGradient id="hv-gold" x1="0" y1="0" x2="964.874" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="rgba(201,168,76,0)" />
-          <stop offset="50%" stopColor="rgba(220,185,90,1)" />
-          <stop offset="100%" stopColor="rgba(201,168,76,0)" />
+        <linearGradient id={gradientId} x1="0" y1="0" x2="964.874" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor={accent} stopOpacity={0} />
+          <stop offset="50%" stopColor={accentBright} stopOpacity={1} />
+          <stop offset="100%" stopColor={accent} stopOpacity={0} />
         </linearGradient>
-        <filter id="hv-glow">
+        <filter id={glowId}>
           <feGaussianBlur stdDeviation="1.5" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
@@ -109,9 +128,10 @@ export default function LogoAnimated({ delay = 2200, height = 44 }: { delay?: nu
           ref={(el) => { strokeRefs.current[i] = el; }}
           d={d}
           fill="none"
-          stroke="rgba(201,168,76,0.9)"
+          stroke={accent}
+          strokeOpacity={0.9}
           strokeWidth="1.5"
-          filter="url(#hv-glow)"
+          filter={`url(#${glowId})`}
           style={{ strokeDasharray: "9999", strokeDashoffset: "9999" }}
         />
       ))}
@@ -129,7 +149,7 @@ export default function LogoAnimated({ delay = 2200, height = 44 }: { delay?: nu
       <rect
         ref={sweepRef}
         x="0" y="0" width="100" height="202.005"
-        fill="url(#hv-gold)"
+        fill={`url(#${gradientId})`}
         opacity="0"
         style={{ pointerEvents: "none" }}
       />

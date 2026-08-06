@@ -15,7 +15,7 @@ const NAV_ITEMS = [
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
-function ScrambleLink({ label, href, delay, onClick }: {
+function ScrambleLink({ label, href, delay, onClick, index }: {
   label: string; href: string; delay: string; onClick: () => void; index: number;
 }) {
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -60,21 +60,27 @@ function ScrambleLink({ label, href, delay, onClick }: {
       onMouseLeave={reset}
     >
       <span ref={numRef} style={{ color: "var(--violet-light)", marginRight: 8, transition: "color 0.35s ease" }}>
-        {String(NAV_ITEMS.findIndex(n => n.href === href) + 1).padStart(2, "0")}.
+        {String(index + 1).padStart(2, "0")}.
       </span>
       <span ref={labelRef}>{label}</span>
     </a>
   );
 }
 
-export default function Header() {
+/**
+ * @param base Prefijo para los enlaces de ancla. Vacío en el home, donde las
+ *   secciones están en la misma página. Desde otra ruta hay que anteponer "/"
+ *   o el ancla no lleva a ninguna parte: #sec1 solo existe en el home.
+ */
+export default function Header({ base = "" }: { base?: string }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+  const linkTo = (href: string) => (href.startsWith("#") ? `${base}${href}` : href);
 
   return (
     <>
       <header className="main-header">
-        <a href="#sec1" className="logo-holder" onClick={close}>
+        <a href={base || "#sec1"} className="logo-holder" onClick={close}>
           <LogoAnimated />
         </a>
 
@@ -116,7 +122,7 @@ export default function Header() {
             <li key={item.href}>
               <ScrambleLink
                 label={item.label}
-                href={item.href}
+                href={linkTo(item.href)}
                 index={i}
                 delay={open ? `${i * 0.05 + 0.1}s` : "0s"}
                 onClick={close}
