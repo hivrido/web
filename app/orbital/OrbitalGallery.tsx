@@ -15,24 +15,47 @@
  * solo quedan la entrada por disciplina, el contacto y la posición en el aro.
  */
 
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type * as THREE from "three";
+import Header from "../components/layout/Header";
+import Loader from "../components/layout/Loader";
 import { PROJECTS } from "./projects";
 import { cardTextureSize, makeCardTexture, readCardFonts, waitForFonts } from "./cards";
 import { useOrbitalInput } from "./useOrbitalInput";
-import type { OrbitConfig } from "./orbital-math";
+import { minRadiusFor, nearestSlotForProject, type OrbitConfig } from "./orbital-math";
 import type { OrbitalScene } from "./OrbitalScene";
 
+/**
+ * Vueltas que da cada proyecto por la hélice.
+ *
+ * Volvió a 1. Con 2 hay dieciséis posiciones, y meter dieciséis tarjetas en una
+ * vuelta obliga a un radio de casi 8 para que no se toquen: el aro se abre
+ * tanto que las vecinas se van del cuadro. Ocho posiciones es lo que entra sin
+ * superponerse a un radio que todavía compone.
+ */
+const PASSES = 1;
+const SLOTS = PROJECTS.length * PASSES;
+
+const COIL = 0.7;
+
+/**
+ * Radio del aro. Nunca por debajo del mínimo que garantiza que dos tarjetas
+ * contiguas no se toquen: si se baja el número de la izquierda, manda el
+ * cálculo. La restricción vive en el código, no en el número.
+ */
+const RADIUS = Math.max(4.3, minRadiusFor(SLOTS, COIL));
+
+/* ── Forma de la espiral ──
+   waveAmplitude es cuánto sube y baja; waveFrequency cuántas vueltas de espira
+   por vuelta de aro —subirla exige más posiciones o la onda se ve saltada—;
+   coil cuánto entra y sale del eje; roll cuánto se peralta cada tarjeta. */
 const ORBIT: OrbitConfig = {
-  count: PROJECTS.length,
-  radius: 5.4,
-  // Amplitud grande a propósito: las vecinas del frente quedan una arriba y
-  // otra abajo del cuadro, que es lo que hace visible la hélice.
-  waveAmplitude: 1.25,
+  count: SLOTS,
+  radius: RADIUS,
+  waveAmplitude: 1.6,
   waveFrequency: 2,
   strands: 2,
-  coil: 0.7,
+  coil: COIL,
   roll: 0.11,
 };
 
@@ -53,17 +76,22 @@ export default function OrbitalGallery() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<OrbitalScene | null>(null);
 
-  const [active, setActive] = useState(0);
+  // El aro navega por posiciones de la hélice; el HUD habla de proyectos.
+  const [slot, setSlot] = useState(0);
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
   const [hintGone, setHintGone] = useState(false);
 
+  const onIntroDone = useCallback(() => setIntroDone(true), []);
+
+  const active = slot % PROJECTS.length;
   const project = PROJECTS[active];
 
   const input = useOrbitalInput({
     count: ORBIT.count,
-    onActiveChange: setActive,
+    onActiveChange: setSlot,
   });
 
   /* Los accesos por disciplina se resuelven a índice una sola vez. */
@@ -87,13 +115,20 @@ export default function OrbitalGallery() {
 
   /* La escena registra su callback una sola vez, pero necesita el índice
      fresco: se lo damos por ref, sincronizada en un efecto. */
-  const activeRef = useRef(0);
-  useEffect(() => { activeRef.current = active; }, [active]);
+  const slotRef = useRef(0);
+  useEffect(() => { slotRef.current = slot; }, [slot]);
 
-  /* Click sobre una tarjeta: si ya está al frente abre, si no la trae */
-  const handlePick = useCallback((index: number) => {
-    if (index === activeRef.current) setOpen(true);
-    else input.goTo(index);
+  /* Click sobre una tarjeta: si ya está al frente abre, si no la trae.
+     La escena informa posiciones, no proyectos. */
+  const handlePick = useCallback((picked: number) => {
+    if (picked === slotRef.current) setOpen(true);
+    else input.goTo(picked);
+  }, [input]);
+
+  /* Saltar a una disciplina: de las posiciones que muestran ese proyecto, la
+     que menos haya que girar. */
+  const goToProject = useCallback((index: number) => {
+    input.goTo(nearestSlotForProject(input.thetaRef.current, index, PROJECTS.length, SLOTS));
   }, [input]);
 
   /* ── Montaje: texturas → escena → listeners ── */
@@ -183,43 +218,32 @@ export default function OrbitalGallery() {
       <div className="pointer-events-none fixed inset-0 z-[1] orbital-vignette" aria-hidden />
       <div className="pointer-events-none fixed inset-0 z-[1] orbital-grain" aria-hidden />
 
-      {/* ── Carga ── */}
+      {/* ── Intro: el mismo preloader del home ── */}
+      <Loader onDone={onIntroDone} />
+
+      {/* Si el intro terminó y las texturas todavía no —equipos lentos—, queda
+          este indicador mínimo en lugar de una pantalla negra muda. */}
       <div
-        className={`fixed inset-0 z-50 grid place-content-center justify-items-center gap-7 bg-[#050a18] transition-opacity duration-700 ${
-          ready ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
+        className={`orbital-boot ${introDone && !ready ? "is-on" : ""}`}
         role="status"
         aria-live="polite"
       >
-        <p className="orbital-techno flex items-baseline gap-2.5 text-[clamp(1.3rem,4vw,2rem)] font-bold tracking-[.2em]">
-          HIVRIDO<i className="orbital-dot orbital-dot--pulse" />
-        </p>
-        <div className="h-px w-[min(230px,58vw)] bg-white/10">
-          <i className="block h-full bg-[var(--ac)] transition-[width] duration-300" style={{ width: `${progress}%` }} />
+        <div className="orbital-boot-track">
+          <i style={{ width: `${progress}%` }} />
         </div>
-        <p className="orbital-mono text-[#4a5372]">{pad(progress)}</p>
+        <p className="orbital-mono text-[var(--faint)]">{pad(progress)}</p>
       </div>
+
+      {/* ── Menú: el mismo del home. Las anclas se prefijan con "/" porque
+             #sec1 y compañía solo existen en la home. ── */}
+      <Header base="/" />
 
       {/* ── HUD ── */}
       <div
-        className={`pointer-events-none fixed inset-0 z-10 flex flex-col transition-opacity duration-1000 ${
+        className={`pointer-events-none fixed inset-0 z-10 flex flex-col justify-end transition-opacity duration-1000 ${
           ready ? "opacity-100" : "opacity-0"
         }`}
       >
-        <header className="flex items-start justify-between gap-6 px-[clamp(18px,4vw,52px)] pt-[clamp(18px,3vh,34px)]">
-          <Link href="/" className="orbital-techno pointer-events-auto flex items-baseline gap-2 text-[13px] font-bold tracking-[.22em]">
-            HIVRIDO<i className="orbital-dot" />
-          </Link>
-
-          <nav className="orbital-mono pointer-events-auto flex items-center gap-[clamp(12px,2vw,20px)]" aria-label="Secciones">
-            <Link href="/" className="orbital-nav">Estudio</Link>
-            <i className="orbital-nav-rule" aria-hidden />
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="orbital-nav">Contacto</a>
-          </nav>
-        </header>
-
-        <div className="flex-1" />
-
         <footer className="orbital-foot">
           {/* Entradas por disciplina */}
           <div className="orbital-foot-nav pointer-events-auto">
@@ -230,7 +254,7 @@ export default function OrbitalGallery() {
                 <li key={e.id}>
                   <button
                     type="button"
-                    onClick={() => input.goTo(e.index)}
+                    onClick={() => goToProject(e.index)}
                     className="orbital-entry orbital-mono"
                     data-on={e.index === active}
                   >
@@ -295,7 +319,7 @@ export default function OrbitalGallery() {
 
       {/* ── Panel de detalle ── */}
       <aside
-        className={`orbital-panel ${open ? "is-open" : ""}`}
+        className={`orbital-panel orbital-panel-offset ${open ? "is-open" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="orbital-panel-title"

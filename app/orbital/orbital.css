@@ -68,6 +68,46 @@
   66%      { transform: translate(2%, -2%); }
 }
 
+/* ── Header del sitio sobre la escena ──
+   En el home la barra deja hueco para la columna fija (100% − 320px). Acá esa
+   columna no existe, así que sin esto queda corta y flotando. */
+body:has(.orbital) .main-header { width: 100%; }
+
+/* El panel arranca debajo de la barra: si no, su botón de cerrar queda tapado. */
+.orbital-panel-offset {
+  top: var(--header-h);
+  height: calc(100dvh - var(--header-h));
+}
+
+/* ── Arranque de la escena ──
+   Aparece solo si el intro ya se retiró y las texturas siguen sin estar. */
+.orbital-boot {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(90px, 16vh, 150px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
+}
+.orbital-boot.is-on { opacity: 1; visibility: visible; }
+.orbital-boot-track {
+  width: min(200px, 50vw);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.orbital-boot-track i {
+  display: block;
+  height: 100%;
+  background: var(--ac);
+  transition: width 0.3s var(--ease);
+}
+
 /* ── Punto de marca ── */
 .orbital-dot {
   display: inline-block;
@@ -89,20 +129,6 @@
 @keyframes orbital-slide-in {
   from { opacity: 0; transform: translateY(100%); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Navegación superior ── */
-.orbital-nav {
-  color: var(--dim);
-  transition: color 0.35s var(--ease);
-}
-.orbital-nav:hover { color: #fff; }
-/* La regla larga entre los dos enlaces: el gesto gráfico del header. */
-.orbital-nav-rule {
-  display: block;
-  width: clamp(28px, 7vw, 92px);
-  height: 1px;
-  background: rgba(255, 255, 255, 0.22);
 }
 
 /* ── Pie del HUD ──
@@ -360,7 +386,6 @@
   .orbital-mono { font-size: 11px; }
   .orbital-entry { min-height: 44px; }
   .orbital-more { min-height: 44px; }
-  .orbital-nav { padding: 10px 0; }
   .orbital-arrow { width: 46px; height: 46px; }
   .orbital-arrow svg { width: 16px; height: 16px; }
   .orbital-panel-close { width: 46px; height: 46px; }

@@ -27,11 +27,47 @@
 
 export const TAU = Math.PI * 2;
 
+/** Medidas de la tarjeta. Viven acá porque la geometría del aro depende de ellas. */
+export const CARD_W = 2.34;
+export const CARD_H = 1.5;
+/** Techo del jitter de escala: la tarjeta más grande que puede aparecer. */
+export const CARD_MAX_SCALE = 1.18;
+
+/**
+ * Radio mínimo para que dos tarjetas contiguas no lleguen a tocarse.
+ *
+ * Cada tarjeta es un plano tangente al aro. Dos tangentes separadas por Δ se
+ * cortan a R·tan(Δ/2) del punto de tangencia, así que una tarjeta puede
+ * extenderse esa distancia hacia cada lado antes de invadir a su vecina:
+ *
+ *   W/2 ≤ R·tan(Δ/2)      con Δ = 2π / posiciones
+ *
+ * Se despeja R con el peor caso de los dos lados: la tarjeta más grande que
+ * produce el jitter, y el radio más chico que alcanza la espira al meterse
+ * hacia el eje —por eso `coil` se suma después de despejar—.
+ */
+export function minRadiusFor(
+  slots: number,
+  coil: number,
+  cardWidth = CARD_W,
+  maxScale = CARD_MAX_SCALE,
+  /** Aire extra sobre el contacto exacto. 1 = tarjetas besándose. */
+  margin = 1.06
+): number {
+  return (cardWidth * maxScale * margin) / (2 * Math.tan(Math.PI / slots)) + coil;
+}
+
 /** Ángulo en el que una tarjeta queda enfrentada a la cámara. */
 export const FOCUS_ANGLE = Math.PI / 2;
 
 export interface OrbitConfig {
-  /** Cantidad de tarjetas. */
+  /**
+   * Posiciones en la hélice, no proyectos. Con ocho tarjetas en una vuelta la
+   * estructura mide menos de dos tarjetas de alto y no hay amplitud que la
+   * haga leer como escalera. Repartir los proyectos en más posiciones —cada
+   * uno reaparece a distinta altura— es lo que le da altura al conjunto, y no
+   * cuesta memoria porque las texturas se comparten.
+   */
   count: number;
   /** Radio de la órbita. */
   radius: number;
@@ -159,6 +195,31 @@ export function thetaForIndex(index: number, count: number): number {
 /** Theta más cercano al actual que deja `index` en el foco. */
 export function nearestThetaForIndex(theta: number, index: number, count: number): number {
   return theta + shortestAngle(theta, thetaForIndex(index, count));
+}
+
+/**
+ * Posición de la hélice más cercana que muestra un proyecto dado.
+ *
+ * Un proyecto ocupa varias posiciones (project, project + projects, …). Ir
+ * siempre a la primera obligaría a dar media vuelta cuando la de arriba está
+ * al lado; esto elige la que menos hay que girar.
+ */
+export function nearestSlotForProject(
+  theta: number,
+  project: number,
+  projects: number,
+  slots: number
+): number {
+  let best = project;
+  let bestDistance = Infinity;
+  for (let slot = project; slot < slots; slot += projects) {
+    const distance = Math.abs(shortestAngle(theta, thetaForIndex(slot, slots)));
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = slot;
+    }
+  }
+  return best;
 }
 
 /** Múltiplo de `spacing` más cercano: usado para el imán al soltar. */

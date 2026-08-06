@@ -9,17 +9,68 @@
 import * as THREE from "three";
 import { createNebula, type Nebula } from "./nebula";
 import {
+  CARD_H,
+  CARD_MAX_SCALE,
+  CARD_W,
   opacityFromDepth,
   orbitSlot,
   scaleFromDepth,
   type OrbitConfig,
 } from "./orbital-math";
 
-const CARD_W = 2.34;
-const CARD_H = 1.5;
 const CORNER = 0.145;
+/** Espesor del cristal. Lo que se ve cuando la tarjeta pasa de canto. */
+const THICKNESS = 0.085;
 /** El plano del halo llega hasta donde el resplandor ya vale ~0. */
 const GLOW_PAD = 1.65;
+
+/**
+ * Geometría de la tarjeta: rectángulo redondeado extruido, con bisel.
+ *
+ * Antes era un plano de espesor cero, que de canto desaparece. Con volumen
+ * real el giro revela la sección del material, y el bisel le da al borde una
+ * superficie donde la luz pega — un canto vivo en lugar de un corte.
+ *
+ * Las UV se recalculan desde la posición: las que genera ExtrudeGeometry están
+ * en unidades de mundo y no sirven para mapear la textura.
+ */
+function makeCardGeometry(w: number, h: number, r: number, depth: number) {
+  const shape = new THREE.Shape();
+  const x = -w / 2;
+  const y = -h / 2;
+
+  shape.moveTo(x + r, y);
+  shape.lineTo(x + w - r, y);
+  shape.quadraticCurveTo(x + w, y, x + w, y + r);
+  shape.lineTo(x + w, y + h - r);
+  shape.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  shape.lineTo(x + r, y + h);
+  shape.quadraticCurveTo(x, y + h, x, y + h - r);
+  shape.lineTo(x, y + r);
+  shape.quadraticCurveTo(x, y, x + r, y);
+
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: true,
+    bevelThickness: 0.012,
+    bevelSize: 0.012,
+    bevelSegments: 2,
+    curveSegments: 10,
+  });
+
+  geo.translate(0, 0, -depth / 2);
+  geo.computeVertexNormals();
+
+  const pos = geo.attributes.position;
+  const uv = new Float32Array(pos.count * 2);
+  for (let i = 0; i < pos.count; i++) {
+    uv[i * 2] = pos.getX(i) / w + 0.5;
+    uv[i * 2 + 1] = pos.getY(i) / h + 0.5;
+  }
+  geo.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
+
+  return geo;
+}
 
 /** Fondo: azul de noche, no negro. Deja respirar el color de las nebulosas. */
 const VOID = 0x050a18;
@@ -39,13 +90,28 @@ function jitterFor(i: number) {
     tiltZ: (h(i + 7.3) - 0.5) * 0.16,
     // Poco: la hélice ya reparte las alturas y de más se pelean entre sí.
     yOff: (h(i + 3.1) - 0.5) * 0.32,
-    sizeMul: 0.9 + h(i + 11.7) * 0.28,
+    // El techo tiene que coincidir con CARD_MAX_SCALE: el radio mínimo del aro
+    // se calcula contra él, y si acá crece más las tarjetas se tocan.
+    sizeMul: 0.9 + h(i + 11.7) * (CARD_MAX_SCALE - 0.9),
   };
 }
 
 /* ─────────────────────────── Shaders ─────────────────────────── */
 
 const VERT = /* glsl */ `
+  varying vec2 vUv;
+  varying vec3 vNormalObj;
+  void main() {
+    vUv = uv;
+    // Normal en espacio de objeto: dice si el fragmento es cara o canto sin
+    // importar cómo esté girada la tarjeta.
+    vNormalObj = normal;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+/** El halo es un plano suelto: no tiene normales que valga la pena pasar. */
+const FLAT_VERT = /* glsl */ `
   varying vec2 vUv;
   void main() {
     vUv = uv;
@@ -71,18 +137,16 @@ const CARD_FRAG = /* glsl */ `
   uniform float uFocus;
   uniform float uOpacity;
   varying vec2  vUv;
+  varying vec3  vNormalObj;
 
   void main() {
     vec2 p = (vUv - 0.5) * uSize;
     float d = sdRoundRect(p, uSize * 0.5, uRadius);
 
-    // Antialias medido en píxeles, no en unidades de mundo: fwidth da cuánto
-    // cambia la distancia entre fragmentos vecinos, así el degradado del canto
-    // ocupa siempre un píxel, esté la tarjeta cerca, lejos o inclinada. Con un
-    // ancho fijo el borde sale duro de cerca y dentado de lejos.
-    float aa = max(fwidth(d), 1e-5);
-    float shape = smoothstep(aa, -aa, d);
-    if (shape < 0.002) discard;
+    // Cara contra canto. La silueta ya la resuelve la geometría, así que acá
+    // solo hay que separar las dos superficies del sólido. El bisel mezcla las
+    // normales, y ese degradado es el que enciende el filo.
+    float face = smoothstep(0.30, 0.78, abs(vNormalObj.z));
 
     vec3 tex = texture2D(uMap, vUv).rgb;
 
@@ -102,19 +166,28 @@ const CARD_FRAG = /* glsl */ `
 
     // Hebra de cristal justo por dentro del contorno. pow la concentra en una
     // línea fina en vez de un halo ancho.
-    float rim = pow(smoothstep(-0.018, 0.0, d) * shape, 2.2);
+    float rim = pow(smoothstep(-0.018, 0.0, d), 2.2);
     vec3 rimCol = mix(vec3(1.0), uAccent, 0.30);
     col += rimCol * rim * (0.30 + 0.85 * lit) * (0.45 + 0.75 * uFocus);
 
     // Rastro del acento bien adentro: tiñe el borde sin dibujar un marco.
     col += uAccent * smoothstep(-0.30, 0.0, d) * 0.085 * uFocus;
 
+    // El canto es la sección del material, no su superficie: va más claro y
+    // más denso que la cara, y responde fuerte a la luz rasante. Es lo que se
+    // ve cuando la tarjeta pasa girando.
+    vec3 edge = mix(vec3(0.72, 0.78, 1.0), uAccent, 0.45);
+    edge *= (0.30 + 1.15 * lit) * (0.55 + 0.75 * uFocus);
+
+    col = mix(edge, col, face);
+
     // Cristal: el fondo se filtra por los bordes y se cierra hacia el centro,
-    // donde vive el título y hay que poder leer.
+    // donde vive el título y hay que poder leer. El canto casi no transparenta
+    // porque ahí el espesor acumula material.
     float core = smoothstep(0.95, 0.25, length((vUv - 0.5) * vec2(1.35, 1.0)));
     float glass = mix(0.74, 0.97, core);
 
-    gl_FragColor = vec4(col, shape * uOpacity * glass);
+    gl_FragColor = vec4(col, uOpacity * mix(0.94, glass, face));
   }
 `;
 
@@ -180,7 +253,9 @@ export async function createOrbitalScene({
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: (window.devicePixelRatio || 1) < 2,
+      // Siempre: la silueta de la tarjeta pasó a ser geometría real, y sin
+      // muestreo múltiple el canto queda escalonado a cualquier densidad.
+      antialias: true,
       alpha: false,
       powerPreference: "high-performance",
     });
@@ -259,7 +334,7 @@ export async function createOrbitalScene({
   const root = new THREE.Group();
   scene.add(root);
 
-  const cardGeo = new THREE.PlaneGeometry(CARD_W, CARD_H);
+  const cardGeo = makeCardGeometry(CARD_W, CARD_H, CORNER, THICKNESS);
   const glowGeo = new THREE.PlaneGeometry(CARD_W * GLOW_PAD, CARD_H * GLOW_PAD);
 
   interface CardRef {
@@ -273,11 +348,14 @@ export async function createOrbitalScene({
   const cards: CardRef[] = [];
 
   for (let i = 0; i < config.count; i++) {
-    const accent = new THREE.Color(accents[i]);
+    // Las posiciones de la hélice superan a los proyectos: cada uno reaparece
+    // más arriba con la misma textura, que se comparte entre sus instancias.
+    const source = i % textures.length;
+    const accent = new THREE.Color(accents[source % accents.length]);
     const holder = new THREE.Group();
 
     const uniforms: Record<string, THREE.IUniform> = {
-      uMap: { value: textures[i] },
+      uMap: { value: textures[source] },
       uAccent: { value: accent },
       uSize: { value: new THREE.Vector2(CARD_W, CARD_H) },
       uRadius: { value: CORNER },
@@ -291,7 +369,9 @@ export async function createOrbitalScene({
       fragmentShader: CARD_FRAG,
       transparent: true,
       depthWrite: false,
-      side: THREE.DoubleSide,
+      // Sólido cerrado: sin caras traseras. Con DoubleSide y sin escritura de
+      // profundidad, el interior se dibuja encima del exterior.
+      side: THREE.FrontSide,
     });
 
     const mesh = new THREE.Mesh(cardGeo, mat);
@@ -307,13 +387,14 @@ export async function createOrbitalScene({
     };
     const glow = new THREE.Mesh(glowGeo, new THREE.ShaderMaterial({
       uniforms: glowUniforms,
-      vertexShader: VERT,
+      vertexShader: FLAT_VERT,
       fragmentShader: GLOW_FRAG,
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     }));
-    glow.position.z = -0.05;
+    // Detrás del espesor, no dentro: la tarjeta ahora ocupa z.
+    glow.position.z = -0.14;
     glow.raycast = () => {};
     holder.add(glow);
 
@@ -340,8 +421,8 @@ export async function createOrbitalScene({
     camera.fov = portrait ? 50 : 38;
     camera.updateProjectionMatrix();
 
-    const fillW = portrait ? 0.88 : 0.78;
-    const fillH = portrait ? 0.42 : 0.62;
+    const fillW = portrait ? 0.78 : 0.66;
+    const fillH = portrait ? 0.38 : 0.50;
 
     const halfTan = Math.tan((camera.fov * Math.PI) / 360);
     const needW = CARD_W / fillW / (2 * halfTan * camera.aspect);
@@ -355,6 +436,7 @@ export async function createOrbitalScene({
 
   /* ────────── Bloom ────────── */
   let composer: import("three/examples/jsm/postprocessing/EffectComposer.js").EffectComposer | null = null;
+  let composerTarget: THREE.WebGLRenderTarget | null = null;
   if (!coarse && innerWidth >= 900) {
     try {
       const [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }] = await Promise.all([
@@ -362,7 +444,14 @@ export async function createOrbitalScene({
         import("three/examples/jsm/postprocessing/RenderPass.js"),
         import("three/examples/jsm/postprocessing/UnrealBloomPass.js"),
       ]);
-      composer = new EffectComposer(renderer);
+      // El composer dibuja en su propio destino, que no hereda el muestreo
+      // múltiple del lienzo. Hay que pedírselo, o activar el bloom escalona
+      // justo el canto que acabamos de darle volumen.
+      composerTarget = new THREE.WebGLRenderTarget(innerWidth, innerHeight, {
+        samples: 4,
+        type: THREE.HalfFloatType,
+      });
+      composer = new EffectComposer(renderer, composerTarget);
       composer.addPass(new RenderPass(scene, camera));
       composer.addPass(new UnrealBloomPass(
         new THREE.Vector2(innerWidth, innerHeight), 0.42, 0.75, 0.62
@@ -506,6 +595,7 @@ export async function createOrbitalScene({
       canvas.removeEventListener("pointerup", onUp);
       cardGeo.dispose();
       glowGeo.dispose();
+      composerTarget?.dispose();
       nebula.dispose();
       stars.geometry.dispose();
       (stars.material as THREE.Material).dispose();
