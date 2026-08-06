@@ -206,7 +206,15 @@ export default function OrbitalGallery() {
   );
 
   return (
-    <div className="orbital fixed inset-0 overflow-hidden bg-[#050a18] text-[#eef1fa]" style={accentVars}>
+    <>
+      {/* Intro y menú van FUERA de .orbital, no adentro: ese contenedor
+          redefine font-family y text-align para la galería, y desde adentro
+          los heredarían — el preloader saldría con otra tipografía y
+          desalineado respecto del home, que es justo lo que no se quiere. */}
+      <Loader onDone={onIntroDone} />
+      <Header base="/" />
+
+      <div className="orbital fixed inset-0 overflow-hidden bg-[#050a18] text-[#eef1fa]" style={accentVars}>
       {/* ── Viewport 3D ── */}
       <canvas
         ref={canvasRef}
@@ -217,9 +225,6 @@ export default function OrbitalGallery() {
 
       <div className="pointer-events-none fixed inset-0 z-[1] orbital-vignette" aria-hidden />
       <div className="pointer-events-none fixed inset-0 z-[1] orbital-grain" aria-hidden />
-
-      {/* ── Intro: el mismo preloader del home ── */}
-      <Loader onDone={onIntroDone} />
 
       {/* Si el intro terminó y las texturas todavía no —equipos lentos—, queda
           este indicador mínimo en lugar de una pantalla negra muda. */}
@@ -233,10 +238,6 @@ export default function OrbitalGallery() {
         </div>
         <p className="orbital-mono text-[var(--faint)]">{pad(progress)}</p>
       </div>
-
-      {/* ── Menú: el mismo del home. Las anclas se prefijan con "/" porque
-             #sec1 y compañía solo existen en la home. ── */}
-      <Header base="/" />
 
       {/* ── HUD ── */}
       <div
@@ -357,9 +358,10 @@ export default function OrbitalGallery() {
         </a>
       </aside>
 
-      <p className="sr-only" aria-live="polite">
-        Proyecto {active + 1} de {PROJECTS.length}: {project.title}. {project.category}.
-      </p>
-    </div>
+        <p className="sr-only" aria-live="polite">
+          Proyecto {active + 1} de {PROJECTS.length}: {project.title}. {project.category}.
+        </p>
+      </div>
+    </>
   );
 }
