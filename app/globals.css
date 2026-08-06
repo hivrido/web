@@ -236,6 +236,18 @@ a { text-decoration: none; color: inherit; }
   .main-header { width: 100%; }
   :root { --col-w: 0px; }
 }
+/* En pantallas angostas los tres bloques del header suman más que el ancho
+   disponible —logo 258 + social 76 + menú 136 = 470— y como la barra recorta
+   y los extremos no encogen, el botón de menú queda cortado. Se achican las
+   piezas, no la altura de la barra, para no mover el resto del layout. */
+@media (max-width: 560px) {
+  .logo-holder { padding: 0 14px; }
+  .logo-holder svg { height: 30px; width: auto; }
+  .header-social { padding: 0 10px; }
+  .header-social a { width: 30px; height: 30px; }
+  .nav-btn-wrap { padding: 0 16px; gap: 10px; }
+  .nav-btn-lines { width: 22px; }
+}
 .logo-holder {
   height: var(--header-h);
   display: flex;
