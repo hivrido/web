@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign from "../components/sections/WebDesign";
@@ -12,10 +13,11 @@ import WebDesign from "../components/sections/WebDesign";
  * aterriza en contenido que no coincide con la consulta, y esa distancia se
  * paga en costo por clic. Acá todo lo que hay responde a la búsqueda.
  *
- * Va sin ClientShell a propósito. El intro, el scroll suave y el cursor
- * propio suman medio segundo antes del primer render, y en tráfico pago eso
- * es porcentaje de rebote: el visitante viene de un anuncio, no de una
- * exploración de marca.
+ * Usa el mismo ClientShell que la home —preloader, cursor propio, scroll
+ * suave y botón de WhatsApp— porque la identidad tiene que ser la misma en
+ * las dos rutas. Cuesta algo de tiempo hasta el primer render; se compensa
+ * con el preloader, que ya salta a los visitantes que lo vieron hace menos
+ * de media hora.
  */
 
 const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
@@ -47,10 +49,13 @@ export const metadata: Metadata = {
 
 export default function DisenoWebPage() {
   return (
-    <>
-      <Header base="/" />
+    <ClientShell>
+      {/* 300 y no el valor por defecto: ese espera a que el preloader de la
+          home se retire, y a quien ya lo vio hace poco se le saltea — el
+          logo quedaría invisible dos segundos con el header a la vista. */}
+      <Header base="/" logoDelay={300} />
 
-      <main className="dw-page">
+      <main className="dw-page page-wrapper">
         <section className="dw-hero">
           <div className="section-container">
             <p className="dw-hero-eyebrow">Diseño y desarrollo web · Buenos Aires</p>
@@ -90,6 +95,6 @@ export default function DisenoWebPage() {
         <WebDesign />
         <Footer />
       </main>
-    </>
+    </ClientShell>
   );
 }

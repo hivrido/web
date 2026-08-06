@@ -19,6 +19,8 @@ const PATHS = [
 ];
 
 export default function LogoAnimated({
+  // Espera al preloader de la home. Si la página no lo tiene, hay que bajarlo:
+  // hasta que vence, los trazos están ocultos y los rellenos en opacidad 0.
   delay = 2200,
   height = 44,
   /** Trazo y barrido. Por defecto, el dorado de la marca. Hex, por el hover. */

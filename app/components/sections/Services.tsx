@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import SectionTitle from "../ui/SectionTitle";
-
-const MATRIX = "アイウエオカキクケコサシスセソ0123456789ABCDEF@#$%<>/|\\";
-const BLANK_COL = Array(6).fill(" ");
+import MatrixCol from "../ui/MatrixCol";
+import { useScramble } from "../ui/useScramble";
 
 // Colores bicolores: Violeta Hivrido + Fucsia Fuxxia
 const COLORS = {
@@ -97,82 +96,6 @@ const services = [
     stat: ["24/7", "Ejecución autónoma sin intervención manual"],
   },
 ];
-
-function useScramble(original: string) {
-  const [display, setDisplay] = useState(original);
-  const raf = useRef<number | null>(null);
-
-  const start = useCallback(() => {
-    if (raf.current) cancelAnimationFrame(raf.current);
-    let frame = 0;
-    const speed = 2;
-    const total = original.length * speed + 10;
-
-    const tick = () => {
-      setDisplay(
-        original.split("").map((ch, i) => {
-          if (ch === " ") return " ";
-          if (i < Math.floor(frame / speed)) return original[i];
-          return MATRIX[Math.floor(Math.random() * MATRIX.length)];
-        }).join("")
-      );
-      frame++;
-      if (frame <= total) raf.current = requestAnimationFrame(tick);
-      else setDisplay(original);
-    };
-    raf.current = requestAnimationFrame(tick);
-  }, [original]);
-
-  const stop = useCallback(() => {
-    if (raf.current) cancelAnimationFrame(raf.current);
-    setDisplay(original);
-  }, [original]);
-
-  useEffect(() => () => { if (raf.current) cancelAnimationFrame(raf.current); }, []);
-
-  return { display, start, stop };
-}
-
-function MatrixCol({ active, delay = 0, right }: { active: boolean; delay?: number; right: number }) {
-  const [chars, setChars] = useState<string[]>(Array(6).fill(" "));
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-  const tout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (!active) return;
-
-    const tick = () =>
-      setChars(Array.from({ length: 6 }, () => MATRIX[Math.floor(Math.random() * MATRIX.length)]));
-
-    tout.current = setTimeout(() => {
-      tick();
-      timer.current = setInterval(tick, 65 + delay * 20);
-    }, delay * 55);
-
-    return () => {
-      if (timer.current) clearInterval(timer.current);
-      if (tout.current) clearTimeout(tout.current);
-    };
-  }, [active, delay]);
-
-  return (
-    <span
-      className="svc-matrix-col"
-      aria-hidden
-      style={{
-        right,
-        color: COLORS.secondary,
-        fontSize: "0.75rem",
-        fontFamily: "var(--font-display)",
-        textShadow: `0 0 8px ${COLORS.secondary}80, 0 0 4px ${COLORS.primary}40`,
-      }}
-    >
-      {(active ? chars : BLANK_COL).map((ch, i) => (
-        <span key={i} style={{ opacity: Math.max(0, 0.8 - i * 0.12), display: "block" }}>{ch}</span>
-      ))}
-    </span>
-  );
-}
 
 function ServiceItem({ sv, onClick }: { sv: typeof services[0]; onClick: () => void }) {
   const [hovered, setHovered] = useState(false);

@@ -212,7 +212,7 @@ export default function OrbitalGallery() {
           los heredarían — el preloader saldría con otra tipografía y
           desalineado respecto del home, que es justo lo que no se quiere. */}
       <Loader onDone={onIntroDone} />
-      <Header base="/" />
+      <Header base="/" logoDelay={300} />
 
       <div className="orbital fixed inset-0 overflow-hidden bg-[#050a18] text-[#eef1fa]" style={accentVars}>
       {/* ── Viewport 3D ── */}

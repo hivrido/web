@@ -72,7 +72,7 @@ function ScrambleLink({ label, href, delay, onClick, index }: {
  *   secciones están en la misma página. Desde otra ruta hay que anteponer "/"
  *   o el ancla no lleva a ninguna parte: #sec1 solo existe en el home.
  */
-export default function Header({ base = "" }: { base?: string }) {
+export default function Header({ base = "", logoDelay }: { base?: string; logoDelay?: number }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   const linkTo = (href: string) => (href.startsWith("#") ? `${base}${href}` : href);
@@ -81,7 +81,10 @@ export default function Header({ base = "" }: { base?: string }) {
     <>
       <header className="main-header">
         <a href={base || "#sec1"} className="logo-holder" onClick={close}>
-          <LogoAnimated />
+          {/* El logo arranca invisible y se dibuja al vencer el retardo. El
+              valor por defecto espera al preloader de la home; en una página
+              que no lo tiene hay que acortarlo o el header se ve vacío. */}
+          <LogoAnimated delay={logoDelay} />
         </a>
 
         <div className="header-right">
