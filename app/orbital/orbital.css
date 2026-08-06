@@ -68,10 +68,8 @@
   66%      { transform: translate(2%, -2%); }
 }
 
-/* ── Header del sitio sobre la escena ──
-   En el home la barra deja hueco para la columna fija (100% − 320px). Acá esa
-   columna no existe, así que sin esto queda corta y flotando. */
-body:has(.orbital) .main-header { width: 100%; }
+/* El ancho de la barra lo resuelve globals.css poniendo --col-w en cero para
+   esta ruta: acá no hay columna fija a la que dejarle lugar. */
 
 /* El panel arranca debajo de la barra: si no, su botón de cerrar queda tapado. */
 .orbital-panel-offset {

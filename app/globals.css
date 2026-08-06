@@ -236,6 +236,13 @@ a { text-decoration: none; color: inherit; }
   .main-header { width: 100%; }
   :root { --col-w: 0px; }
 }
+/* --col-w es el ancho que el layout le reserva a la columna fija de la home:
+   la barra mide 100% − col-w y .page-wrapper deja ese margen a la derecha.
+   Las rutas que no montan esa columna tienen que ponerlo en cero, o queda una
+   franja negra de 320 px al costado y el header cortado antes del borde. */
+body:has(.dw-page),
+body:has(.orbital) { --col-w: 0px; }
+
 /* En pantallas angostas los tres bloques del header suman más que el ancho
    disponible —logo 258 + social 76 + menú 136 = 470— y como la barra recorta
    y los extremos no encogen, el botón de menú queda cortado. Se achican las
@@ -3256,4 +3263,18 @@ html.lenis { height: auto; }
 @media (max-width: 640px) {
   .web-work-body { padding: 22px 20px 24px; }
   .web-quote { padding: 28px 22px; }
+}
+
+/* ── Landing web: alineación y aire ── */
+
+/* En móvil .svc-list-header suma 24 px propios sobre el contenedor. El párrafo
+   de entrada tiene que acompañarlo o queda desalineado con su propio título. */
+@media (max-width: 768px) {
+  .services-section .web-lead { padding: 0 24px; }
+}
+
+/* El botón flotante de WhatsApp ocupa la esquina inferior derecha. En pantallas
+   angostas el cierre termina justo ahí, así que se le deja el hueco. */
+@media (max-width: 640px) {
+  .web-section:last-of-type .web-cta { padding-bottom: 84px; }
 }
