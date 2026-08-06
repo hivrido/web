@@ -7,10 +7,22 @@
  *   angle = theta + index · spacing
  *   x = R · cos(angle)
  *   z = R · sin(angle)
- *   y = A · sin(angle · WAVE_FREQ)     ← convierte el aro en espiral
+ *   y = A · sin(FREQ · (angle − FOCUS) + phase)   ← la hélice
  *
  * Con la cámara sobre +Z mirando al origen, el punto más cercano es el de z
  * máximo, o sea angle = π/2. Ese es el foco.
+ *
+ * ── La doble hélice ──
+ * Las tarjetas se reparten en hebras. Cada hebra recorre la misma vuelta pero
+ * con la onda vertical desfasada: con dos hebras el desfase es π, así que
+ * cuando una sube la otra baja. Vistas desde afuera del cilindro son dos
+ * senos cruzándose, que es exactamente la silueta del ADN.
+ *
+ * La onda se mide desde el foco y no desde el cero absoluto. Eso hace que en
+ * angle = FOCUS valga sin(phase), y como los desfases de dos hebras son 0 y π,
+ * la tarjeta enfocada queda siempre a y = 0: la hélice cruza el eje justo
+ * donde el usuario está mirando. Con un número impar de hebras esa propiedad
+ * se pierde y el foco empieza a flotar.
  */
 
 export const TAU = Math.PI * 2;
@@ -23,10 +35,20 @@ export interface OrbitConfig {
   count: number;
   /** Radio de la órbita. */
   radius: number;
-  /** Amplitud de la onda vertical. 0 = aro plano. */
+  /** Amplitud de la hélice. 0 = aro plano. */
   waveAmplitude: number;
-  /** Ciclos de la onda por vuelta. Entero, si no la espiral no cierra. */
+  /** Ciclos de la onda por vuelta. Entero, si no la hélice no cierra. */
   waveFrequency: number;
+  /** Hebras entrelazadas. 2 = doble hélice tipo ADN. 1 = una sola. */
+  strands: number;
+  /**
+   * Amplitud radial de la espira. Junto con la vertical hace que la tarjeta
+   * gire alrededor del tubo del aro y no solo suba y baje: es la diferencia
+   * entre un resorte y una onda plana.
+   */
+  coil: number;
+  /** Cuánto se peralta la tarjeta siguiendo la pendiente de la hélice. */
+  roll: number;
 }
 
 export interface OrbitSlot {
@@ -36,8 +58,15 @@ export interface OrbitSlot {
   z: number;
   /** Rotación en Y para que la cara mire a la cámara al pasar por el foco. */
   rotationY: number;
+  /** Peralte en Z: la tarjeta se inclina hacia donde sube la hélice. */
+  roll: number;
   /** 0 al fondo, 1 al frente. */
   depth: number;
+}
+
+/** Desfase vertical de la hebra a la que pertenece una tarjeta. */
+export function strandPhase(index: number, strands: number): number {
+  return (index % strands) * (TAU / strands);
 }
 
 /** Separación angular entre tarjetas consecutivas. */
@@ -54,13 +83,36 @@ export function spacingFor(count: number): number {
  */
 export function orbitSlot(index: number, theta: number, cfg: OrbitConfig): OrbitSlot {
   const angle = theta + index * spacingFor(cfg.count);
+
+  // Fase de la onda, medida desde el foco para que la hélice cruce el cero
+  // justo donde mira la cámara.
+  const wave = cfg.waveFrequency * (angle - FOCUS_ANGLE) + strandPhase(index, cfg.strands);
+
+  // El peralte sale de la pendiente de la hélice: d(y)/d(angle). Sin esto las
+  // tarjetas suben y bajan pero siguen horizontales, y el conjunto se lee como
+  // un aro que rebota en vez de una cinta que gira sobre sí misma.
+  const slope = cfg.waveAmplitude * cfg.waveFrequency * Math.cos(wave);
+  const depth = depthFromAngle(angle);
+
+  // La espira separa la tarjeta del eje siguiendo el coseno, mientras la altura
+  // sigue el seno: juntas trazan un círculo alrededor del tubo del aro, que es
+  // lo que convierte la onda en resorte.
+  //
+  // Se apaga contra el foco. Altura y radio no pueden anularse a la vez —donde
+  // sin vale 0, cos vale ±1—, así que hay que elegir: o la tarjeta enfocada
+  // queda centrada o queda siempre a la misma distancia de la cámara. Ceder el
+  // radio cerca del frente da las dos cosas, y la espira se sigue leyendo
+  // entera en las tres cuartas partes del aro que quedan.
+  const radius = cfg.radius + cfg.coil * Math.cos(wave) * (1 - depth * depth);
+
   return {
     angle,
-    x: cfg.radius * Math.cos(angle),
-    y: cfg.waveAmplitude * Math.sin(angle * cfg.waveFrequency),
-    z: cfg.radius * Math.sin(angle),
+    x: radius * Math.cos(angle),
+    y: cfg.waveAmplitude * Math.sin(wave),
+    z: radius * Math.sin(angle),
     rotationY: FOCUS_ANGLE - angle,
-    depth: depthFromAngle(angle),
+    roll: -cfg.roll * slope,
+    depth,
   };
 }
 

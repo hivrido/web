@@ -37,7 +37,8 @@ function jitterFor(i: number) {
   return {
     tiltX: (h(i) - 0.5) * 0.12,
     tiltZ: (h(i + 7.3) - 0.5) * 0.16,
-    yOff: (h(i + 3.1) - 0.5) * 0.75,
+    // Poco: la hélice ya reparte las alturas y de más se pelean entre sí.
+    yOff: (h(i + 3.1) - 0.5) * 0.32,
     sizeMul: 0.9 + h(i + 11.7) * 0.28,
   };
 }
@@ -429,8 +430,15 @@ export async function createOrbitalScene({
 
       // La inclinación se atenúa al enfocar: la del frente queda casi derecha
       // para poder leerla, pero conserva un resto que la saca de la grilla.
+      // El orden XYZ aplica Z primero, en el plano de la tarjeta, así que el
+      // peralte de la hélice gira la tarjeta sobre sí misma antes de que Y la
+      // enfrente a la cámara. Es el orden que hace falta.
       const soften = 1 - 0.55 * focus;
-      c.holder.rotation.set(j.tiltX * soften, slot.rotationY, j.tiltZ * soften);
+      c.holder.rotation.set(
+        j.tiltX * soften,
+        slot.rotationY,
+        (slot.roll + j.tiltZ) * soften
+      );
       c.holder.scale.setScalar(scaleFromDepth(slot.depth) * j.sizeMul);
 
       c.uniforms.uFocus.value = focus;

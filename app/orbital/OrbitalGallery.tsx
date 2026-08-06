@@ -27,8 +27,13 @@ import type { OrbitalScene } from "./OrbitalScene";
 const ORBIT: OrbitConfig = {
   count: PROJECTS.length,
   radius: 5.4,
-  waveAmplitude: 0.3,
+  // Amplitud grande a propósito: las vecinas del frente quedan una arriba y
+  // otra abajo del cuadro, que es lo que hace visible la hélice.
+  waveAmplitude: 1.25,
   waveFrequency: 2,
+  strands: 2,
+  coil: 0.7,
+  roll: 0.11,
 };
 
 const WHATSAPP = "https://wa.me/5491156072460";
