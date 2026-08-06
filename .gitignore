@@ -43,3 +43,8 @@ next-env.d.ts
 out.zip
 "out (2).zip"
 *.zip
+
+# agent skills (local only, installed via `npx skills add`)
+/.agents/
+/.claude/skills/
+/skills-lock.json

@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════════════════════════
+   Carrusel orbital — estilos propios.
+   Solo lo que Tailwind no expresa bien: glow, glass, el panel
+   y el retinte por proyecto vía --ac.
+   ═══════════════════════════════════════════════════════════ */
+
+.orbital {
+  /* globals.css centra el texto y pisa <p> para el sitio principal.
+     Acá hay que neutralizarlo o toda la tipografía sale mal. */
+  text-align: left;
+  font-family: var(--font-grotesk), system-ui, sans-serif;
+  font-size: 16px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Grises del HUD, en la misma familia azul que el fondo. */
+  --dim: #8b93b5;
+  --faint: #4a5372;
+}
+
+/* :where() lleva la especificidad a cero: neutraliza los estilos globales
+   de <p> sin ganarle después a .orbital-mono ni a las utilidades de Tailwind. */
+:where(.orbital p) {
+  text-align: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+.orbital ::selection { background: var(--ac); color: #fff; }
+.orbital :focus-visible { outline: 1px solid var(--ac); outline-offset: 4px; }
+
+.orbital-mono {
+  font-family: var(--font-mono-orbital), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* La misma cara techno que llevan los títulos de las tarjetas: es lo que
+   hace que el HUD y el 3D se lean como una sola pieza. */
+.orbital-techno {
+  font-family: var(--font-techno), var(--font-grotesk), sans-serif;
+  text-transform: uppercase;
+}
+
+/* ── Canvas ── */
+.orbital-canvas { cursor: grab; }
+.orbital-canvas.is-dragging { cursor: grabbing; }
+
+/* ── Capas atmosféricas ── */
+.orbital-vignette {
+  background: radial-gradient(ellipse 82% 74% at 50% 48%,
+    transparent 0%, rgba(5, 10, 24, 0.28) 60%, rgba(5, 10, 24, 0.88) 100%);
+}
+.orbital-grain {
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
+  animation: orbital-grain 0.5s steps(1) infinite;
+}
+@keyframes orbital-grain {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(-2%, 1%); }
+  66%      { transform: translate(2%, -2%); }
+}
+
+/* ── Punto de marca ── */
+.orbital-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ac);
+  box-shadow: 0 0 14px var(--ac);
+  font-style: normal;
+  transition: background 0.6s var(--ease), box-shadow 0.6s var(--ease);
+}
+.orbital-dot--pulse { width: 8px; height: 8px; animation: orbital-pulse 1.4s var(--ease) infinite; }
+@keyframes orbital-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* ── Entrada de la tipografía al cambiar de proyecto ──
+   La key de React remonta el bloque, así que la animación se dispara sola. */
+.orbital-enter {
+  animation: orbital-slide-in 0.62s var(--ease) both;
+}
+@keyframes orbital-slide-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Navegación superior ── */
+.orbital-nav {
+  color: var(--dim);
+  transition: color 0.35s var(--ease);
+}
+.orbital-nav:hover { color: #fff; }
+/* La regla larga entre los dos enlaces: el gesto gráfico del header. */
+.orbital-nav-rule {
+  display: block;
+  width: clamp(28px, 7vw, 92px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Entradas por disciplina ── */
+.orbital-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 0;
+  color: var(--dim);
+  cursor: pointer;
+  transition: color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.orbital-entry:hover,
+.orbital-entry:focus-visible { color: #fff; transform: translateX(5px); }
+.orbital-entry[data-on='true'] { color: #fff; }
+
+.orbital-entry-arrow {
+  color: var(--faint);
+  transition: color 0.3s var(--ease);
+}
+.orbital-entry:hover .orbital-entry-arrow,
+.orbital-entry[data-on='true'] .orbital-entry-arrow { color: var(--ac); }
+
+/* ── Botón cápsula ── */
+.orbital-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: var(--dim);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: color 0.4s var(--ease), border-color 0.4s var(--ease),
+              box-shadow 0.4s var(--ease), background 0.4s var(--ease);
+}
+.orbital-pill:hover,
+.orbital-pill:focus-visible {
+  color: #fff;
+  border-color: var(--ac);
+  background: color-mix(in srgb, var(--ac) 12%, transparent);
+  box-shadow: 0 0 32px -10px var(--ac);
+}
+
+/* ── Abrir detalle ── */
+.orbital-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 0;
+  color: var(--dim);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.orbital-more:hover,
+.orbital-more:focus-visible { color: #fff; border-color: var(--ac); }
+
+/* ── Flechas ── */
+.orbital-arrow {
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: border-color 0.35s var(--ease), background 0.35s var(--ease),
+              box-shadow 0.35s var(--ease);
+}
+.orbital-arrow:hover {
+  border-color: var(--ac);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 26px -8px var(--ac);
+}
+.orbital-arrow svg { width: 14px; height: 14px; }
+
+/* ── Pista de interacción ── */
+.orbital-sweep {
+  display: block; width: 24px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ac), transparent);
+  animation: orbital-sweep 2.6s var(--ease) infinite;
+}
+@keyframes orbital-sweep {
+  0%, 100% { opacity: 0.25; transform: scaleX(0.5); }
+  50%      { opacity: 1;    transform: scaleX(1); }
+}
+
+/* ── Panel de detalle ── */
+.orbital-panel {
+  position: fixed;
+  top: 0; right: 0;
+  z-index: 30;
+  width: min(480px, 100vw);
+  height: 100dvh;
+  padding: clamp(72px, 9vh, 104px) clamp(26px, 4vw, 52px) clamp(32px, 5vh, 52px);
+  background: rgba(6, 11, 26, 0.86);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.65s var(--ease), visibility 0.65s var(--ease);
+}
+.orbital-panel.is-open { transform: translateX(0); visibility: visible; }
+.orbital-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--ac), transparent);
+  opacity: 0.8;
+  transition: background 0.6s var(--ease);
+}
+.orbital-panel-close {
+  position: absolute;
+  top: clamp(22px, 3vh, 30px); right: clamp(22px, 3vw, 30px);
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--dim);
+  cursor: pointer;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+.orbital-panel-close:hover { color: #fff; border-color: var(--ac); background: rgba(255, 255, 255, 0.08); }
+.orbital-panel-close svg { width: 15px; height: 15px; }
+
+.orbital-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--ac), transparent);
+  opacity: 0.5;
+}
+
+.orbital-tag {
+  font-family: var(--font-mono-orbital), ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+/* ── Pantallas bajas: el HUD cede antes que la escena ── */
+@media (max-height: 640px) {
+  .orbital-pill { display: none; }
+  .orbital-entry { padding: 1px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbital-grain, .orbital-sweep, .orbital-dot--pulse { animation: none !important; }
+  .orbital-enter { animation-duration: 0.01ms !important; }
+  .orbital *, .orbital *::before, .orbital *::after { transition-duration: 0.01ms !important; }
+}
