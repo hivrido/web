@@ -354,10 +354,10 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const HEIGHT = 11;
     const R_HELIX = 1.15;
     const STEPS = COARSE ? 170 : 330;     // muestras por hebra
-    const CLOUD = COARSE ? 2 : 3;         // partículas por muestra: el grosor
-    const RUNGS = COARSE ? 18 : 30;
-    const RUNG_PTS = 9;
-    const AURA = COARSE ? 160 : 420;
+    const CLOUD = COARSE ? 4 : 6;         // partículas por muestra: el grosor
+    const RUNGS = COARSE ? 18 : 30;       // estructura, no densidad: no se toca
+    const RUNG_PTS = 18;
+    const AURA = COARSE ? 320 : 840;
     const COUNT = STEPS * CLOUD * 2 + RUNGS * (RUNG_PTS + 2) + AURA;
 
     const pos = new Float32Array(COUNT * 3);
