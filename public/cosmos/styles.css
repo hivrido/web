@@ -206,6 +206,19 @@ body.swapping #cat { transform: translateY(115%); opacity: 0; }
   /* Sin lista arriba, el margen del CTA solo engordaba el footer —y el footer
      es lo que le come alto a la escena vía insets(). */
   #hudLeft .btn-glow { margin-top: 0; }
+
+  /* El bloque de proyecto se pega al borde derecho y se compacta: alto era
+     lo que lo hacía trepar hasta la tarjeta vecina del anillo, y ancho era
+     la fila de ticks, el único elemento que se derramaba hacia la izquierda.
+     Al comprimirlo, su base queda a la altura del CTA de la izquierda y el
+     HUD se lee como una sola banda inferior. */
+  #hudFoot { padding-right: 26px; }
+  #hudRight { gap: 12px; }
+  #hudRight #openBtn { margin-top: 8px; }
+  #hudArrows { gap: 8px; }
+  #hudRight .arrow { width: 42px; height: 42px; }
+  #hudTicksRow { gap: 12px; }
+  #hudTicksRow .tick { width: 10px; }
 }
 
 .qlist .qitem {
