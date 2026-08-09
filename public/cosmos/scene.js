@@ -610,7 +610,7 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
      que manda ahí (el ancho ni llega a activarse en viewports anchos), así
      que es `h` la que hay que mover para que crezca. En mobile se mantiene
      suelta para no chocar con el HUD ni comerse la lista de categorías. */
-  function frame() {
+  function framing() {
     if (innerWidth < 640) return { w: 0.8, h: 0.6 };            // mobile
     if (COARSE || innerWidth < 1024) return { w: 0.72, h: 0.66 }; // tablet
     return { w: 0.78, h: innerWidth >= 1600 ? 0.82 : 0.78 };      // escritorio
@@ -621,7 +621,7 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
     const inset = insets?.() ?? { top: 0, bottom: 0 };
     const availH = Math.max(200, innerHeight - inset.top - inset.bottom);
 
-    const { w: fracW, h: fracH } = frame();
+    const { w: fracW, h: fracH } = framing();
     const needH = CARD_H / ((fracH * availH) / innerHeight) / (2 * halfTan);
     const needW = CARD_W / fracW / (2 * halfTan * camera.aspect);
     const dist = clamp(Math.max(needW, needH), 3.2, 13);
