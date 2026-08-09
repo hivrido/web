@@ -15,6 +15,7 @@
  */
 
 import * as THREE from 'three';
+import { PLAY_ASPECT } from './cards.js';
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COARSE = matchMedia('(pointer: coarse)').matches;
@@ -126,7 +127,7 @@ function shortest(from, to) {
 
 /* ═══════════════════════ Escena ═══════════════════════ */
 
-export async function createScene(canvas, { textures, accents, onActive, onSelect, insets } = {}) {
+export async function createScene(canvas, { textures, accents, plays, onActive, onSelect, onPlay, insets } = {}) {
   const N = textures.length;
   const STEP = TAU / N;
 
@@ -592,8 +593,25 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
     glow.raycast = () => {};
     holder.add(glow);
 
+    /* Pastilla PLAY: plano propio delante de la tarjeta, para poder animarla.
+       Solo la llevan los proyectos con algo publicado que ver. */
+    let play = null;
+    if (plays?.[i]) {
+      const ph = CARD_H * 0.135;
+      const pgeo = new THREE.PlaneGeometry(ph * PLAY_ASPECT, ph, 1, 1);
+      play = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({
+        map: plays[i],
+        transparent: true,
+        depthWrite: false,
+        opacity: 0,
+      }));
+      play.position.set(0, -CARD_H * 0.235, 0.014);  // bajo el logo, apenas al frente
+      play.userData.play = i;
+      holder.add(play);
+    }
+
     ring.add(holder);
-    cards.push({ holder, mesh, uniforms, glowUniforms, theta });
+    cards.push({ holder, mesh, uniforms, glowUniforms, theta, play, playHover: 0 });
   }
 
   /* ────────── Encuadre responsivo ──────────
@@ -689,15 +707,30 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
   let lastX = 0;
   let downAt = 0;
   let hovered = -1;
+  let playHovered = -1;
 
   const raycaster = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
 
+  /* Devuelve la tarjeta bajo el puntero y si el impacto cayó sobre su PLAY.
+     El PLAY solo entra al raycast cuando está realmente visible: si no, se
+     podría hacer click en una pastilla transparente de una tarjeta del fondo. */
   function pick(clientX, clientY) {
     ndc.set((clientX / innerWidth) * 2 - 1, -(clientY / innerHeight) * 2 + 1);
     raycaster.setFromCamera(ndc, camera);
-    const hits = raycaster.intersectObjects(cards.map((c) => c.mesh), false);
-    return hits.length ? hits[0].object.userData.index : -1;
+
+    const objs = [];
+    for (const c of cards) {
+      objs.push(c.mesh);
+      if (c.play && c.play.material.opacity > 0.35) objs.push(c.play);
+    }
+    const hits = raycaster.intersectObjects(objs, false);
+    if (!hits.length) return { index: -1, play: false };
+
+    const o = hits[0].object;
+    return o.userData.play != null
+      ? { index: o.userData.play, play: true }
+      : { index: o.userData.index, play: false };
   }
 
   addEventListener('pointermove', (e) => {
@@ -720,8 +753,9 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
     if (!dragging) {
       if (!opened && !COARSE) {
         const h = pick(e.clientX, e.clientY);
-        hovered = h;
-        canvas.style.cursor = h >= 0 ? 'pointer' : 'grab';
+        hovered = h.index;
+        playHovered = h.play ? h.index : -1;
+        canvas.style.cursor = h.index >= 0 ? 'pointer' : 'grab';
       }
       return;
     }
@@ -740,10 +774,13 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
     }
     // Click limpio: poco desplazamiento y poca duración
     if (moved < 8 && performance.now() - downAt < 600 && e) {
-      const i = pick(e.clientX, e.clientY);
-      if (i >= 0) {
-        if (i === active) onSelect?.(i);
-        else goTo(i);
+      const h = pick(e.clientX, e.clientY);
+      if (h.index >= 0) {
+        // El PLAY solo dispara en la tarjeta que ya está al frente: si no,
+        // un click en una tarjeta lateral navegaría sin querer.
+        if (h.play && h.index === active) onPlay?.(h.index);
+        else if (h.index === active) onSelect?.(h.index);
+        else goTo(h.index);
       }
     }
   }
@@ -829,6 +866,20 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
 
       // La tarjeta enfocada flota apenas por encima del resto
       c.holder.position.y = Math.sin(c.theta * 2) * WAVE + focus * FLOAT_LIFT;
+
+      /* — PLAY: respiración lenta, no parpadeo —
+         Vive solo en la tarjeta enfocada (gate por focus) y se apaga al abrir
+         el panel. El hover lo agranda y lo enciende: es la señal de que es
+         clickeable, no un adorno. Con reduced-motion queda fijo y legible. */
+      if (c.play) {
+        const gate = Math.pow(focus, 1.6) * (1 - openMix);
+        const breath = REDUCED ? 0.5 : 0.5 + 0.5 * Math.sin(time * 1.9);
+        c.playHover = lerp(c.playHover, playHovered === i && !dragging ? 1 : 0, 0.14);
+
+        const op = gate * (0.80 + 0.20 * breath + 0.20 * c.playHover);
+        c.play.material.opacity = Math.min(1, op);
+        c.play.scale.setScalar(1 + (REDUCED ? 0 : 0.035 * breath) + 0.07 * c.playHover);
+      }
     }
 
     /* — Modo detalle: el anillo se corre y la cámara retrocede — */

@@ -6,7 +6,7 @@
  */
 
 import { PROJECTS } from './projects.js';
-import { makeCardTexture, waitForFonts } from './cards.js';
+import { makeCardTexture, makePlayTexture, waitForFonts } from './cards.js';
 import { createScene } from './scene.js';
 import { mountLogo } from './brand.js';
 
@@ -243,6 +243,9 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
     setProgress(8 + ((i + 1) / TOTAL) * 82);
   }
 
+  // Se compone después de las fuentes: el PLAY es tipografía, no imagen
+  const playTex = PROJECTS.some((p) => p.href) ? makePlayTexture() : null;
+
   // El encuadre 3D centra la tarjeta en el espacio libre entre header y HUD
   const headerEl = document.querySelector('.main-header');
   const footEl = $('hudFoot');
@@ -250,9 +253,17 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
   try {
     ring = await createScene(el.canvas, {
       textures,
+      // Una sola textura de PLAY compartida: es idéntica en todas las tarjetas
+      plays: PROJECTS.some((p) => p.href)
+        ? PROJECTS.map((p) => (p.href ? playTex : null))
+        : null,
       accents: PROJECTS.map((p) => p.accent),
       onActive,
       onSelect: () => setPanel(true),
+      onPlay: (i) => {
+        const href = PROJECTS[i]?.href;
+        if (href) location.href = href;
+      },
       insets: () => ({
         top: headerEl?.offsetHeight ?? 0,
         bottom: footEl?.offsetHeight ?? 0,

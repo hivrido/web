@@ -81,23 +81,34 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-/** Pastilla PLAY, contorneada en dorado, centrada en `cx`. */
-function drawPlayPill(ctx, cx, cy) {
+/* La pastilla PLAY vive en su propia textura, no horneada en la tarjeta: así
+   scene.js puede animarla (respiración, hover, foco) sin redibujar el canvas
+   de 1024×768 en cada frame, que sería inviable con ocho tarjetas. */
+export const PLAY_TEX_W = 320;
+export const PLAY_TEX_H = 132;
+export const PLAY_ASPECT = PLAY_TEX_W / PLAY_TEX_H;
+
+/** @returns {THREE.CanvasTexture} pastilla dorada sobre fondo transparente. */
+export function makePlayTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = PLAY_TEX_W;
+  canvas.height = PLAY_TEX_H;
+  const ctx = canvas.getContext('2d');
+
   const label = 'PLAY';
-  const fs = 34;
-  ctx.font = `700 ${fs}px "JetBrains Mono", monospace`;
+  ctx.font = '700 34px "JetBrains Mono", monospace';
   // El tracking se dibuja a mano: ctx.letterSpacing no está en todos lados.
   const track = 7;
   const chars = [...label];
   const textW = chars.reduce((a, c) => a + ctx.measureText(c).width, 0) + track * (chars.length - 1);
 
-  const padX = 34;
-  const w = textW + padX * 2;
+  const w = textW + 68;
   const h = 74;
+  const cx = PLAY_TEX_W / 2;
+  const cy = PLAY_TEX_H / 2;
   const x = cx - w / 2;
   const y = cy - h / 2;
 
-  ctx.save();
   ctx.fillStyle = 'rgba(10,7,16,0.55)';
   roundRect(ctx, x, y, w, h, 14);
   ctx.fill();
@@ -118,7 +129,12 @@ function drawPlayPill(ctx, cx, cy) {
     ctx.fillText(c, px, cy + 1);
     px += ctx.measureText(c).width + track;
   }
-  ctx.restore();
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  tex.needsUpdate = true;
+  return tex;
 }
 
 /** Grano fino teselado — evita el banding de los degradados. */
@@ -238,8 +254,8 @@ export async function makeCardTexture(project) {
     ctx.restore();
 
     // Sin filete de acento acá: el logo ya trae sus propias barras y sumarle
-    // otra raya horizontal ensucia la marca.
-    if (project.href) drawPlayPill(ctx, CX, H * 0.735);
+    // otra raya horizontal ensucia la marca. El PLAY tampoco se hornea:
+    // lo monta scene.js como plano aparte para poder animarlo.
   } else {
     // El título se compone en un canvas aparte para poder glitchearlo por franjas
     const label = project.title.toUpperCase();
