@@ -2,6 +2,9 @@
  * Datos del carrusel orbital.
  * `image` es opcional: si falla la carga, cards.js genera un fondo procedural
  * con la misma paleta, así nunca queda un hueco en el anillo.
+ * `logo`  es opcional: si está, reemplaza al título tipográfico en la tarjeta.
+ * `href`  es opcional: si está, la tarjeta muestra la pastilla PLAY y el panel
+ *         ofrece el CTA para ir a verla.
  */
 
 export const PROJECTS = [
@@ -16,6 +19,9 @@ export const PROJECTS = [
     tags: ['Color', 'Restauración', '4K'],
     accent: '#B026FF',
     image: '/images/okupas/capitulo1.jpg',
+    logo: '/images/okupas/logo-okupas.png',
+    href: '/movie/okupas/',
+    cta: 'Ver la serie',
   },
   {
     id: 'nebula',

@@ -65,6 +65,62 @@ function drawProcedural(ctx, accent) {
   ctx.fillRect(0, 0, W, H);
 }
 
+/* Dorado de la pastilla PLAY: no usa el acento del proyecto a propósito.
+   El acento identifica al proyecto; el dorado marca "esto se puede ver". */
+const GOLD = '#E9B44C';
+
+/** Rectángulo redondeado con fallback para navegadores sin roundRect. */
+function roundRect(ctx, x, y, w, h, r) {
+  if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); return; }
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+/** Pastilla PLAY, contorneada en dorado, centrada en `cx`. */
+function drawPlayPill(ctx, cx, cy) {
+  const label = 'PLAY';
+  const fs = 34;
+  ctx.font = `700 ${fs}px "JetBrains Mono", monospace`;
+  // El tracking se dibuja a mano: ctx.letterSpacing no está en todos lados.
+  const track = 7;
+  const chars = [...label];
+  const textW = chars.reduce((a, c) => a + ctx.measureText(c).width, 0) + track * (chars.length - 1);
+
+  const padX = 34;
+  const w = textW + padX * 2;
+  const h = 74;
+  const x = cx - w / 2;
+  const y = cy - h / 2;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(10,7,16,0.55)';
+  roundRect(ctx, x, y, w, h, 14);
+  ctx.fill();
+
+  ctx.shadowColor = GOLD;
+  ctx.shadowBlur = 22;
+  ctx.strokeStyle = GOLD;
+  ctx.lineWidth = 2.5;
+  roundRect(ctx, x, y, w, h, 14);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = GOLD;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  let px = cx - textW / 2;
+  for (const c of chars) {
+    ctx.fillText(c, px, cy + 1);
+    px += ctx.measureText(c).width + track;
+  }
+  ctx.restore();
+}
+
 /** Grano fino teselado — evita el banding de los degradados. */
 let grainPattern = null;
 function getGrain(ctx) {
@@ -93,7 +149,10 @@ export async function makeCardTexture(project) {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  const img = await loadImage(project.image);
+  const [img, logo] = await Promise.all([
+    loadImage(project.image),
+    loadImage(project.logo),
+  ]);
 
   /* ── Capa base ── */
   ctx.fillStyle = '#0a0710';
@@ -154,55 +213,81 @@ export async function makeCardTexture(project) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
 
-  // Ornamento de índice sobre el título
+  // Ornamento de índice sobre el título. Sube cuando hay logo: los logos son
+  // más altos que una línea de texto y le comían el aire.
   ctx.fillStyle = project.accent;
   ctx.font = '500 28px "JetBrains Mono", monospace';
-  ctx.fillText(`[= ${project.index} =]`, CX, H * 0.30);
+  ctx.fillText(`[= ${project.index} =]`, CX, H * (logo ? 0.21 : 0.30));
 
-  // El título se compone en un canvas aparte para poder glitchearlo por franjas
-  const label = project.title.toUpperCase();
-  const tCan = document.createElement('canvas');
-  tCan.width = W;
-  tCan.height = 240;
-  const tc = tCan.getContext('2d');
-  tc.textAlign = 'center';
-  tc.textBaseline = 'middle';
+  /* ── Marca propia del proyecto ──
+     Cuando la pieza tiene logo, manda el logo: componer encima un título
+     tipográfico sería decir dos veces lo mismo con dos tipografías distintas.
+     El PLAY solo aparece si hay algo que ver (`href`). */
+  if (logo) {
+    const lw = Math.min(W * 0.46, logo.width * 1.4);  // el PNG es chico: upscale contenido
+    const lh = lw * (logo.height / logo.width);
+    const ly = H * 0.47 - lh / 2;
 
-  let size = 88;
-  tc.font = `700 ${size}px "JetBrains Mono", monospace`;
-  while (tc.measureText(label).width > W - 180 && size > 34) {
-    size -= 3;
+    ctx.save();
+    ctx.shadowColor = project.accent;
+    ctx.shadowBlur = 34;
+    ctx.drawImage(logo, CX - lw / 2, ly, lw, lh);
+    // Segunda pasada sin sombra: la primera queda lavada por su propio glow
+    ctx.shadowBlur = 0;
+    ctx.drawImage(logo, CX - lw / 2, ly, lw, lh);
+    ctx.restore();
+
+    // Sin filete de acento acá: el logo ya trae sus propias barras y sumarle
+    // otra raya horizontal ensucia la marca.
+    if (project.href) drawPlayPill(ctx, CX, H * 0.735);
+  } else {
+    // El título se compone en un canvas aparte para poder glitchearlo por franjas
+    const label = project.title.toUpperCase();
+    const tCan = document.createElement('canvas');
+    tCan.width = W;
+    tCan.height = 240;
+    const tc = tCan.getContext('2d');
+    tc.textAlign = 'center';
+    tc.textBaseline = 'middle';
+
+    let size = 88;
     tc.font = `700 ${size}px "JetBrains Mono", monospace`;
+    while (tc.measureText(label).width > W - 180 && size > 34) {
+      size -= 3;
+      tc.font = `700 ${size}px "JetBrains Mono", monospace`;
+    }
+
+    // Eco cromático detrás: el "doble fantasma" de la referencia
+    tc.globalAlpha = 0.55;
+    tc.fillStyle = project.accent;
+    tc.fillText(label, tCan.width / 2 + 8, tCan.height / 2 + 6);
+    tc.globalAlpha = 1;
+
+    tc.shadowColor = project.accent;
+    tc.shadowBlur = 26;
+    tc.fillStyle = '#ffffff';
+    tc.fillText(label, tCan.width / 2, tCan.height / 2);
+    tc.shadowBlur = 0;
+
+    // Glitch estático: franjas horizontales desplazadas
+    for (let i = 0; i < 6; i++) {
+      const sy = Math.floor(Math.random() * tCan.height);
+      const sh = 5 + Math.floor(Math.random() * 16);
+      const dx = Math.round((Math.random() - 0.5) * 34);
+      tc.putImageData(tc.getImageData(0, sy, tCan.width, sh), dx, sy);
+    }
+
+    const titleY = H * 0.48;
+    ctx.drawImage(tCan, 0, titleY - tCan.height / 2);
+
+    // Filete de acento centrado bajo el título
+    ctx.fillStyle = project.accent;
+    ctx.fillRect(CX - 38, titleY + 70, 76, 3);
   }
-
-  // Eco cromático detrás: el "doble fantasma" de la referencia
-  tc.globalAlpha = 0.55;
-  tc.fillStyle = project.accent;
-  tc.fillText(label, tCan.width / 2 + 8, tCan.height / 2 + 6);
-  tc.globalAlpha = 1;
-
-  tc.shadowColor = project.accent;
-  tc.shadowBlur = 26;
-  tc.fillStyle = '#ffffff';
-  tc.fillText(label, tCan.width / 2, tCan.height / 2);
-  tc.shadowBlur = 0;
-
-  // Glitch estático: franjas horizontales desplazadas
-  for (let i = 0; i < 6; i++) {
-    const sy = Math.floor(Math.random() * tCan.height);
-    const sh = 5 + Math.floor(Math.random() * 16);
-    const dx = Math.round((Math.random() - 0.5) * 34);
-    tc.putImageData(tc.getImageData(0, sy, tCan.width, sh), dx, sy);
-  }
-
-  const titleY = H * 0.48;
-  ctx.drawImage(tCan, 0, titleY - tCan.height / 2);
-
-  // Filete de acento centrado bajo el título
-  ctx.fillStyle = project.accent;
-  ctx.fillRect(CX - 38, titleY + 70, 76, 3);
 
   // Categoría y año, abajo al centro
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = 'rgba(255,255,255,0.52)';
   ctx.font = '500 21px "JetBrains Mono", monospace';
   ctx.fillText(`${project.category.toUpperCase()} · ${project.year}`, CX, H - 52);

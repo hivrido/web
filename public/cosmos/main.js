@@ -23,6 +23,7 @@ const el = {
   panel: $('panel'), close: $('closeBtn'),
   pIndex: $('pIndex'), pTitle: $('pTitle'), pClient: $('pClient'),
   pYear: $('pYear'), pCat: $('pCat'), pBody: $('pBody'), pTags: $('pTags'),
+  pWatch: $('pWatch'), pWatchLabel: $('pWatchLabel'),
   menuBtn: $('menuBtn'), menuLabel: $('menuLabel'), menu: $('menu'),
   qlist: $('qlist'), live: $('live'),
 };
@@ -107,6 +108,17 @@ function fillPanel(p) {
   el.pCat.textContent = p.category;
   el.pBody.textContent = p.body;
   el.pTags.innerHTML = p.tags.map((t) => `<span class="tag">${t}</span>`).join('');
+
+  // Solo los proyectos con algo publicado que ver ofrecen el CTA (el mismo
+  // `href` que enciende la pastilla PLAY en la tarjeta).
+  if (p.href) {
+    el.pWatch.href = p.href;
+    el.pWatchLabel.textContent = p.cta ?? 'Ver el proyecto';
+    el.pWatch.hidden = false;
+  } else {
+    el.pWatch.hidden = true;
+    el.pWatch.removeAttribute('href');
+  }
 }
 
 function setPanel(open) {
