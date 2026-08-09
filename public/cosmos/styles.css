@@ -195,6 +195,19 @@ body.swapping #cat { transform: translateY(115%); opacity: 0; }
     row-gap: 8px;
   }
 }
+/* En escritorio la lista se retira: la escena manda y el HUD se queda solo
+   con el proyecto activo y el CTA. La navegación por categoría sigue estando
+   en las flechas, los ticks y el drag del anillo. Se oculta por CSS y no se
+   borra del DOM a propósito: `paint()` sigue marcando el item activo y en
+   ≤1023 la lista se usa igual. */
+@media (min-width: 1024px) {
+  #qLabel,
+  #qlist { display: none; }
+  /* Sin lista arriba, el margen del CTA solo engordaba el footer —y el footer
+     es lo que le come alto a la escena vía insets(). */
+  #hudLeft .btn-glow { margin-top: 0; }
+}
+
 .qlist .qitem {
   display: flex;
   align-items: baseline;
