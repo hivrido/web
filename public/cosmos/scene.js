@@ -605,15 +605,24 @@ export async function createScene(canvas, { textures, accents, onActive, onSelec
   const center = { x: 0, y: 0 };
   let baseZ = RADIUS + 5;
 
+  /* Cuánto del espacio libre llena la tarjeta frontal, por tipo de pantalla.
+     En escritorio la pieza tiene que dominar la composición: el alto es el
+     que manda ahí (el ancho ni llega a activarse en viewports anchos), así
+     que es `h` la que hay que mover para que crezca. En mobile se mantiene
+     suelta para no chocar con el HUD ni comerse la lista de categorías. */
+  function frame() {
+    if (innerWidth < 640) return { w: 0.8, h: 0.6 };            // mobile
+    if (COARSE || innerWidth < 1024) return { w: 0.72, h: 0.66 }; // tablet
+    return { w: 0.78, h: innerWidth >= 1600 ? 0.82 : 0.78 };      // escritorio
+  }
+
   function fit() {
     const halfTan = Math.tan((camera.fov * Math.PI) / 360);
     const inset = insets?.() ?? { top: 0, bottom: 0 };
     const availH = Math.max(200, innerHeight - inset.top - inset.bottom);
 
-    // La tarjeta ocupa ~60% del alto libre y como mucho 2/3 del ancho
-    // (algo más en pantallas angostas, donde necesita presencia).
-    const fracW = innerWidth < 640 ? 0.8 : 0.66;
-    const needH = CARD_H / ((0.6 * availH) / innerHeight) / (2 * halfTan);
+    const { w: fracW, h: fracH } = frame();
+    const needH = CARD_H / ((fracH * availH) / innerHeight) / (2 * halfTan);
     const needW = CARD_W / fracW / (2 * halfTan * camera.aspect);
     const dist = clamp(Math.max(needW, needH), 3.2, 13);
 
