@@ -206,10 +206,10 @@ HIVRIDO debe convertirse en:
 
 ---
 
-# HÍVRIDA — Project Guide for Claude Code
+# HIVRIDO — Project Guide for Claude Code
 
 ## Project identity
-HÍVRIDA is a premium creative brand focused on:
+HIVRIDO is a premium creative brand focused on:
 - actuación
 - cine
 - música
@@ -234,7 +234,7 @@ Never produce a generic startup website, a cheap agency template, or a bland Saa
 Build the official website for **hivrido.com**.
 
 The site should:
-- present HÍVRIDA as a high-value creative brand
+- present HIVRIDO as a high-value creative brand
 - feel visually premium and editorial
 - preserve/adapt the visual DNA from the old fuxxia.com design where useful
 - be optimized for conversion, perception, and future scalability
@@ -259,7 +259,7 @@ Avoid unnecessary dependencies.
 ### Core aesthetic
 - dark background
 - gold / warm light / subtle amber accents for event/flyer-like luxury moments
-- violet / purple accents where aligned with HÍVRIDA brand identity
+- violet / purple accents where aligned with HIVRIDO brand identity
 - cinematic depth
 - soft glow
 - elegant contrast
@@ -279,7 +279,7 @@ Avoid unnecessary dependencies.
 ---
 
 ## Brand behavior
-HÍVRIDA is not “just another agency”.
+HIVRIDO is not “just another agency”.
 It should feel like:
 - creative direction
 - audiovisual presence
@@ -316,7 +316,7 @@ There is an older visual/code reference from fuxxia.com.
 If `fuxxia-old` exists in the workspace:
 - inspect it carefully
 - reuse useful visual patterns, assets, structure, and mood
-- modernize it for HÍVRIDA
+- modernize it for HIVRIDO
 - do not blindly copy legacy HTML/JS
 - migrate selectively and cleanly
 - preserve the strongest parts of the old visual DNA
@@ -477,7 +477,7 @@ For risky changes:
 
 ---
 
-## Special instruction for HÍVRIDA
+## Special instruction for HIVRIDO
 The site must feel like a **premium creative universe**, not merely a homepage.
 
 Everything should support:

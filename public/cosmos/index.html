@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>HIVRIDO — Cosmos</title>
+<meta name="description" content="Galería orbital de proyectos de HIVRIDO. Dirección creativa, film, producto e inteligencia artificial." />
+<meta name="theme-color" content="#04040a" />
+
+<meta property="og:title" content="HIVRIDO — Cosmos" />
+<meta property="og:description" content="Galería orbital de proyectos. Dirección creativa, film e IA." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hivrido.com/cosmos/" />
+
+<link rel="icon" href="/images/logo/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="./styles.css" />
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body class="bg-[#04040a] text-[#f2f0f7] overflow-hidden">
+
+<!-- ═══════════ PRELOADER (el de la home) ═══════════ -->
+<div id="boot" class="loader-wrap" role="status">
+  <div class="loader-inner">
+    <div id="bootLogo" class="loader-logo"></div>
+    <div id="bootTagline" class="loader-tagline">Arte · Cultura · Tecnología</div>
+  </div>
+  <div id="bootPct" class="loader-count">0%</div>
+  <div id="bootFill" class="loader-bar"></div>
+</div>
+
+<!-- ═══════════ CANVAS ═══════════ -->
+<canvas id="gl" class="fixed inset-0 h-full w-full touch-none cursor-grab"
+        role="img" aria-label="Galería orbital de proyectos. Arrastrá para girar."></canvas>
+
+<div class="veil veil--vig" aria-hidden="true"></div>
+<div class="veil veil--scan" aria-hidden="true"></div>
+<div class="veil veil--grain" aria-hidden="true"></div>
+
+<!-- ═══════════ HUD ═══════════ -->
+<div id="hud" class="hud fixed inset-0 z-10 flex flex-col opacity-0 transition-opacity duration-1000">
+
+  <!-- Barra superior (la de la home) -->
+  <header class="main-header">
+    <a href="/" id="logoHolder" class="logo-holder" aria-label="HIVRIDO — Inicio"></a>
+
+    <div class="header-right">
+      <div class="header-social">
+        <a href="https://www.instagram.com/hivrido_/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4.5"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+      </div>
+      <button id="menuBtn" class="nav-btn-wrap" aria-expanded="false" aria-controls="menu" aria-label="Menú">
+        <span id="menuLabel" class="nav-btn-text">Menu</span>
+        <span class="nav-btn-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="flex-1"></div>
+
+  <!-- Barra inferior -->
+  <footer id="hudFoot" class="px-[clamp(18px,4vw,44px)] pb-[clamp(20px,3.5vh,38px)]">
+    <div id="hudBar" class="flex flex-wrap items-end justify-between gap-6">
+
+      <!-- Buscador de disciplinas, estilo terminal -->
+      <div id="hudLeft" class="pointer-events-auto min-w-0">
+        <p id="qLabel" class="mono mb-4 text-[var(--dim)]">¿Qué estás buscando?</p>
+        <ul id="qlist" class="qlist mono hidden list-none p-0 sm:grid" aria-label="Disciplinas"></ul>
+        <a href="https://wa.me/5491156072460?text=Hola!%20Quiero%20hablar%20con%20HIVRIDO%20%F0%9F%9A%80"
+           target="_blank" rel="noopener" class="btn-glow mono mt-6 inline-flex">
+          Preguntanos lo que sea
+        </a>
+      </div>
+
+      <!-- Proyecto activo + controles -->
+      <div id="hudRight" class="pointer-events-auto flex flex-col items-end gap-5 text-right">
+        <div id="hudInfo" class="min-w-0">
+          <p id="cat" class="mono mb-2 text-[var(--ac)] transition-colors duration-500">01 — SERIE · RESTAURACIÓN</p>
+          <div class="overflow-hidden pb-[.06em]">
+            <h1 id="title" class="title text-[clamp(1.5rem,3.4vw,2.4rem)] font-bold leading-none tracking-tight">OKUPAS</h1>
+          </div>
+          <button id="openBtn" class="linkline mono mt-3">
+            Ver proyecto <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div id="hudArrows" class="flex gap-2.5">
+          <button id="prevBtn" class="arrow" aria-label="Proyecto anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="square"/></svg>
+          </button>
+          <button id="nextBtn" class="arrow" aria-label="Proyecto siguiente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="square"/></svg>
+          </button>
+        </div>
+
+        <div id="hudTicksRow" class="flex items-center gap-4">
+          <div id="ticks" class="flex items-center gap-1.5" role="tablist" aria-label="Proyectos"></div>
+          <span id="counter" class="mono text-[var(--muted)]"><b class="text-white">01</b> / 08</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Pista de interacción -->
+<p id="hint" class="mono pointer-events-none fixed bottom-[clamp(16px,2.4vh,26px)] left-1/2 z-10 -translate-x-1/2 text-[var(--dim)] transition-opacity duration-700">
+  <i class="sweep" aria-hidden="true"></i> Arrastrá o scrolleá <i class="sweep" aria-hidden="true"></i>
+</p>
+
+<!-- ═══════════ PANEL DE DETALLE ═══════════ -->
+<aside id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle" aria-hidden="true">
+  <button id="closeBtn" class="panel-close" aria-label="Cerrar detalle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="square"/></svg>
+  </button>
+
+  <p id="pIndex" class="mono text-[var(--ac)] transition-colors duration-500">01</p>
+  <h2 id="pTitle" class="mt-5 text-[clamp(2rem,4.4vw,3.2rem)] font-bold leading-[.92] tracking-tighter">OKUPAS</h2>
+  <div class="rule mt-7"></div>
+
+  <dl class="mono mt-7 grid grid-cols-[auto_1fr] gap-x-7 gap-y-3.5">
+    <dt class="text-[var(--dim)]">Cliente</dt><dd id="pClient" class="text-white">—</dd>
+    <dt class="text-[var(--dim)]">Año</dt><dd id="pYear" class="text-white">—</dd>
+    <dt class="text-[var(--dim)]">Disciplina</dt><dd id="pCat" class="text-white">—</dd>
+  </dl>
+
+  <p id="pBody" class="mt-8 max-w-[46ch] text-[.94rem] leading-[1.75] text-[var(--muted)]">—</p>
+
+  <div id="pTags" class="mt-8 flex flex-wrap gap-2"></div>
+
+  <a href="https://wa.me/5491156072460" target="_blank" rel="noopener" class="btn-glow mono mt-10 inline-flex">
+    Consultar por este proyecto <span aria-hidden="true">→</span>
+  </a>
+</aside>
+
+<!-- ═══════════ MENÚ (drawer de la home) ═══════════ -->
+<div id="navOverlay" class="nav-overlay-bg" aria-hidden="true"></div>
+
+<nav id="menu" class="nav-drawer" aria-label="Navegación">
+  <div class="nav-title-dec">Navegación</div>
+  <ul class="nav-menu">
+    <li><a href="/"><span>01.</span> <b class="lbl">Home</b></a></li>
+    <li><a href="/#sec2"><span>02.</span> <b class="lbl">Proyectos</b></a></li>
+    <li><a href="/movie/okupas"><span>03.</span> <b class="lbl">Okupas</b></a></li>
+    <li><a href="/#sec3"><span>04.</span> <b class="lbl">Identidad</b></a></li>
+    <li><a href="/#sec4"><span>05.</span> <b class="lbl">Servicios</b></a></li>
+    <li><a href="/#sec5"><span>06.</span> <b class="lbl">Equipo</b></a></li>
+    <li><a href="/#sec6"><span>07.</span> <b class="lbl">Partners</b></a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!" target="_blank" rel="noopener">+ Contacto</a>
+    <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
+  </div>
+</nav>
+
+<p class="sr-only" aria-live="polite" id="live"></p>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>
