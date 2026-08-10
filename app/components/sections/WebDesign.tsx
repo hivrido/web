@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import SectionTitle from "../ui/SectionTitle";
+import AIHiveSection from "./AIHiveSection";
 import MatrixCol from "../ui/MatrixCol";
 import { useScramble } from "../ui/useScramble";
 import { useStaggerReveal } from "../../hooks/useStaggerReveal";
@@ -148,7 +149,11 @@ function ServicioItem({ sv, onClick }: { sv: typeof servicios[0]; onClick: () =>
   return (
     <motion.div
       className="svc-item"
+      role="button"
+      tabIndex={0}
+      aria-label={`${sv.title} — ver detalle`}
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } }}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onMouseMove={onMouseMove}
@@ -416,6 +421,10 @@ export default function WebDesign() {
           </div>
         </div>
       </section>
+
+      {/* ── Colmena de agentes ── el mismo bloque que la home, acá desarrolla
+           el servicio 06 justo después de que la lista lo nombra ── */}
+      <AIHiveSection ctaHref="#sec-diseno-web" />
 
       {/* ── Trabajos ── */}
       <section id="sec-trabajos" className="web-section web-section--alt section">

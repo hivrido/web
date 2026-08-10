@@ -84,7 +84,12 @@ const cards = [
   },
 ];
 
-export default function AIHiveSection() {
+/**
+ * `ctaHref` apunta al bloque de servicios de la página que la monta: en la home
+ * es #sec4 y en la landing de diseño web #sec-diseno-web. Sin el parámetro
+ * el botón mandaría al visitante a un ancla que en esa ruta no existe.
+ */
+export default function AIHiveSection({ ctaHref = "#sec4" }: { ctaHref?: string }) {
   return (
     <section
       id="sec-ai-hive"
@@ -293,6 +298,7 @@ export default function AIHiveSection() {
               }}
             >
               <a
+                className="aih-cta-btn"
                 href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20Me%20interesa%20activar%20la%20colmena%20de%20agentes%20PUNY%20%F0%9F%9A%80"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -314,7 +320,7 @@ export default function AIHiveSection() {
               >
                 Quiero evolucionar mi marca
               </a>
-              <a href="#sec-fuxxia-services" style={{
+              <a href={ctaHref} className="aih-cta-btn" style={{
                 display: "inline-block",
                 padding: "14px 32px",
                 background: "transparent",
