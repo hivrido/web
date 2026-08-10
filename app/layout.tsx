@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Orbitron, Rubik } from "next/font/google";
 import "./globals.css";
+import GoogleTag from "./components/analytics/GoogleTag";
+import WhatsAppConversion from "./components/analytics/WhatsAppConversion";
+
+/* Cuenta de Google Ads. La etiqueta es global porque los botones de WhatsApp
+   —que son la conversión— están en todas las rutas, no solo en la landing. */
+const GOOGLE_ADS_ID = "AW-18174991826";
 
 const orbitron = Orbitron({
   subsets: ["latin"],
@@ -63,6 +69,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://img.youtube.com" />
       </head>
       <body style={{ overflowX: "hidden" }}>
+        <GoogleTag id={GOOGLE_ADS_ID} />
+        <WhatsAppConversion />
         {children}
         <noscript>
           <style>{`#main{display:block!important;opacity:1!important}`}</style>

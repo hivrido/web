@@ -3,7 +3,6 @@ import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign from "../components/sections/WebDesign";
-import GoogleTag from "../components/analytics/GoogleTag";
 
 /**
  * Página de destino para las campañas de búsqueda.
@@ -23,9 +22,6 @@ import GoogleTag from "../components/analytics/GoogleTag";
 
 const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
   encodeURIComponent("Hola Hivrido! Quiero un presupuesto para mi sitio web.");
-
-/* Cuenta de Google Ads que anuncia sobre esta página. */
-const GOOGLE_ADS_ID = "AW-18174991826";
 
 export const metadata: Metadata = {
   title: "Diseño Web y Desarrollo a Medida | Hivrido",
@@ -54,7 +50,6 @@ export const metadata: Metadata = {
 export default function DisenoWebPage() {
   return (
     <ClientShell>
-      <GoogleTag id={GOOGLE_ADS_ID} />
 
       {/* 300 y no el valor por defecto: ese espera a que el preloader de la
           home se retire, y a quien ya lo vio hace poco se le saltea — el
