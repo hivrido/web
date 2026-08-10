@@ -122,7 +122,11 @@ function ServiceItem({ sv, onClick }: { sv: typeof services[0]; onClick: () => v
   return (
     <motion.div
       className="svc-item"
+      role="button"
+      tabIndex={0}
+      aria-label={`${sv.title} — ver detalle`}
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } }}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onMouseMove={onMouseMove}

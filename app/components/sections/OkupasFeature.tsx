@@ -109,6 +109,7 @@ export default function OkupasFeature() {
           >
             {/* Image */}
             <Image
+              className="okf-img"
               src="/images/okupas/okupas-home.webp"
               alt="Okupas — Serie argentina de culto sobre la vida en los márgenes"
               width={1200}
@@ -119,13 +120,14 @@ export default function OkupasFeature() {
             />
 
             {/* Gradient overlay */}
-            <div style={{
+            <div className="okf-shade" style={{
               position: "absolute", inset: 0,
               background: "linear-gradient(90deg, rgba(10,8,20,.92) 0%, rgba(10,8,20,.6) 50%, rgba(10,8,20,.15) 100%)",
             }} />
 
-            {/* Content */}
-            <div style={{
+            {/* Content — en móvil sale del overlay y fluye debajo de la imagen
+                (ver .okf-overlay en globals.css) */}
+            <div className="okf-overlay" style={{
               position: "absolute", inset: 0,
               display: "flex", alignItems: "flex-end",
               padding: "48px 56px",
@@ -170,7 +172,7 @@ export default function OkupasFeature() {
                 </p>
 
                 {/* CTA */}
-                <div style={{
+                <div className="okf-cta" style={{
                   display: "inline-flex", alignItems: "center", gap: "10px",
                   background: "#7C3AED", color: "#fff",
                   padding: "14px 28px", borderRadius: "10px",
