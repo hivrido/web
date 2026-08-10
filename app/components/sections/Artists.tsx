@@ -10,7 +10,7 @@ const ARTISTS = [
     name: "Sergio Podeley",
     role: "Identidad Artística & Performance",
     bio: "Más de 10 años creando experiencias culturales de impacto en Argentina y Latinoamérica.",
-    instagram: "https://instagram.com/sergiopodeley",
+    instagram: "https://www.instagram.com/sergiopodeley",
   },
   {
     img: "/images/team/2.jpg",
