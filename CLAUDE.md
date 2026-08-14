@@ -503,9 +503,12 @@ Estos son comandos cortos que el usuario escribe. Ejecutarlos sin pedir confirma
 
 | Comando   | Acción                                                                 |
 |-----------|------------------------------------------------------------------------|
-| `out`     | `npm run build` — genera export estático en /out/ listo para servidor |
+| `out`     | `npm run build` — compila y verifica que el export estático salga limpio |
 | `dev`     | `npm run dev` — inicia servidor de desarrollo                          |
 | `lint`    | `npm run lint` — corre ESLint                                          |
+| `git`     | `npm run build`, commitear lo pendiente y `git push origin main`       |
+| `vercel`  | Deploy a producción en Vercel                                          |
+| `deploy`  | `git` + `vercel`: buildear, pushear y publicar                         |
 | `review`  | Analizar el código reciente y proponer mejoras quirúrgicas concretas   |
 | `audit`   | Análisis completo del proyecto: performance, SEO, código, UX, deuda   |
 | `status`  | Resumen del estado actual del proyecto: secciones, pendientes, issues  |
@@ -524,6 +527,23 @@ npm run lint     # Run ESLint
 ```
 
 There are no tests configured in this project.
+
+## Deploy
+
+El sitio vive en **Git + Vercel**. No se sube nada a mano.
+
+- **Repo**: `https://github.com/hivrido/web.git` (`origin`), rama de producción `main`.
+- **Flujo normal**: `npm run build` para verificar → commit → `git push origin main`. Vercel toma el push y publica.
+- **Deploy manual**: `npx vercel --prod` desde la raíz.
+
+Antes de commitear, siempre correr el build: el export estático falla en cosas
+que `dev` no muestra, y un push roto es un deploy roto.
+
+Los commits van en español, en imperativo y con prefijo (`feat:`, `fix:`,
+`chore:`), describiendo el efecto para el usuario y no el archivo tocado.
+
+`/out/` es artefacto de build, no un método de deploy: no se commitea ni se
+zipea para subir a un servidor.
 
 ## Architecture
 

@@ -98,7 +98,12 @@ body.swapping #cat { transform: translateY(115%); opacity: 0; }
   align-items: center;
   overflow: hidden;
   pointer-events: auto;
+  /* Vive fuera del HUD para poder pisar al drawer, así que se trae su fade:
+     antes lo heredaba de #hud y sin esto aparecería de golpe. */
+  opacity: 0;
+  transition: opacity 1s var(--ease);
 }
+body.live .main-header { opacity: 1; }
 .logo-holder {
   height: var(--header-h);
   display: flex;
