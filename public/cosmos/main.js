@@ -216,6 +216,14 @@ el.menu.querySelectorAll('.nav-menu a').forEach((a) => {
 // El logo se dibuja mientras carga, como en la home
 mountLogo(el.bootLogo, { delay: 200, height: 70 });
 
+/* La coreografía del logo dura ~1.9s desde el mount: delay de 200, trazos
+   letra a letra, barrido dorado y rellenos. En móvil las texturas son más
+   chicas y suelen venir de caché, así que la carga real termina antes que el
+   dibujo — sin un piso, el loader se retira con el logo a medias. El piso
+   solo demora la salida: la barra llega a 100 apenas la carga termina. */
+const BOOT_MIN = 2050;
+const bootT0 = performance.now();
+
 let booted = false;
 function setProgress(v) {
   el.bootFill.style.width = v + '%';
@@ -226,10 +234,13 @@ function finishBoot() {
   if (booted) return;
   booted = true;
   setProgress(100);
-  el.boot.classList.add('done');
-  document.body.classList.add('live');
-  // El logo del header arranca cuando el preloader se retira
-  mountLogo(el.logoHolder, { delay: 350, height: 44 });
+  const left = Math.max(0, BOOT_MIN - (performance.now() - bootT0));
+  setTimeout(() => {
+    el.boot.classList.add('done');
+    document.body.classList.add('live');
+    // El logo del header arranca cuando el preloader se retira
+    mountLogo(el.logoHolder, { delay: 350, height: 44 });
+  }, left);
 }
 setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
 
