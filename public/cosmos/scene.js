@@ -65,14 +65,15 @@ const PERIMETER = /* glsl */ `
      degradé queda por delante y la luz parece viajar de culata. */
   float cometAt(float t, float head) {
     float u = fract(head - t);      // 0 en la cabeza, crece hacia la cola
-    // TAIL es el largo del trazo como fracción del contorno; el cuadrado
-    // —y no el cubo— deja que la cola llegue lejos en vez de morir al toque.
+    // TAIL es el largo del trazo como fracción del contorno. El cuerpo va de
+    // brillo parejo y recién se apaga en el último tercio: así la estela se
+    // lee como una línea de grosor constante y no como un degradé.
     const float TAIL = 0.45;
-    float c = smoothstep(TAIL, 0.0, u);
-    // Un núcleo corto y más caliente sobre el trazo largo: sin él la estela
-    // se lee como un borde encendido y se pierde hacia dónde viaja.
-    float core = smoothstep(0.06, 0.0, u);
-    return c * c + core * core * 0.7;
+    float body = smoothstep(TAIL, TAIL * 0.55, u) * 0.32;
+    // La punta es lo único que se quema. Queda muy por encima del cuerpo a
+    // propósito: el cuerpo apenas satura y ella se va a blanco.
+    float tip = smoothstep(0.05, 0.0, u);
+    return body + tip * tip;
   }
 `;
 
@@ -115,14 +116,15 @@ const CARD_FRAG = /* glsl */ `
     col += uAccent * inner * uFocus;
 
     /* Luz recorriendo el contorno. Solo la tarjeta del centro la tiene: es la
-       señal de "esta es la activa", no un adorno de todas. La cabeza casi
-       blanca corre sobre el borde neón, y una banda más ancha por dentro le
-       da el resplandor que en móvil no puede poner el bloom. */
+       señal de "esta es la activa", no un adorno de todas. Corre por una banda
+       más angosta que el borde neón, la misma de punta a cola: el grosor lo
+       fija la banda y el brillo lo pone el cometa, así la estela no engorda
+       donde está más encendida. */
     if (uSweep > 0.001) {
       float comet = cometAt(perimeterT(p, uSize), uHead);
       vec3 spark = mix(uAccent, vec3(1.0), 0.62);
-      float halo = smoothstep(0.0, -0.02, d) * smoothstep(-0.075, -0.02, d);
-      col += spark * comet * uSweep * (edge * 6.0 + halo * 1.8);
+      float line = smoothstep(0.0, -0.005, d) * smoothstep(-0.018, -0.007, d);
+      col += spark * comet * uSweep * line * 3.2;
     }
 
     gl_FragColor = vec4(col, shape * uOpacity);
@@ -154,11 +156,13 @@ const GLOW_FRAG = /* glsl */ `
 
     // La luz del contorno también se derrama hacia afuera: sin esto el
     // recorrido se corta seco en el borde y se nota que es un plano aparte.
+    // El derrame es corto —si no, engorda la estela justo donde más brilla— y
+    // por eso se nota casi solo bajo la punta.
     float comet = uSweep > 0.001
       ? cometAt(perimeterT(p, uSize), uHead) * uSweep
       : 0.0;
-    vec3 tint = mix(uAccent, vec3(1.0), 0.45 * comet);
-    gl_FragColor = vec4(tint, glow * (uIntensity + 1.5 * comet));
+    vec3 tint = mix(uAccent, vec3(1.0), 0.4 * comet);
+    gl_FragColor = vec4(tint, glow * (uIntensity + 0.55 * comet));
   }
 `;
 
