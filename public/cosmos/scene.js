@@ -49,38 +49,9 @@ const SDF = /* glsl */ `
   }
 `;
 
-/* Parámetro de recorrido del contorno, 0..1.
-   El punto se normaliza contra el tamaño de la tarjeta antes del atan: sobre
-   un cuadrado el barrido angular reparte parejo entre los cuatro lados, que
-   en el rectángulo crudo se aceleraría en los cortos. */
-const PERIMETER = /* glsl */ `
-  float perimeterT(vec2 p, vec2 size) {
-    vec2 n = p / (size * 0.5);
-    return atan(n.y, n.x) * 0.15915494 + 0.5;
-  }
-  /* Estela larga con la cabeza caliente adelante. La cabeza llega normalizada a
-     0..1 desde JS y no como un tiempo que crece: en mediump, fract() de un
-     número grande se cuantiza y a los pocos minutos la luz avanzaría a los
-     saltos. El orden de la resta importa —(cabeza - punto), no al revés— o el
-     degradé queda por delante y la luz parece viajar de culata. */
-  float cometAt(float t, float head) {
-    float u = fract(head - t);      // 0 en la cabeza, crece hacia la cola
-    // TAIL es el largo del trazo como fracción del contorno. El cuerpo va de
-    // brillo parejo y recién se apaga en el último tercio: así la estela se
-    // lee como una línea de grosor constante y no como un degradé.
-    const float TAIL = 0.45;
-    float body = smoothstep(TAIL, TAIL * 0.55, u) * 0.32;
-    // La punta es lo único que se quema. Queda muy por encima del cuerpo a
-    // propósito: el cuerpo apenas satura y ella se va a blanco.
-    float tip = smoothstep(0.05, 0.0, u);
-    return body + tip * tip;
-  }
-`;
-
 const CARD_FRAG = /* glsl */ `
   precision highp float;
   ${SDF}
-  ${PERIMETER}
 
   uniform sampler2D uMap;
   uniform vec3  uAccent;
@@ -89,8 +60,6 @@ const CARD_FRAG = /* glsl */ `
   uniform float uFocus;     // 0 = al fondo, 1 = al frente
   uniform float uOpacity;
   uniform float uHover;
-  uniform float uHead;      // posición de la luz sobre el contorno, 0..1
-  uniform float uSweep;     // 1 solo en la del centro: la luz que recorre el borde
   varying vec2  vUv;
 
   void main() {
@@ -115,18 +84,6 @@ const CARD_FRAG = /* glsl */ `
     float inner = smoothstep(-0.22, 0.0, d) * 0.08;
     col += uAccent * inner * uFocus;
 
-    /* Luz recorriendo el contorno. Solo la tarjeta del centro la tiene: es la
-       señal de "esta es la activa", no un adorno de todas. Corre por una banda
-       más angosta que el borde neón, la misma de punta a cola: el grosor lo
-       fija la banda y el brillo lo pone el cometa, así la estela no engorda
-       donde está más encendida. */
-    if (uSweep > 0.001) {
-      float comet = cometAt(perimeterT(p, uSize), uHead);
-      vec3 spark = mix(uAccent, vec3(1.0), 0.62);
-      float line = smoothstep(0.0, -0.005, d) * smoothstep(-0.018, -0.007, d);
-      col += spark * comet * uSweep * line * 3.2;
-    }
-
     gl_FragColor = vec4(col, shape * uOpacity);
   }
 `;
@@ -134,15 +91,12 @@ const CARD_FRAG = /* glsl */ `
 const GLOW_FRAG = /* glsl */ `
   precision mediump float;
   ${SDF}
-  ${PERIMETER}
 
   uniform vec3  uAccent;
   uniform vec2  uPlane;    // tamaño del plano del halo
   uniform vec2  uSize;     // tamaño de la tarjeta que lo proyecta
   uniform float uRadius;
   uniform float uIntensity;
-  uniform float uHead;
-  uniform float uSweep;
   varying vec2  vUv;
 
   void main() {
@@ -153,16 +107,7 @@ const GLOW_FRAG = /* glsl */ `
     // La compuerta es angosta para que el pico quede pegado al borde, y la
     // caída empinada para que el resplandor no se coma media pantalla.
     float glow = exp(-max(d, 0.0) * 15.0) * smoothstep(-0.004, 0.014, d);
-
-    // La luz del contorno también se derrama hacia afuera: sin esto el
-    // recorrido se corta seco en el borde y se nota que es un plano aparte.
-    // El derrame es corto —si no, engorda la estela justo donde más brilla— y
-    // por eso se nota casi solo bajo la punta.
-    float comet = uSweep > 0.001
-      ? cometAt(perimeterT(p, uSize), uHead) * uSweep
-      : 0.0;
-    vec3 tint = mix(uAccent, vec3(1.0), 0.4 * comet);
-    gl_FragColor = vec4(tint, glow * (uIntensity + 0.55 * comet));
+    gl_FragColor = vec4(uAccent, glow * uIntensity);
   }
 `;
 
@@ -628,8 +573,6 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       uFocus:   { value: 0 },
       uOpacity: { value: 1 },
       uHover:   { value: 0 },
-      uHead:    { value: 0 },
-      uSweep:   { value: 0 },
     };
 
     const mat = new THREE.ShaderMaterial({
@@ -652,8 +595,6 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       uSize:      { value: new THREE.Vector2(CARD_W, CARD_H) },
       uRadius:    { value: CORNER },
       uIntensity: { value: 0 },
-      uHead:      { value: 0 },
-      uSweep:     { value: 0 },
     };
     const glow = new THREE.Mesh(glowGeo, new THREE.ShaderMaterial({
       uniforms: glowUniforms,
@@ -687,6 +628,118 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     ring.add(holder);
     cards.push({ holder, mesh, uniforms, glowUniforms, theta, play, playHover: 0 });
   }
+
+  /* ────────── Cometa del contorno ──────────
+     La luz que recorre el borde de la tarjeta enfocada, hecha de la misma
+     materia que el ADN del fondo: círculos aditivos, no una banda pintada en
+     el shader de la tarjeta. Una bola de energía en la punta y una cola de
+     puntos que se afinan y se apagan hacia atrás. Las posiciones se calculan
+     en JS sobre el contorno redondeado —72 puntos por frame no es nada— y el
+     objeto se cuelga de la tarjeta con más foco, así hereda giro y escala. */
+  const COMET_N = 72;
+  const COMET_TAIL = 0.38;   // fracción del contorno que ocupa la cola
+  const COMET_SPEED = 0.22;  // vueltas por segundo
+
+  /** Punto (x, y) a la fracción t del contorno redondeado, antihorario. */
+  const cometPath = (() => {
+    const hw = CARD_W / 2, hh = CARD_H / 2, r = CORNER;
+    const iw = CARD_W - 2 * r, ih = CARD_H - 2 * r;
+    const arc = (Math.PI / 2) * r;
+    const L = 2 * (iw + ih) + 4 * arc;
+    return (t, out) => {
+      let s = (((t % 1) + 1) % 1) * L;
+      if (s < ih) { out.set(hw, s - (hh - r)); return; } s -= ih;
+      if (s < arc) { const a = s / r; out.set(hw - r + r * Math.cos(a), hh - r + r * Math.sin(a)); return; } s -= arc;
+      if (s < iw) { out.set(hw - r - s, hh); return; } s -= iw;
+      if (s < arc) { const a = Math.PI / 2 + s / r; out.set(-(hw - r) + r * Math.cos(a), hh - r + r * Math.sin(a)); return; } s -= arc;
+      if (s < ih) { out.set(-hw, hh - r - s); return; } s -= ih;
+      if (s < arc) { const a = Math.PI + s / r; out.set(-(hw - r) + r * Math.cos(a), -(hh - r) + r * Math.sin(a)); return; } s -= arc;
+      if (s < iw) { out.set(-(hw - r) + s, -hh); return; } s -= iw;
+      const a = 1.5 * Math.PI + s / r;
+      out.set(hw - r + r * Math.cos(a), -(hh - r) + r * Math.sin(a));
+    };
+  })();
+
+  const comet = (() => {
+    const pos = new Float32Array(COMET_N * 3);
+    const fr = new Float32Array(COMET_N);   // 0 = punta, 1 = final de la cola
+    const siz = new Float32Array(COMET_N);
+    const pha = new Float32Array(COMET_N);
+    // Jitter fijo por partícula, perpendicular “a ojo”: casi nulo en la punta
+    // y apenas disperso al final, como chispas que se sueltan.
+    const jit = new Float32Array(COMET_N * 2);
+    const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+
+    for (let i = 0; i < COMET_N; i++) {
+      const f = i / (COMET_N - 1);
+      fr[i] = f;
+      // La punta domina y la cola se afina rápido: eso es lo que la hace fina
+      siz[i] = (0.3 + 2.9 * Math.pow(1 - f, 1.7)) * (0.85 + Math.random() * 0.3);
+      pha[i] = Math.random() * TAU;
+      const amp = 0.004 + 0.03 * f;
+      jit[i * 2] = gauss() * amp;
+      jit[i * 2 + 1] = gauss() * amp;
+      pos[i * 3 + 2] = 0.02;               // apenas delante de la tarjeta
+    }
+
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('aF', new THREE.BufferAttribute(fr, 1));
+    g.setAttribute('aSize', new THREE.BufferAttribute(siz, 1));
+    g.setAttribute('aPhase', new THREE.BufferAttribute(pha, 1));
+
+    const pts = new THREE.Points(g, new THREE.ShaderMaterial({
+      uniforms: {
+        uPixel:  { value: renderer.getPixelRatio() },
+        uTime:   { value: 0 },
+        uAccent: { value: new THREE.Color(accents[0]) },
+        uOp:     { value: 0 },
+      },
+      vertexShader: `
+        attribute float aF;
+        attribute float aSize;
+        attribute float aPhase;
+        uniform float uPixel;
+        uniform float uTime;
+        varying float vF;
+        varying float vTw;
+        void main() {
+          vF = aF;
+          // Titileo por partícula, como el ADN: viva, no estampada
+          vTw = 0.75 + 0.25 * sin(uTime * 3.4 + aPhase);
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = aSize * uPixel * (30.0 / -mv.z);
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: `
+        precision mediump float;
+        uniform vec3 uAccent;
+        uniform float uOp;
+        varying float vF;
+        varying float vTw;
+        void main() {
+          vec2 c = gl_PointCoord - 0.5;
+          float d = dot(c, c);
+          if (d > 0.25) discard;
+          float a = smoothstep(0.25, 0.0, d);
+          // Solo la punta vira a blanco y sobreexpone: la bola de energía.
+          // La cola queda en el acento puro y se apaga hacia atrás.
+          float head = pow(1.0 - vF, 6.0);
+          vec3 col = mix(uAccent, vec3(1.0), 0.15 + 0.85 * head);
+          float fade = pow(1.0 - vF, 1.5);
+          gl_FragColor = vec4(col * (1.0 + 1.8 * head), a * fade * vTw * uOp);
+        }`,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    }));
+    pts.raycast = () => {};
+    pts.frustumCulled = false;
+    pts.visible = false;
+    pts.userData.jit = jit;
+    return pts;
+  })();
+  const v2 = new THREE.Vector2();   // scratch del cometa: cero basura por frame
 
   /* ────────── Encuadre responsivo ──────────
      La cámara retrocede lo necesario para que la tarjeta del frente entre
@@ -917,10 +970,8 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const idx = indexFromAngle(angle);
     if (idx !== active) { active = idx; onActive?.(active); }
 
-    // Una vuelta al contorno cada cuatro segundos, ya envuelta a 0..1
-    const head = (time * 0.25) % 1;
-
     /* — Profundidad de cada tarjeta — */
+    let cometBest = 0, cometIdx = 0;
     for (let i = 0; i < N; i++) {
       const c = cards[i];
       // cos(θ + rotación): 1 al frente de la cámara, -1 al fondo
@@ -941,15 +992,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
 
       c.glowUniforms.uIntensity.value = 0.5 * Math.pow(depth, 3.2) * (1 - openMix * 0.5);
 
-      /* La luz que recorre el borde vive solo en la del centro: el exponente
-         alto la apaga apenas la tarjeta empieza a irse, así que en pleno
-         arrastre no quedan tres encendidas a la vez. Con reduced-motion no
-         corre nada. */
-      const sweep = REDUCED ? 0 : Math.pow(focus, 7) * (1 - openMix * 0.65);
-      c.uniforms.uHead.value = head;
-      c.uniforms.uSweep.value = sweep;
-      c.glowUniforms.uHead.value = head;
-      c.glowUniforms.uSweep.value = sweep;
+      if (focus > cometBest) { cometBest = focus; cometIdx = i; }
 
       // La tarjeta enfocada flota apenas por encima del resto
       c.holder.position.y = Math.sin(c.theta * 2) * WAVE + focus * FLOAT_LIFT;
@@ -967,6 +1010,33 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         c.play.material.opacity = Math.min(1, op);
         c.play.scale.setScalar(1 + (REDUCED ? 0 : 0.035 * breath) + 0.07 * c.playHover);
       }
+    }
+
+    /* — Cometa: vive solo en la tarjeta con más foco —
+       El gate con focus^7 lo apaga apenas la tarjeta empieza a irse, así en
+       pleno arrastre no quedan varias luces compitiendo. Cuelga del holder de
+       la enfocada: hereda giro, escala y flote sin cálculo extra. */
+    const cometOp = REDUCED ? 0 : Math.pow(cometBest, 7) * (1 - openMix * 0.65);
+    comet.visible = cometOp > 0.004;
+    if (comet.visible) {
+      const cb = cards[cometIdx];
+      if (comet.parent !== cb.holder) {
+        cb.holder.add(comet);
+        comet.material.uniforms.uAccent.value.copy(cb.uniforms.uAccent.value);
+      }
+      comet.material.uniforms.uOp.value = cometOp;
+      comet.material.uniforms.uTime.value = time;
+
+      const head = (time * COMET_SPEED) % 1;
+      const arr = comet.geometry.attributes.position.array;
+      const jit = comet.userData.jit;
+      for (let i = 0; i < COMET_N; i++) {
+        const f = i / (COMET_N - 1);
+        cometPath(head - f * COMET_TAIL, v2);
+        arr[i * 3] = v2.x + jit[i * 2];
+        arr[i * 3 + 1] = v2.y + jit[i * 2 + 1];
+      }
+      comet.geometry.attributes.position.needsUpdate = true;
     }
 
     /* — Modo detalle: el anillo se corre y la cámara retrocede — */
