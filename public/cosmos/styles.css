@@ -587,8 +587,62 @@ body.live #hud { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .veil--grain, .sweep { animation: none !important; }
+  .veil--grain, .sweep, .wa-ring { animation: none !important; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+
+/* ═══════════ WhatsApp flotante ═══════════
+   Mismo botón y misma pulsación que la home. Aparece solo en móvil, donde
+   reemplaza a la cápsula del pie: dos accesos al mismo WhatsApp en una
+   pantalla de teléfono es ruido. Va por debajo del panel (30) y del menú (45)
+   para que ninguno de los dos quede con un botón verde encima. */
+.wa-btn {
+  position: fixed;
+  right: clamp(14px, 4vw, 24px);
+  bottom: calc(clamp(20px, 3.5vh, 38px) + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  width: 56px;
+  height: 56px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+@media (max-width: 640px) { .wa-btn { display: flex; } }
+
+.wa-icon {
+  position: relative;
+  z-index: 2;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgb(8, 210, 143);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(8, 210, 143, .45);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.wa-btn:hover .wa-icon,
+.wa-btn:focus-visible .wa-icon {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(8, 210, 143, .65);
+}
+.wa-btn:active .wa-icon { transform: scale(.96); }
+
+.wa-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(8, 210, 143, .5);
+  animation: wa-pulse 2s ease-out infinite;
+}
+.wa-ring-1 { width: 76px; height: 76px; animation-delay: 0s; }
+.wa-ring-2 { width: 94px; height: 94px; animation-delay: .6s; }
+
+@keyframes wa-pulse {
+  0%   { transform: scale(.8); opacity: .7; }
+  70%  { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.3); opacity: 0; }
 }
 
 /* ═══════════ Barra inferior responsive ═══════════ */
@@ -609,8 +663,10 @@ body.live #hud { opacity: 1; }
   #hint { display: none; }
   .arrow { width: 44px; height: 44px; }
 
-  /* La barra se apila: primero el proyecto (pegado a la escena),
-     después el CTA a lo ancho. Todo alineado a la izquierda. */
+  /* La barra se apila y el bloque de proyecto ocupa el ancho completo.
+     Los controles —marcas, contador y flechas— van arriba del título: se lee
+     primero dónde estás y después qué estás mirando, y el pulgar llega a las
+     flechas sin cruzar el texto. */
   #hudBar {
     flex-direction: column;
     align-items: stretch;
@@ -619,26 +675,39 @@ body.live #hud { opacity: 1; }
   #hudRight {
     order: 1;
     width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
     text-align: left;
-    gap: 14px;
+    gap: 16px 12px;
   }
-  #hudInfo { order: 1; }
-  #hudArrows { order: 2; }
   #hudTicksRow {
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  #hudArrows { grid-column: 2; grid-row: 1; }
+  /* Compactas: en una fila comparten ancho con las flechas. */
+  #ticks { gap: 5px; }
+  #hudTicksRow .tick { width: 10px; }
+  #hudTicksRow .tick[aria-current='true'] { width: 22px; }
+
+  /* El flotante de WhatsApp ocupa el costado derecho: el bloque se detiene
+     antes de meterse debajo. */
+  #hudInfo {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding-right: 76px;
   }
 
-  #hudLeft { order: 2; width: 100%; }
-  #qLabel { display: none; }
-  #hudLeft .btn-glow {
-    width: 100%;
-    justify-content: center;
-    margin-top: 0;
-  }
+  /* La cápsula ancha se retira: el mismo destino ya está en el flotante, y
+     así el pie deja de comerle alto a la escena. */
+  #hudLeft { display: none; }
+}
+
+/* Pantallas muy angostas: el contador ya dice la posición, las marcas sobran */
+@media (max-width: 380px) {
+  #ticks { display: none; }
 }
