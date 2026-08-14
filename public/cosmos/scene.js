@@ -747,15 +747,22 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
   const center = { x: 0, y: 0 };
   let baseZ = RADIUS + 5;
 
-  /* Cuánto del espacio libre llena la tarjeta frontal, por tipo de pantalla.
-     En escritorio la pieza tiene que dominar la composición: el alto es el
-     que manda ahí (el ancho ni llega a activarse en viewports anchos), así
-     que es `h` la que hay que mover para que crezca. En mobile se mantiene
-     suelta para no chocar con el HUD ni comerse la lista de categorías. */
+  /* Cuánto del espacio libre llena la CAJA de la tarjeta frontal, por tipo
+     de pantalla. La caja, no la tarjeta: el plano orbital está inclinado
+     16° y la tarjeta gira con él, así que lo que hay que encajar entre
+     header y pie es su envolvente rotada —un 37% más alta que la tarjeta—.
+     Con fracciones sobre el alto nominal, escritorio ocupaba el 107% del
+     espacio libre: tocaba el menú por construcción y ningún corrimiento lo
+     salvaba. Mobile y tablet conservan el tamaño que ya tenían: son las
+     fracciones viejas convertidas a caja.
+
+     `down` corre la composición hacia abajo, como fracción del espacio
+     libre: aire extra bajo el header, donde el glow de la tarjeta pega
+     contra el borde oscuro de la barra. */
   function framing() {
-    if (innerWidth < 640) return { w: 0.8, h: 0.6 };            // mobile
-    if (COARSE || innerWidth < 1024) return { w: 0.72, h: 0.66 }; // tablet
-    return { w: 0.78, h: innerWidth >= 1600 ? 0.82 : 0.78 };      // escritorio
+    if (innerWidth < 640) return { w: 0.92, h: 0.82, down: 0 };            // mobile
+    if (COARSE || innerWidth < 1024) return { w: 0.83, h: 0.91, down: 0 };  // tablet
+    return { w: 0.9, h: innerWidth >= 1600 ? 0.92 : 0.88, down: 0.02 };     // escritorio
   }
 
   function fit() {
@@ -763,19 +770,27 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const inset = insets?.() ?? { top: 0, bottom: 0 };
     const availH = Math.max(200, innerHeight - inset.top - inset.bottom);
 
-    const { w: fracW, h: fracH } = framing();
-    const needH = CARD_H / ((fracH * availH) / innerHeight) / (2 * halfTan);
-    const needW = CARD_W / fracW / (2 * halfTan * camera.aspect);
+    const { w: fracW, h: fracH, down } = framing();
+    // Envolvente de la tarjeta rotada por la inclinación del plano orbital:
+    // es esto lo que tiene que entrar en el espacio libre, no CARD_W×CARD_H.
+    const cz = Math.cos(TILT_Z), sz = Math.abs(Math.sin(TILT_Z));
+    const boxH = CARD_H * cz + CARD_W * sz;
+    const boxW = CARD_W * cz + CARD_H * sz;
+    const needH = boxH / ((fracH * availH) / innerHeight) / (2 * halfTan);
+    const needW = boxW / fracW / (2 * halfTan * camera.aspect);
     const dist = clamp(Math.max(needW, needH), 3.2, 13);
 
     // Posición real de la tarjeta frontal una vez inclinado el plano orbital
     const front = new THREE.Vector3(0, FLOAT_LIFT, RADIUS).applyEuler(tiltGroup.rotation);
     baseZ = front.z + dist;
 
-    // Corrimiento vertical: centrar en el espacio libre, no en el viewport
+    // Corrimiento vertical: centrar en el espacio libre, no en el viewport.
+    // Subir la cámara baja la tarjeta en pantalla: de ahí el signo de `down`.
     const worldPerPx = (2 * dist * halfTan) / innerHeight;
     center.x = front.x;
-    center.y = front.y + ((inset.top - inset.bottom) / 2) * worldPerPx;
+    center.y = front.y
+      + ((inset.top - inset.bottom) / 2) * worldPerPx
+      + down * availH * worldPerPx;
 
     camera.position.set(center.x, center.y, baseZ);
     camera.lookAt(center.x, center.y, 0);
