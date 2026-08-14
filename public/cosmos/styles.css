@@ -208,17 +208,20 @@ body.live .main-header { opacity: 1; }
 @media (min-width: 1024px) {
   #qLabel,
   #qlist { display: none; }
-  /* Sin lista arriba, el margen del CTA solo engordaba el footer —y el footer
-     es lo que le come alto a la escena vía insets(). */
-  #hudLeft .btn-glow { margin-top: 0; }
+  /* Sin lista ni cápsula, la columna izquierda queda vacía: se retira para
+     que su hueco no le siga comiendo alto al pie —y el pie es lo que le come
+     alto a la escena vía insets(). */
+  #hudLeft { display: none; }
 
-  /* El bloque de proyecto se pega al borde derecho y se compacta: alto era
-     lo que lo hacía trepar hasta la tarjeta vecina del anillo, y ancho era
-     la fila de ticks, el único elemento que se derramaba hacia la izquierda.
-     Al comprimirlo, su base queda a la altura del CTA de la izquierda y el
-     HUD se lee como una sola banda inferior. */
-  #hudFoot { padding-right: 26px; }
-  #hudRight { gap: 12px; }
+  /* Todo el HUD se alinea a la izquierda y el WhatsApp flotante ocupa el
+     costado derecho: una sola columna de lectura en vez de dos bloques
+     tironeando de los extremos. El bloque se compacta porque el alto era lo
+     que lo hacía trepar hasta la tarjeta vecina del anillo. */
+  #hudRight {
+    align-items: flex-start;
+    text-align: left;
+    gap: 12px;
+  }
   #hudRight #openBtn { margin-top: 8px; }
   #hudArrows { gap: 8px; }
   #hudRight .arrow { width: 42px; height: 42px; }
@@ -601,29 +604,32 @@ body.live #hud { opacity: 1; }
 }
 
 /* ═══════════ WhatsApp flotante ═══════════
-   Mismo botón y misma pulsación que la home. Aparece solo en móvil, donde
-   reemplaza a la cápsula del pie: dos accesos al mismo WhatsApp en una
-   pantalla de teléfono es ruido. Va por debajo del panel (30) y del menú (45)
-   para que ninguno de los dos quede con un botón verde encima. */
+   Mismo botón y misma pulsación que la home, y el único acceso a WhatsApp de
+   la página: reemplaza a la cápsula del pie en todos los anchos —dos entradas
+   al mismo chat en una pantalla es ruido— y deja el resto del HUD ordenado en
+   una sola columna a la izquierda. Va por debajo del panel (30) y del menú
+   (45) para que ninguno de los dos quede con un botón verde encima. */
 .wa-btn {
   position: fixed;
   right: clamp(14px, 4vw, 24px);
   bottom: calc(clamp(20px, 3.5vh, 38px) + env(safe-area-inset-bottom, 0px));
   z-index: 20;
-  width: 56px;
-  height: 56px;
-  display: none;
+  width: 60px;
+  height: 60px;
+  display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
 }
-@media (max-width: 640px) { .wa-btn { display: flex; } }
+/* La cápsula ancha se retira en favor del flotante. En 641–1023 el bloque
+   izquierdo sigue en pie porque ahí vive la lista de disciplinas. */
+#hudLeft .btn-glow { display: none; }
 
 .wa-icon {
   position: relative;
   z-index: 2;
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: rgb(8, 210, 143);
   display: flex;
@@ -645,8 +651,15 @@ body.live #hud { opacity: 1; }
   border: 2px solid rgba(8, 210, 143, .5);
   animation: wa-pulse 2s ease-out infinite;
 }
-.wa-ring-1 { width: 76px; height: 76px; animation-delay: 0s; }
-.wa-ring-2 { width: 94px; height: 94px; animation-delay: .6s; }
+.wa-ring-1 { width: 80px; height: 80px; animation-delay: 0s; }
+.wa-ring-2 { width: 100px; height: 100px; animation-delay: .6s; }
+
+/* En el teléfono cede unos píxeles: comparte pie con el bloque de proyecto. */
+@media (max-width: 640px) {
+  .wa-btn, .wa-icon { width: 56px; height: 56px; }
+  .wa-ring-1 { width: 76px; height: 76px; }
+  .wa-ring-2 { width: 94px; height: 94px; }
+}
 
 @keyframes wa-pulse {
   0%   { transform: scale(.8); opacity: .7; }
@@ -659,6 +672,12 @@ body.live #hud { opacity: 1; }
 /* Respeta el notch / home indicator en móviles */
 #hudFoot {
   padding-bottom: calc(clamp(20px, 3.5vh, 38px) + env(safe-area-inset-bottom, 0px));
+}
+
+/* Tablet: la lista de disciplinas ocupa la izquierda, así que el bloque de
+   proyecto sigue a la derecha y tiene que abrirle paso al flotante. */
+@media (min-width: 641px) and (max-width: 1023px) {
+  #hudRight { padding-right: 84px; }
 }
 
 /* Alturas chicas: el título no puede comerse la escena */
@@ -711,8 +730,8 @@ body.live #hud { opacity: 1; }
     padding-right: 76px;
   }
 
-  /* La cápsula ancha se retira: el mismo destino ya está en el flotante, y
-     así el pie deja de comerle alto a la escena. */
+  /* Sin cápsula ni lista de disciplinas, la columna izquierda queda vacía:
+     retirarla le devuelve al pie el alto que le sacaba a la escena. */
   #hudLeft { display: none; }
 }
 
