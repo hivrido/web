@@ -630,15 +630,14 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
   }
 
   /* ────────── Cometa del contorno ──────────
-     La luz que recorre el borde de la tarjeta enfocada, hecha de la misma
-     materia que el ADN del fondo: círculos aditivos, no una banda pintada en
-     el shader de la tarjeta. Una bola de energía en la punta y una cola de
-     puntos que se afinan y se apagan hacia atrás. Las posiciones se calculan
-     en JS sobre el contorno redondeado —72 puntos por frame no es nada— y el
-     objeto se cuelga de la tarjeta con más foco, así hereda giro y escala. */
-  // Más puntos y más chicos que antes: con partículas finas, la continuidad
-  // la da la densidad — menos de ~90 y la línea se ve punteada.
-  const COMET_N = 96;
+     La luz que recorre el borde de la tarjeta enfocada: una bola de energía
+     en la punta y una cola fina que se apaga hacia atrás. Son sprites
+     aditivos sobre el contorno, pero tan solapados —el espaciado es una
+     fracción del diámetro— y de caída tan blanda que se funden en un haz
+     continuo: no se lee ningún punto suelto. Las posiciones se calculan en
+     JS sobre el contorno redondeado y el objeto se cuelga de la tarjeta con
+     más foco, así hereda giro y escala. */
+  const COMET_N = 260;
   const COMET_TAIL = 0.38;   // fracción del contorno que ocupa la cola
   const COMET_SPEED = 0.22;  // vueltas por segundo
 
@@ -666,26 +665,15 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const pos = new Float32Array(COMET_N * 3);
     const fr = new Float32Array(COMET_N);   // 0 = punta, 1 = final de la cola
     const siz = new Float32Array(COMET_N);
-    const pha = new Float32Array(COMET_N);
-    // Jitter fijo por partícula, perpendicular “a ojo”: casi nulo en la punta
-    // y apenas disperso al final, como chispas que se sueltan.
-    const jit = new Float32Array(COMET_N * 2);
-    const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
 
     for (let i = 0; i < COMET_N; i++) {
       const f = i / (COMET_N - 1);
       fr[i] = f;
-      /* Fino de punta a cola: la cabeza apenas por encima del cuerpo y un
-         taper suave —exponente bajo—, que es lo que hace la línea elegante:
-         un trazo de caligrafía y no una gota. La varianza por partícula
-         también baja: los puntos parejos leen como línea, los dispares como
-         chispas sueltas. */
-      siz[i] = (0.22 + 1.15 * Math.pow(1 - f, 1.4)) * (0.92 + Math.random() * 0.16);
-      pha[i] = Math.random() * TAU;
-      // El jitter casi desaparece: la estela prolija sigue el borde, no lo ensucia
-      const amp = 0.0015 + 0.011 * f;
-      jit[i * 2] = gauss() * amp;
-      jit[i * 2 + 1] = gauss() * amp;
+      /* Taper parejo y sin azar: para que los sprites se fundan en un haz,
+         los vecinos tienen que medir casi lo mismo — cualquier varianza se
+         lee como grumos en la línea. Fino de punta a cola, con la cabeza
+         apenas por encima del cuerpo. */
+      siz[i] = 0.34 + 1.55 * Math.pow(1 - f, 1.5);
       pos[i * 3 + 2] = 0.02;               // apenas delante de la tarjeta
     }
 
@@ -693,7 +681,6 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     g.setAttribute('aF', new THREE.BufferAttribute(fr, 1));
     g.setAttribute('aSize', new THREE.BufferAttribute(siz, 1));
-    g.setAttribute('aPhase', new THREE.BufferAttribute(pha, 1));
 
     const pts = new THREE.Points(g, new THREE.ShaderMaterial({
       uniforms: {
@@ -705,16 +692,16 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       vertexShader: `
         attribute float aF;
         attribute float aSize;
-        attribute float aPhase;
         uniform float uPixel;
         uniform float uTime;
         varying float vF;
         varying float vTw;
         void main() {
           vF = aF;
-          // Titileo apenas perceptible: shimmer, no parpadeo — la línea fina
-          // se rompe visualmente si sus puntos suben y bajan demasiado
-          vTw = 0.86 + 0.14 * sin(uTime * 3.4 + aPhase);
+          // Onda suave que viaja por el haz, no titileo por punto: los
+          // sprites están fundidos y cualquier azar por partícula se vería
+          // como ruido dentro de la línea.
+          vTw = 0.92 + 0.08 * sin(uTime * 2.6 - aF * 16.0);
           vec4 mv = modelViewMatrix * vec4(position, 1.0);
           gl_PointSize = aSize * uPixel * (30.0 / -mv.z);
           gl_Position = projectionMatrix * mv;
@@ -729,13 +716,16 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
           vec2 c = gl_PointCoord - 0.5;
           float d = dot(c, c);
           if (d > 0.25) discard;
-          float a = smoothstep(0.25, 0.0, d);
+          // Caída blanda hasta cero en el borde del sprite: sin disco duro,
+          // los solapados se suman en un tubo de luz y no en una ristra de
+          // pelotitas. La alpha por sprite baja a compensar la suma.
+          float a = pow(max(0.0, 1.0 - d * 4.0), 2.0);
           // Solo la punta vira a blanco y sobreexpone: la bola de energía.
           // La cola queda en el acento puro y se apaga hacia atrás.
           float head = pow(1.0 - vF, 6.0);
           vec3 col = mix(uAccent, vec3(1.0), 0.15 + 0.85 * head);
           float fade = pow(1.0 - vF, 1.5);
-          gl_FragColor = vec4(col * (1.0 + 1.8 * head), a * fade * vTw * uOp);
+          gl_FragColor = vec4(col * (1.0 + 1.8 * head), a * fade * vTw * uOp * 0.42);
         }`,
       transparent: true,
       depthWrite: false,
@@ -744,7 +734,6 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     pts.raycast = () => {};
     pts.frustumCulled = false;
     pts.visible = false;
-    pts.userData.jit = jit;
     return pts;
   })();
   const v2 = new THREE.Vector2();   // scratch del cometa: cero basura por frame
@@ -1037,12 +1026,11 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
 
       const head = (time * COMET_SPEED) % 1;
       const arr = comet.geometry.attributes.position.array;
-      const jit = comet.userData.jit;
       for (let i = 0; i < COMET_N; i++) {
         const f = i / (COMET_N - 1);
         cometPath(head - f * COMET_TAIL, v2);
-        arr[i * 3] = v2.x + jit[i * 2];
-        arr[i * 3 + 1] = v2.y + jit[i * 2 + 1];
+        arr[i * 3] = v2.x;
+        arr[i * 3 + 1] = v2.y;
       }
       comet.geometry.attributes.position.needsUpdate = true;
     }
