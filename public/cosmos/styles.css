@@ -189,6 +189,24 @@ body.live .main-header { opacity: 1; }
 }
 @media (max-width: 400px) { .nav-btn-text { display: none; } }
 
+/* ── Teléfono apaisado / ventanas bajas ──
+   Con 393px de alto, un header de 90px es un cuarto de la pantalla. La barra
+   se achica, el título del proyecto baja un escalón y el menú compacta sus
+   filas: siete links de 52px más el CTA no entran, y el drawer tiene que
+   poder scrollear lo que quede afuera. */
+@media (max-height: 560px) {
+  :root { --header-h: 60px; }
+  .logo-holder svg { height: 28px; width: auto; }
+
+  #title { font-size: 1.3rem; }
+
+  .nav-drawer { padding: 72px 40px 28px; }
+  .nav-title-dec { margin-bottom: 14px; }
+  .nav-menu a { font-size: 1.05rem; padding: 6px 0; }
+  .nav-cta { margin-top: 18px; padding-top: 16px; }
+  .nav-cta a { margin-bottom: 8px; }
+}
+
 /* ── Lista terminal "¿Qué estás buscando?" ── */
 .qlist { gap: 9px; }
 /* Alturas cortas con ancho de desktop: la lista pasa a dos columnas
@@ -467,11 +485,18 @@ body.live .main-header { opacity: 1; }
   transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), visibility 0.5s;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Centrado seguro: los margin auto del primer y último hijo centran el
+     grupo cuando sobra alto y colapsan a cero cuando falta. Con
+     justify-content: center + overflow, el tope del contenido desbordado
+     queda recortado e inalcanzable — el menú "deforme" de los teléfonos
+     apaisados. */
+  justify-content: flex-start;
   padding: 80px 48px 48px;
   overflow-y: auto;
   box-sizing: border-box;
 }
+.nav-drawer .nav-title-dec { margin-top: auto; }
+.nav-drawer .nav-cta { margin-bottom: auto; }
 .nav-drawer.open { transform: translateX(0); visibility: visible; }
 @media (max-width: 480px) {
   .nav-drawer { padding: 80px 32px 40px; }
@@ -643,6 +668,14 @@ body.live #hud { opacity: 1; }
    izquierdo sigue en pie porque ahí vive la lista de disciplinas. */
 #hudLeft .btn-glow { display: none; }
 
+/* En el teléfono cede unos píxeles: comparte pie con el bloque de proyecto.
+   También en apaisado, que pasa el filtro de ancho pero no tiene alto. */
+@media (max-width: 640px), (max-height: 560px) {
+  .wa-btn, .wa-icon { width: 56px; height: 56px; }
+  .wa-ring-1 { width: 76px; height: 76px; }
+  .wa-ring-2 { width: 94px; height: 94px; }
+}
+
 .wa-icon {
   position: relative;
   z-index: 2;
@@ -672,12 +705,6 @@ body.live #hud { opacity: 1; }
 .wa-ring-1 { width: 80px; height: 80px; animation-delay: 0s; }
 .wa-ring-2 { width: 100px; height: 100px; animation-delay: .6s; }
 
-/* En el teléfono cede unos píxeles: comparte pie con el bloque de proyecto. */
-@media (max-width: 640px) {
-  .wa-btn, .wa-icon { width: 56px; height: 56px; }
-  .wa-ring-1 { width: 76px; height: 76px; }
-  .wa-ring-2 { width: 94px; height: 94px; }
-}
 
 @keyframes wa-pulse {
   0%   { transform: scale(.8); opacity: .7; }
@@ -693,8 +720,9 @@ body.live #hud { opacity: 1; }
 }
 
 /* Tablet: la lista de disciplinas ocupa la izquierda, así que el bloque de
-   proyecto sigue a la derecha y tiene que abrirle paso al flotante. */
-@media (min-width: 641px) and (max-width: 1023px) {
+   proyecto sigue a la derecha y tiene que abrirle paso al flotante. El piso
+   de alto lo saca de los teléfonos apaisados, que ya usan el layout apilado. */
+@media (min-width: 641px) and (max-width: 1023px) and (min-height: 561px) {
   #hudRight { padding-right: 84px; }
 }
 
@@ -704,8 +732,11 @@ body.live #hud { opacity: 1; }
   #hint { display: none; }
 }
 
-/* En pantallas angostas la pista choca con las marcas de posición */
-@media (max-width: 640px) {
+/* En pantallas angostas la pista choca con las marcas de posición.
+   El alto entra en la condición además del ancho: un teléfono apaisado mide
+   852×393 y pasa el filtro de ancho como si fuera tablet, pero en 393px de
+   alto la lista en columnas y el layout de dos bloques no entran. */
+@media (max-width: 640px), (max-height: 560px) {
   #hint { display: none; }
   .arrow { width: 44px; height: 44px; }
 
