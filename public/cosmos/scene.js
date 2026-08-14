@@ -58,15 +58,21 @@ const PERIMETER = /* glsl */ `
     vec2 n = p / (size * 0.5);
     return atan(n.y, n.x) * 0.15915494 + 0.5;
   }
-  /* Cabeza brillante con cola corta detrás. La cabeza llega ya normalizada a
+  /* Estela larga con la cabeza caliente adelante. La cabeza llega normalizada a
      0..1 desde JS y no como un tiempo que crece: en mediump, fract() de un
      número grande se cuantiza y a los pocos minutos la luz avanzaría a los
      saltos. El orden de la resta importa —(cabeza - punto), no al revés— o el
      degradé queda por delante y la luz parece viajar de culata. */
   float cometAt(float t, float head) {
     float u = fract(head - t);      // 0 en la cabeza, crece hacia la cola
-    float c = smoothstep(0.10, 0.0, u);
-    return c * c * c;
+    // TAIL es el largo del trazo como fracción del contorno; el cuadrado
+    // —y no el cubo— deja que la cola llegue lejos en vez de morir al toque.
+    const float TAIL = 0.45;
+    float c = smoothstep(TAIL, 0.0, u);
+    // Un núcleo corto y más caliente sobre el trazo largo: sin él la estela
+    // se lee como un borde encendido y se pierde hacia dónde viaja.
+    float core = smoothstep(0.06, 0.0, u);
+    return c * c + core * core * 0.7;
   }
 `;
 
