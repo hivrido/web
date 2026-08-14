@@ -674,7 +674,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       const f = i / (COMET_N - 1);
       fr[i] = f;
       // La punta domina y la cola se afina rápido: eso es lo que la hace fina
-      siz[i] = (0.3 + 2.9 * Math.pow(1 - f, 1.7)) * (0.85 + Math.random() * 0.3);
+      siz[i] = (0.3 + 2.0 * Math.pow(1 - f, 1.7)) * (0.85 + Math.random() * 0.3);
       pha[i] = Math.random() * TAU;
       const amp = 0.004 + 0.03 * f;
       jit[i * 2] = gauss() * amp;
