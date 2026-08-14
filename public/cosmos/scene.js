@@ -636,7 +636,9 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
      puntos que se afinan y se apagan hacia atrás. Las posiciones se calculan
      en JS sobre el contorno redondeado —72 puntos por frame no es nada— y el
      objeto se cuelga de la tarjeta con más foco, así hereda giro y escala. */
-  const COMET_N = 72;
+  // Más puntos y más chicos que antes: con partículas finas, la continuidad
+  // la da la densidad — menos de ~90 y la línea se ve punteada.
+  const COMET_N = 96;
   const COMET_TAIL = 0.38;   // fracción del contorno que ocupa la cola
   const COMET_SPEED = 0.22;  // vueltas por segundo
 
@@ -673,10 +675,15 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     for (let i = 0; i < COMET_N; i++) {
       const f = i / (COMET_N - 1);
       fr[i] = f;
-      // La punta domina y la cola se afina rápido: eso es lo que la hace fina
-      siz[i] = (0.3 + 2.0 * Math.pow(1 - f, 1.7)) * (0.85 + Math.random() * 0.3);
+      /* Fino de punta a cola: la cabeza apenas por encima del cuerpo y un
+         taper suave —exponente bajo—, que es lo que hace la línea elegante:
+         un trazo de caligrafía y no una gota. La varianza por partícula
+         también baja: los puntos parejos leen como línea, los dispares como
+         chispas sueltas. */
+      siz[i] = (0.22 + 1.15 * Math.pow(1 - f, 1.4)) * (0.92 + Math.random() * 0.16);
       pha[i] = Math.random() * TAU;
-      const amp = 0.004 + 0.03 * f;
+      // El jitter casi desaparece: la estela prolija sigue el borde, no lo ensucia
+      const amp = 0.0015 + 0.011 * f;
       jit[i * 2] = gauss() * amp;
       jit[i * 2 + 1] = gauss() * amp;
       pos[i * 3 + 2] = 0.02;               // apenas delante de la tarjeta
@@ -705,8 +712,9 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         varying float vTw;
         void main() {
           vF = aF;
-          // Titileo por partícula, como el ADN: viva, no estampada
-          vTw = 0.75 + 0.25 * sin(uTime * 3.4 + aPhase);
+          // Titileo apenas perceptible: shimmer, no parpadeo — la línea fina
+          // se rompe visualmente si sus puntos suben y bajan demasiado
+          vTw = 0.86 + 0.14 * sin(uTime * 3.4 + aPhase);
           vec4 mv = modelViewMatrix * vec4(position, 1.0);
           gl_PointSize = aSize * uPixel * (30.0 / -mv.z);
           gl_Position = projectionMatrix * mv;
