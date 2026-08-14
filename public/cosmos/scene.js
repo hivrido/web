@@ -353,11 +353,18 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const TURNS = 2.8;
     const HEIGHT = 11;
     const R_HELIX = 1.15;
-    const STEPS = COARSE ? 170 : 330;     // muestras por hebra
-    const CLOUD = COARSE ? 4 : 6;         // partículas por muestra: el grosor
-    const RUNGS = COARSE ? 18 : 30;       // estructura, no densidad: no se toca
+    /* El teléfono va más denso y más grueso que el escritorio, no menos: sin
+       bloom —solo corre en ≥900 y puntero fino— la columna se leía rala y
+       plana, y es lo único que ocupa el centro de una pantalla vertical. El
+       costo es relleno, no geometría: son puntos con un shader de doce
+       líneas, y el DPR está capado a 1.5. */
+    const STEPS = COARSE ? 290 : 330;     // muestras por hebra
+    const CLOUD = COARSE ? 8 : 6;         // partículas por muestra: la densidad
+    const SPREAD = COARSE ? 0.17 : 0.13;  // radio de la nube: el grosor del tubo
+    const PT = COARSE ? 1.25 : 1;         // escala de partícula
+    const RUNGS = COARSE ? 26 : 30;       // estructura: marca el paso de la hélice
     const RUNG_PTS = 18;
-    const AURA = COARSE ? 320 : 840;
+    const AURA = COARSE ? 760 : 840;
     const COUNT = STEPS * CLOUD * 2 + RUNGS * (RUNG_PTS + 2) + AURA;
 
     const pos = new Float32Array(COUNT * 3);
@@ -398,10 +405,10 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         for (let j = 0; j < CLOUD; j++, k++) {
           tmp.copy(base).lerp(deep, Math.random() * 0.6);
           setPt(k,
-            cx + gauss() * 0.13,
-            cy + gauss() * 0.10,
-            cz + gauss() * 0.13,
-            tmp, 0.6 + Math.random() * 1.2);
+            cx + gauss() * SPREAD,
+            cy + gauss() * SPREAD * 0.77,
+            cz + gauss() * SPREAD,
+            tmp, (0.6 + Math.random() * 1.2) * PT);
         }
       }
     }
@@ -415,13 +422,13 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       for (let j = 0; j < RUNG_PTS; j++, k++) {
         const f = (j + 0.5) / RUNG_PTS;         // interpola entre hebras opuestas
         tmp.copy(violet).lerp(cyan, f).multiplyScalar(0.55);
-        setPt(k, lerp(x1, -x1, f), y, lerp(z1, -z1, f), tmp, 0.45 + Math.random() * 0.4);
+        setPt(k, lerp(x1, -x1, f), y, lerp(z1, -z1, f), tmp, (0.45 + Math.random() * 0.4) * PT);
       }
       // Los dos extremos del peldaño son nodos casi blancos y grandes
       tmp.copy(white).lerp(violet, 0.25);
-      setPt(k++, x1, y, z1, tmp, 2.3);
+      setPt(k++, x1, y, z1, tmp, 2.3 * PT);
       tmp.copy(white).lerp(cyan, 0.25);
-      setPt(k++, -x1, y, -z1, tmp, 2.3);
+      setPt(k++, -x1, y, -z1, tmp, 2.3 * PT);
     }
 
     // Aura: polvo orbitando la columna en un cilindro más ancho
@@ -433,7 +440,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         Math.cos(a) * r,
         (Math.random() - 0.5) * HEIGHT * 1.05,
         Math.sin(a) * r,
-        tmp, 0.35 + Math.random() * 0.6);
+        tmp, (0.35 + Math.random() * 0.6) * PT);
     }
 
     const g = new THREE.BufferGeometry();
@@ -446,6 +453,9 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       uniforms: {
         uTime:  { value: 0 },
         uPixel: { value: renderer.getPixelRatio() },
+        // El teléfono no tiene bloom: el destello se compensa acá
+        uPulse: { value: COARSE ? 2.6 : 1.6 },
+        uGain:  { value: COARSE ? 1.32 : 1 },
       },
       vertexShader: `
         attribute vec3 aColor;
@@ -471,6 +481,8 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         }`,
       fragmentShader: `
         precision mediump float;
+        uniform float uPulse;
+        uniform float uGain;
         varying vec3 vC;
         varying float vA;
         varying float vW;
@@ -479,10 +491,13 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
           float d = dot(c, c);
           if (d > 0.25) discard;
           float a = smoothstep(0.25, 0.0, d);
-          // En el pico del pulso la partícula vira a blanco y sobreexpone:
-          // el bloom convierte eso en el destello que sube por la hélice.
+          // En el pico del pulso la partícula vira a blanco y sobreexpone: con
+          // bloom eso se convierte en el destello que sube por la hélice. Sin
+          // bloom lo compensan uPulse —quema más el pico— y uGain, que sube la
+          // intensidad de todos: al ser aditivo, los puntos superpuestos se
+          // suman y el halo aparece solo, sin un pase de post extra.
           vec3 col = mix(vC, vec3(0.98, 0.96, 1.0), vW * 0.6);
-          gl_FragColor = vec4(col * (1.0 + 1.6 * vW), a * (0.5 + 0.5 * vA));
+          gl_FragColor = vec4(col * (1.0 + uPulse * vW), a * (0.5 + 0.5 * vA) * uGain);
         }`,
       transparent: true,
       depthWrite: false,
