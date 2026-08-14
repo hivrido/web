@@ -49,9 +49,31 @@ const SDF = /* glsl */ `
   }
 `;
 
+/* Parámetro de recorrido del contorno, 0..1.
+   El punto se normaliza contra el tamaño de la tarjeta antes del atan: sobre
+   un cuadrado el barrido angular reparte parejo entre los cuatro lados, que
+   en el rectángulo crudo se aceleraría en los cortos. */
+const PERIMETER = /* glsl */ `
+  float perimeterT(vec2 p, vec2 size) {
+    vec2 n = p / (size * 0.5);
+    return atan(n.y, n.x) * 0.15915494 + 0.5;
+  }
+  /* Cabeza brillante con cola corta detrás. La cabeza llega ya normalizada a
+     0..1 desde JS y no como un tiempo que crece: en mediump, fract() de un
+     número grande se cuantiza y a los pocos minutos la luz avanzaría a los
+     saltos. El orden de la resta importa —(cabeza - punto), no al revés— o el
+     degradé queda por delante y la luz parece viajar de culata. */
+  float cometAt(float t, float head) {
+    float u = fract(head - t);      // 0 en la cabeza, crece hacia la cola
+    float c = smoothstep(0.10, 0.0, u);
+    return c * c * c;
+  }
+`;
+
 const CARD_FRAG = /* glsl */ `
   precision highp float;
   ${SDF}
+  ${PERIMETER}
 
   uniform sampler2D uMap;
   uniform vec3  uAccent;
@@ -60,6 +82,8 @@ const CARD_FRAG = /* glsl */ `
   uniform float uFocus;     // 0 = al fondo, 1 = al frente
   uniform float uOpacity;
   uniform float uHover;
+  uniform float uHead;      // posición de la luz sobre el contorno, 0..1
+  uniform float uSweep;     // 1 solo en la del centro: la luz que recorre el borde
   varying vec2  vUv;
 
   void main() {
@@ -84,6 +108,17 @@ const CARD_FRAG = /* glsl */ `
     float inner = smoothstep(-0.22, 0.0, d) * 0.08;
     col += uAccent * inner * uFocus;
 
+    /* Luz recorriendo el contorno. Solo la tarjeta del centro la tiene: es la
+       señal de "esta es la activa", no un adorno de todas. La cabeza casi
+       blanca corre sobre el borde neón, y una banda más ancha por dentro le
+       da el resplandor que en móvil no puede poner el bloom. */
+    if (uSweep > 0.001) {
+      float comet = cometAt(perimeterT(p, uSize), uHead);
+      vec3 spark = mix(uAccent, vec3(1.0), 0.62);
+      float halo = smoothstep(0.0, -0.02, d) * smoothstep(-0.075, -0.02, d);
+      col += spark * comet * uSweep * (edge * 6.0 + halo * 1.8);
+    }
+
     gl_FragColor = vec4(col, shape * uOpacity);
   }
 `;
@@ -91,12 +126,15 @@ const CARD_FRAG = /* glsl */ `
 const GLOW_FRAG = /* glsl */ `
   precision mediump float;
   ${SDF}
+  ${PERIMETER}
 
   uniform vec3  uAccent;
   uniform vec2  uPlane;    // tamaño del plano del halo
   uniform vec2  uSize;     // tamaño de la tarjeta que lo proyecta
   uniform float uRadius;
   uniform float uIntensity;
+  uniform float uHead;
+  uniform float uSweep;
   varying vec2  vUv;
 
   void main() {
@@ -107,7 +145,14 @@ const GLOW_FRAG = /* glsl */ `
     // La compuerta es angosta para que el pico quede pegado al borde, y la
     // caída empinada para que el resplandor no se coma media pantalla.
     float glow = exp(-max(d, 0.0) * 15.0) * smoothstep(-0.004, 0.014, d);
-    gl_FragColor = vec4(uAccent, glow * uIntensity);
+
+    // La luz del contorno también se derrama hacia afuera: sin esto el
+    // recorrido se corta seco en el borde y se nota que es un plano aparte.
+    float comet = uSweep > 0.001
+      ? cometAt(perimeterT(p, uSize), uHead) * uSweep
+      : 0.0;
+    vec3 tint = mix(uAccent, vec3(1.0), 0.45 * comet);
+    gl_FragColor = vec4(tint, glow * (uIntensity + 1.5 * comet));
   }
 `;
 
@@ -573,6 +618,8 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       uFocus:   { value: 0 },
       uOpacity: { value: 1 },
       uHover:   { value: 0 },
+      uHead:    { value: 0 },
+      uSweep:   { value: 0 },
     };
 
     const mat = new THREE.ShaderMaterial({
@@ -595,6 +642,8 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       uSize:      { value: new THREE.Vector2(CARD_W, CARD_H) },
       uRadius:    { value: CORNER },
       uIntensity: { value: 0 },
+      uHead:      { value: 0 },
+      uSweep:     { value: 0 },
     };
     const glow = new THREE.Mesh(glowGeo, new THREE.ShaderMaterial({
       uniforms: glowUniforms,
@@ -858,6 +907,9 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const idx = indexFromAngle(angle);
     if (idx !== active) { active = idx; onActive?.(active); }
 
+    // Una vuelta al contorno cada cuatro segundos, ya envuelta a 0..1
+    const head = (time * 0.25) % 1;
+
     /* — Profundidad de cada tarjeta — */
     for (let i = 0; i < N; i++) {
       const c = cards[i];
@@ -878,6 +930,16 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       );
 
       c.glowUniforms.uIntensity.value = 0.5 * Math.pow(depth, 3.2) * (1 - openMix * 0.5);
+
+      /* La luz que recorre el borde vive solo en la del centro: el exponente
+         alto la apaga apenas la tarjeta empieza a irse, así que en pleno
+         arrastre no quedan tres encendidas a la vez. Con reduced-motion no
+         corre nada. */
+      const sweep = REDUCED ? 0 : Math.pow(focus, 7) * (1 - openMix * 0.65);
+      c.uniforms.uHead.value = head;
+      c.uniforms.uSweep.value = sweep;
+      c.glowUniforms.uHead.value = head;
+      c.glowUniforms.uSweep.value = sweep;
 
       // La tarjeta enfocada flota apenas por encima del resto
       c.holder.position.y = Math.sin(c.theta * 2) * WAVE + focus * FLOAT_LIFT;
