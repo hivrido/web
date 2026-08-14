@@ -157,6 +157,9 @@ document.addEventListener('keydown', (e) => {
 /* ═══════════ Menú drawer (el de la home) ═══════════ */
 
 function setMenu(open) {
+  // El panel se apila por encima del header, así que un drawer abierto detrás
+  // de él quedaría medio tapado: se cierra antes de abrir el menú.
+  if (open && panelOpen) setPanel(false);
   el.menuBtn.classList.toggle('open', open);
   el.menuBtn.setAttribute('aria-expanded', String(open));
   el.menu.classList.toggle('open', open);

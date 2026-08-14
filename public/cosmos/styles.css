@@ -356,10 +356,14 @@ body.live .main-header { opacity: 1; }
 #hint.gone { opacity: 0; }
 
 /* ── Panel de detalle ── */
+/* Por encima del header (50) a propósito, al revés que el drawer (45): el
+   drawer se cierra con la X del header y por eso lo deja ver, mientras que el
+   panel trae su propia X arriba a la derecha, justo donde cae la barra. Si
+   quedara por debajo, el header le taparía el único modo de cerrarlo. */
 .panel {
   position: fixed;
   top: 0; right: 0;
-  z-index: 30;
+  z-index: 55;
   width: min(480px, 100vw);
   height: 100%;
   height: 100dvh;
