@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 
 interface Props {
   /** Etiqueta corta sobre el título (ej: "Servicios") */
@@ -79,16 +79,23 @@ export default function SectionTitle({ eyebrow, lines, id }: Props) {
       </div>
 
       <h2 className="epic-heading">
-        {lines.map((text, li) => (
-          <span className="epic-line" key={li}>
-            {text.split(" ").map((word, wi) => (
-              <span className="epic-word" key={wi}>
-                <span className="epic-word-inner">{word}</span>
-                {wi < text.split(" ").length - 1 ? " " : null}
-              </span>
-            ))}
-          </span>
-        ))}
+        {lines.map((text, li) => {
+          const words = text.split(" ");
+          return (
+            <span className="epic-line" key={li}>
+              {words.map((word, wi) => (
+                // El espacio va FUERA de .epic-word: ese span tiene overflow
+                // hidden e inline-block, y ahí el navegador lo colapsaría.
+                <Fragment key={wi}>
+                  <span className="epic-word">
+                    <span className="epic-word-inner">{word}</span>
+                  </span>
+                  {wi < words.length - 1 ? " " : null}
+                </Fragment>
+              ))}
+            </span>
+          );
+        })}
       </h2>
 
       <span className="epic-rule" aria-hidden="true" />
