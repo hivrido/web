@@ -13,8 +13,12 @@
   /* Acento: lo reescribe JS en cada proyecto activo */
   --ac: #b026ff;
 
-  --f-disp: 'Space Grotesk', system-ui, sans-serif;
-  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Tipografía de la home: Rubik para el texto corrido y Orbitron para las
+     etiquetas técnicas —la home no usa monoespaciada; su estilo "terminal"
+     es Orbitron chica con tracking, como .section-label—. El nombre --f-mono
+     se conserva para no tocar cada uso. */
+  --f-disp: 'Rubik', system-ui, sans-serif;
+  --f-mono: 'Orbitron', sans-serif;
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Tokens de la home, para el header/menú/preloader portados */
@@ -72,13 +76,18 @@ body { font-family: var(--f-disp); -webkit-font-smoothing: antialiased; }
   66%      { transform: translate(2%, -2%); }
 }
 
-/* ── Título con máscara de deslizamiento + eco cromático ── */
+/* ── Título con máscara de deslizamiento + eco cromático ──
+   Orbitron, como todos los títulos de la home. El tracking abre un poco en
+   lugar del apretado de la sans: Orbitron condensada y apretada se empasta. */
 .title {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
   transition: transform 0.6s var(--ease), opacity 0.45s var(--ease);
   text-shadow:
     2px 0 0 color-mix(in srgb, var(--ac) 65%, transparent),
     -2px 0 0 rgba(0, 229, 255, 0.3);
 }
+#pTitle { font-family: var(--font-display); letter-spacing: 0.02em; }
 #cat { transition: transform 0.6s var(--ease) 0.04s, opacity 0.45s var(--ease) 0.04s, color 0.5s var(--ease); }
 body.swapping .title,
 body.swapping #cat { transform: translateY(115%); opacity: 0; }

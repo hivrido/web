@@ -96,7 +96,7 @@ export function makePlayTexture() {
   const ctx = canvas.getContext('2d');
 
   const label = 'PLAY';
-  ctx.font = '700 34px "JetBrains Mono", monospace';
+  ctx.font = '700 34px "Orbitron", sans-serif';
   // El tracking se dibuja a mano: ctx.letterSpacing no está en todos lados.
   const track = 7;
   const chars = [...label];
@@ -232,7 +232,7 @@ export async function makeCardTexture(project) {
   // Ornamento de índice sobre el título. Sube cuando hay logo: los logos son
   // más altos que una línea de texto y le comían el aire.
   ctx.fillStyle = project.accent;
-  ctx.font = '500 28px "JetBrains Mono", monospace';
+  ctx.font = '500 28px "Orbitron", sans-serif';
   ctx.fillText(`[= ${project.index} =]`, CX, H * (logo ? 0.21 : 0.30));
 
   /* ── Marca propia del proyecto ──
@@ -267,10 +267,10 @@ export async function makeCardTexture(project) {
     tc.textBaseline = 'middle';
 
     let size = 88;
-    tc.font = `700 ${size}px "JetBrains Mono", monospace`;
+    tc.font = `700 ${size}px "Orbitron", sans-serif`;
     while (tc.measureText(label).width > W - 180 && size > 34) {
       size -= 3;
-      tc.font = `700 ${size}px "JetBrains Mono", monospace`;
+      tc.font = `700 ${size}px "Orbitron", sans-serif`;
     }
 
     // Eco cromático detrás: el "doble fantasma" de la referencia
@@ -305,7 +305,7 @@ export async function makeCardTexture(project) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = 'rgba(255,255,255,0.52)';
-  ctx.font = '500 21px "JetBrains Mono", monospace';
+  ctx.font = '500 21px "Orbitron", sans-serif';
   ctx.fillText(`${project.category.toUpperCase()} · ${project.year}`, CX, H - 52);
 
   /* ── Scanlines: traman todo, tipografía incluida, como pantalla ── */
@@ -327,9 +327,9 @@ export async function waitForFonts() {
   if (!document.fonts) return;
   try {
     await Promise.all([
-      document.fonts.load('700 96px "JetBrains Mono"'),
-      document.fonts.load('700 78px "Space Grotesk"'),
-      document.fonts.load('500 21px "JetBrains Mono"'),
+      document.fonts.load('700 96px "Orbitron"'),
+      document.fonts.load('500 21px "Orbitron"'),
+      document.fonts.load('400 16px "Rubik"'),
     ]);
     await document.fonts.ready;
   } catch {
