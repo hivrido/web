@@ -21,7 +21,7 @@ export default function FixedColumn() {
       <div className="col-accent-bar" />
       <div className="col-footer">
         <div className="col-footer-title">Nuestra Inspiración</div>
-        <div className="col-footer-sub">Arte · Cultura · Tecnología</div>
+        <div className="col-footer-sub">Is the Future</div>
       </div>
     </div>
   );

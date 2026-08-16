@@ -77,7 +77,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
           <LogoAnimated delay={200} height={70} />
         </div>
         <div className={`loader-tagline${count >= 40 ? " visible" : ""}`}>
-          Arte · Cultura · Tecnología
+          Is the Future
         </div>
       </div>
       <div className="loader-count">{count}%</div>
