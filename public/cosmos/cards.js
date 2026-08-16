@@ -264,58 +264,47 @@ export async function makeCardTexture(project) {
     // otra raya horizontal ensucia la marca. El PLAY tampoco se hornea:
     // lo monta scene.js como plano aparte para poder animarlo.
   } else {
-    /* El título se compone en un canvas aparte para poder glitchearlo por
-       franjas. `cardTitle` manda sobre `title` cuando la ficha quiere decir
-       otra cosa que el HUD, y si es un array cada entrada es una línea. */
+    /* Título con la tipografía de la home: Orbitron 900, tracking apretado
+       y líneas juntas, en blanco con el acento puesto en el resplandor.
+
+       Sin glitch por franjas ni eco cromático: a este cuerpo partían los
+       glifos —una línea desplazada corta la letra al medio— y el fantasma
+       en acento ensuciaba los bordes. La textura ya trae scanlines, que es
+       de donde sale el aire de pantalla sin romper la tipografía.
+
+       `cardTitle` manda sobre `title` cuando la ficha quiere decir otra cosa
+       que el HUD, y si es un array cada entrada es una línea. */
     const source = project.cardTitle ?? project.title;
     const lines = (Array.isArray(source) ? source : [source]).map((s) => s.toUpperCase());
 
-    const tCan = document.createElement('canvas');
-    tCan.width = W;
-    const tc = tCan.getContext('2d');
-
-    // El cuerpo lo fija la línea más ancha; medir no depende del alto todavía
     let size = 88;
+
+    // El tracking se declara junto con la fuente: entra en la medición, y sin
+    // resetearlo después se contagiaría al pie de la ficha.
+    const setFont = () => {
+      ctx.font = `900 ${size}px "Orbitron", sans-serif`;
+      ctx.letterSpacing = `${(-0.01 * size).toFixed(2)}px`;   // el -0.01em de la home
+    };
+
     const widest = () => {
-      tc.font = `700 ${size}px "Orbitron", sans-serif`;
-      return Math.max(...lines.map((l) => tc.measureText(l).width));
+      setFont();
+      return Math.max(...lines.map((l) => ctx.measureText(l).width));
     };
     while (widest() > W - 180 && size > 34) size -= 3;
+    setFont();
 
-    /* Recién ahora se fija el alto —cambiarlo resetea el contexto, así que
-       fuente y alineación se vuelven a declarar después. */
-    const lineH = size * 1.06;
+    const lineH = size * 0.98;          // el line-height de la home
     const textH = lineH * lines.length;
-    tCan.height = Math.ceil(textH) + 60;
-
-    tc.font = `700 ${size}px "Orbitron", sans-serif`;
-    tc.textAlign = 'center';
-    tc.textBaseline = 'middle';
-
-    const lineY = (i) => tCan.height / 2 - textH / 2 + lineH * (i + 0.5);
-
-    // Eco cromático detrás: el "doble fantasma" de la referencia
-    tc.globalAlpha = 0.55;
-    tc.fillStyle = project.accent;
-    lines.forEach((l, i) => tc.fillText(l, tCan.width / 2 + 8, lineY(i) + 6));
-    tc.globalAlpha = 1;
-
-    tc.shadowColor = project.accent;
-    tc.shadowBlur = 26;
-    tc.fillStyle = '#ffffff';
-    lines.forEach((l, i) => tc.fillText(l, tCan.width / 2, lineY(i)));
-    tc.shadowBlur = 0;
-
-    // Glitch estático: franjas horizontales desplazadas
-    for (let i = 0; i < 6; i++) {
-      const sy = Math.floor(Math.random() * tCan.height);
-      const sh = 5 + Math.floor(Math.random() * 16);
-      const dx = Math.round((Math.random() - 0.5) * 34);
-      tc.putImageData(tc.getImageData(0, sy, tCan.width, sh), dx, sy);
-    }
-
     const titleY = H * 0.48;
-    ctx.drawImage(tCan, 0, titleY - tCan.height / 2);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = project.accent;
+    ctx.shadowBlur = 26;
+    ctx.fillStyle = '#ffffff';
+    lines.forEach((l, i) => ctx.fillText(l, CX, titleY - textH / 2 + lineH * (i + 0.5)));
+    ctx.shadowBlur = 0;
+    ctx.letterSpacing = '0px';
 
     // Filete de acento bajo el bloque, no bajo una altura fija de una línea
     ctx.fillStyle = project.accent;
