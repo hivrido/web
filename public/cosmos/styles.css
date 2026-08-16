@@ -209,7 +209,7 @@ body.live .main-header { opacity: 1; }
 
   #title { font-size: 1.3rem; }
 
-  .nav-drawer { padding: 72px 40px 28px; }
+  .nav-drawer { padding: calc(var(--header-h) + 14px) 40px 28px; }
   .nav-title-dec { margin-bottom: 14px; }
   .nav-menu a { font-size: 1.05rem; padding: 6px 0; }
   .nav-cta { margin-top: 18px; padding-top: 16px; }
@@ -500,7 +500,9 @@ body.live .main-header { opacity: 1; }
      queda recortado e inalcanzable — el menú "deforme" de los teléfonos
      apaisados. */
   justify-content: flex-start;
-  padding: 80px 48px 48px;
+  /* El padding superior sale del header: con un valor fijo menor, cuando los
+     margin auto colapsan el título queda debajo de la barra. */
+  padding: calc(var(--header-h) + 26px) 48px 48px;
   overflow-y: auto;
   box-sizing: border-box;
 }
@@ -508,7 +510,7 @@ body.live .main-header { opacity: 1; }
 .nav-drawer .nav-cta { margin-bottom: auto; }
 .nav-drawer.open { transform: translateX(0); visibility: visible; }
 @media (max-width: 480px) {
-  .nav-drawer { padding: 80px 32px 40px; }
+  .nav-drawer { padding: calc(var(--header-h) + 20px) 32px 40px; }
 }
 
 .nav-title-dec {
@@ -555,6 +557,15 @@ body.live .main-header { opacity: 1; }
 }
 .nav-menu a:hover span, .nav-menu a:active span { color: var(--gold); }
 .nav-menu a:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+/* De tablet para arriba el menú afina, igual que en la home: cuerpo chico,
+   peso normal y tracking abierto. El display grande queda para el teléfono;
+   en tablet además desbordaba el alto del drawer. */
+@media (min-width: 768px) {
+  .nav-drawer { width: min(360px, 100vw); }
+  .nav-menu a { font-size: 1.05rem; font-weight: 400; letter-spacing: 0.09em; padding: 7px 0; }
+  .nav-cta { margin-top: 28px; padding-top: 24px; }
+}
 .nav-cta {
   margin-top: 36px;
   padding-top: 32px;

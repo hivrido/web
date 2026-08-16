@@ -362,14 +362,21 @@ body:has(.orbital) { --col-w: 0px; }
   transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), visibility 0.5s;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 80px 48px 48px;
+  /* Centrado seguro: los margin auto del primer y último hijo centran el
+     grupo cuando sobra alto y colapsan a cero cuando falta. Con
+     justify-content: center + overflow, el tope del contenido desbordado
+     queda recortado e inalcanzable. El padding superior sale del header:
+     con un valor fijo menor, el título quedaba debajo de la barra. */
+  justify-content: flex-start;
+  padding: calc(var(--header-h) + 26px) 48px 48px;
   overflow-y: auto;
   box-sizing: border-box;
 }
+.nav-drawer .nav-title-dec { margin-top: auto; }
+.nav-drawer .nav-cta { margin-bottom: auto; }
 .nav-drawer.open { transform: translateX(0); visibility: visible; }
 @media (max-width: 480px) {
-  .nav-drawer { padding: 80px 32px 40px; }
+  .nav-drawer { padding: calc(var(--header-h) + 20px) 32px 40px; }
 }
 
 .nav-title-dec {
@@ -414,6 +421,16 @@ body:has(.orbital) { --col-w: 0px; }
 }
 .nav-menu a:hover span, .nav-menu a:active span { color: var(--gold); }
 .nav-menu a:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+/* De tablet para arriba el menú afina: cuerpo chico, peso normal y tracking
+   abierto. El display grande y pesado queda para el teléfono, donde la
+   distancia de lectura lo pide; en pantallas medianas y grandes se ve
+   gritado, y en tablet además desbordaba el alto del drawer. */
+@media (min-width: 768px) {
+  .nav-drawer { width: min(360px, 100vw); }
+  .nav-menu a { font-size: 1.05rem; font-weight: 400; letter-spacing: 0.09em; padding: 7px 0; }
+  .nav-cta { margin-top: 28px; padding-top: 24px; }
+}
 .nav-cta {
   margin-top: 36px;
   padding-top: 32px;
