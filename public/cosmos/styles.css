@@ -88,6 +88,26 @@ body { font-family: var(--f-disp); -webkit-font-smoothing: antialiased; }
     -2px 0 0 rgba(0, 229, 255, 0.3);
 }
 #pTitle { font-family: var(--font-display); letter-spacing: 0.02em; }
+
+/* ── Título con el gradiente epic de la home ──
+   Lo pide el proyecto por dato (gradientTitle) y paint() lo enciende solo
+   para esa ficha. El eco cromático del .title se apaga acá: text-shadow
+   dibuja la sombra con la forma del glifo aunque el relleno sea
+   transparente, y ensuciaría el degradé. */
+.title.is-epic {
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
+  animation: epic-sheen 7s ease-in-out infinite;
+}
+@keyframes epic-sheen {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
 #cat { transition: transform 0.6s var(--ease) 0.04s, opacity 0.45s var(--ease) 0.04s, color 0.5s var(--ease); }
 body.swapping .title,
 body.swapping #cat { transform: translateY(115%); opacity: 0; }
@@ -662,7 +682,7 @@ body.live #hud { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .veil--grain, .sweep, .wa-ring, .panel.open .panel-close { animation: none !important; }
+  .veil--grain, .sweep, .wa-ring, .panel.open .panel-close, .title.is-epic { animation: none !important; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
 

@@ -27,7 +27,7 @@ export const PROJECTS = [
     id: 'nebula',
     index: '02',
     title: 'GROW DIGITAL',
-    /* El título se hornea con el gradiente epic de la home
+    /* El título del HUD se pinta con el gradiente epic de la home
        (blanco → lavanda → violeta → magenta → blanco) */
     gradientTitle: true,
     category: 'Identidad · Film',

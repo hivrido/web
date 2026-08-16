@@ -79,6 +79,7 @@ function paint(i) {
 
   el.cat.textContent = `${p.index} — ${p.category.toUpperCase()}`;
   el.title.textContent = p.title;
+  el.title.classList.toggle('is-epic', Boolean(p.gradientTitle));
   el.counter.innerHTML = `<b class="text-white">${pad(i + 1)}</b> / ${pad(TOTAL)}`;
   tickEls.forEach((t, j) => t.setAttribute('aria-current', String(j === i)));
   qEls.forEach((q, j) => q.setAttribute('aria-current', String(j === i)));

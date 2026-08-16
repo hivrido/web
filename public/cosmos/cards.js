@@ -281,19 +281,7 @@ export async function makeCardTexture(project) {
 
     tc.shadowColor = project.accent;
     tc.shadowBlur = 26;
-    if (project.gradientTitle) {
-      // El gradiente epic de la home, barrido a lo ancho del texto real
-      const tw = tc.measureText(label).width;
-      const grad = tc.createLinearGradient((tCan.width - tw) / 2, 0, (tCan.width + tw) / 2, 0);
-      grad.addColorStop(0, '#FFFFFF');
-      grad.addColorStop(0.26, '#C4B5FD');
-      grad.addColorStop(0.52, '#7C3AED');
-      grad.addColorStop(0.78, '#FF1B8D');
-      grad.addColorStop(1, '#FFFFFF');
-      tc.fillStyle = grad;
-    } else {
-      tc.fillStyle = '#ffffff';
-    }
+    tc.fillStyle = '#ffffff';
     tc.fillText(label, tCan.width / 2, tCan.height / 2);
     tc.shadowBlur = 0;
 
