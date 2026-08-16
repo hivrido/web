@@ -26,13 +26,16 @@ export const PROJECTS = [
   {
     id: 'nebula',
     index: '02',
-    title: 'GROW DIGITAL',
+    title: 'ECOSISTEMA DIGITAL',
     /* El título del HUD se pinta con el gradiente epic de la home
        (blanco → lavanda → violeta → magenta → blanco) */
     gradientTitle: true,
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Inteligencia Artificial',
-    category: 'Identidad · Film',
+    /* Corta —la usan el HUD, la lista de disciplinas y el panel— */
+    category: 'Diseño App & Web',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Diseño App & Web · Programación a medida',
     year: '2025',
     client: 'Estudio Nebula',
     body: 'Sistema de identidad en movimiento: paleta, tipografía y un lenguaje de transiciones que funciona igual en un reel que en una gráfica fija.',

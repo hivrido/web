@@ -308,12 +308,15 @@ export async function makeCardTexture(project) {
     ctx.fillRect(CX - 38, titleY + 70, 76, 3);
   }
 
-  // Categoría y año, abajo al centro
+  /* Pie de la ficha: categoría y año, o el `meta` del proyecto si trae uno
+     —para las piezas donde el año no dice nada y sí importan las dos
+     disciplinas—. */
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = 'rgba(255,255,255,0.52)';
   ctx.font = '500 21px "Orbitron", sans-serif';
-  ctx.fillText(`${project.category.toUpperCase()} · ${project.year}`, CX, H - 52);
+  const metaLine = project.meta ?? `${project.category} · ${project.year}`;
+  ctx.fillText(metaLine.toUpperCase(), CX, H - 52);
 
   /* ── Scanlines: traman todo, tipografía incluida, como pantalla ── */
   ctx.globalAlpha = 0.13;
