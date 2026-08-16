@@ -89,12 +89,19 @@ body { font-family: var(--f-disp); -webkit-font-smoothing: antialiased; }
 }
 #pTitle { font-family: var(--font-display); letter-spacing: 0.02em; }
 
-/* ── Título con el gradiente epic de la home ──
-   Lo pide el proyecto por dato (gradientTitle) y paint() lo enciende solo
-   para esa ficha. El eco cromático del .title se apaga acá: text-shadow
-   dibuja la sombra con la forma del glifo aunque el relleno sea
-   transparente, y ensuciaría el degradé. */
+/* ── Título con el estilo epic de la home, calcado ──
+   Mismo peso 900, mismo tracking, misma línea, mismo gradiente y mismo
+   barrido que .epic-heading / .epic-word-inner de globals.css. Solo el
+   cuerpo se adapta al HUD: el de la home (7vw) es de sección a pantalla
+   completa. Lo pide el proyecto por dato (gradientTitle) y paint() lo
+   enciende solo para esa ficha. El eco cromático del .title se apaga acá:
+   text-shadow dibuja la sombra con la forma del glifo aunque el relleno
+   sea transparente, y ensuciaría el degradé. */
 .title.is-epic {
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
   background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
   background-size: 250% 100%;
   -webkit-background-clip: text;
