@@ -23,7 +23,7 @@ export const PROJECTS: Project[] = [
     client: "Underground Contenidos",
     body: "Restauración y remasterización completa de la serie. Reconstrucción de color plano a plano, limpieza de grano y entrega en 4K para plataforma.",
     tags: ["Color", "Restauración", "4K"],
-    accent: "#B026FF",
+    accent: "#FF2E9A",
     image: "/images/okupas/capitulo1.jpg",
   },
   {
@@ -35,7 +35,7 @@ export const PROJECTS: Project[] = [
     client: "Estudio Nebula",
     body: "Sistema de identidad en movimiento: paleta, tipografía y un lenguaje de transiciones que funciona igual en un reel que en una gráfica fija.",
     tags: ["Branding", "Motion", "Arte"],
-    accent: "#FF2E9A",
+    accent: "#B026FF",
     image: "/images/bg/21.jpg",
   },
   {
