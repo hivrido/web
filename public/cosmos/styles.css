@@ -375,7 +375,13 @@ body.live .main-header { opacity: 1; }
 .arrow svg { width: 15px; height: 15px; }
 
 /* ── Marcas de posición ──
-   La línea es de 2px pero el botón mide 22px de alto: target táctil real. */
+   Retiradas del HUD en todos los anchos: el conteo duplicaba lo que las
+   flechas y el giro del anillo ya cuentan. El DOM y el pintado quedan
+   —main.js sigue actualizando ticks y contador— así volver es borrar
+   esta regla. */
+#hudTicksRow { display: none; }
+
+/* La línea es de 2px pero el botón mide 22px de alto: target táctil real. */
 .tick {
   position: relative;
   width: 14px; height: 22px;
