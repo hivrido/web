@@ -762,7 +762,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
   function framing() {
     if (innerWidth < 640) return { w: 0.92, h: 0.82, down: 0 };            // mobile
     if (COARSE || innerWidth < 1024) return { w: 0.83, h: 0.91, down: 0 };  // tablet
-    return { w: 0.9, h: innerWidth >= 1600 ? 0.92 : 0.88, down: 0.02 };     // escritorio
+    return { w: 0.9, h: innerWidth >= 1600 ? 0.89 : 0.85, down: 0.035 };    // escritorio
   }
 
   function fit() {
