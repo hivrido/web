@@ -29,7 +29,7 @@ export const PROJECTS: Project[] = [
   {
     id: "nebula",
     index: "02",
-    title: "NEBULA",
+    title: "GROW DIGITAL",
     category: "Identidad · Film",
     year: "2025",
     client: "Estudio Nebula",

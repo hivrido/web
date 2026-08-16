@@ -26,7 +26,10 @@ export const PROJECTS = [
   {
     id: 'nebula',
     index: '02',
-    title: 'NEBULA',
+    title: 'GROW DIGITAL',
+    /* El título se hornea con el gradiente epic de la home
+       (blanco → lavanda → violeta → magenta → blanco) */
+    gradientTitle: true,
     category: 'Identidad · Film',
     year: '2025',
     client: 'Estudio Nebula',
