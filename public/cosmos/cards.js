@@ -229,11 +229,18 @@ export async function makeCardTexture(project) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
 
-  // Ornamento de índice sobre el título. Sube cuando hay logo: los logos son
-  // más altos que una línea de texto y le comían el aire.
-  ctx.fillStyle = project.accent;
-  ctx.font = '500 28px "Orbitron", sans-serif';
-  ctx.fillText(`[= ${project.index} =]`, CX, H * (logo ? 0.21 : 0.30));
+  /* Ornamento sobre el título: el índice, o el `kicker` del proyecto si trae
+     uno. Sube cuando hay logo: los logos son más altos que una línea de texto
+     y le comían el aire. En blanco con glow del acento, no en el acento pelado:
+     sobre las fotos oscuras el acento solo desaparecía. */
+  ctx.fillStyle = '#f2f0f7';
+  ctx.shadowColor = project.accent;
+  ctx.shadowBlur = 18;
+  // 900: el peso de los títulos epic de la home. waitForFonts lo espera —
+  // si no está cargado, el canvas cae al peso más cercano y sale flaco.
+  ctx.font = '900 34px "Orbitron", sans-serif';
+  ctx.fillText(project.kicker ? project.kicker.toUpperCase() : `[= ${project.index} =]`, CX, H * (logo ? 0.21 : 0.30));
+  ctx.shadowBlur = 0;
 
   /* ── Marca propia del proyecto ──
      Cuando la pieza tiene logo, manda el logo: componer encima un título
@@ -327,6 +334,7 @@ export async function waitForFonts() {
   if (!document.fonts) return;
   try {
     await Promise.all([
+      document.fonts.load('900 34px "Orbitron"'),
       document.fonts.load('700 96px "Orbitron"'),
       document.fonts.load('500 21px "Orbitron"'),
       document.fonts.load('400 16px "Rubik"'),

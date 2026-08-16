@@ -30,6 +30,8 @@ export const PROJECTS = [
     /* El título del HUD se pinta con el gradiente epic de la home
        (blanco → lavanda → violeta → magenta → blanco) */
     gradientTitle: true,
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Inteligencia Artificial',
     category: 'Identidad · Film',
     year: '2025',
     client: 'Estudio Nebula',
