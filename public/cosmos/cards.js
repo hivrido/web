@@ -264,32 +264,46 @@ export async function makeCardTexture(project) {
     // otra raya horizontal ensucia la marca. El PLAY tampoco se hornea:
     // lo monta scene.js como plano aparte para poder animarlo.
   } else {
-    // El título se compone en un canvas aparte para poder glitchearlo por franjas
-    const label = project.title.toUpperCase();
+    /* El título se compone en un canvas aparte para poder glitchearlo por
+       franjas. `cardTitle` manda sobre `title` cuando la ficha quiere decir
+       otra cosa que el HUD, y si es un array cada entrada es una línea. */
+    const source = project.cardTitle ?? project.title;
+    const lines = (Array.isArray(source) ? source : [source]).map((s) => s.toUpperCase());
+
     const tCan = document.createElement('canvas');
     tCan.width = W;
-    tCan.height = 240;
     const tc = tCan.getContext('2d');
+
+    // El cuerpo lo fija la línea más ancha; medir no depende del alto todavía
+    let size = 88;
+    const widest = () => {
+      tc.font = `700 ${size}px "Orbitron", sans-serif`;
+      return Math.max(...lines.map((l) => tc.measureText(l).width));
+    };
+    while (widest() > W - 180 && size > 34) size -= 3;
+
+    /* Recién ahora se fija el alto —cambiarlo resetea el contexto, así que
+       fuente y alineación se vuelven a declarar después. */
+    const lineH = size * 1.06;
+    const textH = lineH * lines.length;
+    tCan.height = Math.ceil(textH) + 60;
+
+    tc.font = `700 ${size}px "Orbitron", sans-serif`;
     tc.textAlign = 'center';
     tc.textBaseline = 'middle';
 
-    let size = 88;
-    tc.font = `700 ${size}px "Orbitron", sans-serif`;
-    while (tc.measureText(label).width > W - 180 && size > 34) {
-      size -= 3;
-      tc.font = `700 ${size}px "Orbitron", sans-serif`;
-    }
+    const lineY = (i) => tCan.height / 2 - textH / 2 + lineH * (i + 0.5);
 
     // Eco cromático detrás: el "doble fantasma" de la referencia
     tc.globalAlpha = 0.55;
     tc.fillStyle = project.accent;
-    tc.fillText(label, tCan.width / 2 + 8, tCan.height / 2 + 6);
+    lines.forEach((l, i) => tc.fillText(l, tCan.width / 2 + 8, lineY(i) + 6));
     tc.globalAlpha = 1;
 
     tc.shadowColor = project.accent;
     tc.shadowBlur = 26;
     tc.fillStyle = '#ffffff';
-    tc.fillText(label, tCan.width / 2, tCan.height / 2);
+    lines.forEach((l, i) => tc.fillText(l, tCan.width / 2, lineY(i)));
     tc.shadowBlur = 0;
 
     // Glitch estático: franjas horizontales desplazadas
@@ -303,9 +317,9 @@ export async function makeCardTexture(project) {
     const titleY = H * 0.48;
     ctx.drawImage(tCan, 0, titleY - tCan.height / 2);
 
-    // Filete de acento centrado bajo el título
+    // Filete de acento bajo el bloque, no bajo una altura fija de una línea
     ctx.fillStyle = project.accent;
-    ctx.fillRect(CX - 38, titleY + 70, 76, 3);
+    ctx.fillRect(CX - 38, titleY + textH / 2 + 26, 76, 3);
   }
 
   /* Pie de la ficha: categoría y año, o el `meta` del proyecto si trae uno
