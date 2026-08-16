@@ -127,7 +127,7 @@ function shortest(from, to) {
 
 /* ═══════════════════════ Escena ═══════════════════════ */
 
-export async function createScene(canvas, { textures, accents, plays, onActive, onSelect, onPlay, insets } = {}) {
+export async function createScene(canvas, { textures, accents, plays, onActive, onSelect, onPlay, insets, start = 0 } = {}) {
   const N = textures.length;
   const STEP = TAU / N;
 
@@ -819,10 +819,13 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
   }
 
   /* ═══════════ Física de la rotación ═══════════ */
-  let angle = 0;      // rotación del anillo
-  let vel = 0;        // velocidad angular
-  let target = 0;     // ángulo al que converge (null = giro libre)
-  let active = 0;
+  // El anillo nace ya girado al proyecto de arranque: sin animación de
+  // acomodo, la primera imagen es directamente ese proyecto al frente.
+  const startIdx = ((start % N) + N) % N;
+  let angle = -startIdx * STEP;   // rotación del anillo
+  let vel = 0;                    // velocidad angular
+  let target = angle;             // ángulo al que converge (null = giro libre)
+  let active = startIdx;
   let opened = false;
 
   const indexFromAngle = (a) => ((Math.round(-a / STEP) % N) + N) % N;
@@ -1088,7 +1091,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
 
   if (composer) composer.render(); else renderer.render(scene, camera);
   frame();
-  onActive?.(0);
+  onActive?.(active);
 
   return {
     supported: true,

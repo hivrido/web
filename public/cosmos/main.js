@@ -31,8 +31,13 @@ const el = {
 const TOTAL = PROJECTS.length;
 const pad = (n) => String(n).padStart(2, '0');
 
+/* El carrusel arranca en NEBULA, no en el primero de la lista. Por id y no
+   por número: si los proyectos se reordenan, el arranque sigue siendo el
+   correcto o cae al 0 sin romperse. */
+const START = Math.max(0, PROJECTS.findIndex((p) => p.id === 'nebula'));
+
 let ring = null;
-let active = 0;
+let active = START;
 let panelOpen = false;
 
 /* ═══════════ Marcas de posición ═══════════ */
@@ -42,7 +47,7 @@ PROJECTS.forEach((p, i) => {
   b.className = 'tick';
   b.type = 'button';
   b.setAttribute('role', 'tab');
-  b.setAttribute('aria-current', String(i === 0));
+  b.setAttribute('aria-current', String(i === START));
   b.setAttribute('aria-label', p.title);
   b.addEventListener('click', () => ring?.goTo(i));
   el.ticks.appendChild(b);
@@ -58,7 +63,7 @@ PROJECTS.forEach((p, i) => {
   const b = document.createElement('button');
   b.type = 'button';
   b.className = 'qitem';
-  b.setAttribute('aria-current', String(i === 0));
+  b.setAttribute('aria-current', String(i === START));
   b.innerHTML = `<span aria-hidden="true">-&gt;</span> ${shortLabel(p.category)}`;
   b.addEventListener('click', () => ring?.goTo(i));
   li.appendChild(b);
@@ -282,12 +287,13 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
         top: headerEl?.offsetHeight ?? 0,
         bottom: footEl?.offsetHeight ?? 0,
       }),
+      start: START,
     });
   } catch (err) {
     console.warn('[cosmos] el anillo 3D no pudo iniciarse:', err);
   }
 
-  paint(0);
+  paint(START);
 
   if (ring?.supported) {
     // La pista se retira al primer gesto, o sola si nadie toca nada
