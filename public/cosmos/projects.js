@@ -27,9 +27,9 @@ export const PROJECTS = [
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Desarrollamos sistemas personalizados',
     year: '2025',
-    client: 'Estudio Nebula',
-    body: 'Sistema de identidad en movimiento: paleta, tipografía y un lenguaje de transiciones que funciona igual en un reel que en una gráfica fija.',
-    tags: ['Branding', 'Motion', 'Arte'],
+    client: 'HIVRIDO',
+    body: 'Diseño web y aplicaciones a medida, con el software que hace falta detrás: sistemas CRM, integraciones y automatizaciones que conectan lo que ya usás. Desarrollamos con Python y las últimas tecnologías, y cada pieza escala con el negocio.',
+    tags: ['Diseño Web', 'Apps', 'CRM', 'Python'],
     accent: '#B026FF',
     image: '/images/bg/21.jpg',
   },
