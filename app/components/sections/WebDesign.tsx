@@ -59,6 +59,8 @@ export type LandingContent = {
   testimonios: { nombre: string; empresa: string; texto: string }[];
   garantias: [string, string][];
   cta: { title: string; text: string; asunto: string; mail: string };
+  /** Bloque de la colmena de agentes. Solo donde el servicio lo incluye. */
+  hive?: boolean;
 };
 
 const TICKER = [
@@ -474,7 +476,7 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
 
       {/* ── Colmena de agentes ── el mismo bloque que la home, acá desarrolla
            el servicio que la lista acaba de nombrar ── */}
-      <AIHiveSection ctaHref={`#${content.id}`} />
+      {content.hive !== false && <AIHiveSection ctaHref={`#${content.id}`} />}
 
       {/* ── Trabajos ── */}
       <section id="sec-trabajos" className="web-section web-section--alt section">
