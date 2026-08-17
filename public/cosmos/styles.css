@@ -354,17 +354,22 @@ body.live .main-header { opacity: 1; }
   transition: background 0.4s var(--ease), border-color 0.4s var(--ease),
               box-shadow 0.4s var(--ease), transform 0.3s var(--ease);
 }
-/* El barrido se recorta con clip-path y no con `overflow: hidden` en el botón:
-   el overflow también le comía la luz del borde, que va por fuera del trazo. */
+/* El barrido del hover viaja con `background-position` y no desplazando el
+   pseudo-elemento. El botón ya no puede llevar `overflow: hidden` —le comía la
+   luz del borde, que corre por fuera del trazo— y un elemento desplazado se
+   lleva su propio recorte puesto: la luz terminaba flotando al costado del
+   botón como una nube gris. Quieto en su sitio, el radio del borde alcanza
+   para recortarlo y nada se escapa. */
 .btn-glow::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  clip-path: inset(0 round 999px);
   background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.22) 50%, transparent 70%);
-  transform: translateX(-120%);
-  transition: transform 0.8s var(--ease);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;   /* la franja espera fuera de cuadro, a la izquierda */
+  transition: background-position 0.8s var(--ease);
   pointer-events: none;
 }
 
@@ -409,7 +414,7 @@ body.live .main-header { opacity: 1; }
   transform: translateY(-2px);
   outline: none;
 }
-.btn-glow:hover::after, .btn-glow:focus-visible::after { transform: translateX(120%); }
+.btn-glow:hover::after, .btn-glow:focus-visible::after { background-position: 0 0; }
 
 /* Flechas retiradas del HUD en todos los anchos, como el conteo. La
    navegación queda en el arrastre, la rueda, el toque sobre una tarjeta y
