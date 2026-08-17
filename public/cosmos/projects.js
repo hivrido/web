@@ -14,8 +14,6 @@ export const PROJECTS = [
     title: 'GROW DIGITAL',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Digital'],
-    /* Fracción del cuerpo base, para que no domine sobre el kicker */
-    cardTitleScale: 0.78,
     /* El título del HUD se pinta con el gradiente epic de la home
        (blanco → lavanda → violeta → magenta → blanco) */
     gradientTitle: true,
