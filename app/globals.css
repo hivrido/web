@@ -3296,10 +3296,15 @@ html.lenis { height: auto; }
   color: #FF1B8D;
   margin-bottom: 14px;
 }
+/* La firma se ancla abajo. Las tarjetas de una fila estiran a la más alta, y
+   sin esto el sobrante caía debajo del nombre: un hueco que se leía como un
+   error. Empujado al pie, el aire queda entre la cita y la firma, y las firmas
+   de la fila se alinean entre sí. */
 .web-quote-author {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-top: auto;
   padding-top: 18px;
   border-top: 1px solid var(--border);
 }
