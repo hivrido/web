@@ -32,6 +32,35 @@ const wa = (asunto: string) =>
     `Hola Hivrido! Quiero consultar por ${asunto}.`
   )}`;
 
+/* ── Contenido ──
+   La estructura es la misma para toda landing de servicio; lo que cambia es
+   qué dice. Sale del componente para que otra ruta —la colmena de agentes—
+   monte el mismo recorrido con su propio contenido, y cualquier ajuste de
+   identidad o de gestos llegue a las dos sin tocar dos archivos. */
+export type Servicio = {
+  num: string;
+  title: string;
+  tags: string[];
+  desc: string;
+  headline: string;
+  body: string;
+  stat: [string, string];
+};
+
+export type LandingContent = {
+  /** id de la sección de servicios: lo usan el hero y el CTA de la colmena */
+  id: string;
+  ticker: string[];
+  title: { eyebrow: string; lines: string[] };
+  lead: React.ReactNode;
+  servicios: Servicio[];
+  trabajos: { num: string; titulo: string; tags: string[]; desc: string; img: string }[];
+  trabajosTitle: { eyebrow: string; lines: string[] };
+  testimonios: { nombre: string; empresa: string; texto: string }[];
+  garantias: [string, string][];
+  cta: { title: string; text: string; asunto: string; mail: string };
+};
+
 const TICKER = [
   "Diseño web",
   "Diseño de página web",
@@ -43,7 +72,7 @@ const TICKER = [
   "Branding",
 ];
 
-const servicios = [
+const servicios: Servicio[] = [
   {
     num: "01",
     title: "Diseño web",
@@ -116,15 +145,42 @@ const TESTIMONIOS = [
   { nombre: "H. Winnik", empresa: "flow.com.ar", texto: "Estamos más que satisfechos con los resultados y confiamos plenamente en su capacidad para seguir impulsando nuestro crecimiento. Totalmente recomendados para cualquier empresa que busque innovación y calidad en sus proyectos digitales." },
 ];
 
-const GARANTIAS = [
+const GARANTIAS: [string, string][] = [
   ["Respuesta", "El mismo día, con alcance y precio"],
   ["Entrega", "De 7 a 30 días según el proyecto"],
   ["Incluido", "Dominio, hosting y certificado el primer año"],
   ["Después", "Tres meses de ajustes sin costo"],
 ];
 
+/** Contenido por defecto: la landing de diseño y desarrollo web. */
+export const WEB_CONTENT: LandingContent = {
+  id: "sec-diseno-web",
+  ticker: TICKER,
+  title: { eyebrow: "Qué hacemos", lines: ["Sitios que", "trabajan"] },
+  lead: (
+    <>
+      Hacemos <strong>diseño web</strong> y <strong>desarrollo web</strong> para marcas
+      que necesitan vender, no solo estar. Desde el{" "}
+      <strong>diseño de una página web</strong> hasta{" "}
+      <strong>programación a medida</strong>, <strong>desarrollo de sistemas</strong> y{" "}
+      <strong>colmenas de agentes IA</strong> que atienden a tus clientes mientras dormís.
+    </>
+  ),
+  servicios,
+  trabajos: TRABAJOS,
+  trabajosTitle: { eyebrow: "Trabajos", lines: ["Ya lo", "hicimos"] },
+  testimonios: TESTIMONIOS,
+  garantias: GARANTIAS,
+  cta: {
+    title: "Contanos qué necesitás",
+    text: "Te respondemos con una propuesta concreta: alcance, plazo y precio. Sin reuniones eternas ni presupuestos de cuarenta páginas.",
+    asunto: "un proyecto web",
+    mail: "Consulta por diseño web",
+  },
+};
+
 /* ── Fila de servicio: el mismo gesto que en la home ── */
-function ServicioItem({ sv, onClick }: { sv: typeof servicios[0]; onClick: () => void }) {
+function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
   const [hovered, setHovered] = useState(false);
   const title = useScramble(sv.title);
 
@@ -266,7 +322,7 @@ function ServicioItem({ sv, onClick }: { sv: typeof servicios[0]; onClick: () =>
   );
 }
 
-export default function WebDesign() {
+export default function WebDesign({ content = WEB_CONTENT }: { content?: LandingContent }) {
   const [active, setActive] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -296,7 +352,7 @@ export default function WebDesign() {
     return () => window.removeEventListener("keydown", onKey);
   }, [active]);
 
-  const s = active !== null ? servicios[active] : null;
+  const s = active !== null ? content.servicios[active] : null;
 
   const gradientText = {
     background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.secondary})`,
@@ -388,7 +444,7 @@ export default function WebDesign() {
         <div className="web-ticker-track">
           {[0, 1].map((copia) => (
             <div className="web-ticker-run" key={copia}>
-              {TICKER.map((t) => (
+              {content.ticker.map((t) => (
                 <span className="web-ticker-item" key={t}>
                   {t}
                   <i className="web-ticker-dot" />
@@ -400,22 +456,16 @@ export default function WebDesign() {
       </div>
 
       {/* ── Servicios ── */}
-      <section id="sec-diseno-web" className="services-section section" style={{ background: "var(--bg)", padding: "120px 0", position: "relative" }}>
+      <section id={content.id} className="services-section section" style={{ background: "var(--bg)", padding: "120px 0", position: "relative" }}>
         <div className="section-container">
           <div className="svc-list-header">
-            <SectionTitle eyebrow="Qué hacemos" lines={["Sitios que", "trabajan"]} />
+            <SectionTitle eyebrow={content.title.eyebrow} lines={content.title.lines} />
           </div>
 
-          <p className="web-lead">
-            Hacemos <strong>diseño web</strong> y <strong>desarrollo web</strong> para marcas
-            que necesitan vender, no solo estar. Desde el{" "}
-            <strong>diseño de una página web</strong> hasta{" "}
-            <strong>programación a medida</strong>, <strong>desarrollo de sistemas</strong> y{" "}
-            <strong>colmenas de agentes IA</strong> que atienden a tus clientes mientras dormís.
-          </p>
+          <p className="web-lead">{content.lead}</p>
 
           <div className="svc-list" ref={listaRef}>
-            {servicios.map((sv, i) => (
+            {content.servicios.map((sv, i) => (
               <ServicioItem key={sv.num} sv={sv} onClick={() => setActive(i)} />
             ))}
           </div>
@@ -423,16 +473,16 @@ export default function WebDesign() {
       </section>
 
       {/* ── Colmena de agentes ── el mismo bloque que la home, acá desarrolla
-           el servicio 06 justo después de que la lista lo nombra ── */}
-      <AIHiveSection ctaHref="#sec-diseno-web" />
+           el servicio que la lista acaba de nombrar ── */}
+      <AIHiveSection ctaHref={`#${content.id}`} />
 
       {/* ── Trabajos ── */}
       <section id="sec-trabajos" className="web-section web-section--alt section">
         <div className="section-container">
-          <SectionTitle eyebrow="Trabajos" lines={["Ya lo", "hicimos"]} />
+          <SectionTitle eyebrow={content.trabajosTitle.eyebrow} lines={content.trabajosTitle.lines} />
 
           <div className="web-works" ref={trabajosRef}>
-            {TRABAJOS.map((t) => (
+            {content.trabajos.map((t) => (
               <article className="web-work" key={t.num}>
                 <div className="web-work-media">
                   <Image
@@ -466,7 +516,7 @@ export default function WebDesign() {
           <SectionTitle eyebrow="Clientes" lines={["Lo que", "dicen"]} />
 
           <div className="web-quotes" ref={testimoniosRef}>
-            {TESTIMONIOS.map((t) => (
+            {content.testimonios.map((t) => (
               <figure className="web-quote" key={t.empresa}>
                 <blockquote className="web-quote-text">{t.texto}</blockquote>
                 <figcaption className="web-quote-author">
@@ -483,7 +533,7 @@ export default function WebDesign() {
       <section className="web-section web-section--alt section">
         <div className="section-container">
           <div className="web-guarantee">
-            {GARANTIAS.map(([clave, valor]) => (
+            {content.garantias.map(([clave, valor]) => (
               <div className="web-guarantee-item" key={clave}>
                 <span className="web-guarantee-key">{clave}</span>
                 <span className="web-guarantee-value">{valor}</span>
@@ -492,19 +542,16 @@ export default function WebDesign() {
           </div>
 
           <div className="web-cta">
-            <h2 className="web-cta-title">Contanos qué necesitás</h2>
-            <p className="web-cta-text">
-              Te respondemos con una propuesta concreta: alcance, plazo y precio. Sin reuniones
-              eternas ni presupuestos de cuarenta páginas.
-            </p>
+            <h2 className="web-cta-title">{content.cta.title}</h2>
+            <p className="web-cta-text">{content.cta.text}</p>
             <div className="web-cta-row">
-              <a className="web-cta-btn" href={wa("un proyecto web")} target="_blank" rel="noopener noreferrer">
+              <a className="web-cta-btn" href={wa(content.cta.asunto)} target="_blank" rel="noopener noreferrer">
                 Escribinos por WhatsApp
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
-              <a className="web-cta-mail" href="mailto:hola@hivrido.com?subject=Consulta%20por%20diseño%20web">
+              <a className="web-cta-mail" href={`mailto:hola@hivrido.com?subject=${encodeURIComponent(content.cta.mail)}`}>
                 hola@hivrido.com
               </a>
             </div>
