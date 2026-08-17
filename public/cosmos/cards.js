@@ -277,7 +277,8 @@ export async function makeCardTexture(project) {
     const source = project.cardTitle ?? project.title;
     const lines = (Array.isArray(source) ? source : [source]).map((s) => s.toUpperCase());
 
-    let size = 104;
+    // `cardTitleScale` deja bajarlo por ficha sin tocar al resto
+    let size = Math.round(104 * (project.cardTitleScale ?? 1));
 
     // El tracking se declara junto con la fuente: entra en la medición, y sin
     // resetearlo después se contagiaría al pie de la ficha.
