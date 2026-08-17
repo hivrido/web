@@ -3691,9 +3691,45 @@ html.lenis { height: auto; }
    Reutilizan `--beam` y `beam-run`, declarados con los modales.
    ═══════════════════════════════════════════════════════════ */
 
+/* ── Base de los dos CTA de la colmena ──
+   Vivían en `style` inline, con el hover resuelto a mano en JavaScript.
+   Movidos acá para que puedan tomar la píldora y la luz como el resto. */
+.aih-cta-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-family: var(--font-display), sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.4s ease, border-color 0.4s ease,
+              box-shadow 0.4s ease, transform 0.3s ease;
+}
+.aih-cta-btn--solid {
+  color: #fff;
+  border: 1px solid #FF0A82;
+  background: linear-gradient(135deg, #FF0A82, rgba(255, 10, 130, 0.8));
+  box-shadow: 0 0 34px -10px #FF0A82;
+}
+.aih-cta-btn--solid:hover {
+  box-shadow: 0 0 40px -6px #FF0A82;
+  transform: translateY(-2px);
+}
+
+/* ── Los rellenos: píldora, luz en el borde y destello ── */
 .dw-hero-btn,
 .web-cta-btn,
-.btn-violet {
+.btn-violet,
+.proj-btn-play,
+.aih-cta-btn--solid {
   position: relative;
   border-radius: 999px;
   clip-path: none;   /* releva al bisel que traían antes */
@@ -3703,7 +3739,9 @@ html.lenis { height: auto; }
    rellenos y un haz violeta desaparecería sobre su propio fondo. */
 .dw-hero-btn::before,
 .web-cta-btn::before,
-.btn-violet::before {
+.btn-violet::before,
+.proj-btn-play::before,
+.aih-cta-btn--solid::before {
   content: '';
   position: absolute;
   inset: -2px;
@@ -3730,7 +3768,9 @@ html.lenis { height: auto; }
    termina flotando al costado del botón. */
 .dw-hero-btn::after,
 .web-cta-btn::after,
-.btn-violet::after {
+.btn-violet::after,
+.proj-btn-play::after,
+.aih-cta-btn--solid::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -3744,17 +3784,59 @@ html.lenis { height: auto; }
 }
 .dw-hero-btn:hover::after,
 .web-cta-btn:hover::after,
-.btn-violet:hover::after { background-position: 0 0; }
+.btn-violet:hover::after,
+.proj-btn-play:hover::after,
+.aih-cta-btn--solid:hover::after { background-position: 0 0; }
 
-/* El secundario acompaña la forma pero no la luz: al lado del primario, dos
-   haces corriendo a la vez se anulan entre sí. */
-.btn-outline {
+/* ── Los secundarios: la misma píldora, tratados como botón de app ──
+   Acompañan la forma pero no la luz: al lado del primario, dos haces
+   corriendo a la vez se anulan entre sí y el ojo pierde cuál es la acción
+   principal. Lo que los sostiene es el material: vidrio apenas velado sobre
+   el fondo, un filo claro arriba que simula la luz cayendo sobre el borde,
+   y el relleno que sube al pasar el mouse. */
+.btn-outline,
+.btn-gold,
+.proj-btn-pdf,
+.aih-cta-btn--ghost {
+  position: relative;
   border-radius: 999px;
+  clip-path: none;
+  background-color: rgba(255, 255, 255, 0.035);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+              box-shadow 0.35s ease, transform 0.3s ease;
+}
+.btn-outline:hover,
+.btn-gold:hover,
+.proj-btn-pdf:hover,
+.aih-cta-btn--ghost:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              0 8px 24px -12px rgba(0, 0, 0, 0.9);
+  transform: translateY(-2px);
+}
+
+.aih-cta-btn--ghost {
+  color: var(--text);
+  border: 1px solid rgba(255, 10, 130, 0.4);
+}
+.aih-cta-btn--ghost:hover {
+  border-color: rgba(255, 10, 130, 0.8);
+  background-color: rgba(255, 10, 130, 0.09);
+}
+
+/* Los controles del hero son redondos: son una flecha, no una etiqueta */
+.hero-ctrl-btn {
+  border-radius: 50%;
   clip-path: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .dw-hero-btn::before,
   .web-cta-btn::before,
-  .btn-violet::before { animation: none; }
+  .btn-violet::before,
+  .proj-btn-play::before,
+  .aih-cta-btn--solid::before { animation: none; }
 }

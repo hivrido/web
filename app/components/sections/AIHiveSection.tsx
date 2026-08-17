@@ -297,53 +297,18 @@ export default function AIHiveSection({ ctaHref = "#sec4" }: { ctaHref?: string 
                 flexWrap: "wrap",
               }}
             >
+              {/* Forma, color y hover viven en la hoja de estilos: en línea no
+                  podían tomar la píldora ni la luz del borde que comparte el
+                  resto de los botones del sitio. */}
               <a
-                className="aih-cta-btn"
+                className="aih-cta-btn aih-cta-btn--solid"
                 href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20Me%20interesa%20activar%20la%20colmena%20de%20agentes%20PUNY%20%F0%9F%9A%80"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "inline-block",
-                  padding: "14px 32px",
-                  background: "linear-gradient(135deg, #FF0A82, rgba(255,10,130,0.8))",
-                  color: "#fff",
-                  fontFamily: "var(--font-display)",
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  border: "1px solid #FF0A82",
-                  cursor: "pointer",
-                  textDecoration: "none",
-                  transition: "all 0.3s",
-                  textTransform: "uppercase",
-                }}
               >
                 Quiero evolucionar mi marca
               </a>
-              <a href={ctaHref} className="aih-cta-btn" style={{
-                display: "inline-block",
-                padding: "14px 32px",
-                background: "transparent",
-                color: "var(--text)",
-                fontFamily: "var(--font-display)",
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                letterSpacing: "0.1em",
-                border: "1px solid rgba(255,10,130,0.4)",
-                cursor: "pointer",
-                textDecoration: "none",
-                transition: "all 0.3s",
-                textTransform: "uppercase",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = "rgba(255,10,130,0.8)";
-                e.currentTarget.style.background = "rgba(255,10,130,0.08)";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = "rgba(255,10,130,0.4)";
-                e.currentTarget.style.background = "transparent";
-              }}
-              >
+              <a href={ctaHref} className="aih-cta-btn aih-cta-btn--ghost">
                 Conocer el sistema →
               </a>
             </div>

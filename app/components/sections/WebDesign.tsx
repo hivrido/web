@@ -53,7 +53,8 @@ export type LandingContent = {
   id: string;
   ticker: string[];
   title: { eyebrow: string; lines: string[] };
-  lead: React.ReactNode;
+  /** Párrafo de entrada. Opcional: sin él la sección arranca en los servicios. */
+  lead?: React.ReactNode;
   servicios: Servicio[];
   /** Bloque propio entre la cinta y los servicios: la landing de cine mete
    *  ahí los trailers, que se miran antes de leer qué hacemos. */
@@ -168,15 +169,6 @@ export const WEB_CONTENT: LandingContent = {
   id: "sec-diseno-web",
   ticker: TICKER,
   title: { eyebrow: "Qué hacemos", lines: ["Sitios que", "trabajan"] },
-  lead: (
-    <>
-      Hacemos <strong>diseño web</strong> y <strong>desarrollo web</strong> para marcas
-      que necesitan vender, no solo estar. Desde el{" "}
-      <strong>diseño de una página web</strong> hasta{" "}
-      <strong>programación a medida</strong>, <strong>desarrollo de sistemas</strong> y{" "}
-      <strong>colmenas de agentes IA</strong> que atienden a tus clientes mientras dormís.
-    </>
-  ),
   servicios,
   trabajos: TRABAJOS,
   trabajosTitle: { eyebrow: "Trabajos", lines: ["Ya lo", "hicimos"] },
@@ -471,7 +463,7 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
             <SectionTitle eyebrow={content.title.eyebrow} lines={content.title.lines} />
           </div>
 
-          <p className="web-lead">{content.lead}</p>
+          {content.lead ? <p className="web-lead">{content.lead}</p> : null}
 
           <div className="svc-list" ref={listaRef}>
             {content.servicios.map((sv, i) => (
