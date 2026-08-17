@@ -613,6 +613,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
        La proporción sale del tamaño real de la textura y no de una constante,
        para que cambiar la forma del botón no obligue a tocar la escena. */
     let play = null;
+    let playGlow = null;
     if (plays?.[i]) {
       const src = plays[i].image;
       const pAspect = src.width / src.height;
@@ -629,10 +630,28 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       play.position.set(0, -CARD_H * 0.2, 0.014);
       play.userData.play = i;
       holder.add(play);
+
+      /* Copia aditiva encima, con la misma textura: al subirle la opacidad,
+         lo dibujado —aro y letra— se suma sobre sí mismo y se enciende, y lo
+         transparente no aporta nada. Es la forma barata de iluminar el borde
+         sin una segunda textura ni un shader propio. */
+      playGlow = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({
+        map: plays[i],
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        opacity: 0,
+      }));
+      playGlow.position.set(0, -CARD_H * 0.2, 0.015);
+      playGlow.raycast = () => {};        // el click lo recibe el plano de abajo
+      holder.add(playGlow);
     }
 
     ring.add(holder);
-    cards.push({ holder, mesh, uniforms, glowUniforms, theta, play, playHover: 0, playPress: 0 });
+    cards.push({
+      holder, mesh, uniforms, glowUniforms, theta,
+      play, playGlow, playHover: 0, playPress: 0,
+    });
   }
 
   /* ────────── Cometa del contorno ──────────
@@ -1037,10 +1056,17 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         const press = REDUCED ? 0 : Math.sin(c.playPress * Math.PI) * (1 - c.playPress * 0.35);
 
         const op = gate * (0.80 + 0.20 * breath + 0.20 * c.playHover) + press * 0.5;
+        const scale = 1 + (REDUCED ? 0 : 0.035 * breath) + 0.07 * c.playHover + press * 0.42;
         c.play.material.opacity = Math.min(1, op);
-        c.play.scale.setScalar(
-          1 + (REDUCED ? 0 : 0.035 * breath) + 0.07 * c.playHover + press * 0.42
-        );
+        c.play.scale.setScalar(scale);
+
+        /* El encendido acompaña al crecimiento: cuanto más grande, más brilla
+           el aro. Es lo que lo delata como botón —algo que solo reacciona de
+           tamaño puede pasar por adorno—. */
+        if (c.playGlow) {
+          c.playGlow.material.opacity = gate * (0.85 * c.playHover + 1.1 * press);
+          c.playGlow.scale.setScalar(scale);
+        }
       }
     }
 
