@@ -314,17 +314,18 @@ export async function makeCardTexture(project) {
   /* Pie de la ficha: categoría y año, o el `meta` del proyecto si trae uno
      —para las piezas donde el año no dice nada y sí importa la frase—.
 
-     Blanco puro, 44px y peso 900. El tamaño solo no alcanzaba: el texto se
-     perdía porque debajo tiene una foto con luces, así que además va sobre
-     una banda oscura propia —degradado hacia los costados, sin borde duro—
-     y con doble sombra: negra para separar del fondo y del acento para
-     integrarlo a la pieza. */
+     Blanco puro a 30px: el 44 quedaba desmedido contra el título. Lo que
+     lo hace legible no es el cuerpo sino el fondo — debajo hay una foto
+     con luces y el blanco sobre claro no contrasta—: va sobre una banda
+     oscura propia, degradada hacia los costados para no leerse como una
+     caja pegada, y con doble sombra, negra para separar del fondo y del
+     acento para integrarlo a la pieza. */
   const metaSource = project.meta ?? `${project.category} · ${project.year}`;
   const metaLines = (Array.isArray(metaSource) ? metaSource : [metaSource])
     .map((s) => s.toUpperCase());
 
   // Se achica sola si alguna línea no entra: el pie nunca se sale de la ficha
-  let ms = 44;
+  let ms = 30;
   const metaWidest = () => {
     ctx.font = `900 ${ms}px "Orbitron", sans-serif`;
     return Math.max(...metaLines.map((l) => ctx.measureText(l).width));
