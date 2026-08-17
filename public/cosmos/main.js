@@ -6,7 +6,7 @@
  */
 
 import { PROJECTS } from './projects.js';
-import { makeCardTexture, makePlayTexture, makePlayCircleTexture, waitForFonts } from './cards.js';
+import { makeCardTexture, makePlayTexture, waitForFonts } from './cards.js';
 import { createScene } from './scene.js';
 import { mountLogo } from './brand.js';
 
@@ -285,14 +285,9 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
     setProgress(8 + ((i + 1) / TOTAL) * 82);
   }
 
-  /* Se componen después de las fuentes: la pastilla PLAY es tipografía. Dos
-     texturas compartidas por forma, no una por tarjeta: son idénticas entre
-     sí y así se crean solo las que alguna ficha usa. */
+  // Se compone después de las fuentes: el PLAY es tipografía, no imagen
   const hasPlay = PROJECTS.some((p) => p.href);
-  const playTex = hasPlay && PROJECTS.some((p) => p.href && !p.playCircle)
-    ? makePlayTexture() : null;
-  const playCircleTex = PROJECTS.some((p) => p.href && p.playCircle)
-    ? makePlayCircleTexture() : null;
+  const playTex = hasPlay ? makePlayTexture() : null;
 
   // El encuadre 3D centra la tarjeta en el espacio libre entre header y HUD
   const headerEl = document.querySelector('.main-header');
@@ -301,9 +296,8 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
   try {
     ring = await createScene(el.canvas, {
       textures,
-      plays: hasPlay
-        ? PROJECTS.map((p) => (p.href ? (p.playCircle ? playCircleTex : playTex) : null))
-        : null,
+      // Una sola textura compartida: es idéntica en todas las tarjetas
+      plays: hasPlay ? PROJECTS.map((p) => (p.href ? playTex : null)) : null,
       accents: PROJECTS.map((p) => p.accent),
       onActive,
       onSelect: () => setPanel(true),
