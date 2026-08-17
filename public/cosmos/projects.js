@@ -92,12 +92,20 @@ export const PROJECTS = [
   {
     id: 'animacion',
     index: '05',
-    title: 'SÍNTESIS',
-    category: 'IA · Generativo',
-    year: '2024',
-    client: 'Laboratorio Síntesis',
-    body: 'Modelo entrenado con el universo visual de la marca. Producción de volumen sin perder autoría: cada salida pasa por dirección de arte.',
-    tags: ['IA', '3D', 'Dirección'],
+    title: 'CINE & VIDEO',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Cine'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Producción Audiovisual',
+    category: 'Cine & Video',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'De la idea a la pantalla',
+    year: '2025',
+    /* Sin `client`: es un servicio propio, no una pieza para alguien */
+    body: 'Producción cinematográfica, videoclips y contenido para marcas. Desarrollamos proyectos desde la idea hasta la pantalla, cuidando cada etapa: desarrollo, guion, rodaje y postproducción. Apostamos a narrativas que trascienden y construyen universos propios.',
+    tags: ['Cine', 'Videoclips', 'Dirección', 'Post'],
+    /* Desvía el link del pie del panel a la landing audiovisual */
+    link: { label: 'Ir a Cine & Video', href: '/cine-video/' },
     accent: '#7C3AED',
     image: '/images/bg/animacion-poster.jpg',
   },
