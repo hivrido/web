@@ -2303,7 +2303,7 @@ html.lenis { height: auto; }
    ═══════════════════════════════════════════════════════════ */
 
 @property --beam { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-@keyframes modal-beam { to { --beam: 360deg; } }
+@keyframes beam-run { to { --beam: 360deg; } }
 
 .svc-modal-close,
 .proj-modal-close {
@@ -2352,7 +2352,7 @@ html.lenis { height: auto; }
   );
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
-  animation: modal-beam 2.6s linear infinite;
+  animation: beam-run 2.6s linear infinite;
   pointer-events: none;
 }
 .svc-modal-num-label {
@@ -2485,7 +2485,7 @@ html.lenis { height: auto; }
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
-  animation: modal-beam 2.6s linear infinite;
+  animation: beam-run 2.6s linear infinite;
   pointer-events: none;
 }
 .svc-modal-cta:hover {
@@ -3680,4 +3680,81 @@ html.lenis { height: auto; }
 @media (prefers-reduced-motion: reduce) {
   .fcar-card-img { transition: none; }
   .fcar-chip.is-active::before { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Botones de acción — la forma y la luz de la portada
+   Eran rectángulos rectos o biselados, cada uno con su propio
+   gesto, y no se parecían al botón con el que la portada cierra
+   cada ficha. Se unifica la píldora, la luz que recorre el borde
+   y el destello del hover; el relleno de cada uno queda intacto.
+   Reutilizan `--beam` y `beam-run`, declarados con los modales.
+   ═══════════════════════════════════════════════════════════ */
+
+.dw-hero-btn,
+.web-cta-btn,
+.btn-violet {
+  position: relative;
+  border-radius: 999px;
+  clip-path: none;   /* releva al bisel que traían antes */
+}
+
+/* Luz del borde. Blanca y no en el color de la marca: estos botones van
+   rellenos y un haz violeta desaparecería sobre su propio fondo. */
+.dw-hero-btn::before,
+.web-cta-btn::before,
+.btn-violet::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 200deg,
+    rgba(255, 255, 255, 0.45) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: beam-run 2.6s linear infinite;
+  pointer-events: none;
+}
+
+/* Destello del hover. Viaja con background-position y no desplazando el
+   pseudo-elemento: desplazado se lleva su propio recorte puesto y la luz
+   termina flotando al costado del botón. */
+.dw-hero-btn::after,
+.web-cta-btn::after,
+.btn-violet::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  transition: background-position 0.8s ease;
+  pointer-events: none;
+}
+.dw-hero-btn:hover::after,
+.web-cta-btn:hover::after,
+.btn-violet:hover::after { background-position: 0 0; }
+
+/* El secundario acompaña la forma pero no la luz: al lado del primario, dos
+   haces corriendo a la vez se anulan entre sí. */
+.btn-outline {
+  border-radius: 999px;
+  clip-path: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dw-hero-btn::before,
+  .web-cta-btn::before,
+  .btn-violet::before { animation: none; }
 }
