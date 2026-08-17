@@ -12,10 +12,9 @@ export const PROJECTS = [
     id: 'nebula',
     index: '01',
     title: 'GROW DIGITAL',
-    /* La ficha dice otra cosa que el HUD, y en dos líneas */
-    cardTitle: ['Ecosistema', 'Digital'],
-    /* Fracción del cuerpo base: dos líneas largas pesan más que un título
-       corto, y a cuerpo pleno se comían la ficha */
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Digital'],
+    /* Fracción del cuerpo base, para que no domine sobre el kicker */
     cardTitleScale: 0.78,
     /* El título del HUD se pinta con el gradiente epic de la home
        (blanco → lavanda → violeta → magenta → blanco) */
