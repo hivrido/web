@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import SectionTitle from "../ui/SectionTitle";
+import FeatureCarousel from "../ui/FeatureCarousel";
 import AIHiveSection from "./AIHiveSection";
 import MatrixCol from "../ui/MatrixCol";
 import { useScramble } from "../ui/useScramble";
@@ -63,6 +64,8 @@ export type LandingContent = {
   trabajosTitle?: { eyebrow: string; lines: string[] };
   /** Grilla en formato retrato: para fotos de personas, no de pantallas. */
   trabajosRetrato?: boolean;
+  /** Carrusel en vez de grilla: muestra una pieza por vez, con foco. */
+  trabajosCarrusel?: boolean;
   testimonios: { nombre: string; empresa: string; texto: string }[];
   garantias: [string, string][];
   cta: { title: string; text: string; asunto: string; mail: string };
@@ -178,6 +181,7 @@ export const WEB_CONTENT: LandingContent = {
   servicios,
   trabajos: TRABAJOS,
   trabajosTitle: { eyebrow: "Trabajos", lines: ["Ya lo", "hicimos"] },
+  trabajosCarrusel: true,
   testimonios: TESTIMONIOS,
   garantias: GARANTIAS,
   cta: {
@@ -496,6 +500,9 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
             lines={content.trabajosTitle?.lines ?? ["Ya lo", "hicimos"]}
           />
 
+          {content.trabajosCarrusel ? (
+            <FeatureCarousel items={content.trabajos} />
+          ) : (
           <div
             className={`web-works${content.trabajosRetrato ? " web-works--retrato" : ""}`}
             ref={trabajosRef}
@@ -525,6 +532,7 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
               </article>
             ))}
           </div>
+          )}
         </div>
       </section>
       ) : null}
