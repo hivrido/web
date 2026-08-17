@@ -3416,6 +3416,9 @@ html.lenis { height: auto; }
   max-width: 100%;
 }
 .fcar-chip {
+  /* Contexto para el aro de luz del activo: sin esto se dimensiona contra el
+     contenedor de la fila, que es el ancestro posicionado más cercano. */
+  position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -3434,6 +3437,44 @@ html.lenis { height: auto; }
   border-color: #fff;
   color: var(--violet);
 }
+
+/* ── Luz recorriendo el borde del acceso activo ──
+   El mismo gesto que el cometa de las fichas y el aro del botón de cerrar,
+   pero acá no sirve la máscara radial de aquel: esa recorta un anillo y solo
+   cierra en un círculo. Para una píldora se compone el borde con dos
+   máscaras y se excluye el interior, que funciona con cualquier radio.
+
+   El ángulo se anima como propiedad registrada en vez de rotar el elemento:
+   rotarlo giraría también la máscara y el borde se desarmaría. Donde
+   @property no exista, el degradado queda quieto —un borde con luz fija, no
+   algo roto—. */
+@property --fcar-beam {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.fcar-chip.is-active::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--fcar-beam),
+    transparent 0deg,
+    transparent 190deg,
+    rgba(255, 27, 141, 0.55) 290deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: fcar-beam-spin 2.8s linear infinite;
+  pointer-events: none;
+}
+@keyframes fcar-beam-spin { to { --fcar-beam: 360deg; } }
 .fcar-chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 .fcar-chip-num {
   font-family: var(--font-display);
@@ -3466,7 +3507,12 @@ html.lenis { height: auto; }
   width: 100%;
   max-width: 420px;
   aspect-ratio: 4 / 5;
+  /* Se arrastra con el dedo y con el puntero. `pan-y` cede el gesto vertical
+     al scroll de la página: sin eso, tocar la pila para bajar la traba. */
+  touch-action: pan-y;
+  cursor: grab;
 }
+.fcar-deck:active { cursor: grabbing; }
 .fcar-card {
   position: absolute;
   inset: 0;
@@ -3555,4 +3601,5 @@ html.lenis { height: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   .fcar-card-img { transition: none; }
+  .fcar-chip.is-active::before { animation: none; }
 }

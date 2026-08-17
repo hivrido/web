@@ -42,6 +42,19 @@ export default function FeatureCarousel({ items }: { items: CarouselItem[] }) {
   const current = ((step % total) + total) % total;
 
   const next = useCallback(() => setStep((s) => s + 1), []);
+  const prev = useCallback(() => setStep((s) => s - 1), []);
+
+  /* Umbral de arrastre: se decide con distancia y velocidad juntas, no con
+     una sola. Solo por distancia, un gesto corto y rápido —el de siempre en
+     un teléfono— no pasaría; solo por velocidad, arrastrar despacio media
+     pantalla no haría nada. */
+  const SWIPE = 55;
+  const onDragEnd = (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
+    setPaused(false);
+    const power = info.offset.x + info.velocity.x * 0.2;
+    if (power < -SWIPE) next();
+    else if (power > SWIPE) prev();
+  };
 
   /* Se avanza sumando pasos y no fijando el índice: así el movimiento
      siempre va hacia adelante y la lista no rebota al pasar del último al
@@ -114,9 +127,22 @@ export default function FeatureCarousel({ items }: { items: CarouselItem[] }) {
         </div>
       </div>
 
-      {/* ── Pila de imágenes ── */}
+      {/* ── Pila de imágenes ──
+           Arrastrable con dedo y con puntero. Las restricciones en cero hacen
+           que la pila vuelva sola a su lugar: el gesto decide el paso, no la
+           posición donde se soltó. */}
       <div className="fcar-stage">
-        <div className="fcar-deck">
+        <motion.div
+          className="fcar-deck"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          dragMomentum={false}
+          onDragStart={() => setPaused(true)}
+          onDragEnd={onDragEnd}
+          onPointerEnter={() => setPaused(true)}
+          onPointerLeave={() => setPaused(false)}
+        >
           {items.map((item, i) => {
             const st = statusOf(i);
             const active = st === "active";
@@ -175,7 +201,7 @@ export default function FeatureCarousel({ items }: { items: CarouselItem[] }) {
               </motion.article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
