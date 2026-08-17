@@ -14,9 +14,6 @@ export const PROJECTS = [
     title: 'GROW DIGITAL',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Digital'],
-    /* El título del HUD se pinta con el gradiente epic de la home
-       (blanco → lavanda → violeta → magenta → blanco) */
-    gradientTitle: true,
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Diseño Web & APP',
     /* Corta —la usan el HUD, la lista de disciplinas y el panel— */
