@@ -395,6 +395,13 @@ body.live .main-header { opacity: 1; }
 }
 .btn-glow:hover::after, .btn-glow:focus-visible::after { transform: translateX(120%); }
 
+/* Flechas retiradas del HUD en todos los anchos, como el conteo. La
+   navegación queda en el arrastre, la rueda, el toque sobre una tarjeta y
+   las flechas del teclado, que siguen funcionando. Se ocultan por CSS y no
+   se borran del DOM: main.js sigue enganchándoles el click, así volver es
+   borrar esta regla. */
+#hudArrows { display: none; }
+
 .arrow {
   width: 50px; height: 50px;
   display: grid; place-items: center;
@@ -835,9 +842,10 @@ body.live #hud { opacity: 1; }
   .arrow { width: 44px; height: 44px; }
 
   /* La barra se apila y el bloque de proyecto ocupa el ancho completo.
-     Los controles —marcas, contador y flechas— van arriba del título: se lee
-     primero dónde estás y después qué estás mirando, y el pulgar llega a las
-     flechas sin cruzar el texto. */
+     Sin marcas, contador ni flechas queda un solo bloque, así que va como
+     bloque y no como grilla: la fila que ocupaban los controles dejaba un
+     hueco de 16px por el row-gap aunque estuviera vacía. Si vuelven, vuelve
+     la grilla de dos columnas. */
   #hudBar {
     flex-direction: column;
     align-items: stretch;
@@ -846,32 +854,13 @@ body.live #hud { opacity: 1; }
   #hudRight {
     order: 1;
     width: 100%;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
+    display: block;
     text-align: left;
-    gap: 16px 12px;
   }
-  #hudTicksRow {
-    grid-column: 1;
-    grid-row: 1;
-    min-width: 0;
-    gap: 10px;
-    justify-content: flex-start;
-  }
-  #hudArrows { grid-column: 2; grid-row: 1; }
-  /* Compactas: en una fila comparten ancho con las flechas. */
-  #ticks { gap: 5px; }
-  #hudTicksRow .tick { width: 10px; }
-  #hudTicksRow .tick[aria-current='true'] { width: 22px; }
 
   /* El flotante de WhatsApp ocupa el costado derecho: el bloque se detiene
      antes de meterse debajo. */
-  #hudInfo {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    padding-right: 76px;
-  }
+  #hudInfo { padding-right: 76px; }
 
   /* Sin cápsula ni lista de disciplinas, la columna izquierda queda vacía:
      retirarla le devuelve al pie el alto que le sacaba a la escena. */
