@@ -274,9 +274,8 @@ export async function makeCardTexture(project) {
     drawBrandLogo(ctx, CX, ly, lw, '#ffffff');
     ctx.restore();
 
-    // Filete de acento bajo el logotipo
-    ctx.fillStyle = project.accent;
-    ctx.fillRect(CX - 38, ly + BRAND_H * (lw / BRAND_W) / 2 + 30, 76, 3);
+    // Sin filete de acento: el logotipo ya cierra por sí solo, y una raya
+    // debajo solo mete ruido entre la marca y el PLAY.
   } else if (logo) {
     const lw = Math.min(W * 0.46, logo.width * 1.4);  // el PNG es chico: upscale contenido
     const lh = lw * (logo.height / logo.width);

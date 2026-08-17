@@ -610,15 +610,13 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     /* PLAY: plano propio delante de la tarjeta, para poder animarla. Solo lo
        llevan los proyectos con algo publicado que ver.
 
-       La proporción sale del tamaño real de la textura y no de una constante:
-       así conviven la pastilla apaisada y el botón circular sin que la escena
-       tenga que saber cuál le tocó. El redondo va más grande —una pastilla se
-       lee por su texto, un aro por su diámetro—. */
+       La proporción sale del tamaño real de la textura y no de una constante,
+       para que cambiar la forma del botón no obligue a tocar la escena. */
     let play = null;
     if (plays?.[i]) {
       const src = plays[i].image;
       const pAspect = src.width / src.height;
-      const ph = CARD_H * (pAspect < 1.4 ? 0.2 : 0.135);
+      const ph = CARD_H * 0.2;
       const pgeo = new THREE.PlaneGeometry(ph * pAspect, ph, 1, 1);
       play = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({
         map: plays[i],
