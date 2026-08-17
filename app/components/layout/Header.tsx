@@ -2,14 +2,18 @@
 import { useState, useRef, useCallback } from "react";
 import LogoAnimated from "../ui/LogoAnimated";
 
+/* Las tres landings de servicio entran acá y no solo en el pie de sus fichas:
+   son páginas propias, y sin un enlace en el menú no hay forma de llegar. */
 const NAV_ITEMS = [
-  { label: "Home",        href: "#sec1" },
-  { label: "Proyectos",   href: "#sec2" },
-  { label: "Okupas",      href: "/movie/okupas" },
-  { label: "Identidad",   href: "#sec3" },
-  { label: "Servicios",   href: "#sec4" },
+  { label: "Home",         href: "#sec1" },
+  { label: "Proyectos",    href: "#sec2" },
+  { label: "Diseño Web",   href: "/diseno-web" },
+  { label: "Branding",     href: "/branding" },
+  { label: "Agentes IA",   href: "/colmena-agentes" },
+  { label: "Okupas",       href: "/movie/okupas" },
+  { label: "Servicios",    href: "#sec4" },
   { label: "Equipo",       href: "#sec5" },
-  { label: "Partners",    href: "#sec6" },
+  { label: "Partners",     href: "#sec6" },
 ];
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
