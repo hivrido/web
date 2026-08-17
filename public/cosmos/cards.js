@@ -102,10 +102,10 @@ export const PLAY_TEX_W = 320;
 export const PLAY_TEX_H = 132;
 export const PLAY_ASPECT = PLAY_TEX_W / PLAY_TEX_H;
 
-/* Variante circular: un botón de reproducción de toda la vida —aro y
-   triángulo— para las piezas que llevan a mirar algo y no a leer sobre algo.
-   Cuadrada a propósito: scene.js deduce la proporción del plano del propio
-   tamaño de la textura, así conviven las dos formas sin tocar la escena. */
+/* Variante circular: aro con la palabra PLAY adentro, para las piezas que
+   llevan a mirar algo y no a leer sobre algo. Cuadrada a propósito: scene.js
+   deduce la proporción del plano del propio tamaño de la textura, así conviven
+   las dos formas sin tocar la escena. */
 export const PLAY_CIRCLE = 256;
 
 /** @returns {THREE.CanvasTexture} botón circular sobre fondo transparente. */
@@ -133,18 +133,32 @@ export function makePlayCircleTexture(color = GOLD) {
   ctx.stroke();
   ctx.shadowBlur = 0;
 
-  /* Triángulo apenas corrido a la derecha: centrado por su caja se ve
-     desplazado a la izquierda, porque el peso visual está en el vértice. */
-  const t = PLAY_CIRCLE * 0.15;
+  /* La palabra, no el triángulo: dice qué hace sin que haya que interpretar
+     un símbolo. El tracking se dibuja a mano porque ctx.letterSpacing no está
+     en todos lados, y el cuerpo se ajusta solo hasta entrar en el aro. */
+  const label = 'PLAY';
+  const chars = [...label];
+  const track = PLAY_CIRCLE * 0.03;
+  const inner = r * 1.55;              // ancho útil dentro del aro
+
+  let size = Math.round(PLAY_CIRCLE * 0.17);
+  const measure = () => {
+    ctx.font = `900 ${size}px "Orbitron", sans-serif`;
+    return chars.reduce((a, ch) => a + ctx.measureText(ch).width, 0) + track * (chars.length - 1);
+  };
+  while (measure() > inner && size > 10) size -= 1;
+  const textW = measure();
+
   ctx.fillStyle = color;
   ctx.shadowColor = color;
   ctx.shadowBlur = 18;
-  ctx.beginPath();
-  ctx.moveTo(c - t * 0.55 + t * 0.18, c - t);
-  ctx.lineTo(c + t * 0.95 + t * 0.18, c);
-  ctx.lineTo(c - t * 0.55 + t * 0.18, c + t);
-  ctx.closePath();
-  ctx.fill();
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  let px = c - textW / 2;
+  for (const ch of chars) {
+    ctx.fillText(ch, px, c + 1);
+    px += ctx.measureText(ch).width + track;
+  }
   ctx.shadowBlur = 0;
 
   const tex = new THREE.CanvasTexture(canvas);
