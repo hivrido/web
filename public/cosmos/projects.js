@@ -129,12 +129,20 @@ export const PROJECTS = [
   {
     id: 'monolito',
     index: '07',
-    title: 'MONOLITO',
-    category: 'Producto · Sistema',
-    year: '2024',
-    client: 'Grupo Monolito',
-    body: 'Plataforma digital y design system. Componentes documentados, performance auditada y un front que el equipo interno puede sostener solo.',
-    tags: ['Producto', 'Front', 'Sistema'],
+    title: 'HIVRIDO PLAY',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Play'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Plataforma Audiovisual',
+    category: 'Plataforma',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Cine y series en un solo lugar',
+    year: '2026',
+    /* Sin `client`: es plataforma propia */
+    body: 'Nuestra plataforma audiovisual: cine, series, documentales y música de habla hispana en un solo lugar. Producciones propias y contenido curado, con estrenos, tendencias y calendario. Es donde vive todo lo que producimos.',
+    tags: ['Streaming', 'Cine', 'Series', 'Originales'],
+    /* Desvía el link del pie del panel a la plataforma */
+    link: { label: 'Ir a Hivrido PLAY', href: '/movie/' },
     accent: '#C9A84C',
     image: '/images/bg/hivrido-chrome.png',
   },
