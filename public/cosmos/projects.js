@@ -139,7 +139,7 @@ export const PROJECTS = [
     cta: 'Entrar a Hivrido PLAY',
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Plataforma Audiovisual',
-    category: 'Plataforma',
+    category: 'Contenidos',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Cine y series en un solo lugar',
     year: '2026',

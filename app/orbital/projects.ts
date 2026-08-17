@@ -90,7 +90,7 @@ export const PROJECTS: Project[] = [
     id: "monolito",
     index: "07",
     title: "HIVRIDO PLAY",
-    category: "Plataforma",
+    category: "Contenidos",
     year: "2026",
     client: "HIVRIDO",
     body: "Nuestra plataforma audiovisual: cine, series, documentales y música de habla hispana en un solo lugar. Producciones propias y contenido curado. Es donde vive todo lo que producimos.",
