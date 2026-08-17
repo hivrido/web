@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "Proyectos",    href: "#sec2" },
   { label: "Diseño Web",   href: "/diseno-web" },
   { label: "Branding",     href: "/branding" },
+  { label: "Cine & Video", href: "/cine-video" },
   { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Okupas",       href: "/movie/okupas" },
   { label: "Servicios",    href: "#sec4" },
