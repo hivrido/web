@@ -627,7 +627,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       }));
       // Pegado al logotipo, no flotando a media tarjeta: los dos se leen como
       // una sola unidad —marca y acción— y no como dos elementos sueltos.
-      play.position.set(0, -CARD_H * 0.2, 0.014);
+      play.position.set(0, -CARD_H * 0.17, 0.014);
       play.userData.play = i;
       holder.add(play);
 
@@ -642,7 +642,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         blending: THREE.AdditiveBlending,
         opacity: 0,
       }));
-      playGlow.position.set(0, -CARD_H * 0.2, 0.015);
+      playGlow.position.set(0, -CARD_H * 0.17, 0.015);
       playGlow.raycast = () => {};        // el click lo recibe el plano de abajo
       holder.add(playGlow);
     }
