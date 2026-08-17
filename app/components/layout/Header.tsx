@@ -2,20 +2,17 @@
 import { useState, useRef, useCallback } from "react";
 import LogoAnimated from "../ui/LogoAnimated";
 
-/* Las tres landings de servicio entran acá y no solo en el pie de sus fichas:
-   son páginas propias, y sin un enlace en el menú no hay forma de llegar. */
+/* El menú es el mismo mapa que dibujan las fichas del cosmos: una entrada por
+   tarjeta, en su orden. Se fueron las anclas a secciones —#sec1, #sec4— porque
+   la raíz ya no es la página larga sino el anillo, y ahí no existen. */
 const NAV_ITEMS = [
-  { label: "Home",         href: "#sec1" },
-  { label: "Proyectos",    href: "#sec2" },
   { label: "Diseño Web",   href: "/diseno-web" },
+  { label: "Okupas",       href: "/movie/okupas" },
+  { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Branding",     href: "/branding" },
   { label: "Cine & Video", href: "/cine-video" },
-  { label: "Agentes IA",   href: "/colmena-agentes" },
-  { label: "Hivrido PLAY", href: "/movie" },
-  { label: "Okupas",       href: "/movie/okupas" },
-  { label: "Servicios",    href: "#sec4" },
   { label: "Equipo",       href: "/equipo" },
-  { label: "Partners",     href: "#sec6" },
+  { label: "Hivrido PLAY", href: "/movie" },
 ];
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
@@ -86,7 +83,8 @@ export default function Header({ base = "", logoDelay }: { base?: string; logoDe
   return (
     <>
       <header className="main-header">
-        <a href={base || "#sec1"} className="logo-holder" onClick={close}>
+        {/* El logo siempre vuelve a la raíz, que ahora es el anillo */}
+        <a href="/" className="logo-holder" onClick={close}>
           {/* El logo arranca invisible y se dibuja al vencer el retardo. El
               valor por defecto espera al preloader de la home; en una página
               que no lo tiene hay que acortarlo o el header se ve vacío. */}
