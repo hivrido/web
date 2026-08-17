@@ -3,8 +3,10 @@
  * `image` es opcional: si falla la carga, cards.js genera un fondo procedural
  * con la misma paleta, así nunca queda un hueco en el anillo.
  * `logo`  es opcional: si está, reemplaza al título tipográfico en la tarjeta.
- * `href`  es opcional: si está, la tarjeta muestra la pastilla PLAY y el panel
- *         ofrece el CTA para ir a verla.
+ * `href`  es opcional: si está, la tarjeta muestra la pastilla PLAY y el botón
+ *         del panel lleva a verla.
+ * `link`  es la alternativa a `href` para las fichas sin nada publicado: da
+ *         destino y etiqueta al botón del panel, sin encender el PLAY.
  */
 
 export const PROJECTS = [
@@ -25,8 +27,7 @@ export const PROJECTS = [
        el panel retira la ficha técnica de cliente, año y disciplina. */
     body: 'Diseño web y aplicaciones a medida, con el software que hace falta detrás: sistemas CRM, integraciones y automatizaciones que conectan lo que ya usás. Desarrollo de programación a medida personalizada, con Python y las últimas tecnologías, para que cada pieza escale con el negocio.',
     tags: ['Diseño Web', 'Apps', 'CRM', 'Python'],
-    /* Desvía el link del pie del panel: en vez del WhatsApp genérico, lleva a
-       la landing de desarrollo digital. */
+    /* Destino del botón del panel: la landing de desarrollo digital */
     link: { label: 'Ir a Desarrollo digital', href: '/diseno-web/' },
     accent: '#B026FF',
     image: '/images/bg/21.jpg',
@@ -61,7 +62,7 @@ export const PROJECTS = [
     /* Sin `client`: es un servicio propio, no una pieza para alguien */
     body: 'Colmenas de agentes IA que operan solas: atienden consultas, califican interesados, ejecutan procesos y reportan a escala. Conectados a tu CRM, tus campañas y tus canales de comunicación, trabajando mientras dormís. Es PUNY, el motor que corre dentro de Hivrido, adaptado a tu negocio.',
     tags: ['Multi-agente', 'CRM', 'Autónomo', '24/7'],
-    /* Desvía el link del pie del panel a la landing de la colmena */
+    /* Destino del botón del panel: la landing de la colmena */
     link: { label: 'Ir a Colmena de agentes', href: '/colmena-agentes/' },
     accent: '#00E5FF',
     image: '/images/bg/docke.jpg',
@@ -81,7 +82,7 @@ export const PROJECTS = [
     /* Sin `client`: es un servicio propio, no una pieza para alguien */
     body: 'Identidad de marca completa: diseño de logo, paleta, tipografía, voz y todo el sistema visual, documentado en un manual de marca que tu equipo puede aplicar sin depender de nosotros. Construimos marcas que generan reconocimiento y conexión emocional, no un archivo suelto.',
     tags: ['Identidad', 'Logo', 'Manual de Marca', 'Naming'],
-    /* Desvía el link del pie del panel a la landing de branding */
+    /* Destino del botón del panel: la landing de branding */
     link: { label: 'Ir a Branding', href: '/branding/' },
     accent: '#39FF88',
     image: '/images/okupas/okupas-home.webp',
@@ -101,7 +102,7 @@ export const PROJECTS = [
     /* Sin `client`: es un servicio propio, no una pieza para alguien */
     body: 'Producción cinematográfica, videoclips y contenido para marcas. Desarrollamos proyectos desde la idea hasta la pantalla, cuidando cada etapa: desarrollo, guion, rodaje y postproducción. Apostamos a narrativas que trascienden y construyen universos propios.',
     tags: ['Cine', 'Videoclips', 'Dirección', 'Post'],
-    /* Desvía el link del pie del panel a la landing audiovisual */
+    /* Destino del botón del panel: la landing audiovisual */
     link: { label: 'Ir a Cine & Video', href: '/cine-video/' },
     accent: '#7C3AED',
     image: '/images/bg/animacion-poster.jpg',
@@ -121,7 +122,7 @@ export const PROJECTS = [
     /* Sin `client`: es la propia agencia */
     body: 'Hivrido lo dirigen Lucas Manzano y Sergio Podeley, sus dos CEOs. Dos perfiles opuestos complementarios: la dirección artística que pone lo emocional en cada pieza, y la capa tecnológica que la convierte en un sistema que escala. No trabajamos con equipos tercerizados.',
     tags: ['Dirección', 'Estrategia', 'IA', 'Producción'],
-    /* Desvía el link del pie del panel a la página del equipo */
+    /* Destino del botón del panel: la página del equipo */
     link: { label: 'Ir a Equipo', href: '/equipo/' },
     accent: '#FF6A00',
     image: '/images/team/1.jpg',
@@ -144,8 +145,6 @@ export const PROJECTS = [
     /* Sin `client`: es plataforma propia */
     body: 'Nuestra plataforma audiovisual: cine, series, documentales y música de habla hispana en un solo lugar. Producciones propias y contenido curado, con estrenos, tendencias y calendario. Es donde vive todo lo que producimos.',
     tags: ['Streaming', 'Cine', 'Series', 'Originales'],
-    /* Desvía el link del pie del panel a la plataforma */
-    link: { label: 'Ir a Hivrido PLAY', href: '/movie/' },
     accent: '#C9A84C',
     image: '/images/bg/hivrido-chrome.png',
   },
@@ -155,9 +154,9 @@ export const PROJECTS = [
     title: 'PUBLICIDAD',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Ads'],
-    /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    /* Cada entrada es una línea: en un renglón solo, el texto ocupaba casi
-       todo el ancho de la ficha y competía con el título */
+    /* Reemplaza al ornamento de índice sobre el título de la ficha. Cada
+       entrada es una línea: en un renglón solo ocupaba casi todo el ancho
+       de la ficha y competía con el título. */
     kicker: ['Partner de', 'Google y Meta'],
     category: 'Publicidad',
     /* Pie de la ficha, en lugar de `categoría · año` */
@@ -166,7 +165,7 @@ export const PROJECTS = [
     /* Sin `client`: es un servicio propio */
     body: 'Campañas en Meta, Google y YouTube en todos sus formatos: búsqueda, Performance Max, Shopping, in-stream, bumpers y Shorts. Los creativos los producimos nosotros. Y lo que la pauta empuja, el crecimiento de redes y las colaboraciones con artistas e influencers lo sostienen. Todo medido contra el costo real de conseguir un cliente.',
     tags: ['Meta Ads', 'Google Ads', 'YouTube', 'Influencers'],
-    /* Desvía el link del pie del panel a la landing de publicidad */
+    /* Destino del botón del panel: la landing de publicidad */
     link: { label: 'Ir a Publicidad', href: '/publicidad/' },
     accent: '#A78BFA',
     image: '/images/team/2.jpg',

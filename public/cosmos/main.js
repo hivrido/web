@@ -24,7 +24,7 @@ const el = {
   pIndex: $('pIndex'), pTitle: $('pTitle'), pClient: $('pClient'),
   pYear: $('pYear'), pCat: $('pCat'), pBody: $('pBody'), pTags: $('pTags'),
   pWatch: $('pWatch'), pWatchLabel: $('pWatchLabel'),
-  pMeta: $('pMeta'), pAsk: $('pAsk'), pAskLabel: $('pAskLabel'),
+  pMeta: $('pMeta'),
   menuBtn: $('menuBtn'), menuLabel: $('menuLabel'), menu: $('menu'),
   qlist: $('qlist'), live: $('live'),
 };
@@ -106,8 +106,6 @@ function onActive(i) {
 
 /* ═══════════ Panel de detalle ═══════════ */
 
-const WA_URL = 'https://wa.me/5491156072460';
-
 function fillPanel(p) {
   el.pIndex.textContent = p.index;
   el.pTitle.textContent = p.title;
@@ -126,22 +124,14 @@ function fillPanel(p) {
     el.pMeta.hidden = true;
   }
 
-  // El proyecto puede desviar el link del pie a su propia sección del sitio
-  el.pAskLabel.textContent = p.link?.label ?? 'Consultar por este proyecto';
-  el.pAsk.href = p.link?.href ?? WA_URL;
-  if (p.link) {
-    el.pAsk.removeAttribute('target');
-    el.pAsk.removeAttribute('rel');
-  } else {
-    el.pAsk.target = '_blank';
-    el.pAsk.rel = 'noopener';
-  }
-
-  // Solo los proyectos con algo publicado que ver ofrecen el CTA (el mismo
-  // `href` que enciende la pastilla PLAY en la tarjeta).
-  if (p.href) {
-    el.pWatch.href = p.href;
-    el.pWatchLabel.textContent = p.cta ?? 'Ver el proyecto';
+  /* Único destino del panel. Manda `href` —el mismo que enciende la pastilla
+     PLAY en la tarjeta— y si la ficha no tiene nada publicado que ver, toma
+     su `link` a la sección del sitio. Sin ninguno de los dos no hay botón:
+     antes caía a un WhatsApp genérico que no decía a dónde llevaba. */
+  const dest = p.href ? { label: p.cta ?? 'Ver el proyecto', href: p.href } : p.link;
+  if (dest) {
+    el.pWatch.href = dest.href;
+    el.pWatchLabel.textContent = dest.label;
     el.pWatch.hidden = false;
   } else {
     el.pWatch.hidden = true;
