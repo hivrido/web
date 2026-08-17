@@ -286,36 +286,30 @@ export async function makeCardTexture(project) {
       ctx.letterSpacing = `${(-0.01 * size).toFixed(2)}px`;   // el -0.01em de la home
     };
 
-    const widths = () => {
+    const widest = () => {
       setFont();
-      return lines.map((l) => ctx.measureText(l).width);
+      return Math.max(...lines.map((l) => ctx.measureText(l).width));
     };
-    while (Math.max(...widths()) > W - 150 && size > 34) size -= 3;
-    const lineW = widths();
-    const blockW = Math.max(...lineW);
+    while (widest() > W - 150 && size > 34) size -= 3;
+    setFont();
 
     const lineH = size * 0.98;          // el line-height de la home
     const textH = lineH * lines.length;
     const titleY = H * 0.545;           // por debajo del centro: la ficha respira arriba
 
-    /* Alineación a la izquierda del bloque, no centrada línea por línea: las
-       palabras apiladas arrancan todas en la misma vertical y se leen como un
-       bloque. El bloque sí va centrado en la ficha. */
-    const blockX = CX - blockW / 2;
-
-    ctx.textAlign = 'left';
+    // Cada línea centrada sobre el eje de la ficha
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = project.accent;
     ctx.shadowBlur = 26;
     ctx.fillStyle = '#ffffff';
-    lines.forEach((l, i) => ctx.fillText(l, blockX, titleY - textH / 2 + lineH * (i + 0.5)));
+    lines.forEach((l, i) => ctx.fillText(l, CX, titleY - textH / 2 + lineH * (i + 0.5)));
     ctx.shadowBlur = 0;
     ctx.letterSpacing = '0px';
-    ctx.textAlign = 'center';
 
-    // Filete de acento al pie del bloque, alineado con su borde izquierdo
+    // Filete de acento centrado al pie del bloque
     ctx.fillStyle = project.accent;
-    ctx.fillRect(blockX, titleY + textH / 2 + 26, 76, 3);
+    ctx.fillRect(CX - 38, titleY + textH / 2 + 26, 76, 3);
   }
 
   /* Pie de la ficha: categoría y año, o el `meta` del proyecto si trae uno
