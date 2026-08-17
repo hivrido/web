@@ -66,7 +66,7 @@ const ENTRIES = [
   { label: "Film y series", id: "okupas" },
   { label: "Web y app", id: "nebula" },
   { label: "Agentes IA", id: "docke" },
-  { label: "Instalaciones", id: "oraculo" },
+  { label: "Branding", id: "oraculo" },
   { label: "IA / Agentes", id: "puny" },
 ] as const;
 

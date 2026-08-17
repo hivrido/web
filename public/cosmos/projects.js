@@ -72,12 +72,20 @@ export const PROJECTS = [
   {
     id: 'oraculo',
     index: '04',
-    title: 'ORÁCULO',
-    category: 'Instalación · WebGL',
+    title: 'BRANDING',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Marca'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Identidad de Marca',
+    category: 'Branding',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Manual de marca y sistema visual',
     year: '2025',
-    client: 'Bienal de Arte Digital',
-    body: 'Instalación inmersiva que reacciona a la presencia del público. Render en tiempo real proyectado sobre tres superficies sincronizadas.',
-    tags: ['WebGL', 'Sonido', 'Escena'],
+    /* Sin `client`: es un servicio propio, no una pieza para alguien */
+    body: 'Identidad de marca completa: diseño de logo, paleta, tipografía, voz y todo el sistema visual, documentado en un manual de marca que tu equipo puede aplicar sin depender de nosotros. Construimos marcas que generan reconocimiento y conexión emocional, no un archivo suelto.',
+    tags: ['Identidad', 'Logo', 'Manual de Marca', 'Naming'],
+    /* Desvía el link del pie del panel a la landing de branding */
+    link: { label: 'Ir a Branding', href: '/branding/' },
     accent: '#7C3AED',
     image: '/images/okupas/okupas-home.webp',
   },
