@@ -36,8 +36,9 @@ export const PROJECTS = [
     kicker: 'Inteligencia Artificial',
     /* Corta —la usan el HUD, la lista de disciplinas y el panel— */
     category: 'Diseño App & Web',
-    /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'Diseño App & Web · Programación a medida',
+    /* Pie de la ficha, en lugar de `categoría · año`. En dos líneas: en una
+       sola habría que achicarlo a 27px y se pierde contra el fondo. */
+    meta: ['Desarrollamos sistemas', 'a medida personalizados'],
     year: '2025',
     client: 'Estudio Nebula',
     body: 'Sistema de identidad en movimiento: paleta, tipografía y un lenguaje de transiciones que funciona igual en un reel que en una gráfica fija.',

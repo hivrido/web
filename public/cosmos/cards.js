@@ -312,14 +312,57 @@ export async function makeCardTexture(project) {
   }
 
   /* Pie de la ficha: categoría y año, o el `meta` del proyecto si trae uno
-     —para las piezas donde el año no dice nada y sí importan las dos
-     disciplinas—. */
+     —para las piezas donde el año no dice nada y sí importa la frase—.
+
+     Blanco puro, 44px y peso 900. El tamaño solo no alcanzaba: el texto se
+     perdía porque debajo tiene una foto con luces, así que además va sobre
+     una banda oscura propia —degradado hacia los costados, sin borde duro—
+     y con doble sombra: negra para separar del fondo y del acento para
+     integrarlo a la pieza. */
+  const metaSource = project.meta ?? `${project.category} · ${project.year}`;
+  const metaLines = (Array.isArray(metaSource) ? metaSource : [metaSource])
+    .map((s) => s.toUpperCase());
+
+  // Se achica sola si alguna línea no entra: el pie nunca se sale de la ficha
+  let ms = 44;
+  const metaWidest = () => {
+    ctx.font = `900 ${ms}px "Orbitron", sans-serif`;
+    return Math.max(...metaLines.map((l) => ctx.measureText(l).width));
+  };
+  while (metaWidest() > W - 80 && ms > 20) ms -= 1;
+
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = 'rgba(255,255,255,0.52)';
-  ctx.font = '500 21px "Orbitron", sans-serif';
-  const metaLine = project.meta ?? `${project.category} · ${project.year}`;
-  ctx.fillText(metaLine.toUpperCase(), CX, H - 52);
+
+  // Anclado abajo: la última línea siempre cae a la misma altura
+  const metaLH = ms * 1.22;
+  const metaBase = (i) => H - 56 - metaLH * (metaLines.length - 1 - i);
+
+  /* Banda de contraste: el texto necesita fondo propio, si no compite con
+     lo que haya en la foto. Se desvanece a los lados para no leerse como
+     una caja pegada encima. */
+  const bandTop = metaBase(0) - ms;
+  const bandH = H - bandTop;
+  const band = ctx.createLinearGradient(0, 0, W, 0);
+  band.addColorStop(0, 'rgba(4,4,10,0)');
+  band.addColorStop(0.18, 'rgba(4,4,10,0.82)');
+  band.addColorStop(0.82, 'rgba(4,4,10,0.82)');
+  band.addColorStop(1, 'rgba(4,4,10,0)');
+  ctx.fillStyle = band;
+  ctx.fillRect(0, bandTop - 14, W, bandH + 14);
+
+  ctx.fillStyle = '#ffffff';
+  metaLines.forEach((l, i) => {
+    // Primera pasada: sombra negra dura, para despegarlo del fondo
+    ctx.shadowColor = 'rgba(0,0,0,0.9)';
+    ctx.shadowBlur = 10;
+    ctx.fillText(l, CX, metaBase(i));
+    // Segunda: glow del acento, que lo integra a la pieza
+    ctx.shadowColor = project.accent;
+    ctx.shadowBlur = 22;
+    ctx.fillText(l, CX, metaBase(i));
+  });
+  ctx.shadowBlur = 0;
 
   /* ── Scanlines: traman todo, tipografía incluida, como pantalla ── */
   ctx.globalAlpha = 0.13;
