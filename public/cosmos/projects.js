@@ -9,23 +9,8 @@
 
 export const PROJECTS = [
   {
-    id: 'okupas',
-    index: '01',
-    title: 'OKUPAS',
-    category: 'Serie · Restauración',
-    year: '2025',
-    client: 'Underground Contenidos',
-    body: 'Restauración y remasterización completa de la serie. Reconstrucción de color plano a plano, limpieza de grano y entrega en 4K para plataforma.',
-    tags: ['Color', 'Restauración', '4K'],
-    accent: '#FF2E9A',
-    image: '/images/okupas/capitulo1.jpg',
-    logo: '/images/okupas/logo-okupas.png',
-    href: '/movie/okupas/',
-    cta: 'Ver la serie',
-  },
-  {
     id: 'nebula',
-    index: '02',
+    index: '01',
     title: 'GROW DIGITAL',
     /* La ficha dice otra cosa que el HUD, y en dos líneas */
     cardTitle: ['Ecosistema', 'Digital'],
@@ -44,6 +29,21 @@ export const PROJECTS = [
     tags: ['Branding', 'Motion', 'Arte'],
     accent: '#B026FF',
     image: '/images/bg/21.jpg',
+  },
+  {
+    id: 'okupas',
+    index: '02',
+    title: 'OKUPAS',
+    category: 'Serie · Restauración',
+    year: '2025',
+    client: 'Underground Contenidos',
+    body: 'Restauración y remasterización completa de la serie. Reconstrucción de color plano a plano, limpieza de grano y entrega en 4K para plataforma.',
+    tags: ['Color', 'Restauración', '4K'],
+    accent: '#FF2E9A',
+    image: '/images/okupas/capitulo1.jpg',
+    logo: '/images/okupas/logo-okupas.png',
+    href: '/movie/okupas/',
+    cta: 'Ver la serie',
   },
   {
     id: 'docke',
