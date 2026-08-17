@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { label: "Cine & Video", href: "/cine-video" },
   { label: "Equipo",       href: "/equipo" },
   { label: "Hivrido PLAY", href: "/movie" },
+  { label: "Publicidad",   href: "/publicidad" },
 ];
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";

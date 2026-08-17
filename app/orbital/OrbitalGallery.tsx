@@ -67,7 +67,7 @@ const ENTRIES = [
   { label: "Web y app", id: "nebula" },
   { label: "Agentes IA", id: "docke" },
   { label: "Branding", id: "oraculo" },
-  { label: "IA / Agentes", id: "puny" },
+  { label: "Publicidad", id: "puny" },
   { label: "Hivrido PLAY", id: "monolito" },
   { label: "Equipo", id: "ritual" },
 ] as const;

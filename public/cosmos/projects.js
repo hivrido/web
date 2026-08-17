@@ -152,18 +152,20 @@ export const PROJECTS = [
   {
     id: 'puny',
     index: '08',
-    title: 'PUNY',
+    title: 'PUBLICIDAD',
     /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Puny'],
+    cardTitle: ['Ads'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Agente Orquestador',
-    category: 'Orquestación',
+    kicker: 'Partner de Meta',
+    category: 'Publicidad',
     /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'El agente que dirige a los agentes',
+    meta: 'Inversión que vuelve en clientes',
     year: '2026',
-    /* Sin `client` ni `link`: es el motor propio y no tiene landing */
-    body: 'No hace el trabajo: decide quién lo hace. Recibe un objetivo en lenguaje natural, lo descompone en tareas y las reparte entre agentes especializados —ventas, contenido, campañas, automatización y CRM—, le pasa a cada uno el contexto que necesita y revisa lo que devuelve antes de darlo por bueno. Si una tarea falla o se desvía, la reasigna. Es el motor que corre dentro de Hivrido, y la misma arquitectura que desplegamos en cada colmena.',
-    tags: ['Orquestador', 'Multi-agente', 'Contexto', 'Autónomo'],
+    /* Sin `client`: es un servicio propio */
+    body: 'Campañas en Meta, Google y YouTube en todos sus formatos: búsqueda, Performance Max, Shopping, in-stream, bumpers y Shorts. Los creativos los producimos nosotros. Y lo que la pauta empuja, el crecimiento de redes y las colaboraciones con artistas e influencers lo sostienen. Todo medido contra el costo real de conseguir un cliente.',
+    tags: ['Meta Ads', 'Google Ads', 'YouTube', 'Influencers'],
+    /* Desvía el link del pie del panel a la landing de publicidad */
+    link: { label: 'Ir a Publicidad', href: '/publicidad/' },
     accent: '#A78BFA',
     image: '/images/team/2.jpg',
   },
