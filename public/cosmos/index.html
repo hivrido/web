@@ -153,7 +153,9 @@
   <h2 id="pTitle" class="mt-5 text-[clamp(2rem,4.4vw,3.2rem)] font-bold leading-[.92]">GROW DIGITAL</h2>
   <div class="rule mt-7"></div>
 
-  <dl class="mono mt-7 grid grid-cols-[auto_1fr] gap-x-7 gap-y-3.5">
+  <!-- Ficha técnica: solo en las piezas hechas para un cliente. En los
+       servicios propios no aplica y la oculta fillPanel(). -->
+  <dl id="pMeta" class="mono mt-7 grid grid-cols-[auto_1fr] gap-x-7 gap-y-3.5">
     <dt class="text-[var(--dim)]">Cliente</dt><dd id="pClient" class="text-white">—</dd>
     <dt class="text-[var(--dim)]">Año</dt><dd id="pYear" class="text-white">—</dd>
     <dt class="text-[var(--dim)]">Disciplina</dt><dd id="pCat" class="text-white">—</dd>
@@ -167,8 +169,9 @@
     <a id="pWatch" class="btn-glow mono inline-flex" hidden>
       <span id="pWatchLabel">Ver la serie</span> <span aria-hidden="true">→</span>
     </a>
-    <a href="https://wa.me/5491156072460" target="_blank" rel="noopener" class="linkline mono">
-      Consultar por este proyecto <span aria-hidden="true">→</span>
+    <!-- Destino y etiqueta los fija el proyecto; sin `link` cae al WhatsApp -->
+    <a id="pAsk" href="https://wa.me/5491156072460" target="_blank" rel="noopener" class="linkline mono">
+      <span id="pAskLabel">Consultar por este proyecto</span> <span aria-hidden="true">→</span>
     </a>
   </div>
 </aside>

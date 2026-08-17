@@ -24,6 +24,7 @@ const el = {
   pIndex: $('pIndex'), pTitle: $('pTitle'), pClient: $('pClient'),
   pYear: $('pYear'), pCat: $('pCat'), pBody: $('pBody'), pTags: $('pTags'),
   pWatch: $('pWatch'), pWatchLabel: $('pWatchLabel'),
+  pMeta: $('pMeta'), pAsk: $('pAsk'), pAskLabel: $('pAskLabel'),
   menuBtn: $('menuBtn'), menuLabel: $('menuLabel'), menu: $('menu'),
   qlist: $('qlist'), live: $('live'),
 };
@@ -106,14 +107,36 @@ function onActive(i) {
 
 /* ═══════════ Panel de detalle ═══════════ */
 
+const WA_URL = 'https://wa.me/5491156072460';
+
 function fillPanel(p) {
   el.pIndex.textContent = p.index;
   el.pTitle.textContent = p.title;
-  el.pClient.textContent = p.client;
-  el.pYear.textContent = p.year;
-  el.pCat.textContent = p.category;
   el.pBody.textContent = p.body;
   el.pTags.innerHTML = p.tags.map((t) => `<span class="tag">${t}</span>`).join('');
+
+  /* Ficha técnica solo donde significa algo: una pieza hecha para alguien.
+     En los servicios propios —sin `client`— cliente, año y disciplina no
+     dicen nada y el bloque se retira entero. */
+  if (p.client) {
+    el.pClient.textContent = p.client;
+    el.pYear.textContent = p.year;
+    el.pCat.textContent = p.category;
+    el.pMeta.hidden = false;
+  } else {
+    el.pMeta.hidden = true;
+  }
+
+  // El proyecto puede desviar el link del pie a su propia sección del sitio
+  el.pAskLabel.textContent = p.link?.label ?? 'Consultar por este proyecto';
+  el.pAsk.href = p.link?.href ?? WA_URL;
+  if (p.link) {
+    el.pAsk.removeAttribute('target');
+    el.pAsk.removeAttribute('rel');
+  } else {
+    el.pAsk.target = '_blank';
+    el.pAsk.rel = 'noopener';
+  }
 
   // Solo los proyectos con algo publicado que ver ofrecen el CTA (el mismo
   // `href` que enciende la pastilla PLAY en la tarjeta).

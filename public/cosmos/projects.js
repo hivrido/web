@@ -27,9 +27,13 @@ export const PROJECTS = [
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Desarrollamos sistemas personalizados',
     year: '2025',
-    client: 'HIVRIDO',
-    body: 'Diseño web y aplicaciones a medida, con el software que hace falta detrás: sistemas CRM, integraciones y automatizaciones que conectan lo que ya usás. Desarrollamos con Python y las últimas tecnologías, y cada pieza escala con el negocio.',
+    /* Sin `client`: es un servicio propio, no una pieza para alguien, así que
+       el panel retira la ficha técnica de cliente, año y disciplina. */
+    body: 'Diseño web y aplicaciones a medida, con el software que hace falta detrás: sistemas CRM, integraciones y automatizaciones que conectan lo que ya usás. Desarrollo de programación a medida personalizada, con Python y las últimas tecnologías, para que cada pieza escale con el negocio.',
     tags: ['Diseño Web', 'Apps', 'CRM', 'Python'],
+    /* Desvía el link del pie del panel: en vez del WhatsApp genérico, lleva a
+       la landing de desarrollo digital. */
+    link: { label: 'Ir a Desarrollo digital', href: '/diseno-web/' },
     accent: '#B026FF',
     image: '/images/bg/21.jpg',
   },
