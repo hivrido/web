@@ -314,15 +314,8 @@ export default function Services() {
           className="svc-modal-close"
           onClick={() => setActive(null)}
           aria-label="Cerrar"
-          style={{
-            background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.secondary})`,
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent"
-          }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={COLORS.primary} strokeWidth="2">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
@@ -395,11 +388,6 @@ export default function Services() {
             href={`https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20me%20interesa%20${encodeURIComponent(s.title)}`}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              color: "#000",
-              background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.secondary})`,
-              boxShadow: `0 0 40px ${COLORS.primary}, 0 0 30px ${COLORS.secondary}, 0 0 50px ${COLORS.secondary}`,
-            }}
           >
             Consultar ahora
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

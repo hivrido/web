@@ -1452,25 +1452,7 @@ body:has(.orbital) { --col-w: 0px; }
   padding: 24px;
   cursor: pointer;
 }
-.proj-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid var(--border);
-  color: rgba(255,255,255,0.6);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  --bevel: 7px;
-  clip-path: var(--clip-bevel);
-  z-index: 1;
-}
-.proj-modal-close:hover { background: var(--violet); border-color: var(--violet); color: #fff; }
+/* Forma y color los pone el bloque compartido de botones de modal, más abajo */
 .proj-modal-close:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .proj-modal-inner {
   position: relative;
@@ -2312,27 +2294,66 @@ html.lenis { height: auto; }
   height: 2px;
   background: linear-gradient(to right, transparent, rgba(255,10,130,0.8), rgba(196,0,106,0.4), transparent);
 }
-.svc-modal-close {
+/* ═══════════════════════════════════════════════════════════
+   Botones de los modales — la estética de la portada
+   Portado de public/cosmos/styles.css. Cada modal traía su propio
+   botón biselado y gris, que no se parecía a nada de lo que el
+   visitante ya vio al entrar: el cerrar es el mismo círculo con la
+   luz corriendo por el aro, y el CTA la misma píldora.
+   ═══════════════════════════════════════════════════════════ */
+
+@property --beam { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes modal-beam { to { --beam: 360deg; } }
+
+.svc-modal-close,
+.proj-modal-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.4);
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
-  --bevel: 6px;
-  clip-path: var(--clip-bevel);
-}
-.svc-modal-close:hover {
+  top: clamp(18px, 2.4vw, 24px);
+  right: clamp(18px, 2.4vw, 24px);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--violet) 65%, transparent);
+  background: color-mix(in srgb, var(--violet) 20%, rgba(10, 8, 18, 0.72));
   color: #fff;
-  border-color: rgba(255,10,130,0.5);
-  background: rgba(255,10,130,0.1);
+  cursor: pointer;
+  clip-path: none;   /* releva al bisel que traían antes */
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+              0 0 26px -8px var(--violet);
+  transition: border-color 0.3s ease, background 0.3s ease,
+              box-shadow 0.3s ease, transform 0.3s ease;
+  z-index: 2;
+}
+.svc-modal-close:hover,
+.proj-modal-close:hover {
+  border-color: var(--violet-light);
+  background: color-mix(in srgb, var(--violet) 38%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+              0 0 36px -6px var(--violet);
+  transform: rotate(90deg);
+}
+/* La luz del aro. Gira el ángulo del degradado y no el elemento: rotarlo
+   pelearía con el giro de la X en el hover. */
+.svc-modal-close::before,
+.proj-modal-close::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 200deg,
+    rgba(255, 27, 141, 0.7) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  animation: modal-beam 2.6s linear infinite;
+  pointer-events: none;
 }
 .svc-modal-num-label {
   font-family: var(--font-display), sans-serif;
@@ -2405,28 +2426,75 @@ html.lenis { height: auto; }
   background: transparent;
 }
 .svc-modal-cta-row { display: flex; }
+
+/* La misma píldora que cierra las fichas de la portada: redondeada, fondo
+   traslúcido con el acento, texto en blanco y la luz recorriendo el borde. */
 .svc-modal-cta {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
+  min-height: 48px;
+  padding: 14px 28px;
+  border-radius: 999px;
   font-family: var(--font-display), sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: #fff;
-  background: linear-gradient(135deg, rgba(255,10,130,0.7), rgba(196,0,106,0.4));
-  border: 1px solid rgba(255,10,130,0.5);
-  padding: 14px 28px;
+  border: 1px solid color-mix(in srgb, var(--violet) 45%, transparent);
+  background: color-mix(in srgb, var(--violet) 14%, transparent);
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  transition: background 0.4s ease, border-color 0.4s ease,
+              box-shadow 0.4s ease, transform 0.3s ease;
+}
+/* Destello del hover. Viaja con background-position y no desplazando el
+   pseudo-elemento: un elemento desplazado se lleva su propio recorte puesto
+   y la luz terminaría flotando al costado del botón. */
+.svc-modal-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.22) 50%, transparent 70%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  transition: background-position 0.8s ease;
+  pointer-events: none;
+}
+/* Luz del borde. La máscara es de dos capas restadas porque la píldora no es
+   un círculo y la radial del aro no le sirve. */
+.svc-modal-cta::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 200deg,
+    rgba(255, 27, 141, 0.7) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: modal-beam 2.6s linear infinite;
+  pointer-events: none;
 }
 .svc-modal-cta:hover {
-  background: linear-gradient(135deg, rgba(255,10,130,0.9), rgba(196,0,106,0.6));
-  box-shadow: 0 0 30px rgba(255,10,130,0.35);
-  transform: translateX(4px);
+  background: color-mix(in srgb, var(--violet) 26%, transparent);
+  border-color: var(--violet-light);
+  box-shadow: 0 0 34px -6px var(--violet);
+  transform: translateY(-2px);
 }
+.svc-modal-cta:hover::after { background-position: 0 0; }
 
 @media (max-width: 600px) {
   .svc-modal-overlay { padding: 12px; align-items: flex-end; }
