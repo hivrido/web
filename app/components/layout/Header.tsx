@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: "Branding",     href: "/branding" },
   { label: "Cine & Video", href: "/cine-video" },
   { label: "Agentes IA",   href: "/colmena-agentes" },
+  { label: "Hivrido PLAY", href: "/movie" },
   { label: "Okupas",       href: "/movie/okupas" },
   { label: "Servicios",    href: "#sec4" },
   { label: "Equipo",       href: "/equipo" },
