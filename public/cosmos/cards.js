@@ -258,7 +258,17 @@ export async function makeCardTexture(project) {
   // 900: el peso de los títulos epic de la home. waitForFonts lo espera —
   // si no está cargado, el canvas cae al peso más cercano y sale flaco.
   ctx.font = '900 34px "Orbitron", sans-serif';
-  ctx.fillText(project.kicker ? project.kicker.toUpperCase() : `[= ${project.index} =]`, CX, H * (logo ? 0.21 : 0.30));
+
+  /* El kicker admite varias líneas. Se ancla la última a la altura de
+     siempre y las anteriores crecen hacia arriba: así el aire entre el
+     ornamento y el título no cambia según cuántas líneas traiga. */
+  const kickerSource = project.kicker ?? `[= ${project.index} =]`;
+  const kickerLines = (Array.isArray(kickerSource) ? kickerSource : [kickerSource])
+    .map((s) => s.toUpperCase());
+  const kickerBase = H * (logo ? 0.21 : 0.30);
+  const kickerLH = 34 * 1.18;
+  kickerLines.forEach((l, i) =>
+    ctx.fillText(l, CX, kickerBase - kickerLH * (kickerLines.length - 1 - i)));
   ctx.shadowBlur = 0;
 
   /* ── Marca propia del proyecto ──

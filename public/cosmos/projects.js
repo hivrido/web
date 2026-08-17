@@ -156,7 +156,9 @@ export const PROJECTS = [
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Ads'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Partner de Meta',
+    /* Cada entrada es una línea: en un renglón solo, el texto ocupaba casi
+       todo el ancho de la ficha y competía con el título */
+    kicker: ['Partner de', 'Google y Meta'],
     category: 'Publicidad',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Inversión que vuelve en clientes',

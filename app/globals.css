@@ -2966,7 +2966,11 @@ html.lenis { height: auto; }
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #000;
+  /* Blanco sobre el degradado, no negro: el violeta y el magenta son medios
+     y el negro encima los apagaba. La sombra sostiene el contraste en el
+     extremo magenta, que es el más claro del degradado. */
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   box-shadow: 0 0 34px rgba(124, 58, 237, 0.45);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -3059,7 +3063,8 @@ html.lenis { height: auto; }
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #000;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   background: linear-gradient(135deg, #7C3AED, #FF1B8D);
   box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
