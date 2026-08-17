@@ -3217,6 +3217,19 @@ html.lenis { height: auto; }
   filter: grayscale(0) contrast(1);
   transform: scale(1.04);
 }
+
+/* ── Variante retrato ──
+   El 16/10 está pensado para capturas de pantalla; con una foto vertical de
+   una persona, el cover recorta arriba y abajo y la cabeza queda afuera. Acá
+   el encuadre se para y el foco sube al tercio superior, que es donde está la
+   cara. El ancho máximo evita que dos tarjetas verticales se vuelvan gigantes
+   en pantallas anchas. */
+.web-works--retrato {
+  max-width: 900px;
+  margin-inline: auto;
+}
+.web-works--retrato .web-work-media { aspect-ratio: 4 / 5; }
+.web-works--retrato .web-work-media img { object-position: 50% 18%; }
 .web-work-body {
   display: flex;
   flex-direction: column;

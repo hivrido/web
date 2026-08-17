@@ -56,6 +56,8 @@ export type LandingContent = {
   servicios: Servicio[];
   trabajos: { num: string; titulo: string; tags: string[]; desc: string; img: string }[];
   trabajosTitle: { eyebrow: string; lines: string[] };
+  /** Grilla en formato retrato: para fotos de personas, no de pantallas. */
+  trabajosRetrato?: boolean;
   testimonios: { nombre: string; empresa: string; texto: string }[];
   garantias: [string, string][];
   cta: { title: string; text: string; asunto: string; mail: string };
@@ -483,7 +485,10 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
         <div className="section-container">
           <SectionTitle eyebrow={content.trabajosTitle.eyebrow} lines={content.trabajosTitle.lines} />
 
-          <div className="web-works" ref={trabajosRef}>
+          <div
+            className={`web-works${content.trabajosRetrato ? " web-works--retrato" : ""}`}
+            ref={trabajosRef}
+          >
             {content.trabajos.map((t) => (
               <article className="web-work" key={t.num}>
                 <div className="web-work-media">
@@ -491,7 +496,7 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
                     src={t.img}
                     alt={t.titulo}
                     width={640}
-                    height={420}
+                    height={content.trabajosRetrato ? 800 : 420}
                     sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
                     unoptimized
                   />
