@@ -109,36 +109,41 @@ export function makePlayTexture() {
   canvas.height = PLAY_TEX_H;
   const ctx = canvas.getContext('2d');
 
+  /* Fino: trazo de 1.4 en vez de 2.5, peso 600 y el doble de tracking. Una
+     pastilla ancha y baja con la letra suelta se lee premium; la misma forma
+     con borde grueso y letra apretada se lee como un botón de sistema. */
   const label = 'PLAY';
-  ctx.font = '700 34px "Orbitron", sans-serif';
+  ctx.font = '600 30px "Orbitron", sans-serif';
   // El tracking se dibuja a mano: ctx.letterSpacing no está en todos lados.
-  const track = 7;
+  const track = 13;
   const chars = [...label];
   const textW = chars.reduce((a, c) => a + ctx.measureText(c).width, 0) + track * (chars.length - 1);
 
-  const w = textW + 68;
-  const h = 74;
+  const w = textW + 76;
+  const h = 66;
   const cx = PLAY_TEX_W / 2;
   const cy = PLAY_TEX_H / 2;
   const x = cx - w / 2;
   const y = cy - h / 2;
 
-  ctx.fillStyle = 'rgba(10,7,16,0.55)';
-  roundRect(ctx, x, y, w, h, 14);
+  ctx.fillStyle = 'rgba(10,7,16,0.5)';
+  roundRect(ctx, x, y, w, h, h / 2);
   ctx.fill();
 
   ctx.shadowColor = GOLD;
-  ctx.shadowBlur = 22;
+  ctx.shadowBlur = 16;
   ctx.strokeStyle = GOLD;
-  ctx.lineWidth = 2.5;
-  roundRect(ctx, x, y, w, h, 14);
+  ctx.lineWidth = 1.4;
+  roundRect(ctx, x, y, w, h, h / 2);
   ctx.stroke();
   ctx.shadowBlur = 0;
 
   ctx.fillStyle = GOLD;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  let px = cx - textW / 2;
+  // El tracking deja un hueco sobrante al final: medio paso a la derecha lo
+  // compensa, si no la palabra queda descentrada dentro de la pastilla.
+  let px = cx - textW / 2 + track / 2;
   for (const c of chars) {
     ctx.fillText(c, px, cy + 1);
     px += ctx.measureText(c).width + track;

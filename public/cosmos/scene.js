@@ -624,7 +624,9 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         depthWrite: false,
         opacity: 0,
       }));
-      play.position.set(0, -CARD_H * 0.235, 0.014);  // bajo el logo, apenas al frente
+      // Pegado al logotipo, no flotando a media tarjeta: los dos se leen como
+      // una sola unidad —marca y acción— y no como dos elementos sueltos.
+      play.position.set(0, -CARD_H * 0.2, 0.014);
       play.userData.play = i;
       holder.add(play);
     }
