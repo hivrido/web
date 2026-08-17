@@ -297,7 +297,29 @@ export async function makeCardTexture(project) {
     const textH = lineH * lines.length;
     const titleY = H * 0.545;           // por debajo del centro: la ficha respira arriba
 
+    /* Velo detrás del título. El fondo de la ficha es una foto y su detalle
+       —textos, caras, luces— compite con la tipografía: es lo que hace que
+       el mismo blanco se vea sólido en una ficha y lavado en otra. Elipse
+       oscura centrada en el bloque, suave en todos los bordes para que no se
+       lea como una caja, y del ancho del texto para no oscurecer de más en
+       los títulos cortos. */
+    const scrimW = Math.min(W * 0.95, widest() + 260);
+    const scrimH = textH + 150;
+    ctx.save();
+    ctx.translate(CX, titleY);
+    ctx.scale(1, scrimH / scrimW);
+    const scrim = ctx.createRadialGradient(0, 0, 0, 0, 0, scrimW / 2);
+    scrim.addColorStop(0, 'rgba(4,4,10,0.86)');
+    scrim.addColorStop(0.5, 'rgba(4,4,10,0.62)');
+    scrim.addColorStop(1, 'rgba(4,4,10,0)');
+    ctx.fillStyle = scrim;
+    ctx.beginPath();
+    ctx.arc(0, 0, scrimW / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
     // Cada línea centrada sobre el eje de la ficha
+    setFont();
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = project.accent;
