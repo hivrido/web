@@ -109,12 +109,20 @@ export const PROJECTS = [
   {
     id: 'ritual',
     index: '06',
-    title: 'RITUAL',
-    category: 'Live · Mapping',
-    year: '2023',
-    client: 'Ritual Live',
-    body: 'Experiencia en vivo para tres mil personas. Escenografía, mapping y contenido generativo corriendo sincronizado con el set del artista.',
-    tags: ['Live', 'Mapping', 'Show'],
+    title: 'EQUIPO',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Equipo'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Lucas Manzano & Sergio Podeley',
+    category: 'Equipo',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Los que te atienden son los que hacen',
+    year: '2025',
+    /* Sin `client`: es la propia agencia */
+    body: 'Hivrido lo dirigen Lucas Manzano y Sergio Podeley, sus dos CEOs. Dos perfiles opuestos complementarios: la dirección artística que pone lo emocional en cada pieza, y la capa tecnológica que la convierte en un sistema que escala. No trabajamos con equipos tercerizados.',
+    tags: ['Dirección', 'Estrategia', 'IA', 'Producción'],
+    /* Desvía el link del pie del panel a la página del equipo */
+    link: { label: 'Ir a Equipo', href: '/equipo/' },
     accent: '#FF6A00',
     image: '/images/team/1.jpg',
   },

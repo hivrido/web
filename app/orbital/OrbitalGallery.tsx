@@ -68,6 +68,7 @@ const ENTRIES = [
   { label: "Agentes IA", id: "docke" },
   { label: "Branding", id: "oraculo" },
   { label: "IA / Agentes", id: "puny" },
+  { label: "Equipo", id: "ritual" },
 ] as const;
 
 const pad = (n: number) => String(n).padStart(2, "0");
