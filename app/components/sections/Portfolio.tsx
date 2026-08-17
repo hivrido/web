@@ -36,7 +36,16 @@ const PROJECTS: Project[] = [
   },
 ];
 
-export default function Portfolio() {
+/**
+ * `id`, `num` y `heading` existen para que la sección se pueda montar fuera de
+ * la home —la landing de cine la reusa con otro título— sin duplicar la lista
+ * ni, sobre todo, el reproductor modal.
+ */
+export default function Portfolio({
+  id = "sec2",
+  num = "02",
+  heading,
+}: { id?: string; num?: string | null; heading?: React.ReactNode } = {}) {
   const [playing, setPlaying] = useState<Project | null>(null);
   const [mounted, setMounted] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
@@ -114,16 +123,18 @@ export default function Portfolio() {
 
   return (
     <>
-      <section id="sec2" className="portfolio-section section">
+      <section id={id} className="portfolio-section section">
         <div className="container">
-          <div className="section-num">02</div>
+          {num && <div className="section-num">{num}</div>}
 
-          <ScrollReveal>
-            <div className="section-title">
-              <GlitchText text="PROYECTOS" tag="h2" />
-              <p>Producciones que dejan huella.</p>
-            </div>
-          </ScrollReveal>
+          {heading ?? (
+            <ScrollReveal>
+              <div className="section-title">
+                <GlitchText text="PROYECTOS" tag="h2" />
+                <p>Producciones que dejan huella.</p>
+              </div>
+            </ScrollReveal>
+          )}
 
           <div ref={listRef} className="proj-list">
             {PROJECTS.map((p) => (

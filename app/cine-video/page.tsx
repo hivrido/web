@@ -3,6 +3,8 @@ import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign, { type LandingContent } from "../components/sections/WebDesign";
+import Portfolio from "../components/sections/Portfolio";
+import SectionTitle from "../components/ui/SectionTitle";
 
 /**
  * Página de destino para cine y producción audiovisual.
@@ -57,6 +59,16 @@ const CONTENT: LandingContent = {
     "Restauración 4K",
   ],
   title: { eyebrow: "Qué hacemos", lines: ["Historias que", "trascienden"] },
+  /* Los trailers van antes que la lista de servicios: en una productora, lo
+     que convence es ver una pieza, no leer qué se ofrece. Es el mismo bloque
+     de la home —con su reproductor— montado con otro título. */
+  extra: (
+    <Portfolio
+      id="sec-filmamos"
+      num={null}
+      heading={<SectionTitle eyebrow="Trabajos" lines={["Ya lo", "filmamos"]} />}
+    />
+  ),
   lead: (
     <>
       Hacemos <strong>producción cinematográfica</strong>, <strong>videoclips</strong> y{" "}
@@ -121,15 +133,6 @@ const CONTENT: LandingContent = {
       stat: ["4K", "Entrega lista para plataforma"],
     },
   ],
-  trabajos: [
-    { num: ".01", titulo: "Okupas", tags: ["Serie", "Restauración"], desc: "Restauración y remasterización completa en 4K para plataforma.", img: "/images/folio/1.webp" },
-    { num: ".02", titulo: "El Docke", tags: ["Trailer", "Cine"], desc: "Retrato cinematográfico de identidad, comunidad y territorio.", img: "/images/folio/8.webp" },
-    { num: ".03", titulo: "Chamamé", tags: ["Documental", "Música"], desc: "La música como ritual: un viaje al corazón de una tradición viva.", img: "/images/folio/2.webp" },
-    { num: ".04", titulo: "Session One", tags: ["Trailer", "Motor"], desc: "Velocidad y estética: una pieza construida para impactar.", img: "/images/folio/3.webp" },
-    { num: ".05", titulo: "Videoclips", tags: ["Artistas", "Dirección"], desc: "Piezas que le dan imagen propia a la música de cada artista.", img: "/images/folio/5.webp" },
-    { num: ".06", titulo: "Contenido de marca", tags: ["Campañas", "Redes"], desc: "Producción continua para marcas, con narrativa y no solo formato.", img: "/images/folio/27.webp" },
-  ],
-  trabajosTitle: { eyebrow: "Trabajos", lines: ["Ya lo", "filmamos"] },
   testimonios: [
     { nombre: "M. Maioli", empresa: "mympropiedades.com.ar", texto: "Desde el primer día se pusieron la camiseta y llevaron adelante todo nuestro proyecto con una visión increíble. Manual de marca, logo, renders, material para redes, una web y app móvil impecables, un ERP a medida que nos ordenó la vida y una plataforma publicitaria que nos hizo volar en el mercado inmobiliario." },
     { nombre: "C. Maggione", empresa: "telotomo.com", texto: "Un lujo de punta a punta. Un equipo que entiende de tecnología y de negocios, que se mete de lleno en el proyecto y lo lleva al máximo nivel. Nos ayudaron a revolucionar el mercado de la compra de autos, y el resultado habla por sí solo." },

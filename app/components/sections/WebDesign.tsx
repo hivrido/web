@@ -54,8 +54,13 @@ export type LandingContent = {
   title: { eyebrow: string; lines: string[] };
   lead: React.ReactNode;
   servicios: Servicio[];
-  trabajos: { num: string; titulo: string; tags: string[]; desc: string; img: string }[];
-  trabajosTitle: { eyebrow: string; lines: string[] };
+  /** Bloque propio entre la cinta y los servicios: la landing de cine mete
+   *  ahí los trailers, que se miran antes de leer qué hacemos. */
+  extra?: React.ReactNode;
+  /** Sin trabajos, la grilla no se monta: hay páginas que muestran su obra
+   *  con otro formato. */
+  trabajos?: { num: string; titulo: string; tags: string[]; desc: string; img: string }[];
+  trabajosTitle?: { eyebrow: string; lines: string[] };
   /** Grilla en formato retrato: para fotos de personas, no de pantallas. */
   trabajosRetrato?: boolean;
   testimonios: { nombre: string; empresa: string; texto: string }[];
@@ -459,6 +464,8 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
         </div>
       </div>
 
+      {content.extra}
+
       {/* ── Servicios ── */}
       <section id={content.id} className="services-section section" style={{ background: "var(--bg)", padding: "120px 0", position: "relative" }}>
         <div className="section-container">
@@ -481,9 +488,13 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
       {content.hive !== false && <AIHiveSection ctaHref={`#${content.id}`} />}
 
       {/* ── Trabajos ── */}
+      {content.trabajos?.length ? (
       <section id="sec-trabajos" className="web-section web-section--alt section">
         <div className="section-container">
-          <SectionTitle eyebrow={content.trabajosTitle.eyebrow} lines={content.trabajosTitle.lines} />
+          <SectionTitle
+            eyebrow={content.trabajosTitle?.eyebrow ?? "Trabajos"}
+            lines={content.trabajosTitle?.lines ?? ["Ya lo", "hicimos"]}
+          />
 
           <div
             className={`web-works${content.trabajosRetrato ? " web-works--retrato" : ""}`}
@@ -516,6 +527,7 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
           </div>
         </div>
       </section>
+      ) : null}
 
       {/* ── Testimonios ── */}
       <section className="web-section section">
