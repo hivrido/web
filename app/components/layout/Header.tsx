@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Okupas",       href: "/movie/okupas" },
   { label: "Servicios",    href: "#sec4" },
-  { label: "Equipo",       href: "#sec5" },
+  { label: "Equipo",       href: "/equipo" },
   { label: "Partners",     href: "#sec6" },
 ];
 
