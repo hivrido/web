@@ -15,7 +15,6 @@
  */
 
 import * as THREE from 'three';
-import { PLAY_ASPECT } from './cards.js';
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COARSE = matchMedia('(pointer: coarse)').matches;
@@ -608,12 +607,19 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     glow.raycast = () => {};
     holder.add(glow);
 
-    /* Pastilla PLAY: plano propio delante de la tarjeta, para poder animarla.
-       Solo la llevan los proyectos con algo publicado que ver. */
+    /* PLAY: plano propio delante de la tarjeta, para poder animarla. Solo lo
+       llevan los proyectos con algo publicado que ver.
+
+       La proporción sale del tamaño real de la textura y no de una constante:
+       así conviven la pastilla apaisada y el botón circular sin que la escena
+       tenga que saber cuál le tocó. El redondo va más grande —una pastilla se
+       lee por su texto, un aro por su diámetro—. */
     let play = null;
     if (plays?.[i]) {
-      const ph = CARD_H * 0.135;
-      const pgeo = new THREE.PlaneGeometry(ph * PLAY_ASPECT, ph, 1, 1);
+      const src = plays[i].image;
+      const pAspect = src.width / src.height;
+      const ph = CARD_H * (pAspect < 1.4 ? 0.2 : 0.135);
+      const pgeo = new THREE.PlaneGeometry(ph * pAspect, ph, 1, 1);
       play = new THREE.Mesh(pgeo, new THREE.MeshBasicMaterial({
         map: plays[i],
         transparent: true,
@@ -626,7 +632,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     }
 
     ring.add(holder);
-    cards.push({ holder, mesh, uniforms, glowUniforms, theta, play, playHover: 0 });
+    cards.push({ holder, mesh, uniforms, glowUniforms, theta, play, playHover: 0, playPress: 0 });
   }
 
   /* ────────── Cometa del contorno ──────────
@@ -830,6 +836,9 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
 
   const indexFromAngle = (a) => ((Math.round(-a / STEP) % N) + N) % N;
 
+  /** Arranca el pulso del PLAY; el frame lo consume y lo apaga. */
+  const pressPlay = (i) => { if (cards[i]) cards[i].playPress = 1; };
+
   function goTo(i) {
     const wanted = -(((i % N) + N) % N) * STEP;
     target = angle + shortest(angle, wanted);
@@ -920,7 +929,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       if (h.index >= 0) {
         // El PLAY solo dispara en la tarjeta que ya está al frente: si no,
         // un click en una tarjeta lateral navegaría sin querer.
-        if (h.play && h.index === active) onPlay?.(h.index);
+        if (h.play && h.index === active) { pressPlay(h.index); onPlay?.(h.index); }
         else if (h.index === active) onSelect?.(h.index);
         else goTo(h.index);
       }
@@ -1021,9 +1030,17 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
         const breath = REDUCED ? 0.5 : 0.5 + 0.5 * Math.sin(time * 1.9);
         c.playHover = lerp(c.playHover, playHovered === i && !dragging ? 1 : 0, 0.14);
 
-        const op = gate * (0.80 + 0.20 * breath + 0.20 * c.playHover);
+        /* Pulso al presionar: el botón se hunde y rebota agrandándose mientras
+           la navegación se resuelve. Sin esto, entre el toque y el cambio de
+           página no pasa nada y parece que no registró el click. */
+        c.playPress = Math.max(0, c.playPress - dt * 2.6);
+        const press = REDUCED ? 0 : Math.sin(c.playPress * Math.PI) * (1 - c.playPress * 0.35);
+
+        const op = gate * (0.80 + 0.20 * breath + 0.20 * c.playHover) + press * 0.5;
         c.play.material.opacity = Math.min(1, op);
-        c.play.scale.setScalar(1 + (REDUCED ? 0 : 0.035 * breath) + 0.07 * c.playHover);
+        c.play.scale.setScalar(
+          1 + (REDUCED ? 0 : 0.035 * breath) + 0.07 * c.playHover + press * 0.42
+        );
       }
     }
 

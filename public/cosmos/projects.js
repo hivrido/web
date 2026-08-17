@@ -130,8 +130,13 @@ export const PROJECTS = [
     id: 'monolito',
     index: '07',
     title: 'HIVRIDO PLAY',
-    /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Play'],
+    /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
+    brandLogo: true,
+    /* Botón de reproducción redondo, no la pastilla: lleva a mirar, no a leer */
+    playCircle: true,
+    /* Con `href` la tarjeta muestra el PLAY y el click navega */
+    href: '/movie/',
+    cta: 'Entrar a Hivrido PLAY',
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Plataforma Audiovisual',
     category: 'Plataforma',

@@ -25,6 +25,12 @@ const PATHS = [
 
 const VIEWBOX = '0 0 964.874 202.005';
 const ASPECT = 964.874 / 202.005;
+
+/* Medidas del logotipo, para quien lo quiera dibujar fuera de un SVG —las
+   texturas de las tarjetas lo pintan en canvas con Path2D—. */
+export const BRAND_W = 964.874;
+export const BRAND_H = 202.005;
+export { PATHS as BRAND_PATHS };
 const EASE_INOUT = 'cubic-bezier(0.455, 0.03, 0.515, 0.955)';
 const NS = 'http://www.w3.org/2000/svg';
 

@@ -8,10 +8,24 @@
  */
 
 import * as THREE from 'three';
+import { BRAND_PATHS, BRAND_W, BRAND_H } from './brand.js';
 
 // Apaisado, como las "tablets" de la referencia
 const W = 1024;
 const H = 768;
+
+/** Dibuja el logotipo de HIVRIDO centrado en (cx, cy), con `width` de ancho.
+ *  Sale de los mismos trazos vectoriales que usan el preloader y el header,
+ *  así que no hace falta un PNG y queda nítido a cualquier tamaño. */
+function drawBrandLogo(ctx, cx, cy, width, color) {
+  const scale = width / BRAND_W;
+  ctx.save();
+  ctx.translate(cx - width / 2, cy - (BRAND_H * scale) / 2);
+  ctx.scale(scale, scale);
+  ctx.fillStyle = color;
+  for (const d of BRAND_PATHS) ctx.fill(new Path2D(d));
+  ctx.restore();
+}
 
 /** Carga una imagen; resuelve en null si falla (nunca rechaza). */
 function loadImage(src) {
@@ -87,6 +101,58 @@ function roundRect(ctx, x, y, w, h, r) {
 export const PLAY_TEX_W = 320;
 export const PLAY_TEX_H = 132;
 export const PLAY_ASPECT = PLAY_TEX_W / PLAY_TEX_H;
+
+/* Variante circular: un botón de reproducción de toda la vida —aro y
+   triángulo— para las piezas que llevan a mirar algo y no a leer sobre algo.
+   Cuadrada a propósito: scene.js deduce la proporción del plano del propio
+   tamaño de la textura, así conviven las dos formas sin tocar la escena. */
+export const PLAY_CIRCLE = 256;
+
+/** @returns {THREE.CanvasTexture} botón circular sobre fondo transparente. */
+export function makePlayCircleTexture(color = GOLD) {
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = PLAY_CIRCLE;
+  const ctx = canvas.getContext('2d');
+
+  const c = PLAY_CIRCLE / 2;
+  const r = PLAY_CIRCLE * 0.36;
+
+  // Disco de fondo: sin él, el triángulo se pierde sobre una foto clara
+  ctx.fillStyle = 'rgba(10,7,16,0.55)';
+  ctx.beginPath();
+  ctx.arc(c, c, r, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Aro con glow
+  ctx.strokeStyle = color;
+  ctx.lineWidth = PLAY_CIRCLE * 0.028;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 26;
+  ctx.beginPath();
+  ctx.arc(c, c, r, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  /* Triángulo apenas corrido a la derecha: centrado por su caja se ve
+     desplazado a la izquierda, porque el peso visual está en el vértice. */
+  const t = PLAY_CIRCLE * 0.15;
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 18;
+  ctx.beginPath();
+  ctx.moveTo(c - t * 0.55 + t * 0.18, c - t);
+  ctx.lineTo(c + t * 0.95 + t * 0.18, c);
+  ctx.lineTo(c - t * 0.55 + t * 0.18, c + t);
+  ctx.closePath();
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  tex.needsUpdate = true;
+  return tex;
+}
 
 /** @returns {THREE.CanvasTexture} pastilla dorada sobre fondo transparente. */
 export function makePlayTexture() {
@@ -246,7 +312,24 @@ export async function makeCardTexture(project) {
      Cuando la pieza tiene logo, manda el logo: componer encima un título
      tipográfico sería decir dos veces lo mismo con dos tipografías distintas.
      El PLAY solo aparece si hay algo que ver (`href`). */
-  if (logo) {
+  if (project.brandLogo) {
+    /* El logotipo de HIVRIDO en blanco, vectorial: es una pieza propia y la
+       marca la firma, no un título tipografiado. */
+    const lw = W * 0.52;
+    const ly = H * 0.5;
+    ctx.save();
+    ctx.shadowColor = project.accent;
+    ctx.shadowBlur = 34;
+    drawBrandLogo(ctx, CX, ly, lw, '#ffffff');
+    // Segunda pasada sin sombra: la primera queda lavada por su propio glow
+    ctx.shadowBlur = 0;
+    drawBrandLogo(ctx, CX, ly, lw, '#ffffff');
+    ctx.restore();
+
+    // Filete de acento bajo el logotipo
+    ctx.fillStyle = project.accent;
+    ctx.fillRect(CX - 38, ly + BRAND_H * (lw / BRAND_W) / 2 + 30, 76, 3);
+  } else if (logo) {
     const lw = Math.min(W * 0.46, logo.width * 1.4);  // el PNG es chico: upscale contenido
     const lh = lw * (logo.height / logo.width);
     const ly = H * 0.47 - lh / 2;
