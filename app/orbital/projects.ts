@@ -59,7 +59,7 @@ export const PROJECTS: Project[] = [
     client: "HIVRIDO",
     body: "Identidad de marca completa: diseño de logo, paleta, tipografía, voz y todo el sistema visual, documentado en un manual de marca que tu equipo puede aplicar sin depender de nosotros.",
     tags: ["Identidad", "Logo", "Manual de Marca", "Naming"],
-    accent: "#7C3AED",
+    accent: "#39FF88",
     image: "/images/okupas/okupas-home.webp",
   },
   {
@@ -71,7 +71,7 @@ export const PROJECTS: Project[] = [
     client: "Laboratorio Síntesis",
     body: "Modelo entrenado con el universo visual de la marca. Producción de volumen sin perder autoría: cada salida pasa por dirección de arte.",
     tags: ["IA", "3D", "Dirección"],
-    accent: "#39FF88",
+    accent: "#7C3AED",
     image: "/images/bg/animacion-poster.jpg",
   },
   {

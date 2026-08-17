@@ -86,7 +86,7 @@ export const PROJECTS = [
     tags: ['Identidad', 'Logo', 'Manual de Marca', 'Naming'],
     /* Desvía el link del pie del panel a la landing de branding */
     link: { label: 'Ir a Branding', href: '/branding/' },
-    accent: '#7C3AED',
+    accent: '#39FF88',
     image: '/images/okupas/okupas-home.webp',
   },
   {
@@ -98,7 +98,7 @@ export const PROJECTS = [
     client: 'Laboratorio Síntesis',
     body: 'Modelo entrenado con el universo visual de la marca. Producción de volumen sin perder autoría: cada salida pasa por dirección de arte.',
     tags: ['IA', '3D', 'Dirección'],
-    accent: '#39FF88',
+    accent: '#7C3AED',
     image: '/images/bg/animacion-poster.jpg',
   },
   {
