@@ -153,11 +153,17 @@ export const PROJECTS = [
     id: 'puny',
     index: '08',
     title: 'PUNY',
-    category: 'Agentes · Automatización',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Puny'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Agente Orquestador',
+    category: 'Orquestación',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'El agente que dirige a los agentes',
     year: '2026',
-    client: 'HIVRIDO',
-    body: 'Nuestra colmena de agentes: responde, califica y hace seguimiento sin intervención. El motor que hoy corre por dentro de la agencia.',
-    tags: ['Agentes', 'CRM', 'Auto'],
+    /* Sin `client` ni `link`: es el motor propio y no tiene landing */
+    body: 'No hace el trabajo: decide quién lo hace. Recibe un objetivo en lenguaje natural, lo descompone en tareas y las reparte entre agentes especializados —ventas, contenido, campañas, automatización y CRM—, le pasa a cada uno el contexto que necesita y revisa lo que devuelve antes de darlo por bueno. Si una tarea falla o se desvía, la reasigna. Es el motor que corre dentro de Hivrido, y la misma arquitectura que desplegamos en cada colmena.',
+    tags: ['Orquestador', 'Multi-agente', 'Contexto', 'Autónomo'],
     accent: '#A78BFA',
     image: '/images/team/2.jpg',
   },
