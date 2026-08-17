@@ -19,7 +19,7 @@ const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
 export const metadata: Metadata = {
   title: "Branding e Identidad de Marca | Manual de Marca | Hivrido",
   description:
-    "Branding profesional: identidad de marca, diseño de logo, manual de marca, naming y sistema visual completo. Marcas que se recuerdan y se aplican solas. Propuesta concreta en 24 horas.",
+    "Branding profesional: identidad de marca, diseño de logo, manual de marca, naming y sistema visual completo. Renders de arquitectura, interiores y exteriores a escala con SketchUp, Rhino y Revit. Propuesta concreta en 24 horas.",
   keywords: [
     "branding",
     "identidad de marca",
@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     "diseño de logo",
     "naming",
     "identidad visual",
+    "renders 3d",
+    "renders de arquitectura",
+    "renders de interiores",
   ],
   alternates: { canonical: "/branding" },
   openGraph: {
@@ -49,9 +52,9 @@ const CONTENT: LandingContent = {
     "Manual de marca",
     "Diseño de logo",
     "Naming",
-    "Sistema visual",
+    "Renders 3D",
+    "Arquitectura e interiores",
     "Rebranding",
-    "Aplicaciones de marca",
   ],
   title: { eyebrow: "Qué hacemos", lines: ["Marcas que", "se recuerdan"] },
   lead: (
@@ -59,7 +62,9 @@ const CONTENT: LandingContent = {
       Construimos <strong>identidades de marca</strong> que generan reconocimiento y
       conexión emocional. <strong>Diseño de logo</strong>, paleta, tipografía, voz y
       todo el sistema visual, documentado en un <strong>manual de marca</strong> que tu
-      equipo puede aplicar sin depender de nosotros.
+      equipo puede aplicar sin depender de nosotros. Y cuando la marca necesita
+      mostrarse construida, <strong>renders de arquitectura, interiores y exteriores</strong>{" "}
+      con medidas exactas a escala.
     </>
   ),
   servicios: [
@@ -117,6 +122,15 @@ const CONTENT: LandingContent = {
       body: "Diagnosticamos qué activos de tu marca actual conviene conservar y cuáles pesan en contra, y planificamos la transición: qué sale primero, cómo convive lo viejo con lo nuevo y cómo se comunica el cambio.",
       stat: ["Plan", "Transición ordenada, no un apagón"],
     },
+    {
+      num: "07",
+      title: "Renders y visualización 3D",
+      tags: ["SketchUp", "Rhino", "Revit", "IA"],
+      desc: "Arquitectura, interiores y exteriores modelados con medidas exactas y todo a escala. Lo que se ve en el render es lo que se construye.",
+      headline: "Verlo antes de construirlo.",
+      body: "Modelamos arquitectura, interiores y exteriores con precisión de obra: medidas exactas, todo a escala, nada de dibujos aproximados. Manejamos profesionalmente SketchUp, Rhino y Revit, y sumamos inteligencia artificial donde acelera sin resignar control: variantes de materiales, ambientación y postproducción de la imagen final.",
+      stat: ["A escala", "Medidas exactas, listas para obra"],
+    },
   ],
   trabajos: [
     { num: ".01", titulo: "Marca inmobiliaria", tags: ["Manual", "Logo"], desc: "Identidad completa, manual de marca y aplicaciones para toda la red comercial.", img: "/images/folio/2.webp" },
@@ -124,7 +138,7 @@ const CONTENT: LandingContent = {
     { num: ".03", titulo: "Packaging", tags: ["Etiquetas", "Línea"], desc: "Familia de envases con jerarquía clara entre variedades de una misma línea.", img: "/images/folio/3.webp" },
     { num: ".04", titulo: "Marca de servicios", tags: ["Naming", "Voz"], desc: "Nombre, claim y tono de comunicación para un servicio profesional nuevo.", img: "/images/folio/27.webp" },
     { num: ".05", titulo: "Rebranding automotor", tags: ["Migración", "Flota"], desc: "Renovación de identidad conservando el color que el mercado ya reconocía.", img: "/images/folio/8.webp" },
-    { num: ".06", titulo: "Sistema visual", tags: ["Grilla", "Plantillas"], desc: "Plantillas editables para que el equipo interno produzca sin diseñador.", img: "/images/folio/5.webp" },
+    { num: ".06", titulo: "Renders de arquitectura", tags: ["Interiores", "Exteriores"], desc: "Modelado a escala con medidas de obra: lo que se ve es lo que se construye.", img: "/images/folio/5.webp" },
   ],
   trabajosTitle: { eyebrow: "Trabajos", lines: ["Marcas que", "hicimos"] },
   testimonios: [
