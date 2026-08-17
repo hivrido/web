@@ -65,7 +65,7 @@ const WHATSAPP = "https://wa.me/5491156072460";
 const ENTRIES = [
   { label: "Film y series", id: "okupas" },
   { label: "Web y app", id: "nebula" },
-  { label: "Campañas", id: "docke" },
+  { label: "Agentes IA", id: "docke" },
   { label: "Instalaciones", id: "oraculo" },
   { label: "IA / Agentes", id: "puny" },
 ] as const;

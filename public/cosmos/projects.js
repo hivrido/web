@@ -52,12 +52,20 @@ export const PROJECTS = [
   {
     id: 'docke',
     index: '03',
-    title: 'DOCKE',
-    category: 'Campaña · Growth',
-    year: '2024',
-    client: 'Docke',
-    body: 'Campaña de performance con producción audiovisual propia. Del insight a la pieza, medido contra costo por adquisición real.',
-    tags: ['Ads', 'Film', 'Data'],
+    title: 'AGENTES',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Colmena'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Agentes IA',
+    category: 'Automatización',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Trabajan solos las 24 horas',
+    year: '2025',
+    /* Sin `client`: es un servicio propio, no una pieza para alguien */
+    body: 'Colmenas de agentes IA que operan solas: atienden consultas, califican interesados, ejecutan procesos y reportan a escala. Conectados a tu CRM, tus campañas y tus canales de comunicación, trabajando mientras dormís. Es PUNY, el motor que corre dentro de Hivrido, adaptado a tu negocio.',
+    tags: ['Multi-agente', 'CRM', 'Autónomo', '24/7'],
+    /* Desvía el link del pie del panel a la landing de la colmena */
+    link: { label: 'Ir a Colmena de agentes', href: '/colmena-agentes/' },
     accent: '#00E5FF',
     image: '/images/bg/docke.jpg',
   },
