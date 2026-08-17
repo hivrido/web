@@ -30,7 +30,7 @@ export const PROJECTS: Project[] = [
     id: "nebula",
     index: "02",
     title: "GROW DIGITAL",
-    category: "Diseño App & Web",
+    category: "Inteligencia Artificial",
     year: "2025",
     client: "Estudio Nebula",
     body: "Sistema de identidad en movimiento: paleta, tipografía y un lenguaje de transiciones que funciona igual en un reel que en una gráfica fija.",

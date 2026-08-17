@@ -64,7 +64,7 @@ const WHATSAPP = "https://wa.me/5491156072460";
 /** Puertas de entrada por disciplina: cada una lleva a su proyecto insignia. */
 const ENTRIES = [
   { label: "Film y series", id: "okupas" },
-  { label: "Identidad", id: "nebula" },
+  { label: "Web y app", id: "nebula" },
   { label: "Campañas", id: "docke" },
   { label: "Instalaciones", id: "oraculo" },
   { label: "IA / Agentes", id: "puny" },

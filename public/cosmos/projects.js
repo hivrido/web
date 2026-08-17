@@ -33,9 +33,9 @@ export const PROJECTS = [
        (blanco → lavanda → violeta → magenta → blanco) */
     gradientTitle: true,
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Inteligencia Artificial',
+    kicker: 'Diseño Web & APP',
     /* Corta —la usan el HUD, la lista de disciplinas y el panel— */
-    category: 'Diseño App & Web',
+    category: 'Inteligencia Artificial',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Desarrollamos sistemas personalizados',
     year: '2025',
