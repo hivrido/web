@@ -10,6 +10,9 @@ interface Project {
   name: string;
   cat: string;
   desc: string;
+  /** Miniatura propia. Sin esto se usa la de YouTube, que elige un fotograma
+   *  cualquiera del video y a veces no representa la pieza. */
+  thumb?: string;
 }
 
 const PROJECTS: Project[] = [
@@ -26,6 +29,7 @@ const PROJECTS: Project[] = [
     name: "Chamame",
     cat: "Trailer",
     desc: "La música como ritual. Un viaje audiovisual al corazón de una tradición viva.",
+    thumb: "/images/bg/chamame.jpeg",
   },
   {
     id: "2KooNsJQsxw",
@@ -143,7 +147,9 @@ export default function Portfolio({
                 {/* Thumbnail */}
                 <div
                   className="proj-thumb"
-                  style={{ backgroundImage: `url(https://img.youtube.com/vi/${p.id}/maxresdefault.jpg)` }}
+                  style={{
+                    backgroundImage: `url(${p.thumb ?? `https://img.youtube.com/vi/${p.id}/maxresdefault.jpg`})`,
+                  }}
                   onClick={() => openVideo(p)}
                 >
                   <div className="proj-thumb-overlay" />
