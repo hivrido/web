@@ -58,7 +58,7 @@ const CONTENT: LandingContent = {
     "Color y VFX",
     "Restauración 4K",
   ],
-  title: { eyebrow: "Qué hacemos", lines: ["Historias que", "trascienden"] },
+  title: { eyebrow: "Qué hacemos", lines: ["Producción", "cinematográfica"] },
   /* Los trailers van antes que la lista de servicios: en una productora, lo
      que convence es ver una pieza, no leer qué se ofrece. Es el mismo bloque
      de la home —con su reproductor— montado con otro título. */
@@ -68,14 +68,6 @@ const CONTENT: LandingContent = {
       num={null}
       heading={<SectionTitle eyebrow="Trabajos" lines={["Ya lo", "filmamos"]} />}
     />
-  ),
-  lead: (
-    <>
-      Hacemos <strong>producción cinematográfica</strong>, <strong>videoclips</strong> y{" "}
-      <strong>contenido para marcas</strong>: de la idea a la pantalla, cuidando cada
-      etapa —desarrollo, guion, rodaje y <strong>postproducción</strong>—. Apostamos a
-      narrativas que trascienden y construyen universos propios.
-    </>
   ),
   servicios: [
     {
