@@ -646,14 +646,19 @@ html:has(.mp-app) body {
 .mp-footer-links a:hover { color: var(--mp-gold); }
 
 /* ── VIDEO MODAL ── */
+/* Mismo criterio que el resto de los modales: centra el `margin: auto` del
+   hijo, no `align-items`, para que nada quede fuera de alcance en pantallas
+   bajas. */
 .mp-video-modal {
   position: fixed;
   inset: 0;
   z-index: 1000;
   background: rgba(0,0,0,.9);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 24px;
   animation: mp-modal-in .2s ease;
 }
@@ -685,6 +690,7 @@ html:has(.mp-app) body {
 
 .mp-video-modal-inner {
   position: relative;
+  margin: auto;
   width: 100%;
   max-width: 1000px;
   aspect-ratio: 16/9;
