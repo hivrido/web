@@ -72,9 +72,9 @@ export const PROJECTS = [
     index: '04',
     title: 'BRANDING',
     /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Contenido'],
+    cardTitle: ['Marcas'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Identidad de Marca',
+    kicker: 'Identidad de',
     category: 'Branding',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Manual de marca y sistema visual',
