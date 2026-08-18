@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>HIVRIDO — Arte, Cine, Marca e Inteligencia Artificial</title>
-<meta name="description" content="Estudio creativo: producción audiovisual, branding, diseño web, desarrollo a medida y colmenas de agentes IA. Recorré el universo Hivrido." />
-<meta name="theme-color" content="#04040a" />
+<meta name="description" content="Estudio creativo: producción audiovisual, branding, diseño web, desarrollo a medida y colmenas de agentes IA. Recorré el universo Hivrido.">
+<meta name="theme-color" content="#04040a">
 
-<meta property="og:title" content="HIVRIDO — Arte, Cine, Marca e Inteligencia Artificial" />
-<meta property="og:description" content="Producción audiovisual, branding, desarrollo y agentes IA." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://hivrido.com/" />
+<meta property="og:title" content="HIVRIDO — Arte, Cine, Marca e Inteligencia Artificial">
+<meta property="og:description" content="Producción audiovisual, branding, desarrollo y agentes IA.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hivrido.com/">
 
-<link rel="icon" href="/images/logo/favicon.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="icon" href="/images/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <!-- Las fuentes de la home: Orbitron para display y etiquetas, Rubik para texto -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<link rel="stylesheet" href="/cosmos/styles.css" />
+<!-- Tailwind ya compilado. Antes de esta linea iba @tailwindcss/browser:
+     68 KiB de JavaScript que bloqueaban el render para resolver en cada
+     visita lo que scripts/build-cosmos-css.mjs resuelve una sola vez. -->
+<link rel="stylesheet" href="/cosmos/tw.css">
+<link rel="stylesheet" href="/cosmos/styles.css">
 
 <script type="importmap">
 {
@@ -30,6 +33,16 @@
   }
 }
 </script>
+
+<!-- La cadena real era main.js -> scene.js -> three, descubierta salto a
+     salto. Anunciada aca, arranca entera de una vez. -->
+<link rel="modulepreload" href="/cosmos/main.js">
+<link rel="modulepreload" href="/cosmos/scene.js">
+<link rel="modulepreload" href="/cosmos/cards.js">
+<link rel="modulepreload" href="/cosmos/projects.js">
+<link rel="modulepreload" href="/cosmos/brand.js">
+<link rel="modulepreload" crossorigin
+      href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js">
 </head>
 
 <body class="bg-[#04040a] text-[#f2f0f7] overflow-hidden">
@@ -144,7 +157,7 @@
 </a>
 
 <!-- ═══════════ PANEL DE DETALLE ═══════════ -->
-<aside id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle" aria-hidden="true">
+<div id="panel" class="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle" aria-hidden="true">
   <button id="closeBtn" class="panel-close" aria-label="Cerrar detalle">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="square"/></svg>
   </button>
@@ -173,7 +186,7 @@
       <span id="pWatchLabel">Ver la serie</span> <span aria-hidden="true">→</span>
     </a>
   </div>
-</aside>
+</div>
 
 <!-- ═══════════ MENÚ (drawer de la home) ═══════════ -->
 <div id="navOverlay" class="nav-overlay-bg" aria-hidden="true"></div>

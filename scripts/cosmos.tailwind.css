@@ -1,0 +1,12 @@
+/* Entrada de Tailwind para la portada (public/index.html).
+   Vive fuera de public/ para que no se sirva: lo que se publica es el CSS ya
+   compilado en public/cosmos/tw.css.
+
+   `source(none)` apaga la detección automática, que si no barrería también
+   app/ —el Tailwind del sitio Next— y metería en este archivo utilidades que
+   la portada no usa. Las fuentes se declaran a mano: el marcado, y los JS,
+   porque main.js inyecta `text-white` al pintar el contador. */
+@import "tailwindcss" source(none);
+
+@source "../public/index.html";
+@source "../public/cosmos/*.js";
