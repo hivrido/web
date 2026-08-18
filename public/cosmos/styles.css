@@ -21,17 +21,6 @@
   --f-mono: 'Orbitron', sans-serif;
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* Bisel de los botones de la home: esquina superior derecha e inferior
-     izquierda cortadas. Sobrescribí --bevel en cualquier botón. */
-  --bevel: 10px;
-  --clip-bevel: polygon(
-    0 0,
-    calc(100% - var(--bevel)) 0,
-    100% var(--bevel),
-    100% 100%,
-    var(--bevel) 100%,
-    0 calc(100% - var(--bevel))
-  );
 
   /* Tokens de la home, para el header/menú/preloader portados */
   --bg: #04040a;
@@ -309,10 +298,12 @@ body.live .main-header { opacity: 1; }
 .qlist .qitem[aria-current='true'] { color: #fff; transform: translateX(4px); }
 .qlist .qitem[aria-current='true'] span { color: #fff; }
 
-/* ── Botón biselado de la home (.btn-violet) ──
+/* ── Botón relleno de la home ──
    El fondo toma el acento del proyecto activo en vez del violeta fijo: es el
-   mismo botón, retintado por la ficha que está al frente. */
+   mismo botón, retintado por la ficha que está al frente. Píldora y no bisel:
+   comparte forma con el botón del panel y con los del resto del sitio. */
 .btn-bevel {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -326,17 +317,55 @@ body.live .main-header { opacity: 1; }
   padding: 14px 28px;
   min-height: 48px;
   border: none;
+  border-radius: 999px;
   cursor: pointer;
-  clip-path: var(--clip-bevel);
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 .btn-bevel:hover,
 .btn-bevel:focus-visible {
-  transform: translateX(3px);
+  transform: translateY(-2px);
   box-shadow: 0 0 28px color-mix(in srgb, var(--ac) 40%, transparent),
               0 0 6px rgba(201,168,76,0.15);
   outline: none;
 }
+/* Luz del borde. Blanca y no en el acento: el botón va relleno con ese mismo
+   acento y un haz del color se perdería sobre su propio fondo. */
+.btn-bevel::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 200deg,
+    rgba(255, 255, 255, 0.45) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: btn-beam 2.6s linear infinite;
+  pointer-events: none;
+}
+/* Destello del hover, quieto en su sitio: desplazarlo lo sacaría del botón */
+.btn-bevel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  transition: background-position 0.8s var(--ease);
+  pointer-events: none;
+}
+.btn-bevel:hover::after,
+.btn-bevel:focus-visible::after { background-position: 0 0; }
 
 /* ── Botones ── */
 .btn-glow {
@@ -376,12 +405,8 @@ body.live .main-header { opacity: 1; }
 /* Luz recorriendo el borde, la misma del botón de cerrar y del cometa de las
    fichas: un degradado cónico que gira, recortado a un trazo de 2px. Acá la
    máscara es de dos capas —una al borde y otra al contenido, restadas— porque
-   la píldora no es un círculo y la radial del aro no le sirve.
-
-   Solo dentro del panel: es lo que hace que el botón se lea como el único
-   destino de la ficha. En el HUD la luz quedaría corriendo todo el tiempo
-   detrás del anillo, compitiendo con el cometa de las tarjetas. */
-.panel .btn-glow::before {
+   la píldora no es un círculo y la radial del aro no le sirve. */
+.btn-glow::before {
   content: '';
   position: absolute;
   inset: -2px;
@@ -796,7 +821,7 @@ body.live #hud { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .veil--grain, .sweep, .wa-ring, .panel.open .panel-close, .panel-close::before,
-  .panel .btn-glow::before, .title { animation: none !important; }
+  .btn-glow::before, .btn-bevel::before, .title { animation: none !important; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
 
