@@ -3092,6 +3092,9 @@ html.lenis { height: auto; }
   text-align: left;
 }
 
+/* El titulo que abre cada landing lleva el mismo degradado y el mismo barrido
+   que los titulos de seccion: es la primera pieza que se ve de la pagina y en
+   blanco pleno no se leia como parte del sistema. */
 .dw-hero-title {
   font-family: var(--font-display);
   font-size: clamp(2.1rem, 6.2vw, 4.6rem);
@@ -3099,8 +3102,17 @@ html.lenis { height: auto; }
   line-height: 1.02;
   letter-spacing: -0.01em;
   margin: 0 0 28px;
-  color: #fff;
   text-align: left;
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: epicSheen 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dw-hero-title { animation: none; }
 }
 
 .dw-hero-text {
