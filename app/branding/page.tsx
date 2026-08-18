@@ -56,7 +56,7 @@ const CONTENT: LandingContent = {
     "Arquitectura e interiores",
     "Rebranding",
   ],
-  title: { eyebrow: "Qué hacemos", lines: ["Marcas que", "se recuerdan"] },
+  title: { eyebrow: "Qué hacemos", lines: ["Identidad", "de Marca"] },
   lead: (
     <>
       Construimos <strong>identidades de marca</strong> que generan reconocimiento y
