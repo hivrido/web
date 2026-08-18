@@ -7,6 +7,8 @@
  *         del panel lleva a verla.
  * `link`  es la alternativa a `href` para las fichas sin nada publicado: da
  *         destino y etiqueta al botón del panel, sin encender el PLAY.
+ * `backdrop: 'rain'` reemplaza la foto por una cortina de glifos que cae,
+ *         generada en cards.js y animada por el shader de la tarjeta.
  */
 
 export const PROJECTS = [
@@ -65,7 +67,10 @@ export const PROJECTS = [
     /* Destino del botón del panel: la landing de la colmena */
     link: { label: 'Ir a Colmena de agentes', href: '/colmena-agentes/' },
     accent: '#39FF88',
-    image: '/images/bg/docke.jpg',
+    /* Sin foto: el fondo es una cortina de glifos que cae, generada y
+       animada por el shader de la tarjeta. La que habia era un fotograma
+       de otra pieza y se leia el texto quemado por debajo del titulo. */
+    backdrop: 'rain',
   },
   {
     id: 'oraculo',

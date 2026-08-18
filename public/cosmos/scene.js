@@ -59,6 +59,10 @@ const CARD_FRAG = /* glsl */ `
   uniform float uFocus;     // 0 = al fondo, 1 = al frente
   uniform float uOpacity;
   uniform float uHover;
+  uniform sampler2D uRain;    // cortina de glifos, repite en vertical
+  uniform float uRainOn;      // 0 en las fichas que no la llevan
+  uniform float uRainScroll;  // avanza con el tiempo: es lo que la hace caer
+  uniform float uRainTile;
   varying vec2  vUv;
 
   void main() {
@@ -70,6 +74,20 @@ const CARD_FRAG = /* glsl */ `
     if (shape < 0.003) discard;
 
     vec3 tex = texture2D(uMap, vUv).rgb;
+
+    /* Cortina de glifos. Se suma —la textura va sobre negro, asi que lo que
+       vale cero no aporta luz— y cae sola: al crecer uRainScroll la muestra se
+       toma mas arriba de la textura, y el contenido baja por la ficha.
+
+       Se muestrea siempre y se apaga multiplicando por uRainOn en vez de
+       ramificar con un `if`: sale mas barato y deja probado que las otras
+       fichas no cambian, porque multiplicar por cero no deja resto.
+
+       La campana hunde la lluvia en la banda del titulo: sin eso los glifos le
+       pasan por encima a la tipografia y se la comen. */
+    vec3 rain = texture2D(uRain, vec2(vUv.x, vUv.y * uRainTile + uRainScroll)).rgb;
+    float rb = (vUv.y - 0.5) / 0.20;
+    tex += rain * (1.0 - 0.72 * exp(-rb * rb)) * uRainOn;
 
     // Fuera de foco la tarjeta se desatura y se apaga: jerarquía sin mover nada
     float g = dot(tex, vec3(0.299, 0.587, 0.114));
@@ -126,7 +144,7 @@ function shortest(from, to) {
 
 /* ═══════════════════════ Escena ═══════════════════════ */
 
-export async function createScene(canvas, { textures, accents, plays, onActive, onSelect, onPlay, insets, start = 0 } = {}) {
+export async function createScene(canvas, { textures, accents, plays, rains, rainTile = 1, onActive, onSelect, onPlay, insets, start = 0 } = {}) {
   const N = textures.length;
   const STEP = TAU / N;
 
@@ -547,6 +565,12 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
   const ring = new THREE.Group();
   tiltGroup.add(ring);
 
+  /* El sampler necesita algo valido aunque la ficha no lleve lluvia: un pixel
+     negro, que sumado no aporta nada. */
+  const noRain = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
+  noRain.needsUpdate = true;
+  const rainCards = [];
+
   const cardGeo = new THREE.PlaneGeometry(CARD_W, CARD_H, 1, 1);
   const glowGeo = new THREE.PlaneGeometry(CARD_W * GLOW_PAD, CARD_H * GLOW_PAD, 1, 1);
 
@@ -572,7 +596,13 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
       uFocus:   { value: 0 },
       uOpacity: { value: 1 },
       uHover:   { value: 0 },
+      uRain:       { value: rains?.[i] ?? noRain },
+      uRainOn:     { value: rains?.[i] ? 1 : 0 },
+      // Fase al azar: dos fichas con lluvia no caerian sincronizadas
+      uRainScroll: { value: Math.random() },
+      uRainTile:   { value: rainTile },
     };
+    if (rains?.[i]) rainCards.push(uniforms);
 
     const mat = new THREE.ShaderMaterial({
       uniforms,
@@ -996,6 +1026,15 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     time += dt;
+
+    /* Lo unico que cuesta animar la lluvia: correr la coordenada de muestreo.
+       No hay canvas que redibujar ni textura que volver a subir a la GPU.
+
+       Acotado a [0,1) y no dejandolo crecer: la textura repite con periodo 1,
+       asi que el corte es invisible, y en las GPU donde `highp` en el fragment
+       cae a `mediump` un valor grande pierde la parte decimal y la lluvia
+       empieza a saltar a los pocos minutos. */
+    for (const u of rainCards) u.uRainScroll.value = (u.uRainScroll.value + dt * 0.12) % 1;
 
     /* — Rotación: arrastre → inercia → imán al slot más cercano — */
     if (dragging) {

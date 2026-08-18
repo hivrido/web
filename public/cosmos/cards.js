@@ -79,6 +79,109 @@ function drawProcedural(ctx, accent) {
   ctx.fillRect(0, 0, W, H);
 }
 
+/* ── Cortina de glifos ──
+   La ficha de la colmena no lleva foto: lleva lluvia digital. Se hornea una
+   sola vez en una textura que repite en vertical, y el shader de la tarjeta la
+   suma y la desplaza. Animar asi no cuesta nada por frame: lo unico que se
+   mueve es la coordenada de muestreo, no hay canvas que redibujar ni textura
+   que volver a subir a la GPU.
+
+   Potencia de dos, y cuadrada: con RepeatWrapping, una textura que no lo sea
+   se rompe en WebGL 1. */
+const RAIN = 1024;
+const RAIN_CELL = 22;
+
+/* Cuanto de la textura entra en el alto de la ficha. 768 px de tarjeta sobre
+   1024 de textura: los glifos salen a escala 1:1, sin estirarse. */
+export const RAIN_TILE = 768 / RAIN;
+
+/* Sin katakana a proposito: ninguna fuente del sitio lo trae y en la mayoria
+   de los equipos saldrian recuadros vacios. Digitos, mayusculas y signos de
+   consola dan la misma lectura y estan garantizados. */
+const RAIN_GLYPHS = '01234567890123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>[]{}/|=+*#$%&@';
+
+const pick = () => RAIN_GLYPHS[(Math.random() * RAIN_GLYPHS.length) | 0];
+
+/**
+ * @param {string} accent color de la ficha
+ * @returns {THREE.CanvasTexture} lluvia sobre negro, para sumar en el shader
+ *
+ * Sobre negro porque se suma: lo que vale cero no aporta luz y deja ver el
+ * fondo horneado debajo.
+ */
+export function makeRainTexture(accent) {
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = RAIN;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, RAIN, RAIN);
+
+  const cols = Math.floor(RAIN / RAIN_CELL);
+  const rows = Math.floor(RAIN / RAIN_CELL);
+  ctx.font = `700 ${RAIN_CELL - 5}px "Orbitron", monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  for (let c = 0; c < cols; c++) {
+    /* Una columna de cada seis queda vacia: sin huecos, la cortina se lee
+       como una trama y no como lluvia. */
+    if (Math.random() < 0.16) continue;
+
+    const head = (Math.random() * rows) | 0;
+    const tail = 9 + ((Math.random() * 22) | 0);
+    const dim = 0.55 + Math.random() * 0.45;    // no todas las columnas pesan igual
+    const x = c * RAIN_CELL + RAIN_CELL / 2;
+
+    for (let k = 0; k < tail; k++) {
+      /* El modulo es lo que hace que la textura repita sin costura: el brillo
+         depende de la distancia a la cabeza en una grilla circular, no de la
+         posicion absoluta, asi que el borde de abajo continua en el de arriba. */
+      const row = (head + k) % rows;
+      const y = row * RAIN_CELL + RAIN_CELL / 2;
+      const fade = 1 - k / tail;
+
+      if (k === 0) {
+        // La cabeza va blanca y con halo: es la gota que cae
+        ctx.shadowColor = accent;
+        ctx.shadowBlur = 16;
+        ctx.fillStyle = '#ffffff';
+      } else {
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = accent;
+        ctx.globalAlpha = fade * fade * dim * 0.85;
+      }
+      ctx.fillText(pick(), x, y);
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.ClampToEdgeWrapping;   // en horizontal no se desplaza
+  tex.wrapT = THREE.RepeatWrapping;        // en vertical cae sin fin
+  tex.generateMipmaps = false;
+  tex.minFilter = THREE.LinearFilter;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+/** Fondo plano para la ficha con lluvia: la cortina necesita donde caer. */
+function drawRainBase(ctx, accent) {
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#03110b');
+  g.addColorStop(0.55, '#04070a');
+  g.addColorStop(1, '#020407');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  const halo = ctx.createRadialGradient(W * 0.5, 0, 0, W * 0.5, 0, H * 0.9);
+  halo.addColorStop(0, accent + '30');
+  halo.addColorStop(1, 'transparent');
+  ctx.fillStyle = halo;
+  ctx.fillRect(0, 0, W, H);
+}
+
 /* Dorado de la pastilla PLAY: no usa el acento del proyecto a propósito.
    El acento identifica al proyecto; el dorado marca "esto se puede ver". */
 const GOLD = '#E9B44C';
@@ -216,6 +319,8 @@ export async function makeCardTexture(project) {
     // el texto quemado de algunas fotos compite con el título de la tarjeta.
     ctx.fillStyle = 'rgba(6,5,12,0.34)';
     ctx.fillRect(0, 0, W, H);
+  } else if (project.backdrop === 'rain') {
+    drawRainBase(ctx, project.accent);
   } else {
     drawProcedural(ctx, project.accent);
   }

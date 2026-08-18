@@ -6,7 +6,7 @@
  */
 
 import { PROJECTS } from './projects.js';
-import { makeCardTexture, makePlayTexture, waitForFonts } from './cards.js';
+import { makeCardTexture, makePlayTexture, makeRainTexture, RAIN_TILE, waitForFonts } from './cards.js';
 import { createScene } from './scene.js';
 import { mountLogo } from './brand.js';
 
@@ -279,6 +279,12 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
   const hasPlay = PROJECTS.some((p) => p.href);
   const playTex = hasPlay ? makePlayTexture() : null;
 
+  /* La lluvia se genera una sola vez y solo si alguna ficha la pide: son 4 MB
+     de canvas que no tiene sentido pagar de gusto. La pinta el acento de la
+     primera que la use. */
+  const rainOwner = PROJECTS.find((p) => p.backdrop === 'rain');
+  const rainTex = rainOwner ? makeRainTexture(rainOwner.accent) : null;
+
   // El encuadre 3D centra la tarjeta en el espacio libre entre header y HUD
   const headerEl = document.querySelector('.main-header');
   const footEl = $('hudFoot');
@@ -288,6 +294,8 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
       textures,
       // Una sola textura compartida: es idéntica en todas las tarjetas
       plays: hasPlay ? PROJECTS.map((p) => (p.href ? playTex : null)) : null,
+      rains: rainTex ? PROJECTS.map((p) => (p.backdrop === 'rain' ? rainTex : null)) : null,
+      rainTile: RAIN_TILE,
       accents: PROJECTS.map((p) => p.accent),
       onActive,
       onSelect: () => setPanel(true),
