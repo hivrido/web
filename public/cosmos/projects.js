@@ -64,7 +64,7 @@ export const PROJECTS = [
     tags: ['Multi-agente', 'CRM', 'Autónomo', '24/7'],
     /* Destino del botón del panel: la landing de la colmena */
     link: { label: 'Ir a Colmena de agentes', href: '/colmena-agentes/' },
-    accent: '#00E5FF',
+    accent: '#39FF88',
     image: '/images/bg/docke.jpg',
   },
   {
@@ -72,7 +72,7 @@ export const PROJECTS = [
     index: '04',
     title: 'BRANDING',
     /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Marca'],
+    cardTitle: ['Contenido'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Identidad de Marca',
     category: 'Branding',
@@ -84,7 +84,7 @@ export const PROJECTS = [
     tags: ['Identidad', 'Logo', 'Manual de Marca', 'Naming'],
     /* Destino del botón del panel: la landing de branding */
     link: { label: 'Ir a Branding', href: '/branding/' },
-    accent: '#39FF88',
+    accent: '#00E5FF',
     image: '/images/okupas/okupas-home.webp',
   },
   {
