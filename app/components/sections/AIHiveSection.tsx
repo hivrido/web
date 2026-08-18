@@ -246,49 +246,12 @@ export default function AIHiveSection({ ctaHref = "#sec4" }: { ctaHref?: string 
               paddingTop: "70px",
             }}
           >
-            <p
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(1.1rem, 2.8vw, 1.65rem)",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                color: "var(--text)",
-                marginBottom: "40px",
-                lineHeight: 1.45,
-                textAlign: "center",
-              }}
-            >
-              La colmena trabaja.
-              <br />
-              <span
-                style={{
-                  display: "inline-block",
-                  background: "linear-gradient(90deg, rgba(255,10,130,0.9) 0%, rgba(255,10,130,0.9) 20%, transparent 50%, rgba(255,10,130,0.9) 80%, rgba(255,10,130,0.9) 100%)",
-                  backgroundSize: "200% 100%",
-                  animation: "gradientSlide 3s ease-in-out infinite",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  color: "rgba(255,10,130,0.9)",
-                }}
-              >
-                Tu negocio escala.
-              </span>
+            {/* El mismo cuerpo y el mismo degradado que los títulos de sección:
+                es el cierre de la colmena y pesa igual que ellos. */}
+            <p className="aih-closing">
+              <span className="aih-closing-line">La colmena trabaja.</span>
+              <span className="aih-closing-line">Tu negocio escala.</span>
             </p>
-
-            <style>{`
-              @keyframes gradientSlide {
-                0% {
-                  backgroundPosition: -200% center;
-                }
-                50% {
-                  backgroundPosition: 200% center;
-                }
-                100% {
-                  backgroundPosition: -200% center;
-                }
-              }
-            `}</style>
             <div
               style={{
                 display: "flex",

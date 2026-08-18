@@ -3840,3 +3840,38 @@ html.lenis { height: auto; }
   .proj-btn-play::before,
   .aih-cta-btn--solid::before { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Cierre de la colmena
+   Traía su tipografía y su degradado en línea, con un @keyframes
+   que nunca corrió —declaraba `backgroundPosition`, que no existe
+   en CSS—: por eso el degradado quedaba fijo y la segunda línea se
+   apagaba a la mitad. Ahora toma el mismo cuerpo y el mismo
+   barrido que los títulos de sección.
+   ═══════════════════════════════════════════════════════════ */
+
+.aih-closing {
+  margin: 0 0 44px;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 7vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.aih-closing-line {
+  display: block;
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: epicSheen 7s ease-in-out infinite;
+}
+/* La segunda arranca el barrido desfasada, como en los títulos */
+.aih-closing-line:nth-child(2) { animation-delay: -2.4s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .aih-closing-line { animation: none; }
+}
