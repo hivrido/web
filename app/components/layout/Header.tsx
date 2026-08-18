@@ -6,14 +6,15 @@ import LogoAnimated from "../ui/LogoAnimated";
    tarjeta, en su orden. Se fueron las anclas a secciones —#sec1, #sec4— porque
    la raíz ya no es la página larga sino el anillo, y ahí no existen. */
 const NAV_ITEMS = [
-  { label: "Diseño Web",   href: "/diseno-web" },
-  { label: "Okupas",       href: "/movie/okupas" },
+  { label: "Home",         href: "/" },
+  { label: "Equipo",       href: "/equipo" },
+  { label: "Grow Digital", href: "/diseno-web" },
+  { label: "Cine & Video", href: "/cine-video" },
+  { label: "Publicidad",   href: "/publicidad" },
   { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Branding",     href: "/branding" },
-  { label: "Cine & Video", href: "/cine-video" },
-  { label: "Equipo",       href: "/equipo" },
   { label: "Hivrido PLAY", href: "/movie" },
-  { label: "Publicidad",   href: "/publicidad" },
+  { label: "Okupas",       href: "/movie/okupas" },
 ];
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
