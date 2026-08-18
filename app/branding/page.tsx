@@ -171,7 +171,7 @@ export default function BrandingPage() {
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
           <div className="section-container">
-            <p className="dw-hero-eyebrow">Branding · Identidad de marca · Buenos Aires</p>
+            <p className="dw-hero-eyebrow">Branding · Identidad de marca</p>
 
             <h1 className="dw-hero-title">
               Una marca que se
