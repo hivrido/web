@@ -281,7 +281,7 @@ export default function OrbitalGallery() {
           {/* Proyecto activo y posición en el aro */}
           <div className="orbital-foot-now pointer-events-auto">
             <div className="orbital-now-head" key={project.id}>
-              <p className="orbital-mono orbital-enter text-[var(--ac)]">{project.category}</p>
+              <p className="orbital-mono orbital-enter text-[var(--ac)]">{project.hudCategory ?? project.category}</p>
               <h1
                 className="orbital-techno orbital-enter mt-2 text-[clamp(1.1rem,2.4vw,1.6rem)] font-bold tracking-[.14em]"
                 style={{ animationDelay: "60ms" }}

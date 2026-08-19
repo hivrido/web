@@ -3,6 +3,9 @@ export interface Project {
   index: string;
   title: string;
   category: string;
+  /** Opcional: reemplaza a `category` en el rótulo del HUD, para las fichas
+   *  donde la disciplina repetiría el título que se lee debajo. */
+  hudCategory?: string;
   year: string;
   client: string;
   body: string;
@@ -43,6 +46,8 @@ export const PROJECTS: Project[] = [
     index: "03",
     title: "BRANDING",
     category: "Branding",
+    // El título ya dice BRANDING: el rótulo aporta la otra mitad del oficio
+    hudCategory: "Identidad",
     year: "2025",
     client: "HIVRIDO",
     body: "Identidad de marca completa: diseño de logo, paleta, tipografía, voz y todo el sistema visual, documentado en un manual de marca que tu equipo puede aplicar sin depender de nosotros.",

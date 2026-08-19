@@ -7,6 +7,10 @@
  *         del panel lleva a verla.
  * `link`  es la alternativa a `href` para las fichas sin nada publicado: da
  *         destino y etiqueta al botón del panel, sin encender el PLAY.
+ * `hudCategory` es opcional: reemplaza a `category` en el rótulo del HUD,
+ *         para las fichas donde la disciplina repetiría el título que ya se
+ *         lee gigante debajo. La lista de disciplinas sigue usando
+ *         `category`, que es la palabra con la que la gente busca.
  */
 
 export const PROJECTS = [
@@ -61,6 +65,8 @@ export const PROJECTS = [
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Identidad de',
     category: 'Branding',
+    /* El título ya dice BRANDING: el rótulo aporta la otra mitad del oficio */
+    hudCategory: 'Identidad',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Manual de marca y sistema visual',
     year: '2025',

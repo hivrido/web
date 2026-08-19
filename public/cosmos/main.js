@@ -78,7 +78,7 @@ function paint(i) {
   const p = PROJECTS[i];
   document.documentElement.style.setProperty('--ac', p.accent);
 
-  el.cat.textContent = `${p.index} — ${p.category.toUpperCase()}`;
+  el.cat.textContent = `${p.index} — ${(p.hudCategory ?? p.category).toUpperCase()}`;
   el.title.textContent = p.title;
   el.counter.innerHTML = `<b class="text-white">${pad(i + 1)}</b> / ${pad(TOTAL)}`;
   tickEls.forEach((t, j) => t.setAttribute('aria-current', String(j === i)));
