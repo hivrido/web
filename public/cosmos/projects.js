@@ -70,7 +70,9 @@ export const PROJECTS = [
     /* Destino del botón del panel: la landing de branding */
     link: { label: 'Ir a Branding', href: '/branding/' },
     accent: '#00E5FF',
-    image: '/images/okupas/okupas-home.webp',
+    /* Sin `image` a propósito: la ficha se pintaba con el logotipo de Okupas,
+       una marca ajena ilustrando nuestra propia identidad. Hasta que tenga
+       arte propio va el fondo procedural en su acento, que es de la casa. */
   },
   {
     id: 'animacion',

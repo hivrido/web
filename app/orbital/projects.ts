@@ -48,7 +48,8 @@ export const PROJECTS: Project[] = [
     body: "Identidad de marca completa: diseño de logo, paleta, tipografía, voz y todo el sistema visual, documentado en un manual de marca que tu equipo puede aplicar sin depender de nosotros.",
     tags: ["Identidad", "Logo", "Manual de Marca", "Naming"],
     accent: "#39FF88",
-    image: "/images/okupas/okupas-home.webp",
+    // Sin `image` a propósito: se pintaba con el logotipo de Okupas, una marca
+    // ajena ilustrando nuestra identidad. Va el fondo procedural del acento.
   },
   {
     id: "sintesis",
