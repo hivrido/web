@@ -28,7 +28,6 @@ const Services = dynamic(() => import("../components/sections/Services"));
 const AIHiveSection = dynamic(() => import("../components/sections/AIHiveSection"));
 const Artists = dynamic(() => import("../components/sections/Artists"));
 const Clients = dynamic(() => import("../components/sections/Clients"));
-const OkupasFeature = dynamic(() => import("../components/sections/OkupasFeature"));
 
 // Layout chrome — separate chunks
 const FixedColumn = dynamic(() => import("../components/layout/FixedColumn"));
@@ -46,7 +45,9 @@ export default function Home() {
       <main className="page-wrapper">
         <Hero />
         <Portfolio />
-        <OkupasFeature />
+        {/* La ficha de Okupas duerme: el componente sigue en
+            components/sections/OkupasFeature.tsx y vuelve importándolo acá y
+            reponiendo su entrada `sec-okupas` en ScrollNav. */}
         <About />
         <Services />
         <AIHiveSection />

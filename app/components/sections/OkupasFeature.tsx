@@ -1,4 +1,15 @@
 "use client";
+
+/**
+ * Ficha de Okupas — DORMIDA, no se monta en ninguna página.
+ *
+ * Vivía en /estudio hasta que Okupas dejó de ser una entrada propia del sitio:
+ * es una serie dentro de Hivrido PLAY, y su página sigue publicada en
+ * /movie/okupas. Se conserva entera por si vuelve a hacer falta: para
+ * reponerla, importarla en app/estudio/page.tsx y devolver la entrada
+ * `sec-okupas` a ScrollNav.
+ */
+
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
