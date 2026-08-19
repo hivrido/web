@@ -7,14 +7,13 @@ import LogoAnimated from "../ui/LogoAnimated";
    la raíz ya no es la página larga sino el anillo, y ahí no existen. */
 const NAV_ITEMS = [
   { label: "Home",         href: "/" },
-  { label: "Equipo",       href: "/equipo" },
   { label: "Grow Digital", href: "/diseno-web" },
   { label: "Cine & Video", href: "/cine-video" },
   { label: "Publicidad",   href: "/publicidad" },
   { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Branding",     href: "/branding" },
   { label: "Hivrido PLAY", href: "/movie" },
-  { label: "Okupas",       href: "/movie/okupas" },
+  { label: "Equipo",       href: "/equipo" },
 ];
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";

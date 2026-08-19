@@ -33,23 +33,8 @@ export const PROJECTS = [
     image: '/images/bg/21.jpg',
   },
   {
-    id: 'okupas',
-    index: '02',
-    title: 'OKUPAS',
-    category: 'Serie · Restauración',
-    year: '2025',
-    client: 'Underground Contenidos',
-    body: 'Restauración y remasterización completa de la serie. Reconstrucción de color plano a plano, limpieza de grano y entrega en 4K para plataforma.',
-    tags: ['Color', 'Restauración', '4K'],
-    accent: '#FF2E9A',
-    image: '/images/okupas/capitulo1.jpg',
-    logo: '/images/okupas/logo-okupas.png',
-    href: '/movie/okupas/',
-    cta: 'Ver la serie',
-  },
-  {
     id: 'docke',
-    index: '03',
+    index: '02',
     title: 'AGENTES',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Colmena'],
@@ -69,7 +54,7 @@ export const PROJECTS = [
   },
   {
     id: 'oraculo',
-    index: '04',
+    index: '03',
     title: 'BRANDING',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Marcas'],
@@ -89,7 +74,7 @@ export const PROJECTS = [
   },
   {
     id: 'animacion',
-    index: '05',
+    index: '04',
     title: 'CINE & VIDEO',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Cine'],
@@ -109,7 +94,7 @@ export const PROJECTS = [
   },
   {
     id: 'ritual',
-    index: '06',
+    index: '05',
     title: 'EQUIPO',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Equipo'],
@@ -129,7 +114,7 @@ export const PROJECTS = [
   },
   {
     id: 'monolito',
-    index: '07',
+    index: '06',
     title: 'HIVRIDO PLAY',
     /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
     brandLogo: true,
@@ -150,7 +135,7 @@ export const PROJECTS = [
   },
   {
     id: 'puny',
-    index: '08',
+    index: '07',
     title: 'PUBLICIDAD',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Ads'],

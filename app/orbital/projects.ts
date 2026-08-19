@@ -27,20 +27,8 @@ export const PROJECTS: Project[] = [
     image: "/images/bg/21.jpg",
   },
   {
-    id: "okupas",
-    index: "02",
-    title: "OKUPAS",
-    category: "Serie · Restauración",
-    year: "2025",
-    client: "Underground Contenidos",
-    body: "Restauración y remasterización completa de la serie. Reconstrucción de color plano a plano, limpieza de grano y entrega en 4K para plataforma.",
-    tags: ["Color", "Restauración", "4K"],
-    accent: "#FF2E9A",
-    image: "/images/okupas/capitulo1.jpg",
-  },
-  {
     id: "docke",
-    index: "03",
+    index: "02",
     title: "AGENTES",
     category: "Automatización",
     year: "2025",
@@ -52,7 +40,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "oraculo",
-    index: "04",
+    index: "03",
     title: "BRANDING",
     category: "Branding",
     year: "2025",
@@ -64,7 +52,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "sintesis",
-    index: "05",
+    index: "04",
     title: "CINE & VIDEO",
     category: "Cine & Video",
     year: "2025",
@@ -76,7 +64,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "ritual",
-    index: "06",
+    index: "05",
     title: "EQUIPO",
     category: "Equipo",
     year: "2025",
@@ -88,7 +76,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "monolito",
-    index: "07",
+    index: "06",
     title: "HIVRIDO PLAY",
     category: "Contenidos",
     year: "2026",
@@ -100,7 +88,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "puny",
-    index: "08",
+    index: "07",
     title: "PUBLICIDAD",
     category: "Publicidad",
     year: "2026",

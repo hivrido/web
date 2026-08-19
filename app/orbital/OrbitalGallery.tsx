@@ -28,10 +28,10 @@ import type { OrbitalScene } from "./OrbitalScene";
 /**
  * Vueltas que da cada proyecto por la hélice.
  *
- * Volvió a 1. Con 2 hay dieciséis posiciones, y meter dieciséis tarjetas en una
- * vuelta obliga a un radio de casi 8 para que no se toquen: el aro se abre
- * tanto que las vecinas se van del cuadro. Ocho posiciones es lo que entra sin
- * superponerse a un radio que todavía compone.
+ * Volvió a 1. Con 2 se duplican las posiciones, y meter el doble de tarjetas en
+ * una vuelta obliga a un radio de casi 8 para que no se toquen: el aro se abre
+ * tanto que las vecinas se van del cuadro. Una posición por proyecto es lo que
+ * entra sin superponerse a un radio que todavía compone.
  */
 const PASSES = 1;
 const SLOTS = PROJECTS.length * PASSES;
@@ -63,7 +63,7 @@ const WHATSAPP = "https://wa.me/5491156072460";
 
 /** Puertas de entrada por disciplina: cada una lleva a su proyecto insignia. */
 const ENTRIES = [
-  { label: "Film y series", id: "okupas" },
+  { label: "Film y series", id: "sintesis" },
   { label: "Web y app", id: "nebula" },
   { label: "Agentes IA", id: "docke" },
   { label: "Branding", id: "oraculo" },
