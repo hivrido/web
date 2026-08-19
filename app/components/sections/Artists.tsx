@@ -8,14 +8,14 @@ const ARTISTS = [
   {
     img: "/images/team/1.jpg",
     name: "Sergio Podeley",
-    role: "Identidad Artística & Performance",
+    role: "CEO · Identidad Artística & Performance",
     bio: "Más de 10 años creando experiencias culturales de impacto en Argentina y Latinoamérica.",
     instagram: "https://www.instagram.com/sergiopodeley",
   },
   {
     img: "/images/team/2.jpg",
     name: "Lucas Manzano",
-    role: "Visión y Estrategia",
+    role: "CEO · Visión y Estrategia",
     bio: "Prompt engineer · Creativo developer · Estratega",
     instagram: "https://instagram.com/lucasmanzano",
   },
