@@ -283,32 +283,20 @@ const nextPaint = () =>
   new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 0))));
 
 (async () => {
+  /* La red arranca primero: las fotos son el bulto más grande de la carga y
+     no dependen ni de las fuentes ni del motor. Descomprimirlas ya no ocupa
+     el hilo —images.js usa createImageBitmap—, así que pedirlas de entrada
+     solo adelanta el momento en que el anillo puede armarse. */
+  preloadCardImages(PROJECTS);
+
   await nextPaint();
 
-  /* La tipografía primero, y recién después el motor.
-     El texto del preloader se pinta enseguida con la fuente de sistema y se
-     rehace cuando llega Orbitron. Ese segundo pintado es el que Lighthouse
-     toma como "primer contenido grande", y si el hilo está compilando three
-     en ese momento, queda esperando: medía 3,4 s un texto que en pantalla
-     está desde los 100 ms. Esperar acá cuesta unos milisegundos —la fuente
-     va con preload y pesa 12 KiB— y no atrasa nada: el anillo igual no se
-     muestra hasta que el preloader cumple su piso. */
-  if (document.fonts) { try { await document.fonts.ready; } catch { /* da igual */ } }
-  await nextPaint();
-
-  // Recién acá se evalúa three, con el preloader ya asentado en pantalla
+  // Recién acá se evalúa three, con el preloader ya en pantalla
   const { makeCardTexture, makePlayTexture, waitForFonts, createScene } =
     await import('./ring.js');
 
   await waitForFonts();
   setProgress(8);
-
-  /* Las fotos se piden después de las fuentes, y no antes. Son el bulto más
-     grande de la carga, y lanzadas de entrada le disputaban el ancho de banda
-     justo a la tipografía del preloader —que es lo único en pantalla y lo que
-     define cuándo aparece el primer contenido grande—. Igual llegan sobradas:
-     el preloader tiene piso y el anillo no se muestra hasta que termina. */
-  preloadCardImages(PROJECTS);
 
   /* Las texturas se componen en serie para poder reportar avance real.
      El respiro entre una y otra no ahorra trabajo: lo reparte. Con las
