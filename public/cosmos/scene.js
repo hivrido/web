@@ -148,8 +148,8 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
      presupuesto que el bucle ajusta según los fps reales (ver `governor`).
      En un gama media, 1.5 sobre una pantalla de 1080p son 3.5 millones de
      píxeles por frame para una escena que ya está casi quieta. */
-  let dprCap = COARSE ? 1.25 : 1.8;
-  const DPR_FLOOR = 0.75;
+  let dprCap = COARSE ? 1 : 1.8;
+  const DPR_FLOOR = 0.6;
   const setDpr = () => renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
   setDpr();
   renderer.setSize(innerWidth, innerHeight, false);
@@ -162,7 +162,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
 
   /* ────────── Fondo estrellado ────────── */
   {
-    const COUNT = COARSE ? 1200 : 2800;
+    const COUNT = COARSE ? 800 : 2800;
     const pos = new Float32Array(COUNT * 3);
     const siz = new Float32Array(COUNT);
     for (let i = 0; i < COUNT; i++) {
@@ -237,7 +237,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
      proyectos. Es lo que hace que las tarjetas floten "dentro" de algo. */
   {
     const CLUMPS = COARSE ? 4 : 7;
-    const PER = COARSE ? 150 : 420;
+    const PER = COARSE ? 110 : 420;
     const COUNT = CLUMPS * PER;
     const palette = ['#B026FF', '#FF2E9A', '#FF3355', '#00E5FF', '#7C3AED']
       .map((c) => new THREE.Color(c));
@@ -363,13 +363,19 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
        plana, y es lo único que ocupa el centro de una pantalla vertical. El
        costo es relleno, no geometría: son puntos con un shader de doce
        líneas, y el DPR está capado a 1.5. */
-    const STEPS = COARSE ? 290 : 330;     // muestras por hebra
-    const CLOUD = COARSE ? 8 : 6;         // partículas por muestra: la densidad
+    /* La densidad de móvil era mayor que la de escritorio —8 partículas por
+       muestra contra 6— para compensar la falta de bloom, y esta hélice sola
+       eran 5920 sprites con mezcla aditiva: tres cuartos de todo lo que se
+       dibuja por cuadro, y el relleno es lo que ahoga a un gama media. Baja
+       el recuento y sube el tamaño: menos sprites más grandes ocupan el mismo
+       volumen, y a 6 pulgadas la columna se lee igual de llena. */
+    const STEPS = COARSE ? 240 : 330;     // muestras por hebra
+    const CLOUD = COARSE ? 5 : 6;         // partículas por muestra: la densidad
     const SPREAD = COARSE ? 0.17 : 0.13;  // radio de la nube: el grosor del tubo
-    const PT = COARSE ? 1.25 : 1;         // escala de partícula
+    const PT = COARSE ? 1.4 : 1;          // escala de partícula
     const RUNGS = COARSE ? 26 : 30;       // estructura: marca el paso de la hélice
     const RUNG_PTS = 18;
-    const AURA = COARSE ? 760 : 840;
+    const AURA = COARSE ? 520 : 840;
     const COUNT = STEPS * CLOUD * 2 + RUNGS * (RUNG_PTS + 2) + AURA;
 
     const pos = new Float32Array(COUNT * 3);
@@ -668,7 +674,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
      continuo: no se lee ningún punto suelto. Las posiciones se calculan en
      JS sobre el contorno redondeado y el objeto se cuelga de la tarjeta con
      más foco, así hereda giro y escala. */
-  const COMET_N = 260;
+  const COMET_N = COARSE ? 170 : 260;
   const COMET_TAIL = 0.38;   // fracción del contorno que ocupa la cola
   const COMET_SPEED = 0.22;  // vueltas por segundo
 
@@ -1000,20 +1006,37 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
      que Lighthouse cobra como bloqueo del hilo principal— para un movimiento
      que a 36 fps se ve igual. Mientras se arrastra volvemos a la tasa nativa:
      ahí sí el dedo tiene que ir pegado a la tarjeta. */
-  const IDLE_HZ = COARSE ? 36 : 60;
+  let idleHz = COARSE ? 30 : 60;
   let lastDraw = 0;
 
-  /* Si el dispositivo no llega, baja la resolución antes que la fluidez.
-     Dos escalones y se detiene: mide una vez por segundo y solo mientras
-     nadie toca, para no reaccionar al pico de un gesto. */
-  let governorSteps = 2;
-  const FPS_FLOOR = IDLE_HZ * 0.8;
+  /* ── Gobernador de calidad ──
+     Si el aparato no llega, la escena se achica sola. Baja en dos ejes y en
+     ese orden: primero resolución —que es lo que menos se nota en una nube de
+     partículas— y recién cuando ya no queda margen ahí, la tasa de cuadros.
+
+     No es un ajuste cosmético: acá el costo es relleno, y un aparato que no
+     da abasto encadena cuadros largos que dejan el hilo ocupado de forma
+     permanente. Un teléfono con GPU decente nunca entra en estos escalones y
+     ve la escena entera; uno que raspa ve una versión más liviana en vez de
+     una que se arrastra. */
+  const HZ_FLOOR = 20;
+  let steps = 5;
   function governor() {
-    if (governorSteps <= 0 || dragging || fps >= FPS_FLOOR) return;
-    dprCap = Math.max(DPR_FLOOR, dprCap - 0.25);
-    governorSteps--;
-    setDpr();
-    renderer.setSize(innerWidth, innerHeight, false);
+    if (steps <= 0 || dragging) return;
+    // El umbral se mide contra lo que hoy se pide, no contra un valor fijo
+    if (fps >= idleHz * 0.8) return;
+
+    if (dprCap > DPR_FLOOR) {
+      dprCap = Math.max(DPR_FLOOR, dprCap - 0.2);
+      setDpr();
+      renderer.setSize(innerWidth, innerHeight, false);
+    } else if (idleHz > HZ_FLOOR) {
+      idleHz = Math.max(HZ_FLOOR, idleHz - 5);
+    } else {
+      steps = 0;
+      return;
+    }
+    steps--;
   }
 
   function frame() {
@@ -1024,7 +1047,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
 
     // Se saltea el frame entero, no solo el render: la física es determinista
     // por dt, así que avanzar en pasos más largos da el mismo recorrido.
-    const minGap = 1000 / (dragging ? 60 : IDLE_HZ);
+    const minGap = 1000 / (dragging ? 60 : idleHz);
     if (now - lastDraw < minGap - 1) return;
     lastDraw = now;
 
@@ -1158,7 +1181,8 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     else renderer.render(scene, camera);
 
     fpsAcc += 1 / Math.max(dt, 1e-4); fpsN++; fpsClock += dt;
-    if (fpsClock >= 1) {
+    // Medio segundo: si la escena no da abasto, conviene enterarse rápido
+    if (fpsClock >= 0.5) {
       fps = Math.round(fpsAcc / fpsN); fpsAcc = fpsN = fpsClock = 0;
       governor();
     }

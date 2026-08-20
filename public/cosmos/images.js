@@ -12,21 +12,44 @@
  *  y que después cada tarjeta encuentre la suya ya resuelta. */
 const cache = new Map();
 
+/* Descomprimir un JPEG es caro, y con <img> el trabajo cae en el hilo
+   principal: `decoding = "async"` no alcanza, porque si nadie esperó el
+   decode antes de dibujarlo, drawImage lo fuerza ahí mismo. En un gama media
+   eso era una sola tarea de 775 ms —el hilo trabado casi un segundo— para
+   seis fotos.
+
+   createImageBitmap descomprime fuera del hilo principal y devuelve algo que
+   drawImage ya puede pintar sin volver a tocar el CPU. El <img> queda de
+   respaldo para navegadores que no lo tengan. */
+const canBitmap = typeof createImageBitmap === 'function';
+
+function viaBitmap(src) {
+  return fetch(src, { credentials: 'same-origin' })
+    .then((r) => (r.ok ? r.blob() : Promise.reject(new Error(r.status))))
+    .then((b) => createImageBitmap(b));
+}
+
+function viaImgTag(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('img'));
+    img.src = src;
+  });
+}
+
 export function loadImage(src) {
   if (!src) return Promise.resolve(null);
   const hit = cache.get(src);
   if (hit) return hit;
 
-  const p = new Promise((resolve) => {
-    const img = new Image();
-    img.decoding = 'async';
-    img.onload = () => resolve(img);
-    img.onerror = () => {
+  const p = (canBitmap ? viaBitmap(src).catch(() => viaImgTag(src)) : viaImgTag(src))
+    .catch(() => {
       console.warn('[cosmos] no cargó la imagen, se usa fondo procedural:', src);
-      resolve(null);
-    };
-    img.src = src;
-  });
+      return null;   // nunca rechaza: la tarjeta cae al fondo procedural
+    });
+
   cache.set(src, p);
   return p;
 }
