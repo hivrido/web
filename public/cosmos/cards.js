@@ -9,6 +9,7 @@
 
 import * as THREE from 'three';
 import { BRAND_PATHS, BRAND_W, BRAND_H } from './brand.js';
+import { loadImage, cardImage } from './images.js';
 
 // Apaisado, como las "tablets" de la referencia.
 // W y H son unidades de diseño, no píxeles: todo el dibujo de abajo trabaja en
@@ -23,7 +24,14 @@ const H = 768;
    generación de mipmaps al subirla a la GPU—. Componer siete de estas en serie
    era el grueso del bloqueo del hilo durante la carga. */
 const COARSE = matchMedia('(pointer: coarse)').matches;
-const TEX_SCALE = COARSE ? 0.625 : 1;   // 640 x 480 en táctiles
+const TEX_SCALE = COARSE ? 0.5 : 1;   // 512 x 384 en táctiles
+
+/* shadowBlur es la única medida del canvas que ignora la transformación: se
+   aplica en píxeles del mapa de bits, no en unidades de diseño. Sin corregirlo
+   el mismo 34 rendía un halo proporcionalmente más grande en el canvas chico
+   —el glow se veía más marcado en el teléfono que en escritorio—, y encima
+   el costo de un desenfoque crece con el cuadrado del radio. */
+const blur = (px) => px * TEX_SCALE;
 
 /** Dibuja el logotipo de HIVRIDO centrado en (cx, cy), con `width` de ancho.
  *  Sale de los mismos trazos vectoriales que usan el preloader y el header,
@@ -36,41 +44,6 @@ function drawBrandLogo(ctx, cx, cy, width, color) {
   ctx.fillStyle = color;
   for (const d of BRAND_PATHS) ctx.fill(new Path2D(d));
   ctx.restore();
-}
-
-/** Carga una imagen; resuelve en null si falla (nunca rechaza).
- *  Cachea por src, que es lo que permite pedirlas todas juntas de antemano
- *  y que después cada tarjeta encuentre la suya ya resuelta. */
-const imgCache = new Map();
-function loadImage(src) {
-  if (!src) return Promise.resolve(null);
-  const hit = imgCache.get(src);
-  if (hit) return hit;
-
-  const p = new Promise((resolve) => {
-    const img = new Image();
-    img.decoding = 'async';
-    img.onload = () => resolve(img);
-    img.onerror = () => {
-      console.warn('[cosmos] no cargó la imagen, se usa fondo procedural:', src);
-      resolve(null);
-    };
-    img.src = src;
-  });
-  imgCache.set(src, p);
-  return p;
-}
-
-/**
- * Dispara la descarga de todo el material de las tarjetas de una sola vez.
- *
- * Las texturas se componen en serie para poder informar avance real, pero
- * componer en serie arrastraba también a descargar en serie: ocho idas y
- * vueltas encadenadas antes de la última tarjeta. Pedidas todas juntas, la
- * red trabaja en paralelo y el bucle de composición solo espera a la primera.
- */
-export function preloadCardImages(projects) {
-  for (const p of projects) { loadImage(p.image); loadImage(p.logo); }
 }
 
 /** Dibuja la imagen cubriendo el canvas sin deformarla (object-fit: cover). */
@@ -162,7 +135,7 @@ export function makePlayTexture() {
   ctx.fill();
 
   ctx.shadowColor = GOLD;
-  ctx.shadowBlur = 16;
+  ctx.shadowBlur = 16;   // sin blur(): esta textura tiene su propio canvas, sin escalar
   ctx.strokeStyle = GOLD;
   ctx.lineWidth = 1.4;
   roundRect(ctx, x, y, w, h, h / 2);
@@ -217,7 +190,7 @@ export async function makeCardTexture(project) {
   if (TEX_SCALE !== 1) ctx.scale(TEX_SCALE, TEX_SCALE);
 
   const [img, logo] = await Promise.all([
-    loadImage(project.image),
+    loadImage(cardImage(project.image)),
     loadImage(project.logo),
   ]);
 
@@ -286,7 +259,7 @@ export async function makeCardTexture(project) {
      sobre las fotos oscuras el acento solo desaparecía. */
   ctx.fillStyle = '#f2f0f7';
   ctx.shadowColor = project.accent;
-  ctx.shadowBlur = 18;
+  ctx.shadowBlur = blur(18);
   // 900: el peso de los títulos epic de la home. waitForFonts lo espera —
   // si no está cargado, el canvas cae al peso más cercano y sale flaco.
   ctx.font = '900 34px "Orbitron", sans-serif';
@@ -314,7 +287,7 @@ export async function makeCardTexture(project) {
     const ly = H * 0.5;
     ctx.save();
     ctx.shadowColor = project.accent;
-    ctx.shadowBlur = 34;
+    ctx.shadowBlur = blur(34);
     drawBrandLogo(ctx, CX, ly, lw, '#ffffff');
     // Segunda pasada sin sombra: la primera queda lavada por su propio glow
     ctx.shadowBlur = 0;
@@ -330,7 +303,7 @@ export async function makeCardTexture(project) {
 
     ctx.save();
     ctx.shadowColor = project.accent;
-    ctx.shadowBlur = 34;
+    ctx.shadowBlur = blur(34);
     ctx.drawImage(logo, CX - lw / 2, ly, lw, lh);
     // Segunda pasada sin sombra: la primera queda lavada por su propio glow
     ctx.shadowBlur = 0;
@@ -401,7 +374,7 @@ export async function makeCardTexture(project) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.shadowColor = project.accent;
-    ctx.shadowBlur = 26;
+    ctx.shadowBlur = blur(26);
     ctx.fillStyle = '#ffffff';
     lines.forEach((l, i) => ctx.fillText(l, CX, titleY - textH / 2 + lineH * (i + 0.5)));
     ctx.shadowBlur = 0;
@@ -457,11 +430,11 @@ export async function makeCardTexture(project) {
   metaLines.forEach((l, i) => {
     // Primera pasada: sombra negra dura, para despegarlo del fondo
     ctx.shadowColor = 'rgba(0,0,0,0.9)';
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = blur(10);
     ctx.fillText(l, CX, metaBase(i));
     // Segunda: glow del acento, que lo integra a la pieza
     ctx.shadowColor = project.accent;
-    ctx.shadowBlur = 22;
+    ctx.shadowBlur = blur(22);
     ctx.fillText(l, CX, metaBase(i));
   });
   ctx.shadowBlur = 0;
@@ -481,27 +454,12 @@ export async function makeCardTexture(project) {
 }
 
 /** Espera a las webfonts: si no, los títulos se dibujan con la fuente de sistema. */
-/**
- * Espera a que llegue la hoja de Google Fonts.
- *
- * Ya no bloquea el render, así que puede no estar cuando arranca la
- * composición. Sin esperarla, document.fonts.load() no encuentra ninguna cara
- * declarada y resuelve al instante: las tarjetas saldrían horneadas con la
- * tipografía de sistema, y esas texturas no se rehacen.
- */
-function fontSheetReady() {
-  const link = document.getElementById('gfonts');
-  if (!link || link.sheet) return Promise.resolve();
-  return new Promise((resolve) => {
-    link.addEventListener('load', resolve, { once: true });
-    link.addEventListener('error', resolve, { once: true });
-    setTimeout(resolve, 3000);   // nunca quedar colgados de un tercero
-  });
-}
-
+/* Las @font-face se declaran en línea en el <head>, así que ya están
+   registradas cuando corre esto: document.fonts.load() las encuentra sin
+   depender de que haya llegado ninguna hoja externa. Importa, porque una
+   textura horneada con la tipografía de sistema no se rehace después. */
 export async function waitForFonts() {
   if (!document.fonts) return;
-  await fontSheetReady();
   try {
     await Promise.all([
       document.fonts.load('900 34px "Orbitron"'),

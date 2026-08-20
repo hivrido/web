@@ -6,16 +6,23 @@
  */
 
 import { PROJECTS } from './projects.js';
-import { makeCardTexture, makePlayTexture, waitForFonts, preloadCardImages } from './cards.js';
-import { createScene } from './scene.js';
+import { preloadCardImages } from './images.js';
 import { mountLogo } from './brand.js';
+import { bootT0 } from './boot.js';
+
+/* cards.js y scene.js se importan abajo, no acá: los dos arrastran three, y
+   un módulo se evalúa apenas se lo importa. Estáticos, los 675 KB del motor
+   se compilaban antes de que este archivo corriera una línea —justo en la
+   ventana en que el preloader quiere pintar su animación—, y esos cuadros se
+   perdían. El <link rel="modulepreload"> del HTML los baja igual de temprano;
+   lo que se mueve es cuándo se ejecutan, no cuándo se descargan. */
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (id) => document.getElementById(id);
 
 const el = {
   boot: $('boot'), bootFill: $('bootFill'), bootPct: $('bootPct'),
-  bootLogo: $('bootLogo'), bootTagline: $('bootTagline'), logoHolder: $('logoHolder'),
+  logoHolder: $('logoHolder'),
   overlay: $('navOverlay'),
   canvas: $('gl'), hud: $('hud'), hint: $('hint'),
   cat: $('cat'), title: $('title'), counter: $('counter'), ticks: $('ticks'),
@@ -231,8 +238,10 @@ el.menu.querySelectorAll('.nav-menu a').forEach((a) => {
 
 /* ═══════════ Boot: preloader de la home con progreso real ═══════════ */
 
-// El logo se dibuja mientras carga, como en la home
-mountLogo(el.bootLogo, { delay: 200, height: 70 });
+/* El logo ya lo montó boot.js, que corre sin esperar a three. De acá solo
+   viene el instante en que arrancó: el piso de abajo se mide contra el
+   comienzo real de la coreografía, no contra el momento en que main.js
+   consiguió ejecutarse. */
 
 /* La coreografía del logo dura ~1.9s desde el mount: delay de 200, trazos
    letra a letra, barrido dorado y rellenos. En móvil las texturas son más
@@ -240,13 +249,11 @@ mountLogo(el.bootLogo, { delay: 200, height: 70 });
    dibujo — sin un piso, el loader se retira con el logo a medias. El piso
    solo demora la salida: la barra llega a 100 apenas la carga termina. */
 const BOOT_MIN = 2050;
-const bootT0 = performance.now();
 
 let booted = false;
 function setProgress(v) {
   el.bootFill.style.width = v + '%';
   el.bootPct.textContent = Math.round(v) + '%';
-  if (v >= 40) el.bootTagline.classList.add('visible');
 }
 function finishBoot() {
   if (booted) return;
@@ -264,20 +271,45 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
 
 /* ═══════════ Arranque ═══════════ */
 
+/** Deja pasar dos cuadros antes de seguir.
+ *  El preloader tiene una coreografía propia que pintar —el trazo del logo,
+ *  la bajada que entra— y arranca en el mismo instante que esto. Sin el
+ *  respiro, el hilo se llena de three y de texturas y esos cuadros no llegan
+ *  a componerse: la animación se ve a saltos y el primer contenido grande
+ *  tarda en aparecer. Cuesta unos 30 ms de un preloader que igual tiene piso. */
+const nextPaint = () =>
+  new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 0))));
+
 (async () => {
-  // La red arranca antes que las fuentes: descargar el material de las
-  // tarjetas no depende de que Orbitron haya llegado, y esperarlo dejaba el
-  // enlace ocioso justo en el momento más caro de la carga.
-  preloadCardImages(PROJECTS);
+  await nextPaint();
+
+  // Recién acá se evalúa three, con el preloader ya en pantalla
+  const [{ makeCardTexture, makePlayTexture, waitForFonts }, { createScene }] =
+    await Promise.all([import('./cards.js'), import('./scene.js')]);
 
   await waitForFonts();
   setProgress(8);
 
-  // Las texturas se componen en serie para poder reportar avance real
+  /* Las fotos se piden después de las fuentes, y no antes. Son el bulto más
+     grande de la carga, y lanzadas de entrada le disputaban el ancho de banda
+     justo a la tipografía del preloader —que es lo único en pantalla y lo que
+     define cuándo aparece el primer contenido grande—. Igual llegan sobradas:
+     el preloader tiene piso y el anillo no se muestra hasta que termina. */
+  preloadCardImages(PROJECTS);
+
+  /* Las texturas se componen en serie para poder reportar avance real.
+     El respiro entre una y otra no ahorra trabajo: lo reparte. Con las
+     imágenes ya en caché, el `await` de adentro resuelve en microtarea y las
+     ocho composiciones se fusionaban en una sola tarea larguísima; cediendo
+     el hilo, cada tarjeta es su propia tarea y entremedio el navegador puede
+     pintar la barra de progreso y atender un toque. */
+  const yieldToBrowser = () => new Promise((r) => setTimeout(r, 0));
+
   const textures = [];
   for (let i = 0; i < TOTAL; i++) {
     textures.push(await makeCardTexture(PROJECTS[i]));
     setProgress(8 + ((i + 1) / TOTAL) * 82);
+    await yieldToBrowser();
   }
 
   // Se compone después de las fuentes: el PLAY es tipografía, no imagen

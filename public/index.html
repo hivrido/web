@@ -13,26 +13,123 @@
 <meta property="og:url" content="https://hivrido.com/">
 
 <link rel="icon" href="/images/logo/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- Las fuentes de la home: Orbitron para display y etiquetas, Rubik para texto.
-     Cargan sin bloquear el render: eran 780 ms de ida y vuelta a un tercero
-     delante del primer pixel, para un preloader que igual arranca con la
-     fuente de sistema. El texto ya usa display=swap, y las texturas de las
-     tarjetas esperan a document.fonts.ready antes de componerse. -->
-<link id="gfonts" rel="stylesheet" media="print" onload="this.media='all'"
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap">
-<noscript>
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap">
-</noscript>
+<!-- Las fuentes de la home —Orbitron para display y etiquetas, Rubik para
+     texto—, servidas por nosotros. Venían de Google Fonts y eran dos saltos
+     a terceros encadenados en el arranque: DNS + TLS + la hoja de
+     fonts.googleapis.com, y recién ahí DNS + TLS + el .woff2 de
+     fonts.gstatic.com. Como las texturas de las tarjetas se hornean con esta
+     tipografía, esa cadena no retrasaba solo al texto: retrasaba el anillo.
+     Son las variables completas (un archivo cubre todos los pesos) traídas
+     de la misma URL que servía Google.
+
+     Solo se precarga Orbitron: es la única que se ve mientras el preloader
+     está en pantalla —la bajada y el contador— y por lo tanto la que decide
+     cuándo aparece el primer contenido grande. Rubik pesa el triple y su
+     texto vive debajo del preloader, así que precargarla solo le disputaba
+     el ancho de banda a la que sí importa. Baja igual, cuando hace falta. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="/fonts/orbitron-latin-var.woff2">
+
+<!-- ── CSS crítico: el preloader y nada más ──
+     Lo único que se ve hasta que el anillo está listo es #boot, que es opaco
+     y cubre la pantalla entera (z-index 60). Todo lo que hay debajo —HUD,
+     header, panel, menú— está tapado o en opacity 0, así que su CSS no tiene
+     por qué frenar el primer pixel. Va acá en línea, y las dos hojas de abajo
+     dejaron de bloquear el render: eran dos idas y vueltas de red delante de
+     un preloader que se dibuja con doce reglas.
+     Duplicar estas reglas en styles.css es a propósito: la hoja completa
+     tiene que seguir siendo válida por sí sola. -->
+<style>
+/* Un solo archivo por familia: son variables, el rango de peso va adentro. */
+@font-face{
+  font-family:'Orbitron';font-style:normal;font-weight:400 900;font-display:swap;
+  src:url(/fonts/orbitron-latin-var.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face{
+  font-family:'Rubik';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url(/fonts/rubik-latin-var.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* Solo baja si aparece un glifo fuera del latín básico. */
+@font-face{
+  font-family:'Rubik';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url(/fonts/rubik-latin-ext-var.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+:root{
+  --void:#04040a; --violet:#7C3AED; --violet-light:#A78BFA; --gold-light:#E8C97A;
+  --font-display:'Orbitron',sans-serif;
+}
+html,body{height:100%;overscroll-behavior:none}
+body{
+  margin:0;overflow:hidden;background:#04040a;color:#f2f0f7;
+  font-family:'Rubik',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+}
+/* Hasta que llegue la hoja completa, lo único que existe es el preloader.
+   El resto está debajo de #boot y no se ve, pero sin estilos sigue ocupando
+   flujo: genera candidatos a LCP y desplazamientos que nadie llega a mirar.
+   Con esto la ventana entre el primer pixel y la hoja es determinista. */
+html:not(.css-ready) body > *:not(#boot){visibility:hidden}
+.loader-wrap{
+  position:fixed;inset:0;z-index:60;background:var(--void);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:transform .9s cubic-bezier(.19,1,.22,1),opacity .5s ease .35s,visibility .9s ease;
+}
+.loader-wrap.done{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
+/* El logo lo inyecta boot.js: sin reservarle el alto, al entrar empuja la
+   bajada hacia abajo y eso es un salto de layout medible. 334x70 es el SVG
+   que monta boot.js (964.874 / 202.005 de proporción, 70 de alto). */
+.loader-logo{width:334px;height:70px}
+/* Vive detrás del preloader, pero su geometría cuenta igual: sin esto se
+   reposiciona cuando llega styles.css, que ya no bloquea el render. */
+.wa-btn{
+  position:fixed;right:clamp(14px,4vw,24px);
+  bottom:calc(clamp(20px,3.5vh,38px) + env(safe-area-inset-bottom,0px));
+  z-index:20;width:60px;height:60px;
+  display:flex;align-items:center;justify-content:center;text-decoration:none;
+}
+/* Entra sola, por CSS. La encendía JS con un setTimeout, y como es el bloque
+   de texto más grande del preloader terminaba siendo el elemento que define
+   el LCP: al depender de un temporizador, el modelo de Lighthouse coloca ese
+   pintado detrás de toda la cadena de CPU —three, texturas— y medía 5,5 s
+   algo que en la película se ve al segundo y medio. Sin JS de por medio,
+   pinta con el primer render. La coreografía es idéntica. */
+.loader-tagline{
+  font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:.4em;
+  text-transform:uppercase;color:rgba(255,255,255,.3);opacity:0;transform:translateY(8px);
+  animation:tagline-in .8s ease .26s forwards,tagline-to-violet 1.2s ease .56s forwards;
+}
+@keyframes tagline-in{to{opacity:1;transform:translateY(0)}}
+@keyframes tagline-to-violet{from{color:rgba(255,255,255,.3)}to{color:var(--violet-light)}}
+.loader-count{
+  position:absolute;bottom:20px;right:28px;font-family:var(--font-display);
+  font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--gold-light);opacity:.8;
+}
+.loader-bar{
+  position:absolute;bottom:0;left:0;height:2px;width:0%;
+  background:linear-gradient(90deg,var(--violet),var(--violet-light),var(--gold-light));
+  transition:width .4s cubic-bezier(.19,1,.22,1);
+}
+</style>
 
 <!-- Tailwind ya compilado. Antes de esta linea iba @tailwindcss/browser:
      68 KiB de JavaScript que bloqueaban el render para resolver en cada
-     visita lo que scripts/build-cosmos-css.mjs resuelve una sola vez. -->
-<link rel="stylesheet" href="/cosmos/tw.css">
-<link rel="stylesheet" href="/cosmos/styles.css">
+     visita lo que scripts/build-cosmos-css.mjs resuelve una sola vez.
+     Las dos cargan fuera de la ruta crítica y se aplican al llegar. El orden
+     en el DOM es el que manda en la cascada, no el orden de llegada: styles
+     sigue pisando a tw aunque baje primero. -->
+<link rel="preload" as="style" href="/cosmos/tw.css" onload="this.rel='stylesheet'">
+<link rel="preload" as="style" href="/cosmos/styles.css"
+      onload="this.rel='stylesheet';document.documentElement.classList.add('css-ready')">
+<noscript>
+  <link rel="stylesheet" href="/cosmos/tw.css">
+  <link rel="stylesheet" href="/cosmos/styles.css">
+  <style>html:not(.css-ready) body > *:not(#boot){visibility:visible}</style>
+</noscript>
 
 <!-- three servido por nosotros y minificado. Antes venía de jsdelivr y era
      `three.module.js`: 1.31 MB sin minificar que el móvil descarga, parsea y
@@ -51,11 +148,13 @@
 
 <!-- La cadena real era main.js -> scene.js -> three, descubierta salto a
      salto. Anunciada aca, arranca entera de una vez. -->
+<link rel="modulepreload" href="/cosmos/boot.js">
+<link rel="modulepreload" href="/cosmos/brand.js">
 <link rel="modulepreload" href="/cosmos/main.js">
+<link rel="modulepreload" href="/cosmos/images.js">
 <link rel="modulepreload" href="/cosmos/scene.js">
 <link rel="modulepreload" href="/cosmos/cards.js">
 <link rel="modulepreload" href="/cosmos/projects.js">
-<link rel="modulepreload" href="/cosmos/brand.js">
 <link rel="modulepreload" href="/cosmos/vendor/three/three.module.min.js">
 </head>
 
@@ -70,6 +169,12 @@
   <div id="bootPct" class="loader-count">0%</div>
   <div id="bootFill" class="loader-bar"></div>
 </div>
+
+<!-- Va acá y no con main.js al final: dibuja el logo del preloader y no
+     importa three, así entra en cuanto llega en vez de esperar al motor 3D.
+     Los módulos se ejecutan en orden de documento, así que main.js —que lo
+     importa para saber cuándo arrancó— siempre lo encuentra ya corrido. -->
+<script type="module" src="/cosmos/boot.js"></script>
 
 <!-- ═══════════ CANVAS ═══════════ -->
 <canvas id="gl" class="fixed inset-0 h-full w-full touch-none cursor-grab"
