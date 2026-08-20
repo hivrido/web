@@ -18,7 +18,7 @@ import { mountLogo } from './brand.js';
 
 export const bootT0 = performance.now();
 
-mountLogo(document.getElementById('bootLogo'), { delay: 200, height: 70 });
+mountLogo(document.getElementById('bootLogo'), { delay: 200, height: 70, speed: 1.6 });
 
 /* La bajada "Is the Future" no se toca desde acá: entra sola con una
    animación CSS, en el mismo compás que el trazo del logo. Estaba enganchada

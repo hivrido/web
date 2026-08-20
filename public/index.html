@@ -76,7 +76,7 @@ html:not(.css-ready) body > *:not(#boot){visibility:hidden}
 .loader-wrap{
   position:fixed;inset:0;z-index:60;background:var(--void);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:transform .9s cubic-bezier(.19,1,.22,1),opacity .5s ease .35s,visibility .9s ease;
+  transition:transform .6s cubic-bezier(.19,1,.22,1),opacity .4s ease .2s,visibility .6s ease;
 }
 .loader-wrap.done{transform:translateY(-100%);opacity:0;visibility:hidden;pointer-events:none}
 .loader-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
@@ -100,11 +100,21 @@ html:not(.css-ready) body > *:not(#boot){visibility:hidden}
    pinta con el primer render. La coreografía es idéntica. */
 .loader-tagline{
   font-family:var(--font-display);font-size:9px;font-weight:600;letter-spacing:.4em;
-  text-transform:uppercase;color:rgba(255,255,255,.3);opacity:0;transform:translateY(8px);
-  animation:tagline-in .8s ease .26s forwards,tagline-to-violet 1.2s ease .56s forwards;
+  text-transform:uppercase;transform:translateY(8px);
+  color:rgba(255,255,255,.04);
+  animation:tagline-in 1.76s ease .26s forwards;
 }
-@keyframes tagline-in{to{opacity:1;transform:translateY(0)}}
-@keyframes tagline-to-violet{from{color:rgba(255,255,255,.3)}to{color:var(--violet-light)}}
+/* El mismo arco de siempre —entra tenue, sube a blanco al 30%, vira al
+   violeta— pero por `color` y no por `opacity`. Un elemento en opacity 0 no
+   está pintado: el navegador recién lo cuenta como contenido cuando el
+   fundido ya arrancó, y ese instante cae detrás de todo lo que el hilo esté
+   haciendo. Así el renglón existe desde el primer cuadro y el arranque se
+   ve exactamente igual. */
+@keyframes tagline-in{
+  0%   { color:rgba(255,255,255,.04); transform:translateY(8px); }
+  45%  { color:rgba(255,255,255,.3);  transform:translateY(0); }
+  100% { color:var(--violet-light);   transform:translateY(0); }
+}
 .loader-count{
   position:absolute;bottom:20px;right:28px;font-family:var(--font-display);
   font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--gold-light);opacity:.8;
@@ -113,6 +123,12 @@ html:not(.css-ready) body > *:not(#boot){visibility:hidden}
   position:absolute;bottom:0;left:0;height:2px;width:0%;
   background:linear-gradient(90deg,var(--violet),var(--violet-light),var(--gold-light));
   transition:width .4s cubic-bezier(.19,1,.22,1);
+}
+/* Lo cubría styles.css cuando el preloader vivía ahí. Va con él. */
+@media (prefers-reduced-motion:reduce){
+  .loader-tagline{animation:none;opacity:1;transform:none;color:var(--violet-light)}
+  .loader-wrap{transition:opacity .2s ease}
+  .loader-bar{transition:none}
 }
 </style>
 
@@ -131,31 +147,21 @@ html:not(.css-ready) body > *:not(#boot){visibility:hidden}
   <style>html:not(.css-ready) body > *:not(#boot){visibility:visible}</style>
 </noscript>
 
-<!-- three servido por nosotros y minificado. Antes venía de jsdelivr y era
-     `three.module.js`: 1.31 MB sin minificar que el móvil descarga, parsea y
-     compila antes del primer frame. La build minificada es la mitad, y en el
-     propio dominio se ahorra además el DNS + TLS de un tercero en la ruta
-     crítica. scripts/build-cosmos-vendor.mjs lo copia desde node_modules, así
-     que la versión la sigue mandando package.json. -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "/cosmos/vendor/three/three.module.min.js",
-    "three/addons/": "/cosmos/vendor/three/addons/"
-  }
-}
-</script>
-
 <!-- La cadena real era main.js -> scene.js -> three, descubierta salto a
-     salto. Anunciada aca, arranca entera de una vez. -->
+     salto. Anunciada aca, arranca entera de una vez.
+
+     `ring.js` es el anillo 3D empaquetado: cards.js, scene.js y solo la
+     parte de three que la escena alcanza. Antes three venía suelto de
+     jsdelivr por un importmap —1.31 MB sin minificar, de los que Lighthouse
+     contaba 92 KiB comprimidos sin usar—; empaquetado se sacude el árbol y
+     además desaparece el salto a un tercero. Va último a propósito: se
+     descarga en paralelo, pero se evalúa después del primer pintado. -->
 <link rel="modulepreload" href="/cosmos/boot.js">
 <link rel="modulepreload" href="/cosmos/brand.js">
 <link rel="modulepreload" href="/cosmos/main.js">
 <link rel="modulepreload" href="/cosmos/images.js">
-<link rel="modulepreload" href="/cosmos/scene.js">
-<link rel="modulepreload" href="/cosmos/cards.js">
 <link rel="modulepreload" href="/cosmos/projects.js">
-<link rel="modulepreload" href="/cosmos/vendor/three/three.module.min.js">
+<link rel="modulepreload" href="/cosmos/ring.js" fetchpriority="low">
 </head>
 
 <body class="bg-[#04040a] text-[#f2f0f7] overflow-hidden">
@@ -209,7 +215,7 @@ html:not(.css-ready) body > *:not(#boot){visibility:hidden}
 </header>
 
 <!-- ═══════════ HUD ═══════════ -->
-<div id="hud" class="hud fixed inset-0 z-10 flex flex-col opacity-0 transition-opacity duration-1000">
+<div id="hud" class="hud fixed inset-0 z-10 flex flex-col opacity-0 transition-opacity duration-500">
 
   <div class="flex-1"></div>
 

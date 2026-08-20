@@ -744,73 +744,12 @@ body.live .main-header { opacity: 1; }
 .nav-cta a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* ═══════════ Preloader de la home ═══════════ */
-.loader-wrap {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: var(--void);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1),
-              opacity 0.5s ease 0.35s,
-              visibility 0.9s ease;
-}
-.loader-wrap.done {
-  transform: translateY(-100%);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.loader-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-/* Entra sola, por CSS: la encendía JS y eso ataba el LCP a toda la cadena de
-   carga. Duplicada en el <style> crítico del <head> —la hoja tiene que seguir
-   siendo válida por sí sola—, así que las dos se tocan juntas. */
-.loader-tagline {
-  font-family: var(--font-display);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  opacity: 0;
-  transform: translateY(8px);
-  animation: tagline-in 0.8s ease 0.26s forwards,
-             tagline-to-violet 1.2s ease 0.56s forwards;
-}
-@keyframes tagline-in {
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes tagline-to-violet {
-  from { color: rgba(255,255,255,0.3); }
-  to   { color: var(--violet-light); }
-}
-.loader-count {
-  position: absolute;
-  bottom: 20px;
-  right: 28px;
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--gold-light);
-  opacity: 0.8;
-}
-.loader-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 0%;
-  background: linear-gradient(90deg, var(--violet), var(--violet-light), var(--gold));
-  transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-}
+/* Sus reglas viven en el <style> crítico de public/index.html y solo ahí.
+   Estuvieron duplicadas acá, y era un error con consecuencias: esta hoja
+   llega después del primer pixel, y al volver a declarar `animation` sobre
+   .loader-tagline reiniciaba el fundido de entrada a mitad de camino. El
+   preloader tiene que estar pintado antes de que exista este archivo, así
+   que este archivo no es su lugar. */
 
 body.live #hud { opacity: 1; }
 

@@ -10,12 +10,14 @@ import { preloadCardImages } from './images.js';
 import { mountLogo } from './brand.js';
 import { bootT0 } from './boot.js';
 
-/* cards.js y scene.js se importan abajo, no acá: los dos arrastran three, y
-   un módulo se evalúa apenas se lo importa. Estáticos, los 675 KB del motor
-   se compilaban antes de que este archivo corriera una línea —justo en la
-   ventana en que el preloader quiere pintar su animación—, y esos cuadros se
-   perdían. El <link rel="modulepreload"> del HTML los baja igual de temprano;
-   lo que se mueve es cuándo se ejecutan, no cuándo se descargan. */
+/* El anillo 3D se importa abajo, no acá: arrastra three, y un módulo se
+   evalúa apenas se lo importa. Estático, el motor se compilaba antes de que
+   este archivo corriera una línea —justo en la ventana en que el preloader
+   quiere pintar su animación—, y esos cuadros se perdían. El
+   <link rel="modulepreload"> del HTML lo baja igual de temprano; lo que se
+   mueve es cuándo se ejecuta, no cuándo se descarga.
+   `ring.js` lo genera scripts/build-cosmos-bundle.mjs a partir de cards.js y
+   scene.js, con three sacudido adentro. */
 
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (id) => document.getElementById(id);
@@ -248,7 +250,7 @@ el.menu.querySelectorAll('.nav-menu a').forEach((a) => {
    chicas y suelen venir de caché, así que la carga real termina antes que el
    dibujo — sin un piso, el loader se retira con el logo a medias. El piso
    solo demora la salida: la barra llega a 100 apenas la carga termina. */
-const BOOT_MIN = 2050;
+const BOOT_MIN = 1250;
 
 let booted = false;
 function setProgress(v) {
@@ -283,9 +285,20 @@ const nextPaint = () =>
 (async () => {
   await nextPaint();
 
-  // Recién acá se evalúa three, con el preloader ya en pantalla
-  const [{ makeCardTexture, makePlayTexture, waitForFonts }, { createScene }] =
-    await Promise.all([import('./cards.js'), import('./scene.js')]);
+  /* La tipografía primero, y recién después el motor.
+     El texto del preloader se pinta enseguida con la fuente de sistema y se
+     rehace cuando llega Orbitron. Ese segundo pintado es el que Lighthouse
+     toma como "primer contenido grande", y si el hilo está compilando three
+     en ese momento, queda esperando: medía 3,4 s un texto que en pantalla
+     está desde los 100 ms. Esperar acá cuesta unos milisegundos —la fuente
+     va con preload y pesa 12 KiB— y no atrasa nada: el anillo igual no se
+     muestra hasta que el preloader cumple su piso. */
+  if (document.fonts) { try { await document.fonts.ready; } catch { /* da igual */ } }
+  await nextPaint();
+
+  // Recién acá se evalúa three, con el preloader ya asentado en pantalla
+  const { makeCardTexture, makePlayTexture, waitForFonts, createScene } =
+    await import('./ring.js');
 
   await waitForFonts();
   setProgress(8);

@@ -45,7 +45,13 @@ export function mountLogo(holder, {
   height = 44,
   accent = '#C9A84C',
   accentBright = '#DCB95A',
+  speed = 1,
 } = {}) {
+  /* Un solo número gobierna el ritmo de toda la coreografía. El preloader la
+     acelera: mientras dura, la pantalla está tapada, y cada milisegundo ahí
+     es un milisegundo sin contenido. La secuencia se ve entera igual —trazo,
+     barrido, rellenos—, solo que en menos tiempo. */
+  const t = (ms) => Math.round(ms / speed);
   const id = `hv${uid++}`;
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('viewBox', VIEWBOX);
@@ -111,7 +117,7 @@ export function mountLogo(holder, {
     strokes.forEach((p, i) => {
       p.animate(
         [{ strokeDashoffset: p.style.strokeDashoffset }, { strokeDashoffset: '0' }],
-        { duration: 550, delay: i * 130, easing: EASE_INOUT, fill: 'forwards' }
+        { duration: t(550), delay: t(i * 130), easing: EASE_INOUT, fill: 'forwards' }
       );
     });
 
@@ -121,21 +127,21 @@ export function mountLogo(holder, {
         { transform: 'translateX(-100px)', opacity: 1 },
         { transform: 'translateX(780px)', opacity: 0 },
       ],
-      { duration: 1100, delay: 100, easing: EASE_INOUT, fill: 'forwards' }
+      { duration: t(1100), delay: t(100), easing: EASE_INOUT, fill: 'forwards' }
     );
 
     // 3 · Los contornos ceden a los rellenos
     strokes.forEach((p, i) => {
       p.animate([{ opacity: 1 }, { opacity: 0 }], {
-        duration: 350, delay: 930 + i * 50, easing: 'ease-in', fill: 'forwards',
+        duration: t(350), delay: t(930 + i * 50), easing: 'ease-in', fill: 'forwards',
       });
     });
     fills.forEach((p, i) => {
       p.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 450, delay: 980 + i * 50, easing: 'ease-out', fill: 'forwards',
+        duration: t(450), delay: t(980 + i * 50), easing: 'ease-out', fill: 'forwards',
       });
     });
-  }, delay);
+  }, t(delay));
 
   // Glow dorado al pasar el mouse, como en la home
   svg.addEventListener('mouseenter', () => {
