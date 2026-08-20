@@ -90,7 +90,7 @@ export const PROJECTS: Project[] = [
     body: "Nuestra plataforma audiovisual: cine, series, documentales y música de habla hispana en un solo lugar. Producciones propias y contenido curado. Es donde vive todo lo que producimos.",
     tags: ["Streaming", "Cine", "Series", "Originales"],
     accent: "#C9A84C",
-    image: "/images/bg/hivrido-chrome.png",
+    image: "/images/bg/hivrido-chrome.jpg",
   },
   {
     id: "puny",

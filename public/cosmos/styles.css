@@ -825,6 +825,21 @@ body.live #hud { opacity: 1; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
 
+/* ── Presupuesto de pintado en táctiles ──
+   Debajo del HUD hay un canvas que se redibuja solo. Cada capa encima que
+   pinte por frame se paga sobre ese costo, y son tres que no se componen en
+   la GPU: el grano (mix-blend-mode a pantalla completa, lo peor), el barrido
+   del título (background-position sobre background-clip: text, repinta el
+   glifo entero) y el haz de los botones (un ángulo animado dentro de un
+   conic-gradient). En un gama media eso es el hilo principal ocupado para
+   siempre. Se apagan donde no se ven —el grano al 4% en una pantalla de 6"
+   no existe— y el gradiente de cada uno queda quieto, que es lo que aporta. */
+@media (pointer: coarse) {
+  .veil--grain { display: none; }
+  .title { animation: none; background-position: 30% 50%; }
+  .btn-glow::before, .btn-bevel::before { animation: none; }
+}
+
 /* ═══════════ WhatsApp flotante ═══════════
    Mismo botón y misma pulsación que la home, y el único acceso a WhatsApp de
    la página: reemplaza a la cápsula del pie en todos los anchos —dos entradas

@@ -6,7 +6,7 @@
  */
 
 import { PROJECTS } from './projects.js';
-import { makeCardTexture, makePlayTexture, waitForFonts } from './cards.js';
+import { makeCardTexture, makePlayTexture, waitForFonts, preloadCardImages } from './cards.js';
 import { createScene } from './scene.js';
 import { mountLogo } from './brand.js';
 
@@ -265,6 +265,11 @@ setTimeout(finishBoot, 12000);   // failsafe: nunca quedar trabado en el loader
 /* ═══════════ Arranque ═══════════ */
 
 (async () => {
+  // La red arranca antes que las fuentes: descargar el material de las
+  // tarjetas no depende de que Orbitron haya llegado, y esperarlo dejaba el
+  // enlace ocioso justo en el momento más caro de la carga.
+  preloadCardImages(PROJECTS);
+
   await waitForFonts();
   setProgress(8);
 

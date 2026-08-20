@@ -139,7 +139,7 @@ export const PROJECTS = [
     body: 'Nuestra plataforma audiovisual: cine, series, documentales y música de habla hispana en un solo lugar. Producciones propias y contenido curado, con estrenos, tendencias y calendario. Es donde vive todo lo que producimos.',
     tags: ['Streaming', 'Cine', 'Series', 'Originales'],
     accent: '#C9A84C',
-    image: '/images/bg/hivrido-chrome.png',
+    image: '/images/bg/hivrido-chrome.jpg',
   },
   {
     id: 'puny',

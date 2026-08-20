@@ -41,7 +41,7 @@ export const metadata: Metadata = {
       "Conectamos marcas con artistas para crear experiencias que dejan huella.",
     url: "https://hivrido.com",
     siteName: "Hivrido",
-    images: [{ url: "/images/bg/hivrido-chrome.png", width: 1200, height: 630 }],
+    images: [{ url: "/images/bg/hivrido-chrome.jpg", width: 1200, height: 670 }],
     locale: "es_AR",
     type: "website",
   },

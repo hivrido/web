@@ -144,8 +144,14 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     return { supported: false, goTo() {}, step() {}, setOpen() {}, dispose() {} };
   }
 
-  const DPR_CAP = COARSE ? 1.5 : 1.8;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, DPR_CAP));
+  /* El techo de resolución no es fijo: es el punto de partida de un
+     presupuesto que el bucle ajusta según los fps reales (ver `governor`).
+     En un gama media, 1.5 sobre una pantalla de 1080p son 3.5 millones de
+     píxeles por frame para una escena que ya está casi quieta. */
+  let dprCap = COARSE ? 1.25 : 1.8;
+  const DPR_FLOOR = 0.75;
+  const setDpr = () => renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, dprCap));
+  setDpr();
   renderer.setSize(innerWidth, innerHeight, false);
   renderer.setClearColor(0x04040a, 1);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -972,7 +978,7 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     resizeId = setTimeout(() => {
       camera.aspect = innerWidth / innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, DPR_CAP));
+      setDpr();
       renderer.setSize(innerWidth, innerHeight, false);
       if (composer) composer.setSize(innerWidth, innerHeight);
       fit();
@@ -988,11 +994,40 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
   let openMix = 0;
   let fps = 60, fpsAcc = 0, fpsN = 0, fpsClock = 0;
 
+  /* ── Presupuesto de frame ──
+     El anillo es atmósfera lenta: nada acá necesita 60 Hz. En un gama media,
+     pedirlos significa tareas largas encadenadas durante toda la visita —lo
+     que Lighthouse cobra como bloqueo del hilo principal— para un movimiento
+     que a 36 fps se ve igual. Mientras se arrastra volvemos a la tasa nativa:
+     ahí sí el dedo tiene que ir pegado a la tarjeta. */
+  const IDLE_HZ = COARSE ? 36 : 60;
+  let lastDraw = 0;
+
+  /* Si el dispositivo no llega, baja la resolución antes que la fluidez.
+     Dos escalones y se detiene: mide una vez por segundo y solo mientras
+     nadie toca, para no reaccionar al pico de un gesto. */
+  let governorSteps = 2;
+  const FPS_FLOOR = IDLE_HZ * 0.8;
+  function governor() {
+    if (governorSteps <= 0 || dragging || fps >= FPS_FLOOR) return;
+    dprCap = Math.max(DPR_FLOOR, dprCap - 0.25);
+    governorSteps--;
+    setDpr();
+    renderer.setSize(innerWidth, innerHeight, false);
+  }
+
   function frame() {
     if (!running) return;
     raf = requestAnimationFrame(frame);
 
     const now = performance.now();
+
+    // Se saltea el frame entero, no solo el render: la física es determinista
+    // por dt, así que avanzar en pasos más largos da el mismo recorrido.
+    const minGap = 1000 / (dragging ? 60 : IDLE_HZ);
+    if (now - lastDraw < minGap - 1) return;
+    lastDraw = now;
+
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     time += dt;
@@ -1123,7 +1158,10 @@ export async function createScene(canvas, { textures, accents, plays, onActive, 
     else renderer.render(scene, camera);
 
     fpsAcc += 1 / Math.max(dt, 1e-4); fpsN++; fpsClock += dt;
-    if (fpsClock >= 0.5) { fps = Math.round(fpsAcc / fpsN); fpsAcc = fpsN = fpsClock = 0; }
+    if (fpsClock >= 1) {
+      fps = Math.round(fpsAcc / fpsN); fpsAcc = fpsN = fpsClock = 0;
+      governor();
+    }
   }
 
   document.addEventListener('visibilitychange', () => {

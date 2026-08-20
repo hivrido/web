@@ -15,9 +15,18 @@
 <link rel="icon" href="/images/logo/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<!-- Las fuentes de la home: Orbitron para display y etiquetas, Rubik para texto -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Las fuentes de la home: Orbitron para display y etiquetas, Rubik para texto.
+     Cargan sin bloquear el render: eran 780 ms de ida y vuelta a un tercero
+     delante del primer pixel, para un preloader que igual arranca con la
+     fuente de sistema. El texto ya usa display=swap, y las texturas de las
+     tarjetas esperan a document.fonts.ready antes de componerse. -->
+<link id="gfonts" rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rubik:wght@400;500;700&display=swap">
+</noscript>
 
 <!-- Tailwind ya compilado. Antes de esta linea iba @tailwindcss/browser:
      68 KiB de JavaScript que bloqueaban el render para resolver en cada
@@ -25,11 +34,17 @@
 <link rel="stylesheet" href="/cosmos/tw.css">
 <link rel="stylesheet" href="/cosmos/styles.css">
 
+<!-- three servido por nosotros y minificado. Antes venía de jsdelivr y era
+     `three.module.js`: 1.31 MB sin minificar que el móvil descarga, parsea y
+     compila antes del primer frame. La build minificada es la mitad, y en el
+     propio dominio se ahorra además el DNS + TLS de un tercero en la ruta
+     crítica. scripts/build-cosmos-vendor.mjs lo copia desde node_modules, así
+     que la versión la sigue mandando package.json. -->
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    "three": "/cosmos/vendor/three/three.module.min.js",
+    "three/addons/": "/cosmos/vendor/three/addons/"
   }
 }
 </script>
@@ -41,8 +56,7 @@
 <link rel="modulepreload" href="/cosmos/cards.js">
 <link rel="modulepreload" href="/cosmos/projects.js">
 <link rel="modulepreload" href="/cosmos/brand.js">
-<link rel="modulepreload" crossorigin
-      href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js">
+<link rel="modulepreload" href="/cosmos/vendor/three/three.module.min.js">
 </head>
 
 <body class="bg-[#04040a] text-[#f2f0f7] overflow-hidden">

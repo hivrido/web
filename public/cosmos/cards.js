@@ -10,9 +10,20 @@
 import * as THREE from 'three';
 import { BRAND_PATHS, BRAND_W, BRAND_H } from './brand.js';
 
-// Apaisado, como las "tablets" de la referencia
+// Apaisado, como las "tablets" de la referencia.
+// W y H son unidades de diseño, no píxeles: todo el dibujo de abajo trabaja en
+// este sistema y el mapa de bits real puede ser más chico sin mover una sola
+// coordenada (ver TEX_SCALE).
 const W = 1024;
 const H = 768;
+
+/* En un teléfono la tarjeta enfocada ocupa unos 340 px de ancho: 1024 son
+   nueve veces los píxeles que se ven, y cada uno se paga tres veces —el filtro
+   de duotono sobre el canvas entero, los shadowBlur de la tipografía y la
+   generación de mipmaps al subirla a la GPU—. Componer siete de estas en serie
+   era el grueso del bloqueo del hilo durante la carga. */
+const COARSE = matchMedia('(pointer: coarse)').matches;
+const TEX_SCALE = COARSE ? 0.625 : 1;   // 640 x 480 en táctiles
 
 /** Dibuja el logotipo de HIVRIDO centrado en (cx, cy), con `width` de ancho.
  *  Sale de los mismos trazos vectoriales que usan el preloader y el header,
@@ -27,10 +38,16 @@ function drawBrandLogo(ctx, cx, cy, width, color) {
   ctx.restore();
 }
 
-/** Carga una imagen; resuelve en null si falla (nunca rechaza). */
+/** Carga una imagen; resuelve en null si falla (nunca rechaza).
+ *  Cachea por src, que es lo que permite pedirlas todas juntas de antemano
+ *  y que después cada tarjeta encuentre la suya ya resuelta. */
+const imgCache = new Map();
 function loadImage(src) {
   if (!src) return Promise.resolve(null);
-  return new Promise((resolve) => {
+  const hit = imgCache.get(src);
+  if (hit) return hit;
+
+  const p = new Promise((resolve) => {
     const img = new Image();
     img.decoding = 'async';
     img.onload = () => resolve(img);
@@ -40,6 +57,20 @@ function loadImage(src) {
     };
     img.src = src;
   });
+  imgCache.set(src, p);
+  return p;
+}
+
+/**
+ * Dispara la descarga de todo el material de las tarjetas de una sola vez.
+ *
+ * Las texturas se componen en serie para poder informar avance real, pero
+ * componer en serie arrastraba también a descargar en serie: ocho idas y
+ * vueltas encadenadas antes de la última tarjeta. Pedidas todas juntas, la
+ * red trabaja en paralelo y el bucle de composición solo espera a la primera.
+ */
+export function preloadCardImages(projects) {
+  for (const p of projects) { loadImage(p.image); loadImage(p.logo); }
 }
 
 /** Dibuja la imagen cubriendo el canvas sin deformarla (object-fit: cover). */
@@ -151,7 +182,7 @@ export function makePlayTexture() {
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 8;
+  tex.anisotropy = COARSE ? 2 : 8;
   tex.needsUpdate = true;
   return tex;
 }
@@ -180,9 +211,10 @@ function getGrain(ctx) {
  */
 export async function makeCardTexture(project) {
   const canvas = document.createElement('canvas');
-  canvas.width = W;
-  canvas.height = H;
+  canvas.width = Math.round(W * TEX_SCALE);
+  canvas.height = Math.round(H * TEX_SCALE);
   const ctx = canvas.getContext('2d');
+  if (TEX_SCALE !== 1) ctx.scale(TEX_SCALE, TEX_SCALE);
 
   const [img, logo] = await Promise.all([
     loadImage(project.image),
@@ -443,14 +475,33 @@ export async function makeCardTexture(project) {
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 8;
+  tex.anisotropy = COARSE ? 2 : 8;
   tex.needsUpdate = true;
   return tex;
 }
 
 /** Espera a las webfonts: si no, los títulos se dibujan con la fuente de sistema. */
+/**
+ * Espera a que llegue la hoja de Google Fonts.
+ *
+ * Ya no bloquea el render, así que puede no estar cuando arranca la
+ * composición. Sin esperarla, document.fonts.load() no encuentra ninguna cara
+ * declarada y resuelve al instante: las tarjetas saldrían horneadas con la
+ * tipografía de sistema, y esas texturas no se rehacen.
+ */
+function fontSheetReady() {
+  const link = document.getElementById('gfonts');
+  if (!link || link.sheet) return Promise.resolve();
+  return new Promise((resolve) => {
+    link.addEventListener('load', resolve, { once: true });
+    link.addEventListener('error', resolve, { once: true });
+    setTimeout(resolve, 3000);   // nunca quedar colgados de un tercero
+  });
+}
+
 export async function waitForFonts() {
   if (!document.fonts) return;
+  await fontSheetReady();
   try {
     await Promise.all([
       document.fonts.load('900 34px "Orbitron"'),
