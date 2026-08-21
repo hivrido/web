@@ -31,15 +31,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/fonts/orbitron-latin-var.woff2">
 
-<!-- ── CSS crítico: el preloader y nada más ──
-     Lo único que se ve hasta que el anillo está listo es #boot, que es opaco
-     y cubre la pantalla entera (z-index 60). Todo lo que hay debajo —HUD,
-     header, panel, menú— está tapado o en opacity 0, así que su CSS no tiene
-     por qué frenar el primer pixel. Va acá en línea, y las dos hojas de abajo
-     dejaron de bloquear el render: eran dos idas y vueltas de red delante de
-     un preloader que se dibuja con doce reglas.
-     Duplicar estas reglas en styles.css es a propósito: la hoja completa
-     tiene que seguir siendo válida por sí sola. -->
+<!-- ── El preloader y las fuentes, en línea ──
+     #boot es lo único visible hasta que el anillo está listo, y sus reglas
+     viven acá y solo acá: no están duplicadas en styles.css. Lo estuvieron, y
+     era un error con consecuencias —esa hoja volvía a declarar `animation`
+     sobre la bajada y reiniciaba el fundido a mitad de camino—.
+
+     Las @font-face también van en línea: así el navegador puede pedir el
+     .woff2 apenas parsea el <head>, sin esperar ninguna hoja externa. -->
 <style>
 /* Un solo archivo por familia: son variables, el rango de peso va adentro. */
 @font-face{
@@ -68,11 +67,6 @@ body{
   margin:0;overflow:hidden;background:#04040a;color:#f2f0f7;
   font-family:'Rubik',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
 }
-/* Hasta que llegue la hoja completa, lo único que existe es el preloader.
-   El resto está debajo de #boot y no se ve, pero sin estilos sigue ocupando
-   flujo: genera candidatos a LCP y desplazamientos que nadie llega a mirar.
-   Con esto la ventana entre el primer pixel y la hoja es determinista. */
-html:not(.css-ready) body > *:not(#boot){visibility:hidden}
 .loader-wrap{
   position:fixed;inset:0;z-index:60;background:var(--void);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -135,17 +129,17 @@ html:not(.css-ready) body > *:not(#boot){visibility:hidden}
 <!-- Tailwind ya compilado. Antes de esta linea iba @tailwindcss/browser:
      68 KiB de JavaScript que bloqueaban el render para resolver en cada
      visita lo que scripts/build-cosmos-css.mjs resuelve una sola vez.
-     Las dos cargan fuera de la ruta crítica y se aplican al llegar. El orden
-     en el DOM es el que manda en la cascada, no el orden de llegada: styles
-     sigue pisando a tw aunque baje primero. -->
-<link rel="preload" as="style" href="/cosmos/tw.css" onload="this.rel='stylesheet'">
-<link rel="preload" as="style" href="/cosmos/styles.css"
-      onload="this.rel='stylesheet';document.documentElement.classList.add('css-ready')">
-<noscript>
-  <link rel="stylesheet" href="/cosmos/tw.css">
-  <link rel="stylesheet" href="/cosmos/styles.css">
-  <style>html:not(.css-ready) body > *:not(#boot){visibility:visible}</style>
-</noscript>
+
+     Bloquean el render, y tiene que ser así. Estuvieron un rato cargando en
+     diferido para adelantar el primer pixel, y salió caro: el HUD toma su
+     `fixed inset-0` de tw.css, así que hasta que la hoja llegaba era un div
+     común ocupando flujo, y al aplicarse saltaba toda la página. Medía 0,623
+     de CLS —un cuarto de la nota de rendimiento, en rojo—. Ocultarlo con
+     visibility no alcanza: un elemento oculto así sigue ocupando layout.
+     Son 13 KiB comprimidos del propio dominio; el primer pixel se paga barato
+     y a cambio nada se mueve. -->
+<link rel="stylesheet" href="/cosmos/tw.css">
+<link rel="stylesheet" href="/cosmos/styles.css">
 
 <!-- La cadena real era main.js -> scene.js -> three, descubierta salto a
      salto. Anunciada aca, arranca entera de una vez.
