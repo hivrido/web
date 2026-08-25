@@ -12,7 +12,12 @@
  * `brand.js` e `images.js` quedan afuera a propósito. Los carga también
  * boot.js/main.js por su cuenta, y si se inlinearan acá el navegador tendría
  * dos instancias del módulo: dos cachés de imágenes distintas, y cada foto
- * pedida dos veces.
+ * pedida dos veces. Como quedan externos, esbuild deja sus imports tal cual;
+ * las rutas relativas resuelven contra la salida —public/cosmos/—, no contra
+ * la ubicación del fuente.
+ *
+ * Los fuentes viven en src/cosmos/ y no en public/: ahí adentro se publicaban
+ * ~68 KiB que nadie pide, porque lo que el navegador baja es este paquete.
  *
  * Corre antes de `next build`, vía el script `prebuild`.
  */
@@ -31,10 +36,10 @@ for (const f of await readdir(cosmos)) {
 }
 
 const result = await esbuild.build({
-  entryPoints: [path.join(cosmos, "ring.entry.js")],
-  /* Sale al mismo directorio que las fuentes, no a uno propio: los externos
-     de abajo se escriben tal cual en la salida, y desde otra carpeta
-     './brand.js' apuntaría a un archivo que no existe. */
+  entryPoints: [path.join(root, "src", "cosmos", "ring.entry.js")],
+  /* Sale a public/cosmos/, que es donde viven brand.js e images.js: los
+     externos de abajo se escriben tal cual, así que './brand.js' tiene que
+     resolver desde acá. */
   outdir: cosmos,
   entryNames: "ring",
   /* Un solo archivo, a propósito. Con `splitting` el bloom quedaba aparte
