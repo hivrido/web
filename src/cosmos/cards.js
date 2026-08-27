@@ -259,6 +259,16 @@ export async function makeCardTexture(project) {
   ctx.fillStyle = top;
   ctx.fillRect(0, 0, W, H * 0.26);
 
+  /* ── Scanlines: ahora traman la imagen, no la letra ──
+     Iban al final, encima de todo: cada renglón de tipografía se comía una
+     franja oscura de 1.4px cada 4 y los cuerpos chicos —el rótulo de arriba
+     y el pie— salían deshilachados. La textura de pantalla es de la foto; la
+     tipografía va apoyada encima, entera. */
+  ctx.globalAlpha = 0.13;
+  ctx.fillStyle = '#04040a';
+  for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 1.4);
+  ctx.globalAlpha = 1;
+
   /* ── Tipografía centrada, estilo terminal ── */
   const CX = W / 2;
   ctx.textAlign = 'center';
@@ -266,11 +276,12 @@ export async function makeCardTexture(project) {
 
   /* Ornamento sobre el título: el índice, o el `kicker` del proyecto si trae
      uno. Sube cuando hay logo: los logos son más altos que una línea de texto
-     y le comían el aire. En blanco con glow del acento, no en el acento pelado:
-     sobre las fotos oscuras el acento solo desaparecía. */
+     y le comían el aire. Va en blanco —el acento pelado desaparecía sobre las
+     fotos oscuras— y con sombra negra corta en vez del halo del acento, que
+     con 18px de resplandor envolvía un cuerpo de 34 y lo dejaba borroso. */
   ctx.fillStyle = '#f2f0f7';
-  ctx.shadowColor = project.accent;
-  ctx.shadowBlur = blur(18);
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = blur(6);
   // 900: el peso de los títulos epic de la home. waitForFonts lo espera —
   // si no está cargado, el canvas cae al peso más cercano y sale flaco.
   ctx.font = '900 34px "Orbitron", sans-serif';
@@ -437,24 +448,15 @@ export async function makeCardTexture(project) {
   ctx.fillStyle = band;
   ctx.fillRect(0, bandTop - 14, W, bandH + 14);
 
+  /* Una sola pasada con sombra negra corta. La segunda, con glow del acento,
+     integraba el pie a la pieza pero le comía el filo: sobre la banda oscura
+     el contraste ya alcanza, y lo que se pide de este renglón es que se lea. */
   ctx.fillStyle = '#ffffff';
-  metaLines.forEach((l, i) => {
-    // Primera pasada: sombra negra dura, para despegarlo del fondo
-    ctx.shadowColor = 'rgba(0,0,0,0.9)';
-    ctx.shadowBlur = blur(10);
-    ctx.fillText(l, CX, metaBase(i));
-    // Segunda: glow del acento, que lo integra a la pieza
-    ctx.shadowColor = project.accent;
-    ctx.shadowBlur = blur(22);
-    ctx.fillText(l, CX, metaBase(i));
-  });
+  ctx.shadowColor = 'rgba(0,0,0,0.9)';
+  ctx.shadowBlur = blur(8);
+  metaLines.forEach((l, i) => ctx.fillText(l, CX, metaBase(i)));
   ctx.shadowBlur = 0;
 
-  /* ── Scanlines: traman todo, tipografía incluida, como pantalla ── */
-  ctx.globalAlpha = 0.13;
-  ctx.fillStyle = '#04040a';
-  for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 1.4);
-  ctx.globalAlpha = 1;
   ctx.textAlign = 'left';
 
   const tex = new THREE.CanvasTexture(canvas);
