@@ -2,21 +2,18 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
-      "//": "Fuentes e imágenes: contenido inmutable. Se servían con max-age=0 y must-revalidate, o sea una ida y vuelta por archivo en cada visita repetida solo para escuchar 'no cambió'. Si alguna cambia, cambia su nombre.",
       "source": "/(fonts|images)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "//": "Los módulos de la portada no llevan hash en el nombre, así que inmutable los dejaría clavados tras un deploy. Una hora de caché y revalidación después: el visitante que vuelve en el día no vuelve a bajarlos, y un cambio se propaga solo.",
       "source": "/cosmos/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }
       ]
     },
     {
-      "//": "El vídeo y el audio no cambian nunca y son lo más pesado del sitio.",
       "source": "/(video|mp3|pdf)/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }

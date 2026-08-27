@@ -545,6 +545,20 @@ Los commits van en español, en imperativo y con prefijo (`feat:`, `fix:`,
 `/out/` es artefacto de build, no un método de deploy: no se commitea ni se
 zipea para subir a un servidor.
 
+### Caché (`vercel.json`)
+
+Vercel valida el archivo contra su esquema y rechaza cualquier clave que no
+conozca: no admite comentarios, ni siquiera con la convención `"//"`. El porqué
+de cada regla vive acá:
+
+- **`/fonts`, `/images`, `/video`, `/mp3`, `/pdf` — un año, inmutable.** Se servían
+  con `must-revalidate`: una ida y vuelta por archivo en cada visita repetida solo
+  para escuchar "no cambió". Si alguna cambia, cambia su nombre.
+- **`/cosmos` — una hora con revalidación.** Los módulos de la portada no llevan
+  hash en el nombre, así que `immutable` los dejaría clavados tras un deploy. Con
+  una hora, el visitante que vuelve en el día no los baja de nuevo y un cambio se
+  propaga solo.
+
 ## Architecture
 
 **hivrido.com** is a single-page portfolio site for a creative agency. It uses the Next.js App Router with `output: "export"` (fully static, no server runtime). The built site lands in `/out/`.
