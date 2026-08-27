@@ -3,8 +3,9 @@
  * `image` es opcional: si falla la carga, cards.js genera un fondo procedural
  * con la misma paleta, así nunca queda un hueco en el anillo.
  * `logo`  es opcional: si está, reemplaza al título tipográfico en la tarjeta.
- * `href`  es opcional: si está, la tarjeta muestra la pastilla PLAY y el botón
- *         del panel lleva a verla.
+ * `href`  es opcional: si está, la tarjeta enciende la pastilla y el click va
+ *         derecho a ese destino, sin pasar por el panel. `playLabel` cambia la
+ *         palabra de la pastilla, que por defecto dice PLAY.
  * `link`  es la alternativa a `href` para las fichas sin nada publicado: da
  *         destino y etiqueta al botón del panel, sin encender el PLAY.
  * `hudCategory` es opcional: reemplaza a `category` en el rótulo del HUD,
@@ -23,6 +24,8 @@ export const PROJECTS = [
     /* Con `href` la tarjeta muestra el PLAY y el click navega */
     href: '/movie/',
     cta: 'Ir a suscribirme',
+    /* Palabra de la pastilla de la tarjeta, en lugar del PLAY por defecto */
+    playLabel: 'SUSCRIBIRME',
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Suscribite al casting',
     category: 'Casting para El Docke',

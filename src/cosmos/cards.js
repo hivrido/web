@@ -102,30 +102,41 @@ function roundRect(ctx, x, y, w, h, r) {
 /* La pastilla PLAY vive en su propia textura, no horneada en la tarjeta: así
    scene.js puede animarla (respiración, hover, foco) sin redibujar el canvas
    de 1024×768 en cada frame, que sería inviable con ocho tarjetas. */
-export const PLAY_TEX_W = 320;
+/* Alto fijo: la pastilla siempre mide lo mismo de arriba abajo. El ancho lo
+   decide la palabra, y scene.js saca la proporción del plano de la textura,
+   así una etiqueta larga se estira en vez de apretarse. */
 export const PLAY_TEX_H = 132;
-export const PLAY_ASPECT = PLAY_TEX_W / PLAY_TEX_H;
+const PLAY_TEX_MIN_W = 320;
 
-/** @returns {THREE.CanvasTexture} pastilla dorada sobre fondo transparente. */
-export function makePlayTexture() {
+/**
+ * @param {string} [label] palabra de la pastilla.
+ * @returns {THREE.CanvasTexture} pastilla dorada sobre fondo transparente.
+ */
+export function makePlayTexture(label = 'PLAY') {
   const canvas = document.createElement('canvas');
-  canvas.width = PLAY_TEX_W;
-  canvas.height = PLAY_TEX_H;
   const ctx = canvas.getContext('2d');
 
   /* Fino: trazo de 1.4 en vez de 2.5, peso 600 y el doble de tracking. Una
      pastilla ancha y baja con la letra suelta se lee premium; la misma forma
      con borde grueso y letra apretada se lee como un botón de sistema. */
-  const label = 'PLAY';
-  ctx.font = '600 30px "Orbitron", sans-serif';
+  const FONT = '600 30px "Orbitron", sans-serif';
+  ctx.font = FONT;
   // El tracking se dibuja a mano: ctx.letterSpacing no está en todos lados.
-  const track = 13;
+  // Una palabra larga con el mismo interletrado se desparrama: se afloja.
+  const track = label.length > 6 ? 8 : 13;
   const chars = [...label];
   const textW = chars.reduce((a, c) => a + ctx.measureText(c).width, 0) + track * (chars.length - 1);
 
   const w = textW + 76;
   const h = 66;
-  const cx = PLAY_TEX_W / 2;
+  /* El canvas se dimensiona recién ahora, con la palabra ya medida: fijar
+     width resetea el contexto, así que la fuente se vuelve a declarar. El
+     margen sobrante deja aire para el resplandor del borde. */
+  canvas.width = Math.max(PLAY_TEX_MIN_W, Math.ceil(w + 54));
+  canvas.height = PLAY_TEX_H;
+  ctx.font = FONT;
+
+  const cx = canvas.width / 2;
   const cy = PLAY_TEX_H / 2;
   const x = cx - w / 2;
   const y = cy - h / 2;

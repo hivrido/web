@@ -89,6 +89,10 @@ function paint(i) {
 
   el.cat.textContent = `${p.index} — ${(p.hudCategory ?? p.category).toUpperCase()}`;
   el.title.textContent = p.title;
+
+  /* El botón anuncia el destino: en las fichas que salen del cosmos, "Ver
+     más" prometía un panel que ya no se abre. */
+  el.open.innerHTML = `${p.href ? p.cta ?? 'Ver el proyecto' : 'Ver más'} <span aria-hidden="true">→</span>`;
   el.counter.innerHTML = `<b class="text-white">${pad(i + 1)}</b> / ${pad(TOTAL)}`;
   tickEls.forEach((t, j) => t.setAttribute('aria-current', String(j === i)));
   qEls.forEach((q, j) => q.setAttribute('aria-current', String(j === i)));
@@ -161,7 +165,16 @@ function setPanel(open) {
   }
 }
 
-el.open.addEventListener('click', () => setPanel(true));
+/* Las fichas con destino propio —hoy Hivrido PLAY— no abren el panel: el
+   click las lleva derecho a donde prometen. El panel queda para las que
+   tienen algo que contar antes de mandarte a otro lado. */
+function openProject(i) {
+  const href = PROJECTS[i]?.href;
+  if (href) { location.href = href; return; }
+  setPanel(true);
+}
+
+el.open.addEventListener('click', () => openProject(active));
 el.close.addEventListener('click', () => setPanel(false));
 
 /* ═══════════ Navegación ═══════════ */
@@ -178,7 +191,7 @@ document.addEventListener('keydown', (e) => {
 
   if (e.key === 'ArrowRight') { e.preventDefault(); ring?.step(1); }
   if (e.key === 'ArrowLeft')  { e.preventDefault(); ring?.step(-1); }
-  if (e.key === 'Enter' && !panelOpen && document.activeElement === document.body) setPanel(true);
+  if (e.key === 'Enter' && !panelOpen && document.activeElement === document.body) openProject(active);
 });
 
 /* ═══════════ Menú drawer (el de la home) ═══════════ */
@@ -313,9 +326,17 @@ const nextPaint = () =>
     await yieldToBrowser();
   }
 
-  // Se compone después de las fuentes: el PLAY es tipografía, no imagen
-  const hasPlay = PROJECTS.some((p) => p.href);
-  const playTex = hasPlay ? makePlayTexture() : null;
+  /* Se compone después de las fuentes: la pastilla es tipografía, no imagen.
+     Una textura por etiqueta, compartida entre las fichas que la repitan. */
+  const playTextures = new Map();
+  const playTexture = (p) => {
+    if (!p.href) return null;
+    const label = p.playLabel ?? 'PLAY';
+    if (!playTextures.has(label)) playTextures.set(label, makePlayTexture(label));
+    return playTextures.get(label);
+  };
+  const plays = PROJECTS.map(playTexture);
+  const hasPlay = plays.some(Boolean);
 
   // El encuadre 3D centra la tarjeta en el espacio libre entre header y HUD
   const headerEl = document.querySelector('.main-header');
@@ -324,11 +345,10 @@ const nextPaint = () =>
   try {
     ring = await createScene(el.canvas, {
       textures,
-      // Una sola textura compartida: es idéntica en todas las tarjetas
-      plays: hasPlay ? PROJECTS.map((p) => (p.href ? playTex : null)) : null,
+      plays: hasPlay ? plays : null,
       accents: PROJECTS.map((p) => p.accent),
       onActive,
-      onSelect: () => setPanel(true),
+      onSelect: (i) => openProject(i),
       onPlay: (i) => {
         const href = PROJECTS[i]?.href;
         // La demora deja ver el pulso del botón antes de irse de la página
