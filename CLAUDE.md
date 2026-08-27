@@ -534,7 +534,10 @@ El sitio vive en **Git + Vercel**. No se sube nada a mano.
 
 - **Repo**: `https://github.com/hivrido/web.git` (`origin`), rama de producción `main`.
 - **Flujo normal**: `npm run build` para verificar → commit → `git push origin main`. Vercel toma el push y publica.
-- **Deploy manual**: `npx vercel --prod` desde la raíz.
+- **Deploy manual**: `npx vercel --prod` desde la raíz. A diferencia del push,
+  el CLI empaqueta el directorio tal como está: lo que no debe viajar lo filtra
+  `.vercelignore`. Sin eso el upload se va a medio giga y muere contra el
+  límite de 100 MB por archivo.
 
 Antes de commitear, siempre correr el build: el export estático falla en cosas
 que `dev` no muestra, y un push roto es un deploy roto.

@@ -1,0 +1,25 @@
+# Qué NO sube el deploy manual (`npx vercel --prod`).
+#
+# El camino normal es el push a main: ahí Vercel clona el repo y ve solo lo
+# que git versiona. El CLI, en cambio, empaqueta el directorio tal como está
+# —incluidos los artefactos locales— y con eso el upload se iba a medio giga
+# y moría contra el límite de 100 MB por archivo. Esta lista lo deja subiendo
+# lo mismo que subiría el repo.
+
+# Artefactos de build: los regenera `npm run build` en el servidor
+/.next
+/out
+*.tsbuildinfo
+
+# Dependencias: las instala Vercel
+/node_modules
+
+# Zips y volcados sueltos
+*.zip
+
+# Local
+/.vercel
+/.agents
+/.claude
+/skills-lock.json
+.env*
