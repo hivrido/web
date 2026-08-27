@@ -1120,34 +1120,10 @@ html:has(.mp-app) body {
 
 .mp-casting-ghost:hover { color: var(--mp-text); border-color: rgba(255,255,255,.28); }
 
-/* ── Salida hacia el catálogo ── */
-.mp-casting-scroll {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin: 64px auto 0;
-  padding: 10px 4px;
-  color: var(--mp-muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  transition: color .25s;
-}
-
-.mp-casting-scroll:hover { color: var(--mp-text); }
-.mp-casting-scroll svg { animation: mp-casting-nudge 2.4s ease-in-out infinite; }
-
-@keyframes mp-casting-nudge {
-  0%, 100% { transform: translateY(0); opacity: .55; }
-  50%      { transform: translateY(5px); opacity: 1; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .mp-casting-aura,
   .mp-casting-card-glow,
-  .mp-app .mp-casting-submit::before,
-  .mp-casting-scroll svg { animation: none; }
+  .mp-app .mp-casting-submit::before { animation: none; }
   .mp-casting-copy > *,
   .mp-casting-card,
   .mp-casting-done-mark { animation: none; opacity: 1; }
@@ -1198,7 +1174,6 @@ html:has(.mp-app) body {
   .mp-app .mp-casting-submit { margin-top: 18px; padding: 15px 20px; }
   .mp-casting-fine { margin-top: 12px; font-size: 11.5px; }
 
-  .mp-casting-scroll { margin-top: 30px; }
 
   .mp-footer-links { flex-wrap: wrap; justify-content: center; }
 }
