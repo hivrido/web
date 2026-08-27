@@ -1175,16 +1175,30 @@ html:has(.mp-app) body {
   .mp-card.wide { width: 220px; }
 
   .mp-footer { flex-direction: column; gap: 14px; text-align: center; }
-  /* El casting apila: el formulario primero no —la promesa va antes que el
-     pedido de datos, también en pantalla chica—, pero sin el aire de escritorio. */
-  .mp-casting { padding: 92px 18px 64px; min-height: auto; }
-  .mp-casting-inner { grid-template-columns: 1fr; gap: 40px; }
-  .mp-casting-card { padding: 26px 22px; }
-  .mp-casting-lead { margin-top: 20px; font-size: 15.5px; }
-  .mp-casting-points { margin-top: 22px; gap: 8px; }
+  /* El casting apila, y todo se aprieta con un objetivo: que la tarjeta del
+     formulario entre entera en la pantalla, sin que el botón de enviar quede
+     cortado abajo. La promesa sigue arriba —el pedido de datos se gana—, pero
+     dicha en el espacio justo. El rótulo de casting abierto se retira: repite
+     lo que ya dice el título y ahí arriba cada línea cuesta una pantalla. */
+  .mp-casting { padding: 74px 16px 44px; min-height: auto; }
+  .mp-casting-inner { grid-template-columns: 1fr; gap: 26px; }
+  .mp-casting-eyebrow { display: none; }
+  .mp-casting-title { margin-top: 0; font-size: clamp(2rem, 10vw, 2.6rem); }
+  .mp-casting-lead { margin-top: 16px; font-size: 14.5px; line-height: 1.6; }
+  .mp-casting-points { margin-top: 18px; gap: 8px; }
   .mp-casting-points li { padding: 8px 13px; font-size: 11px; }
   .mp-casting-beam { display: none; }
-  .mp-casting-scroll { margin-top: 44px; }
+
+  .mp-casting-card { padding: 22px 18px; }
+  .mp-casting-form-head { margin-bottom: 16px; }
+  .mp-casting-form-title { font-size: 22px; }
+  .mp-casting-field { margin-bottom: 12px; }
+  .mp-casting-field > span { margin-bottom: 6px; }
+  .mp-casting-field input { padding: 12px 14px; font-size: 15px; }
+  .mp-app .mp-casting-submit { margin-top: 18px; padding: 15px 20px; }
+  .mp-casting-fine { margin-top: 12px; font-size: 11.5px; }
+
+  .mp-casting-scroll { margin-top: 30px; }
 
   .mp-footer-links { flex-wrap: wrap; justify-content: center; }
 }

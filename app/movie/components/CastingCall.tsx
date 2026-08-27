@@ -109,7 +109,6 @@ export default function CastingCall() {
 
           <ul className="mp-casting-points">
             <li>Casting presencial en Buenos Aires</li>
-            <li>Cupos limitados</li>
           </ul>
         </div>
 
