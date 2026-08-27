@@ -25,7 +25,7 @@ export const PROJECTS = [
     cta: 'Ir a suscribirme',
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
     kicker: 'Suscribite al casting',
-    category: 'Contenidos',
+    category: 'Casting para El Docke',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Plataforma audiovisual',
     year: '2026',
