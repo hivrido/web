@@ -97,7 +97,7 @@ export default function CastingCall() {
           </div>
 
           <h1 className="mp-casting-title">
-            Sé parte de
+            Sé parte
             <strong>El Docke</strong>
           </h1>
 
@@ -108,7 +108,6 @@ export default function CastingCall() {
           </p>
 
           <ul className="mp-casting-points">
-            <li>Sin experiencia previa</li>
             <li>Casting presencial en Buenos Aires</li>
             <li>Cupos limitados</li>
           </ul>

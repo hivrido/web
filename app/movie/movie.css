@@ -888,17 +888,38 @@ html:has(.mp-app) body {
   animation: mp-casting-rise .9s cubic-bezier(.22,1,.36,1) .2s forwards;
 }
 
-/* Filo dorado: un borde de luz, no una caja amarilla */
+/* El ángulo del haz se anima como número, no como color: sin @property el
+   navegador no sabe interpolar un <angle> dentro de un gradiente. Donde no
+   está soportado queda el borde quieto de la tarjeta, que ya es un filo. */
+@property --mp-beam {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes mp-beam-spin { to { --mp-beam: 360deg; } }
+
+/* Filo dorado: un borde de luz, no una caja amarilla. El recorte deja pintado
+   solo el anillo de 1px —la máscara resta el relleno del borde—, así el haz
+   recorre el contorno en vez de teñir la tarjeta entera. */
 .mp-casting-card-glow {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(150deg, rgba(240,180,41,.65), rgba(124,58,237,.35) 46%, transparent 78%);
+  background:
+    conic-gradient(from var(--mp-beam),
+      rgba(240,180,41,.14) 0deg,
+      rgba(124,58,237,.32) 120deg,
+      rgba(240,180,41,.16) 210deg,
+      rgba(240,180,41,.9) 300deg,
+      #fff6dd 338deg,
+      rgba(240,180,41,.14) 360deg);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
+  animation: mp-beam-spin 6s linear infinite;
   pointer-events: none;
 }
 
@@ -993,6 +1014,30 @@ html:has(.mp-app) body {
   text-transform: uppercase;
   box-shadow: 0 0 30px -6px rgba(240,180,41,.6), 0 14px 34px -18px rgba(0,0,0,.9);
   transition: transform .2s, box-shadow .25s, filter .25s;
+}
+
+/* La misma luz que la tarjeta, girando más rápido: el botón es el final del
+   recorrido y late a su propio ritmo. Blanco y no oro: sobre el relleno
+   dorado, un haz dorado no se vería. */
+.mp-app .mp-casting-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background:
+    conic-gradient(from var(--mp-beam),
+      transparent 0deg,
+      transparent 190deg,
+      rgba(255,255,255,.75) 300deg,
+      #fff 340deg,
+      transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: mp-beam-spin 2.8s linear infinite;
+  pointer-events: none;
 }
 
 .mp-app .mp-casting-submit::after {
@@ -1100,6 +1145,8 @@ html:has(.mp-app) body {
 
 @media (prefers-reduced-motion: reduce) {
   .mp-casting-aura,
+  .mp-casting-card-glow,
+  .mp-app .mp-casting-submit::before,
   .mp-casting-scroll svg { animation: none; }
   .mp-casting-copy > *,
   .mp-casting-card,
