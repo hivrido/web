@@ -15,8 +15,29 @@
 
 export const PROJECTS = [
   {
-    id: 'nebula',
+    id: 'monolito',
     index: '01',
+    title: 'HIVRIDO PLAY',
+    /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
+    brandLogo: true,
+    /* Con `href` la tarjeta muestra el PLAY y el click navega */
+    href: '/movie/',
+    cta: 'Ir a suscribirme',
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Suscribite al casting',
+    category: 'Contenidos',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Plataforma audiovisual',
+    year: '2026',
+    /* Sin `client`: es plataforma propia */
+    body: 'Suscribite para formar parte del casting de la serie El Docke.',
+    tags: ['Streaming', 'Cine', 'Series'],
+    accent: '#C9A84C',
+    image: '/images/bg/hivrido-chrome.jpg',
+  },
+  {
+    id: 'nebula',
+    index: '02',
     title: 'GROW DIGITAL',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Digital'],
@@ -38,7 +59,7 @@ export const PROJECTS = [
   },
   {
     id: 'docke',
-    index: '02',
+    index: '03',
     title: 'AGENTES',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Colmena'],
@@ -58,7 +79,7 @@ export const PROJECTS = [
   },
   {
     id: 'oraculo',
-    index: '03',
+    index: '04',
     title: 'BRANDING',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Marcas'],
@@ -82,7 +103,7 @@ export const PROJECTS = [
   },
   {
     id: 'animacion',
-    index: '04',
+    index: '05',
     title: 'CINE & VIDEO',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Cine'],
@@ -102,7 +123,7 @@ export const PROJECTS = [
   },
   {
     id: 'ritual',
-    index: '05',
+    index: '06',
     title: 'EQUIPO',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Equipo'],
@@ -119,27 +140,6 @@ export const PROJECTS = [
     link: { label: 'Ir a Equipo', href: '/equipo/' },
     accent: '#FF6A00',
     image: '/images/team/1.jpg',
-  },
-  {
-    id: 'monolito',
-    index: '06',
-    title: 'HIVRIDO PLAY',
-    /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
-    brandLogo: true,
-    /* Con `href` la tarjeta muestra el PLAY y el click navega */
-    href: '/movie/',
-    cta: 'Entrar a Hivrido PLAY',
-    /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Plataforma Audiovisual',
-    category: 'Contenidos',
-    /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'Cine y series en un solo lugar',
-    year: '2026',
-    /* Sin `client`: es plataforma propia */
-    body: 'Nuestra plataforma audiovisual: cine, series, documentales y música de habla hispana en un solo lugar. Producciones propias y contenido curado, con estrenos, tendencias y calendario. Es donde vive todo lo que producimos.',
-    tags: ['Streaming', 'Cine', 'Series', 'Originales'],
-    accent: '#C9A84C',
-    image: '/images/bg/hivrido-chrome.jpg',
   },
   {
     id: 'puny',

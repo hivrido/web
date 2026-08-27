@@ -41,10 +41,10 @@ const el = {
 const TOTAL = PROJECTS.length;
 const pad = (n) => String(n).padStart(2, '0');
 
-/* El carrusel arranca en NEBULA, no en el primero de la lista. Por id y no
-   por número: si los proyectos se reordenan, el arranque sigue siendo el
-   correcto o cae al 0 sin romperse. */
-const START = Math.max(0, PROJECTS.findIndex((p) => p.id === 'nebula'));
+/* El carrusel arranca en HIVRIDO PLAY, la ficha del casting. Por id y no por
+   número: si los proyectos se reordenan, el arranque sigue siendo el correcto
+   o cae al 0 sin romperse. */
+const START = Math.max(0, PROJECTS.findIndex((p) => p.id === 'monolito'));
 
 let ring = null;
 let active = START;
