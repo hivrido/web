@@ -716,6 +716,396 @@ html:has(.mp-app) body {
   border: none;
 }
 
+/* ── CASTING: la puerta de entrada, antes del slider ──
+   Pantalla completa y una sola cosa que hacer. La atmósfera se compone con
+   capas de color y no con una foto: pesa cero y no compite con la tipografía. */
+.mp-casting {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 48px 96px;
+  overflow: hidden;
+  background: #07060d;
+  isolation: isolate;
+}
+
+/* Dos focos —violeta y dorado— respirando fuera de foco */
+.mp-casting-aura {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  background:
+    radial-gradient(42% 46% at 22% 32%, rgba(124,58,237,.42) 0%, transparent 64%),
+    radial-gradient(38% 42% at 78% 68%, rgba(240,180,41,.20) 0%, transparent 62%),
+    radial-gradient(60% 60% at 50% 120%, rgba(157,95,255,.16) 0%, transparent 70%);
+  animation: mp-casting-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes mp-casting-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.08); }
+}
+
+/* Haz de proyección: la única línea recta de la escena */
+.mp-casting-beam {
+  position: absolute;
+  top: -40%;
+  left: 46%;
+  z-index: -2;
+  width: 46vw;
+  height: 180%;
+  transform: rotate(18deg);
+  background: linear-gradient(to bottom, rgba(240,180,41,.13), transparent 62%);
+  filter: blur(38px);
+  pointer-events: none;
+}
+
+/* Trama de pantalla: va debajo del contenido, nunca encima de la letra */
+.mp-casting-scan {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .5;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.028) 0 1px,
+    transparent 1px 4px
+  );
+  pointer-events: none;
+}
+
+.mp-casting-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  gap: 72px;
+}
+
+/* ── Columna editorial ── */
+.mp-casting-copy > * {
+  opacity: 0;
+  animation: mp-casting-rise .8s cubic-bezier(.22,1,.36,1) forwards;
+}
+.mp-casting-copy > *:nth-child(1) { animation-delay: .05s; }
+.mp-casting-copy > *:nth-child(2) { animation-delay: .14s; }
+.mp-casting-copy > *:nth-child(3) { animation-delay: .23s; }
+.mp-casting-copy > *:nth-child(4) { animation-delay: .32s; }
+
+@keyframes mp-casting-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mp-casting-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--mp-gold);
+}
+
+.mp-casting-eyebrow-line {
+  width: 46px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--mp-gold), transparent);
+}
+
+.mp-casting-title {
+  margin-top: 22px;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: .92;
+  letter-spacing: -.01em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+/* La segunda línea es el nombre de la serie: se lleva el oro y el resplandor */
+.mp-casting-title strong {
+  display: block;
+  margin-top: .12em;
+  font-weight: 900;
+  background: linear-gradient(96deg, #f7dfa0, #f0b429 42%, #b9822a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 26px rgba(240,180,41,.28));
+}
+
+.mp-casting-lead {
+  margin-top: 26px;
+  max-width: 46ch;
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--mp-muted);
+}
+
+.mp-casting-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+  list-style: none;
+}
+
+.mp-casting-points li {
+  padding: 9px 16px;
+  border: 1px solid rgba(240,180,41,.28);
+  border-radius: 999px;
+  background: rgba(240,180,41,.06);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #e7d5a8;
+}
+
+/* ── Tarjeta del formulario ── */
+.mp-casting-card {
+  position: relative;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.09);
+  background: linear-gradient(165deg, rgba(24,20,38,.92), rgba(10,9,16,.96));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 40px 90px -30px rgba(0,0,0,.9),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  opacity: 0;
+  animation: mp-casting-rise .9s cubic-bezier(.22,1,.36,1) .2s forwards;
+}
+
+/* Filo dorado: un borde de luz, no una caja amarilla */
+.mp-casting-card-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(150deg, rgba(240,180,41,.65), rgba(124,58,237,.35) 46%, transparent 78%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.mp-casting-form-head { margin-bottom: 26px; }
+
+.mp-casting-form-kicker {
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--mp-muted);
+}
+
+.mp-casting-form-title {
+  margin-top: 8px;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mp-casting-field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.mp-casting-field > span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mp-muted);
+}
+
+.mp-casting-field input {
+  width: 100%;
+  padding: 15px 18px;
+  border-radius: 11px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.035);
+  color: var(--mp-text);
+  font-family: var(--mp-font);
+  font-size: 15.5px;
+  transition: border-color .25s, background .25s, box-shadow .25s;
+}
+
+.mp-casting-field input::placeholder { color: rgba(136,136,170,.5); }
+
+.mp-casting-field input:focus {
+  outline: none;
+  border-color: rgba(240,180,41,.55);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 0 0 3px rgba(240,180,41,.12);
+}
+
+.mp-casting-field input[aria-invalid="true"] {
+  border-color: rgba(255,90,120,.55);
+  background: rgba(255,90,120,.05);
+}
+
+.mp-casting-error {
+  display: block;
+  margin-top: 7px;
+  font-size: 12.5px;
+  font-style: normal;
+  color: #ff8098;
+}
+
+/* El botón: dorado macizo con un barrido de luz al pasar el mouse */
+.mp-app .mp-casting-submit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  width: 100%;
+  margin-top: 26px;
+  padding: 17px 26px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(100deg, #f0b429, #f7d271 46%, #d99a1c);
+  color: #1a1206;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 13.5px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  box-shadow: 0 0 30px -6px rgba(240,180,41,.6), 0 14px 34px -18px rgba(0,0,0,.9);
+  transition: transform .2s, box-shadow .25s, filter .25s;
+}
+
+.mp-app .mp-casting-submit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 32%, rgba(255,255,255,.55) 50%, transparent 68%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 130% 0;
+  transition: background-position .85s cubic-bezier(.22,1,.36,1);
+  pointer-events: none;
+}
+
+.mp-app .mp-casting-submit:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 0 42px -6px rgba(240,180,41,.72), 0 18px 40px -18px rgba(0,0,0,.9);
+}
+
+.mp-app .mp-casting-submit:hover::after { background-position: -30% 0; }
+.mp-app .mp-casting-submit:active { transform: translateY(0); }
+
+.mp-casting-fine {
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(136,136,170,.8);
+}
+
+/* ── Estado enviado ── */
+.mp-casting-done { text-align: center; }
+
+.mp-casting-done-mark {
+  width: 58px;
+  height: 58px;
+  margin: 4px auto 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(240,180,41,.5);
+  background: rgba(240,180,41,.1);
+  color: var(--mp-gold);
+  box-shadow: 0 0 34px -8px rgba(240,180,41,.7);
+  animation: mp-casting-pop .5s cubic-bezier(.22,1,.36,1) backwards;
+}
+
+@keyframes mp-casting-pop {
+  from { opacity: 0; transform: scale(.7); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mp-casting-done-title {
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mp-casting-done-text {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mp-muted);
+}
+
+.mp-casting-ghost {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 11px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--mp-muted);
+  font-size: 13px;
+  font-weight: 600;
+  transition: color .25s, border-color .25s;
+}
+
+.mp-casting-ghost:hover { color: var(--mp-text); border-color: rgba(255,255,255,.28); }
+
+/* ── Salida hacia el catálogo ── */
+.mp-casting-scroll {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 64px auto 0;
+  padding: 10px 4px;
+  color: var(--mp-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  transition: color .25s;
+}
+
+.mp-casting-scroll:hover { color: var(--mp-text); }
+.mp-casting-scroll svg { animation: mp-casting-nudge 2.4s ease-in-out infinite; }
+
+@keyframes mp-casting-nudge {
+  0%, 100% { transform: translateY(0); opacity: .55; }
+  50%      { transform: translateY(5px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-casting-aura,
+  .mp-casting-scroll svg { animation: none; }
+  .mp-casting-copy > *,
+  .mp-casting-card,
+  .mp-casting-done-mark { animation: none; opacity: 1; }
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .mp-header { padding: 0 18px; height: 58px; }
@@ -738,5 +1128,16 @@ html:has(.mp-app) body {
   .mp-card.wide { width: 220px; }
 
   .mp-footer { flex-direction: column; gap: 14px; text-align: center; }
+  /* El casting apila: el formulario primero no —la promesa va antes que el
+     pedido de datos, también en pantalla chica—, pero sin el aire de escritorio. */
+  .mp-casting { padding: 92px 18px 64px; min-height: auto; }
+  .mp-casting-inner { grid-template-columns: 1fr; gap: 40px; }
+  .mp-casting-card { padding: 26px 22px; }
+  .mp-casting-lead { margin-top: 20px; font-size: 15.5px; }
+  .mp-casting-points { margin-top: 22px; gap: 8px; }
+  .mp-casting-points li { padding: 8px 13px; font-size: 11px; }
+  .mp-casting-beam { display: none; }
+  .mp-casting-scroll { margin-top: 44px; }
+
   .mp-footer-links { flex-wrap: wrap; justify-content: center; }
 }
