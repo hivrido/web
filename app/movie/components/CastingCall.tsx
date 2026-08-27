@@ -102,7 +102,7 @@ export default function CastingCall() {
           </h1>
 
           <p className="mp-casting-lead">
-            Buscamos caras nuevas para la próxima temporada de la serie. Dejanos
+            Buscamos caras nuevas para la primera temporada de la serie. Dejanos
             tus datos y te escribimos por WhatsApp con la fecha, el lugar y el
             personaje que estamos buscando.
           </p>
