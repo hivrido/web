@@ -15,7 +15,7 @@ import NextImage from "next/image";
 import LogoAnimated from "../ui/LogoAnimated";
 import CastingCall from "./CastingCall";
 import PlayMenu from "./PlayMenu";
-import { FEATURED, SERIES, PELICULAS, TENDENCIAS, type Title } from "../../lib/catalog";
+import { FEATURED, SERIES, PELICULAS, type Title } from "../../lib/catalog";
 import "./play.css";
 
 /* Degradados de la casa para las fichas que todavía no tienen portada. Es un
@@ -334,7 +334,6 @@ export default function PlayHome() {
         </div>
 
         <Section id="peliculas" title="Películas" items={PELICULAS} />
-        <Section title="Tendencias" items={TENDENCIAS} />
       </main>
 
       <footer className="mp-footer">

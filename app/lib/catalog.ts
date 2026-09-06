@@ -191,12 +191,3 @@ export const PELICULAS = CATALOG.filter((t) => t.type === "pelicula");
 
 /** Slider de portada: solo fichas con trailer y arte propio. */
 export const FEATURED = CATALOG.filter((t) => t.hero && t.ytId);
-
-/**
- * Fila de tendencias. Se deriva del puntaje en lugar de ser una lista aparte:
- * así nunca puede contradecir al resto del catálogo, y las fichas provisorias
- * —que no tienen puntaje— quedan afuera solas.
- */
-export const TENDENCIAS = CATALOG.filter((t) => t.rating).sort(
-  (a, b) => Number(b.rating) - Number(a.rating)
-);

@@ -87,6 +87,5 @@ Además de las imágenes, estas fichas están con texto provisorio:
 - **Atómico 82** — sinopsis, año real, duración.
 
 Ninguna de las fichas nuevas tiene puntaje cargado, a propósito: un número
-inventado en un catálogo es peor que un campo vacío. La fila **Tendencias** se
-arma sola con los títulos que sí tienen puntaje, así que las fichas provisorias
-aparecen ahí recién cuando tengan uno real.
+inventado en un catálogo es peor que un campo vacío. La tarjeta simplemente no
+muestra la estrella hasta que haya uno real.
