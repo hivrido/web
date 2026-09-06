@@ -141,22 +141,6 @@ html:has(.mp-app) body {
   color: #fff;
 }
 
-.mp-btn-subscribe {
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .04em;
-  background: var(--mp-violet);
-  color: #fff;
-  transition: background .2s, transform .15s;
-}
-
-.mp-btn-subscribe:hover {
-  background: var(--mp-violet2);
-  transform: translateY(-1px);
-}
-
 .mp-btn-login {
   padding: 10px 24px;
   border-radius: 8px;
@@ -197,6 +181,7 @@ html:has(.mp-app) body {
   inset: 0;
   background-size: cover;
   background-position: center top;
+  background-repeat: no-repeat;
   will-change: transform;
 }
 

@@ -548,6 +548,21 @@ Los commits van en español, en imperativo y con prefijo (`feat:`, `fix:`,
 `/out/` es artefacto de build, no un método de deploy: no se commitea ni se
 zipea para subir a un servidor.
 
+### Redirects (`vercel.json`)
+
+El export estático no ejecuta la función `redirects()` de `next.config.ts`: sin
+servidor no hay quién la corra. Cualquier redirección permanente vive en
+`vercel.json`, que es lo que sí se aplica en el borde.
+
+- **`/movie` → `/` (301).** La plataforma pasó a ser la portada del dominio.
+  Esa URL se compartió públicamente antes de la mudanza, así que el link viejo
+  tiene que seguir llegando a destino.
+- **`/movie/okupas` → `/okupas` (301).** Misma razón.
+
+Van declaradas en las dos formas, con barra final y sin ella: el `source` se
+compara literal, y `trailingSlash: true` hace que la que circuló sea la de la
+barra.
+
 ### Caché (`vercel.json`)
 
 Vercel valida el archivo contra su esquema y rechaza cualquier clave que no
@@ -564,12 +579,33 @@ de cada regla vive acá:
 
 ## Architecture
 
-**hivrido.com** is a single-page portfolio site for a creative agency. It uses the Next.js App Router with `output: "export"` (fully static, no server runtime). The built site lands in `/out/`.
+**hivrido.com** son dos portadas sobre un mismo dominio. Usa el App Router de
+Next con `output: "export"` (estático puro, sin runtime). El build sale en `/out/`.
+
+### Las dos portadas
+
+- **`/` — Hivrido PLAY**, la plataforma de contenidos. Es una página de Next
+  (`app/page.tsx`, servidor, con la metadata y el schema.org) que monta
+  `app/components/play/PlayHome.tsx` (cliente). Es la puerta del tráfico de
+  campaña.
+- **`/web/` — la institucional**, el anillo 3D. **No es una página de Next**:
+  es `public/web/index.html`, HTML escrito a mano con el CSS incrustado por
+  `prebuild` y el motor en `public/cosmos/`. Se sirve porque el export copia
+  `public/` tal cual.
+
+Ojo con eso último: si alguna vez se crea `app/web/page.tsx`, colisiona con
+`public/web/index.html` por el mismo `out/web/index.html`. Lo mismo pasaba en
+la raíz antes de la mudanza.
+
+El catálogo de PLAY sale entero de `app/lib/catalog.ts`, que es la fuente
+única: `type` (`"serie" | "pelicula"`) decide en qué fila entra cada ficha y
+qué tipo de schema.org se emite. Las secciones se derivan de esa lista, no al
+revés.
 
 ### Key decisions
 
-- **Static export**: No server-side rendering, no API routes, no dynamic segments. All pages are pre-rendered at build time. `images.unoptimized: true` is required because Next.js image optimization needs a server.
-- **Single page**: `app/page.tsx` mounts all sections sequentially. Navigation uses hash anchors (`#sec1`–`#sec6`). There is no routing beyond the home page.
+- **Static export**: No server-side rendering, no API routes, no dynamic segments. All pages are pre-rendered at build time. `images.unoptimized: true` is required because Next.js image optimization needs a server. Como corolario, los fondos que se pintan por CSS no pasan por `next/image`: se preprocesan en `prebuild` (ver `scripts/build-hero-images.mjs`).
+- **`/estudio`**: la portada larga por secciones —Hero, About, Services, Portfolio, Artists, Clients— con anclas `#sec1`–`#sec6`. Fue la home original del sitio; hoy es una ruta más.
 - **Client-heavy**: Animations (GSAP + ScrollTrigger), smooth scroll (Lenis), custom cursor, and the loader all live in client components. `ClientShell` (`app/components/layout/ClientShell.tsx`) is the root `"use client"` wrapper that owns this state.
 - **Tailwind v4**: Uses `@tailwindcss/postcss` v4. There is no `tailwind.config.*` — theme customizations live as CSS variables in `app/globals.css` (colors, fonts, borders). Use CSS variables, not Tailwind config, when adding design tokens.
 

@@ -1,5 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/movie/okupas", "destination": "/okupas", "permanent": true },
+    { "source": "/movie/okupas/", "destination": "/okupas", "permanent": true },
+    { "source": "/movie", "destination": "/", "permanent": true },
+    { "source": "/movie/", "destination": "/", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(fonts|images)/(.*)",

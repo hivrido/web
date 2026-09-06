@@ -20,8 +20,8 @@ const PROJECTS: Project[] = [
     id: "GowGLVO0KHI",
     num: "01",
     name: "El Docke",
-    cat: "Trailer",
-    desc: "Una historia que trasciende el barrio. Retrato cinematográfico de identidad, comunidad y territorio.",
+    cat: "Serie",
+    desc: "Una historia que trasciende el barrio. Serie sobre identidad, comunidad y territorio.",
   },
   {
     id: "OgghHzx3axk",

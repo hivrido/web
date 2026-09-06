@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LogoAnimated from "../../components/ui/LogoAnimated";
+import LogoAnimated from "../components/ui/LogoAnimated";
+import "../components/play/play.css";
 
 export default OkupasPageLegacy;
 
@@ -43,16 +44,16 @@ function OkupasPageLegacy() {
         className={`mp-header${scrolled ? " scrolled" : ""}`}
         style={{ background: scrolled ? "rgba(10,10,14,.97)" : "linear-gradient(to bottom, rgba(10,10,14,.95) 0%, transparent 100%)" }}
       >
-        <Link href="/movie" className="mp-logo">
+        <Link href="/" className="mp-logo">
           <LogoAnimated height={26} delay={300} />
           <span className="mp-logo-badge">PLAY</span>
         </Link>
         <nav className="mp-nav">
-          <Link href="/movie">Inicio</Link>
+          <Link href="/">Inicio</Link>
           <a href="#" style={{ color: "#fff", fontWeight: 600 }}>Okupas</a>
         </nav>
         <div className="mp-header-right">
-          <Link href="/movie" style={{ fontSize: "13px", color: "rgba(255,255,255,.5)", display: "flex", alignItems: "center", gap: "6px" }}>
+          <Link href="/" style={{ fontSize: "13px", color: "rgba(255,255,255,.5)", display: "flex", alignItems: "center", gap: "6px" }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             Volver
           </Link>
@@ -71,7 +72,7 @@ function OkupasPageLegacy() {
 
           {/* Breadcrumb */}
           <div style={{ fontSize: "12px", color: "rgba(255,255,255,.35)", marginBottom: "20px", display: "flex", alignItems: "center", gap: "8px" }}>
-            <Link href="/movie" style={{ color: "rgba(255,255,255,.35)", textDecoration: "none" }}>Inicio</Link>
+            <Link href="/" style={{ color: "rgba(255,255,255,.35)", textDecoration: "none" }}>Inicio</Link>
             <span>›</span>
             <span style={{ color: "rgba(255,255,255,.35)" }}>Series</span>
             <span>›</span>
@@ -325,7 +326,7 @@ function OkupasPageLegacy() {
       <footer className="mp-footer">
         <span>© 2026 Hivrido PLAY. Todos los derechos reservados.</span>
         <div className="mp-footer-links">
-          <a href="/movie">← Volver a Hivrido PLAY</a>
+          <Link href="/">← Volver a Hivrido PLAY</Link>
         </div>
       </footer>
 

@@ -1,5 +1,6 @@
 /**
- * Compila el CSS de la portada y lo deja incrustado en public/index.html.
+ * Compila el CSS de la portada institucional y lo deja incrustado en
+ * public/web/index.html.
  *
  * Dos pasos en uno:
  *   1. `cosmos.tailwind.css` -> las utilidades de Tailwind que la portada usa.
@@ -30,13 +31,13 @@ import * as esbuild from "esbuild";
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const scripts = path.join(root, "scripts");
-const indexPath = path.join(root, "public", "index.html");
+const indexPath = path.join(root, "public", "web", "index.html");
 
 const OPEN = "<!-- css:inline -->";
 const CLOSE = "<!-- /css:inline -->";
 
 /* ── 0 · Vaciar el bloque generado antes de nada ──
-   Tailwind escanea public/index.html para saber qué utilidades compilar, y el
+   Tailwind escanea public/web/index.html para saber qué utilidades compilar, y el
    HTML ahora contiene su propia salida: sin vaciar primero, cada corrida
    encuentra nombres de clase dentro del CSS que ella misma generó y el
    archivo crece solo. Con el bloque vacío, escanea únicamente el marcado. */
@@ -44,7 +45,7 @@ const before = await readFile(indexPath, "utf8");
 const start = before.indexOf(OPEN);
 const end = before.indexOf(CLOSE);
 if (start === -1 || end === -1) {
-  throw new Error(`No encontré los marcadores ${OPEN} … ${CLOSE} en public/index.html`);
+  throw new Error(`No encontré los marcadores ${OPEN} … ${CLOSE} en public/web/index.html`);
 }
 const shell = before.slice(0, start + OPEN.length) + "\n" + before.slice(end);
 await writeFile(indexPath, shell, "utf8");
@@ -75,6 +76,6 @@ await rm(path.join(root, "public", "cosmos", "tw.css"), { force: true });
 
 const kb = (s) => (Buffer.byteLength(s) / 1024).toFixed(1);
 console.log(
-  `css -> incrustado en index.html: ${kb(tw)} KiB Tailwind + ${kb(styles)} KiB propio ` +
+  `css -> incrustado en web/index.html: ${kb(tw)} KiB Tailwind + ${kb(styles)} KiB propio ` +
     `(la hoja sin minificar pesaba ${kb(rawStyles)})`
 );

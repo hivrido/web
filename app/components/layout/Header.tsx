@@ -4,15 +4,18 @@ import LogoAnimated from "../ui/LogoAnimated";
 
 /* El menú es el mismo mapa que dibujan las fichas del cosmos: una entrada por
    tarjeta, en su orden. Se fueron las anclas a secciones —#sec1, #sec4— porque
-   la raíz ya no es la página larga sino el anillo, y ahí no existen. */
+   la raíz ya no es la página larga sino el anillo, y ahí no existen.
+
+   Desde que la plataforma pasó a ser la portada del dominio, PLAY es "/" y el
+   anillo institucional vive en "/web". */
 const NAV_ITEMS = [
-  { label: "Home",         href: "/" },
+  { label: "Home",         href: "/web" },
   { label: "Grow Digital", href: "/diseno-web" },
   { label: "Cine & Video", href: "/cine-video" },
   { label: "Publicidad",   href: "/publicidad" },
   { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Branding",     href: "/branding" },
-  { label: "Hivrido PLAY", href: "/movie" },
+  { label: "Hivrido PLAY", href: "/" },
   { label: "Equipo",       href: "/equipo" },
 ];
 
@@ -84,8 +87,9 @@ export default function Header({ base = "", logoDelay }: { base?: string; logoDe
   return (
     <>
       <header className="main-header">
-        {/* El logo siempre vuelve a la raíz, que ahora es el anillo */}
-        <a href="/" className="logo-holder" onClick={close}>
+        {/* Este header lo usan las landings institucionales, así que el logo
+            vuelve al anillo —que ahora vive en /web—, no a la plataforma. */}
+        <a href="/web/" className="logo-holder" onClick={close}>
           {/* El logo arranca invisible y se dibuja al vencer el retardo. El
               valor por defecto espera al preloader de la home; en una página
               que no lo tiene hay que acortarlo o el header se ve vacío. */}

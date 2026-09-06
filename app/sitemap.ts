@@ -7,10 +7,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
+      /* La raíz es Hivrido PLAY: la plataforma es la puerta del dominio. */
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      /* La portada institucional, que hasta la reestructuración era la raíz. */
+      url: `${baseUrl}/web`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/estudio`,
@@ -61,16 +69,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/movie`,
+      url: `${baseUrl}/okupas`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/movie/okupas`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
     },
   ];
 }

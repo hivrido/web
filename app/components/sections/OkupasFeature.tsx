@@ -5,12 +5,13 @@
  *
  * Vivía en /estudio hasta que Okupas dejó de ser una entrada propia del sitio:
  * es una serie dentro de Hivrido PLAY, y su página sigue publicada en
- * /movie/okupas. Se conserva entera por si vuelve a hacer falta: para
+ * /okupas. Se conserva entera por si vuelve a hacer falta: para
  * reponerla, importarla en app/estudio/page.tsx y devolver la entrada
  * `sec-okupas` a ScrollNav.
  */
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import Image from "next/image";
 
@@ -80,8 +81,8 @@ export default function OkupasFeature() {
             </span>
           </div>
 
-          <a
-            href="/movie"
+          <Link
+            href="/"
             style={{
               fontSize: "12px", fontWeight: 600, letterSpacing: ".05em",
               color: "rgba(255,255,255,.55)", textDecoration: "none",
@@ -93,12 +94,12 @@ export default function OkupasFeature() {
           >
             Ver catálogo completo
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+          </Link>
         </div>
 
         {/* Main card */}
         <a
-          href="/movie/okupas"
+          href="/okupas/"
           style={{ display: "block", textDecoration: "none", color: "inherit" }}
         >
           <div

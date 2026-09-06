@@ -21,19 +21,20 @@ export const PROJECTS = [
     title: 'HIVRIDO PLAY',
     /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
     brandLogo: true,
-    /* Con `href` la tarjeta muestra el PLAY y el click navega */
-    href: '/movie/',
-    cta: 'Ir a suscribirme',
+    /* Con `href` la tarjeta muestra el PLAY y el click navega. Desde que la
+       plataforma es la portada del dominio, el destino es la raíz. */
+    href: '/',
+    cta: 'Ver el catálogo',
     /* Palabra de la pastilla de la tarjeta, en lugar del PLAY por defecto */
-    playLabel: 'SUSCRIBIRME',
+    playLabel: 'VER',
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Suscribite al casting',
-    category: 'Casting para El Docke',
+    kicker: 'Series y películas',
+    category: 'Plataforma de streaming',
     /* Pie de la ficha, en lugar de `categoría · año` */
     meta: 'Plataforma audiovisual',
     year: '2026',
     /* Sin `client`: es plataforma propia */
-    body: 'Suscribite para formar parte del casting de la serie El Docke.',
+    body: 'Nuestra plataforma de contenidos: series y películas propias de habla hispana, con los estrenos que se ven primero acá.',
     tags: ['Streaming', 'Cine', 'Series'],
     accent: '#C9A84C',
     image: '/images/bg/hivrido-chrome.jpg',
