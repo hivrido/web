@@ -1092,9 +1092,28 @@ html:has(.mp-app) body {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .mp-header { padding: 0 18px; height: 58px; }
-  .mp-nav { display: none; }
-  .mp-logo { margin-right: 0; }
+  .mp-header { padding: 0 14px; height: 58px; }
+
+  /* La marca cede tamaño para que entren las secciones: en el teléfono el
+     header era solo el logotipo y no había forma de llegar a las filas sin
+     scrollear a ciegas, que es justo por donde entra casi todo el tráfico. */
+  .mp-logo { margin-right: 10px; }
+  .mp-logo svg { height: 20px; width: auto; }
+  .mp-logo-badge { font-size: 8px; padding: 2px 5px; letter-spacing: .1em; }
+
+  /* Contra el borde derecho, igual que en escritorio. Encogen la tipografía y
+     el relleno para que los tres entren en 360 px; si aun así no entran —un
+     teléfono más angosto, o el texto escalado por accesibilidad— la fila se
+     desplaza en lugar de romper el header. */
+  .mp-nav {
+    min-width: 0;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mp-nav::-webkit-scrollbar { display: none; }
+  .mp-nav a { padding: 6px 9px; font-size: 12px; white-space: nowrap; }
 
   .mp-hero-content {
     padding: 0 22px 90px;
