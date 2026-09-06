@@ -122,27 +122,13 @@ html:has(.mp-app) body {
   background: rgba(255,255,255,.08);
 }
 
+/* Ya no la usa la portada, donde el header terminó siendo marca + secciones.
+   La conserva el header de /okupas para el enlace de volver. */
 .mp-header-right {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-left: auto;
-}
-
-.mp-icon-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--mp-muted);
-  transition: background .2s, color .2s;
-}
-
-.mp-icon-btn:hover {
-  background: rgba(255,255,255,.1);
-  color: #fff;
 }
 
 /* ── HERO ── */
