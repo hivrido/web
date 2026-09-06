@@ -14,7 +14,7 @@
  * barra. play.css decide eso, no este archivo.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ScrambleLink from "../ui/ScrambleLink";
 
 /* Las secciones de la plataforma, más la salida al sitio institucional. */
@@ -31,6 +31,14 @@ const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%
 export default function PlayMenu() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+
+  /* Escape cierra, como en los paneles del anillo. */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <>
@@ -56,6 +64,18 @@ export default function PlayMenu() {
       <div className={`nav-overlay-bg${open ? " open" : ""}`} onClick={close} />
 
       <nav className={`nav-drawer${open ? " open" : ""}`} aria-label="Navegación">
+        <button
+          type="button"
+          className="mp-drawer-close"
+          onClick={close}
+          aria-label="Cerrar menú"
+          tabIndex={open ? 0 : -1}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+
         <div className="nav-title-dec">Hivrido PLAY</div>
         <ul className="nav-menu">
           {ITEMS.map((item, i) => (

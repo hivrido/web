@@ -13,6 +13,7 @@
   --mp-muted:    #8888aa;
   --mp-border:   rgba(255,255,255,.08);
   --mp-radius:   10px;
+  --mp-ease:     cubic-bezier(.22, 1, .36, 1);
   --mp-font:     'Inter', 'Rubik', sans-serif;
 }
 
@@ -122,6 +123,89 @@ html:has(.mp-app) body {
 @media (min-width: 769px) {
   .mp-app .nav-drawer,
   .mp-app .nav-overlay-bg { display: none; }
+}
+
+/* ── Cerrar el cajón ──
+   Portado del `.panel-close` de los paneles del anillo: el aro de luz que
+   gira, la entrada rotada y el giro de 90° al pasar por encima.
+
+   Es una copia y no un módulo compartido porque las dos hojas viven en
+   pipelines que no se ven entre sí: cosmos.styles.css la incrusta `prebuild`
+   dentro de public/web/index.html, y esta la compila Next. Tampoco comparten
+   paleta —allá el acento es `--ac`, acá el violeta de la plataforma—. Si
+   retocás una, retocá la otra: el original está en scripts/cosmos.styles.css.
+
+   Va por debajo de la barra: el cajón entra detrás del header, así que arriba
+   del todo el botón quedaría tapado. El `.mp-app` delante es para ganarle al
+   `border: none; background: none` que la hoja le pone a todo <button>. */
+.mp-app .mp-drawer-close {
+  position: absolute;
+  top: calc(58px + 12px);
+  right: clamp(20px, 5vw, 30px);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--mp-violet2) 65%, transparent);
+  background: color-mix(in srgb, var(--mp-violet2) 20%, rgba(10,8,18,.72));
+  color: #fff;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07),
+              0 0 26px -8px var(--mp-violet2);
+  transition: border-color .3s var(--mp-ease), background .3s var(--mp-ease),
+              box-shadow .3s var(--mp-ease), transform .3s var(--mp-ease);
+}
+
+.mp-app .mp-drawer-close:hover,
+.mp-app .mp-drawer-close:focus-visible {
+  border-color: var(--mp-violet2);
+  background: color-mix(in srgb, var(--mp-violet2) 38%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12),
+              0 0 36px -6px var(--mp-violet2);
+  transform: rotate(90deg);
+}
+
+.mp-app .mp-drawer-close svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2;
+  position: relative;
+}
+
+.mp-app .nav-drawer.open .mp-drawer-close {
+  animation: mp-close-in .5s var(--mp-ease) .3s backwards;
+}
+@keyframes mp-close-in {
+  from { opacity: 0; transform: scale(.7) rotate(-60deg); }
+}
+
+/* Luz recorriendo el aro: un degradado cónico que gira, recortado a un anillo
+   de 2 px con una máscara radial. El giro va en el pseudo-elemento y no en el
+   botón, así no pelea con el rotate del hover ni con la animación de entrada. */
+.mp-app .mp-drawer-close::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 200deg,
+    color-mix(in srgb, var(--mp-violet2) 70%, transparent) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  animation: mp-close-orbit 2.6s linear infinite;
+  pointer-events: none;
+}
+@keyframes mp-close-orbit { to { transform: rotate(1turn); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-app .nav-drawer.open .mp-drawer-close,
+  .mp-app .mp-drawer-close::before { animation: none; }
 }
 
 .mp-nav a {
