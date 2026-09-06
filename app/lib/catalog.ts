@@ -102,6 +102,7 @@ export const CATALOG: Title[] = [
     genre: "Drama",
     synopsis: "Sinopsis provisoria. Pendiente de completar con el material definitivo.",
     badge: "SERIE",
+    poster: "/images/series/elmonarco.jpg",
     isPlaceholder: true,
   },
   {
@@ -160,6 +161,7 @@ export const CATALOG: Title[] = [
     synopsis: "Un salvaje ajuste de cuentas entre dos piratas del asfalto.",
     rating: "9.1",
     ytId: "OgghHzx3axk",
+    poster: "/images/peliculas/chamame.jpeg",
     hero: { image: "/images/hero/chamame.jpg", color: "#5F9FFF" },
   },
   {

@@ -26,7 +26,16 @@ No hace falta tocar nada más: la tarjeta cambia sola.
 **Las dos filas usan el mismo formato: apaisado 16:9.** La tarjeta es
 `.mp-card.wide` —320 px en escritorio, 220 px en teléfono, con
 `aspect-ratio: 16/9`—, así que al doble de densidad de pantalla pide
-**640 × 360 px** en todos los casos.
+**640 × 360 px** en todos los casos. 1280 × 720 es el ideal.
+
+Dos cosas que importan tanto como la medida:
+
+- **JPEG o WebP, nunca PNG.** El PNG no comprime fotos: la misma imagen que en
+  JPEG pesa 200 KB, en PNG pesa 2,4 MB. Son miniaturas de 320 px que se bajan
+  todas juntas al abrir la portada.
+- **Recorte 16:9 de verdad.** Una imagen cuadrada entra igual, pero la tarjeta
+  la recorta arriba y abajo para llenar el rectángulo: se pierde casi la mitad
+  del alto y no hay control sobre qué queda afuera.
 
 ### Series
 
@@ -34,7 +43,7 @@ No hace falta tocar nada más: la tarjeta cambia sola.
 |---|---|---|
 | El Docke | — | **ya está** (`/images/series/eldocke.jpg`) |
 | Session One | — | **ya está** (`/images/series/sessionone.webp`) |
-| El Monarco | `el-monarco.jpg` | falta |
+| El Monarco | — | **ya está** (`/images/series/elmonarco.jpg`) |
 | Insomnio | `insomnio.jpg` | falta |
 | Haters | `haters.jpg` | falta |
 | Hackers | `hackers.jpg` | falta |
@@ -48,7 +57,7 @@ verticales.
 
 | Título | Archivo sugerido | Estado |
 |---|---|---|
-| Chamamé | `chamame.jpg` | falta |
+| Chamamé | — | **ya está** (`/images/peliculas/chamame.jpeg`) |
 | El Cambio | `el-cambio.jpg` | falta |
 | Atómico 82 | `atomico-82.jpg` | falta |
 
