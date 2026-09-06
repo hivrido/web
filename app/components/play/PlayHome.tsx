@@ -14,6 +14,7 @@ import Link from "next/link";
 import NextImage from "next/image";
 import LogoAnimated from "../ui/LogoAnimated";
 import CastingCall from "./CastingCall";
+import PlayMenu from "./PlayMenu";
 import { FEATURED, SERIES, PELICULAS, TENDENCIAS, type Title } from "../../lib/catalog";
 import "./play.css";
 
@@ -126,6 +127,9 @@ function Header() {
         <a href="#series">Series</a>
         <a href="#peliculas">Películas</a>
       </nav>
+
+      {/* Solo en teléfono: en escritorio las secciones ya se leen arriba. */}
+      <PlayMenu />
     </header>
   );
 }

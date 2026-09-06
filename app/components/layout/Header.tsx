@@ -1,6 +1,7 @@
 "use client";
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import LogoAnimated from "../ui/LogoAnimated";
+import ScrambleLink from "../ui/ScrambleLink";
 
 /* El menú es el mismo mapa que dibujan las fichas del cosmos: una entrada por
    tarjeta, en su orden. Se fueron las anclas a secciones —#sec1, #sec4— porque
@@ -19,60 +20,7 @@ const NAV_ITEMS = [
   { label: "Equipo",       href: "/equipo" },
 ];
 
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
-
-function ScrambleLink({ label, href, delay, onClick, index }: {
-  label: string; href: string; delay: string; onClick: () => void; index: number;
-}) {
-  const labelRef = useRef<HTMLSpanElement>(null);
-  const numRef = useRef<HTMLSpanElement>(null);
-  const rafRef = useRef<number | null>(null);
-
-  const scramble = useCallback(() => {
-    const el = labelRef.current;
-    if (!el) return;
-    if (numRef.current) numRef.current.style.color = "var(--gold)";
-    let iteration = 0;
-    const speed = 2.5;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    const step = () => {
-      el.textContent = label.split("").map((char, i) => {
-        if (char === " ") return " ";
-        if (i < iteration / speed) return label[i];
-        return CHARS[Math.floor(Math.random() * CHARS.length)];
-      }).join("");
-      if (iteration < label.length * speed) {
-        iteration++;
-        rafRef.current = requestAnimationFrame(step);
-      } else {
-        el.textContent = label;
-      }
-    };
-    rafRef.current = requestAnimationFrame(step);
-  }, [label]);
-
-  const reset = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    if (labelRef.current) labelRef.current.textContent = label;
-    if (numRef.current) numRef.current.style.color = "var(--violet-light)";
-  }, [label]);
-
-  return (
-    <a
-      href={href}
-      onClick={onClick}
-      style={{ transitionDelay: delay }}
-      onMouseEnter={scramble}
-      onMouseLeave={reset}
-    >
-      <span ref={numRef} style={{ color: "var(--violet-light)", marginRight: 8, transition: "color 0.35s ease" }}>
-        {String(index + 1).padStart(2, "0")}.
-      </span>
-      <span ref={labelRef}>{label}</span>
-    </a>
-  );
-}
 
 /**
  * @param base Prefijo para los enlaces de ancla. Vacío en el home, donde las

@@ -108,6 +108,22 @@ html:has(.mp-app) body {
   flex: 1;
 }
 
+/* ── Menú de teléfono ──
+   Las piezas (`nav-btn-wrap`, `nav-drawer`, `nav-overlay-bg`…) son las del
+   menú de la casa y viven en globals.css, que el layout raíz carga en todas
+   las rutas. Acá solo se ajusta lo que cambia en este header: el alto, que
+   allá lo fija `--header-h` (90px) y esta barra mide menos.
+
+   En escritorio no se muestra nada de esto. El selector lleva `.mp-app`
+   delante para ganarle en especificidad al `display: flex` de la hoja global
+   sin depender de en qué orden queden las dos. */
+.mp-app .mp-menu-btn { display: none; }
+
+@media (min-width: 769px) {
+  .mp-app .nav-drawer,
+  .mp-app .nav-overlay-bg { display: none; }
+}
+
 .mp-nav a {
   padding: 8px 16px;
   font-size: 15px;
@@ -1092,28 +1108,24 @@ html:has(.mp-app) body {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .mp-header { padding: 0 14px; height: 58px; }
+  /* Sin relleno a la derecha: el botón de menú llega hasta el borde, con su
+     filete y su fondo, igual que en el resto del sitio. */
+  .mp-header { padding: 0 0 0 18px; height: 58px; }
+  .mp-logo { margin-right: 0; }
 
-  /* La marca cede tamaño para que entren las secciones: en el teléfono el
-     header era solo el logotipo y no había forma de llegar a las filas sin
-     scrollear a ciegas, que es justo por donde entra casi todo el tráfico. */
-  .mp-logo { margin-right: 10px; }
-  .mp-logo svg { height: 20px; width: auto; }
-  .mp-logo-badge { font-size: 8px; padding: 2px 5px; letter-spacing: .1em; }
+  /* Las tres secciones no entran sueltas junto a la marca: pasan al cajón. */
+  .mp-nav { display: none; }
 
-  /* Contra el borde derecho, igual que en escritorio. Encogen la tipografía y
-     el relleno para que los tres entren en 360 px; si aun así no entran —un
-     teléfono más angosto, o el texto escalado por accesibilidad— la fila se
-     desplaza en lugar de romper el header. */
-  .mp-nav {
-    min-width: 0;
-    gap: 2px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+  .mp-app .mp-menu-btn {
+    display: flex;
+    margin-left: auto;
+    height: 58px;
+    padding: 0 18px;
+    gap: 10px;
   }
-  .mp-nav::-webkit-scrollbar { display: none; }
-  .mp-nav a { padding: 6px 9px; font-size: 12px; white-space: nowrap; }
+  .mp-app .nav-btn-lines { width: 22px; }
+  /* El cajón despeja esta barra, no la de 90 px del sitio institucional. */
+  .mp-app .nav-drawer { padding-top: calc(58px + 26px); }
 
   .mp-hero-content {
     padding: 0 22px 90px;
