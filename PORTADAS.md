@@ -12,8 +12,9 @@ flag y completá `synopsis`, `year`, `genre` y —si hay— `rating`.
 
 ## Cómo se conectan
 
-1. Subí el archivo a `public/images/posters/`.
-2. En `app/lib/catalog.ts`, agregá `poster: "/images/posters/<archivo>"` a la
+1. Subí el archivo a `public/images/series/` o `public/images/peliculas/`,
+   según corresponda.
+2. En `app/lib/catalog.ts`, agregá `poster: "/images/<carpeta>/<archivo>"` a la
    ficha correspondiente.
 
 No hace falta tocar nada más: la tarjeta cambia sola.
@@ -22,11 +23,12 @@ No hace falta tocar nada más: la tarjeta cambia sola.
 
 ## 1 · Portadas de tarjeta
 
-### Series — 16:9 apaisado
+**Las dos filas usan el mismo formato: apaisado 16:9.** La tarjeta es
+`.mp-card.wide` —320 px en escritorio, 220 px en teléfono, con
+`aspect-ratio: 16/9`—, así que al doble de densidad de pantalla pide
+**640 × 360 px** en todos los casos.
 
-La fila de series usa la tarjeta ancha (`.mp-card.wide`, 320 px en escritorio y
-220 px en teléfono, con `aspect-ratio: 16/9`). Al doble de densidad de pantalla
-eso pide **640 × 360 px**.
+### Series
 
 | Título | Archivo sugerido | Estado |
 |---|---|---|
@@ -39,11 +41,10 @@ eso pide **640 × 360 px**.
 | Alma | `alma.jpg` | falta |
 | Okupas | — | **ya está** (`/images/okupas/okupas-home.webp`) |
 
-### Películas — 2:3 vertical, tipo afiche
+### Películas
 
-La fila de películas usa la tarjeta normal (`.mp-card`, 230 px en escritorio y
-150 px en teléfono, con `aspect-ratio: 2/3`). Al doble de densidad eso pide
-**460 × 690 px**.
+Mismo formato que las series: **640 × 360 px**, apaisado. No son afiches
+verticales.
 
 | Título | Archivo sugerido | Estado |
 |---|---|---|

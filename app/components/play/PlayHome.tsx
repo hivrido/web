@@ -333,7 +333,7 @@ export default function PlayHome() {
           </div>
         </div>
 
-        <Section id="peliculas" title="Películas" items={PELICULAS} />
+        <Section id="peliculas" title="Películas" items={PELICULAS} wide />
       </main>
 
       <footer className="mp-footer">
