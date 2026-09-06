@@ -33,7 +33,7 @@ No hace falta tocar nada más: la tarjeta cambia sola.
 | Título | Archivo sugerido | Estado |
 |---|---|---|
 | El Docke | — | **ya está** (`/images/series/eldocke.jpg`) |
-| Session One | `session-one.jpg` | falta |
+| Session One | — | **ya está** (`/images/series/sessionone.webp`) |
 | El Monarco | `el-monarco.jpg` | falta |
 | Insomnio | `insomnio.jpg` | falta |
 | Haters | `haters.jpg` | falta |

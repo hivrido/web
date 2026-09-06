@@ -76,6 +76,7 @@ export const CATALOG: Title[] = [
     rating: "8.7",
     ytId: "2KooNsJQsxw",
     badge: "SERIE",
+    poster: "/images/series/sessionone.webp",
     hero: { image: "/images/hero/sessionone.jpg", color: "#FF5F9F" },
   },
   {
