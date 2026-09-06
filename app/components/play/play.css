@@ -73,7 +73,7 @@ html:has(.mp-app) body {
   letter-spacing: .08em;
   color: #fff;
   white-space: nowrap;
-  margin-right: 40px;
+  margin-right: 28px;
 }
 
 .mp-logo-badge {
@@ -96,9 +96,13 @@ html:has(.mp-app) body {
   box-shadow: 0 0 16px rgba(240,180,41,.8);
 }
 
+/* Pegada al logo, contra el borde izquierdo: `flex: 1` le da todo el espacio
+   sobrante y los ítems se apilan al principio, así el bloque de secciones se
+   lee de corrido con la marca en vez de flotar en el medio. */
 .mp-nav {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 6px;
   flex: 1;
 }
@@ -138,21 +142,6 @@ html:has(.mp-app) body {
 
 .mp-icon-btn:hover {
   background: rgba(255,255,255,.1);
-  color: #fff;
-}
-
-.mp-btn-login {
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--mp-text);
-  border: 1px solid var(--mp-border);
-  transition: border-color .2s, color .2s;
-}
-
-.mp-btn-login:hover {
-  border-color: rgba(255,255,255,.3);
   color: #fff;
 }
 
@@ -1119,7 +1108,6 @@ html:has(.mp-app) body {
   .mp-header { padding: 0 18px; height: 58px; }
   .mp-nav { display: none; }
   .mp-logo { margin-right: 0; }
-  .mp-btn-login { display: none; }
 
   .mp-hero-content {
     padding: 0 22px 90px;
