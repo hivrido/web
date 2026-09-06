@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "node scripts/build-cosmos-css.mjs && node scripts/build-cosmos-bundle.mjs && node scripts/build-card-images.mjs",
+    "prebuild": "node scripts/build-cosmos-css.mjs && node scripts/build-cosmos-bundle.mjs && node scripts/build-card-images.mjs && node scripts/build-hero-images.mjs",
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
