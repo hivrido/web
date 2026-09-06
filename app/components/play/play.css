@@ -96,13 +96,14 @@ html:has(.mp-app) body {
   box-shadow: 0 0 16px rgba(240,180,41,.8);
 }
 
-/* Pegada al logo, contra el borde izquierdo: `flex: 1` le da todo el espacio
-   sobrante y los ítems se apilan al principio, así el bloque de secciones se
-   lee de corrido con la marca en vez de flotar en el medio. */
+/* Contra el borde derecho: `flex: 1` le da todo el espacio sobrante y los
+   ítems se empujan al final, así la barra queda con la marca de un lado y las
+   secciones del otro. El margen del logo sigue siendo el piso de separación
+   cuando la ventana se angosta. */
 .mp-nav {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: 6px;
   flex: 1;
 }
