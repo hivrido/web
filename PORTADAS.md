@@ -30,7 +30,7 @@ eso pide **640 × 360 px**.
 
 | Título | Archivo sugerido | Estado |
 |---|---|---|
-| El Docke | `el-docke.jpg` | falta |
+| El Docke | — | **ya está** (`/images/series/eldocke.jpg`) |
 | Session One | `session-one.jpg` | falta |
 | El Monarco | `el-monarco.jpg` | falta |
 | Insomnio | `insomnio.jpg` | falta |

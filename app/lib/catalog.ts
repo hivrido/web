@@ -61,6 +61,7 @@ export const CATALOG: Title[] = [
     rating: "8.4",
     ytId: "GowGLVO0KHI",
     badge: "SERIE",
+    poster: "/images/series/eldocke.jpg",
     hero: { image: "/images/hero/eldocke.jpg", color: "#9D5FFF" },
   },
   {
