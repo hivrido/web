@@ -139,7 +139,7 @@ export default function CastingCall() {
             <form className="mp-casting-form" onSubmit={onSubmit} noValidate>
               <div className="mp-casting-form-head">
                 <span className="mp-casting-form-kicker">Formulario de casting</span>
-                <h2 className="mp-casting-form-title">Anotate</h2>
+                <h2 className="mp-casting-form-title">Suscribite</h2>
               </div>
 
               <label className="mp-casting-field">
