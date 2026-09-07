@@ -1,6 +1,7 @@
-/* Entrada de Tailwind para la portada (public/index.html).
+/* Entrada de Tailwind para la portada institucional (public/web/index.html).
    Vive fuera de public/ para que no se sirva: lo que se publica es el CSS ya
-   incrustado por scripts/build-cosmos-css.mjs en el <style> de public/index.html.
+   incrustado por scripts/build-cosmos-css.mjs en el <style> de
+   public/web/index.html.
 
    `source(none)` apaga la detección automática, que si no barrería también
    app/ —el Tailwind del sitio Next— y metería en este archivo utilidades que
@@ -8,7 +9,7 @@
    porque main.js inyecta `text-white` al pintar el contador. */
 @import "tailwindcss" source(none);
 
-@source "../public/index.html";
+@source "../public/web/index.html";
 /* Solo los que llevan clases en el marcado que inyectan. `*.js` incluía a
    ring.js —519 KiB de three minificado— y escanear eso en cada build es
    lento y, peor, arriesga que una cadena cualquiera del motor pase por un
