@@ -554,9 +554,12 @@ El export estático no ejecuta la función `redirects()` de `next.config.ts`: si
 servidor no hay quién la corra. Cualquier redirección permanente vive en
 `vercel.json`, que es lo que sí se aplica en el borde.
 
-- **`/movie` → `/` (301).** La plataforma pasó a ser la portada del dominio.
-  Esa URL se compartió públicamente antes de la mudanza, así que el link viejo
-  tiene que seguir llegando a destino.
+- **`/web` → `/` (301).** La institucional volvió a ser la portada del
+  dominio después de pasar por `/web`, y esa URL llegó al sitemap y a links
+  compartidos: tiene que seguir llegando a destino.
+- **`/movie` → `/play/` (301).** La plataforma vivió en `/movie` y ese link
+  se compartió públicamente. Apunta directo a su lugar actual para no encadenar
+  dos saltos.
 - **`/movie/okupas` → `/okupas` (301).** Misma razón.
 
 Van declaradas en las dos formas, con barra final y sin ella: el `source` se
@@ -584,18 +587,16 @@ Next con `output: "export"` (estático puro, sin runtime). El build sale en `/ou
 
 ### Las dos portadas
 
-- **`/` — Hivrido PLAY**, la plataforma de contenidos. Es una página de Next
-  (`app/page.tsx`, servidor, con la metadata y el schema.org) que monta
-  `app/components/play/PlayHome.tsx` (cliente). Es la puerta del tráfico de
-  campaña.
-- **`/web/` — la institucional**, el anillo 3D. **No es una página de Next**:
-  es `public/web/index.html`, HTML escrito a mano con el CSS incrustado por
+- **`/` — la institucional**, el anillo 3D. **No es una página de Next**:
+  es `public/index.html`, HTML escrito a mano con el CSS incrustado por
   `prebuild` y el motor en `public/cosmos/`. Se sirve porque el export copia
-  `public/` tal cual.
+  `public/` tal cual. Es la puerta del dominio.
+- **`/play/` — Hivrido PLAY**, la plataforma de contenidos. Es una página de
+  Next (`app/play/page.tsx`, servidor, con la metadata y el schema.org) que
+  monta `app/components/play/PlayHome.tsx` (cliente).
 
-Ojo con eso último: si alguna vez se crea `app/web/page.tsx`, colisiona con
-`public/web/index.html` por el mismo `out/web/index.html`. Lo mismo pasaba en
-la raíz antes de la mudanza.
+Ojo con la primera: si alguna vez se crea `app/page.tsx`, colisiona con
+`public/index.html` por el mismo `out/index.html`.
 
 El catálogo de PLAY sale entero de `app/lib/catalog.ts`, que es la fuente
 única: `type` (`"serie" | "pelicula"`) decide en qué fila entra cada ficha y

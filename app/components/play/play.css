@@ -131,7 +131,7 @@ html:has(.mp-app) body {
 
    Es una copia y no un módulo compartido porque las dos hojas viven en
    pipelines que no se ven entre sí: cosmos.styles.css la incrusta `prebuild`
-   dentro de public/web/index.html, y esta la compila Next. Tampoco comparten
+   dentro de public/index.html, y esta la compila Next. Tampoco comparten
    paleta —allá el acento es `--ac`, acá el violeta de la plataforma—. Si
    retocás una, retocá la otra: el original está en scripts/cosmos.styles.css.
 

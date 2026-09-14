@@ -1,9 +1,8 @@
 "use client";
 
 /**
- * Portada de Hivrido PLAY. Desde la reestructuración vive en la raíz del
- * dominio: es lo primero que ve el tráfico de campaña, así que el arranque
- * manda sobre cualquier otra consideración.
+ * Portada de Hivrido PLAY, en /play. Es adonde llegan los links de los
+ * estrenos, así que el arranque manda sobre cualquier otra consideración.
  *
  * Las fichas salen todas de app/lib/catalog.ts. Acá no se declara contenido:
  * si un título tiene que cambiar de fila o de tipo, se cambia allá.
@@ -189,7 +188,7 @@ function Header() {
 
   return (
     <header className={`mp-header${scrolled ? " scrolled" : ""}`}>
-      <Link href="/" className="mp-logo">
+      <Link href="/play/" className="mp-logo">
         <LogoAnimated height={26} delay={300} />
         <span className="mp-logo-badge">PLAY</span>
       </Link>
@@ -386,7 +385,7 @@ export default function PlayHome() {
         <span>© 2026 Hivrido PLAY. Todos los derechos reservados.</span>
         <div className="mp-footer-links">
           <a href="https://wa.me/5491156072460?text=Hola!%20Quiero%20hablar%20con%20HIVRIDO" target="_blank" rel="noopener">Contacto</a>
-          <Link href="/web/">← Volver a Hivrido</Link>
+          <Link href="/">← Volver a Hivrido</Link>
         </div>
       </footer>
 

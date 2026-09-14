@@ -21,9 +21,8 @@ export const PROJECTS = [
     title: 'HIVRIDO PLAY',
     /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
     brandLogo: true,
-    /* Con `href` la tarjeta muestra el PLAY y el click navega. Desde que la
-       plataforma es la portada del dominio, el destino es la raíz. */
-    href: '/',
+    /* Con `href` la tarjeta muestra el PLAY y el click navega */
+    href: '/play/',
     cta: 'Ver el catálogo',
     /* Palabra de la pastilla de la tarjeta, en lugar del PLAY por defecto */
     playLabel: 'VER',

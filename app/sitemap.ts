@@ -7,17 +7,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      /* La raíz es Hivrido PLAY: la plataforma es la puerta del dominio. */
+      /* La raíz es el anillo institucional. */
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: "monthly",
       priority: 1,
     },
     {
-      /* La portada institucional, que hasta la reestructuración era la raíz. */
-      url: `${baseUrl}/web`,
+      /* Hivrido PLAY: cambia con cada estreno. */
+      url: `${baseUrl}/play`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {

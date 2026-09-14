@@ -1,23 +1,22 @@
 import type { Metadata } from "next";
-import PlayHome from "./components/play/PlayHome";
-import { CATALOG, FEATURED } from "./lib/catalog";
+import PlayHome from "../components/play/PlayHome";
+import { CATALOG, FEATURED } from "../lib/catalog";
 
-/* La portada del dominio es la plataforma, no la agencia: el tráfico de
-   campaña entra acá y lo primero que tiene que entender es que hay contenido
-   para ver. La institucional vive en /web y declara lo suyo por su cuenta.
+/* La portada del dominio es el anillo institucional (public/index.html); la
+   plataforma vive acá, en /play, y declara lo suyo por su cuenta.
 
    El openGraph va completo —no solo el título— porque si no hereda el del
-   layout raíz, que sigue hablando de la agencia. */
+   layout raíz, que habla de la agencia. */
 export const metadata: Metadata = {
   title: "Hivrido PLAY — Series y películas argentinas independientes",
   description:
     "Mirá series y películas independientes de habla hispana en Hivrido PLAY: El Docke, Okupas, Session One, Chamamé y los estrenos que se ven primero acá.",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/play" },
   openGraph: {
     title: "Hivrido PLAY — Series y películas argentinas",
     description:
       "Nuestra plataforma de contenidos: series y películas propias de habla hispana, con estrenos que se ven primero acá.",
-    url: "https://hivrido.com/",
+    url: "https://hivrido.com/play/",
     siteName: "Hivrido PLAY",
     images: [
       {

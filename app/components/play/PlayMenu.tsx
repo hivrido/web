@@ -23,7 +23,7 @@ const ITEMS = [
   { label: "Series", href: "#series" },
   { label: "Películas", href: "#peliculas" },
   { label: "Casting", href: "#casting" },
-  { label: "Hivrido", href: "/web/" },
+  { label: "Hivrido", href: "/" },
 ];
 
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
