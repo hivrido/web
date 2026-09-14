@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Puerta de entrada de Hivrido PLAY: el llamado a casting de El Docke, antes
+ * Puerta de entrada de Hivrido PLAY: el llamado a casting de Cuchillo Paz, antes
  * del slider del catálogo.
  *
  * No hay servidor —la ruta es export estático— así que el formulario no POSTea
@@ -35,7 +35,7 @@ function validate({ nombre, telefono, email }: Fields): Errors {
 
 function waLink({ nombre, telefono, email }: Fields) {
   const text = [
-    "Hola HIVRIDO! Quiero sumarme al casting de la serie El Docke.",
+    "Hola HIVRIDO! Quiero sumarme al casting de la serie Cuchillo Paz.",
     "",
     `Nombre: ${nombre.trim()}`,
     `Teléfono: ${telefono.trim()}`,
@@ -98,7 +98,7 @@ export default function CastingCall() {
 
           <h1 className="mp-casting-title">
             Sé parte
-            <strong>El Docke</strong>
+            <strong>Cuchillo Paz</strong>
           </h1>
 
           <p className="mp-casting-lead">
