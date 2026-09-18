@@ -1,0 +1,497 @@
+/**
+ * Estilos de /cesion.
+ *
+ * Ruta de trámite, no de marca: toma la paleta y las tipografías de
+ * globals.css —violeta, fondo #0a0a0a, Orbitron + Rubik— pero no arrastra nada
+ * del sitio. Sin Three.js, sin GSAP, sin cursor propio ni smooth scroll: se
+ * firma con el dedo en un celular de gama media con datos móviles.
+ *
+ * Escrito mobile-first. Los breakpoints suben, nunca bajan.
+ */
+
+.cs-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+/* Un solo halo violeta, estático. Un degradado fijo no cuesta nada de pintar
+   y evita que la página se vea como un formulario administrativo. */
+.cs-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 45% at 50% 0%, rgba(124, 58, 237, 0.16), transparent 70%),
+    radial-gradient(50% 40% at 100% 100%, rgba(167, 139, 250, 0.07), transparent 70%);
+  z-index: 0;
+}
+
+.cs-page > * { position: relative; z-index: 1; }
+
+/* ── Cabecera ─────────────────────────────────────────────────────────── */
+
+.cs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cs-logo {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  color: var(--text);
+}
+
+.cs-kicker {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Encabezado del documento ─────────────────────────────────────────── */
+
+.cs-main {
+  flex: 1;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 32px 20px 56px;
+}
+
+.cs-intro { margin-bottom: 32px; }
+
+.cs-title {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cs-title strong {
+  display: block;
+  margin-top: 6px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.cs-lead {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ── Bloques del formulario ───────────────────────────────────────────── */
+
+.cs-form { display: flex; flex-direction: column; gap: 18px; }
+
+.cs-bloque {
+  padding: 22px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.022);
+}
+
+/* El bloque de menores entra por color, no por un cartel: se nota que apareció
+   algo nuevo sin gritarlo. */
+.cs-bloque-menor {
+  border-color: rgba(124, 58, 237, 0.34);
+  background: rgba(124, 58, 237, 0.05);
+}
+
+.cs-bloque-title {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--violet-light);
+}
+
+.cs-bloque-lead {
+  margin: -8px 0 18px;
+  padding: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* ── Campos ───────────────────────────────────────────────────────────── */
+
+.cs-campo { display: block; margin-bottom: 15px; }
+.cs-campo:last-child { margin-bottom: 0; }
+
+.cs-fila { display: flex; flex-direction: column; }
+
+.cs-label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cs-label em {
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+}
+
+.cs-campo input {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text);
+  font-family: var(--font-body);
+  /* 16px es el piso: por debajo, Safari en iOS hace zoom al enfocar el campo
+     y descoloca la página entera en medio del formulario. */
+  font-size: 16px;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.cs-campo input:focus {
+  outline: none;
+  border-color: rgba(167, 139, 250, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.16);
+}
+
+/* El date picker nativo llega con el texto oscuro y el icono negro: ambos
+   desaparecen sobre el fondo del sitio. */
+.cs-campo input[type="date"] { color-scheme: dark; }
+
+.cs-edad {
+  margin: -6px 0 15px;
+  padding: 0;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--violet-light);
+}
+
+/* ── Texto legal ──────────────────────────────────────────────────────── */
+
+.cs-legal {
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-overflow-scrolling: touch;
+}
+
+.cs-legal p {
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(240, 240, 240, 0.72);
+}
+
+.cs-legal p:last-child { margin-bottom: 0; }
+
+/* El primer párrafo es el título del documento: va en versalitas. */
+.cs-legal p:first-child {
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--text);
+}
+
+.cs-check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+}
+
+.cs-check input {
+  flex-shrink: 0;
+  width: 21px;
+  height: 21px;
+  accent-color: var(--violet);
+  cursor: pointer;
+}
+
+.cs-check span {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ── Firma ────────────────────────────────────────────────────────────── */
+
+.cs-firma + .cs-firma {
+  margin-top: 26px;
+  padding-top: 26px;
+  border-top: 1px solid var(--border);
+}
+
+.cs-firma-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+
+.cs-firma-head .cs-label { margin-bottom: 0; }
+
+.cs-firma-borrar {
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--violet-light);
+  font-family: var(--font-body);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.cs-firma-borrar:disabled {
+  color: var(--text-muted);
+  opacity: 0.45;
+  cursor: default;
+  text-decoration: none;
+}
+
+/* El panel es claro a propósito: se firma sobre algo que parece papel, y el
+   PNG sale con tinta oscura sobre fondo transparente, que es lo que sirve
+   cuando el documento termine impreso o en un PDF. */
+.cs-firma-panel {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f7f5fb, #e9e6f2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cs-firma-panel.is-firmado {
+  border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
+}
+
+.cs-firma-canvas {
+  display: block;
+  width: 100%;
+  height: 190px;
+  border-radius: 12px;
+  /* Sin esto, arrastrar el dedo para firmar scrollea la página. */
+  touch-action: none;
+}
+
+.cs-firma-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(20, 16, 36, 0.32);
+}
+
+.cs-firma-linea {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 40px;
+  height: 1px;
+  background: rgba(20, 16, 36, 0.18);
+  pointer-events: none;
+}
+
+.cs-ayuda {
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.cs-ayuda-centro { text-align: center; }
+
+/* ── Envío ────────────────────────────────────────────────────────────── */
+
+.cs-submit {
+  --bevel: 12px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 18px 26px;
+  border: 0;
+  clip-path: var(--clip-bevel);
+  background: linear-gradient(100deg, var(--violet), var(--violet-light) 52%, var(--violet));
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 0.2s, opacity 0.2s;
+}
+
+.cs-submit:disabled {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.cs-submit:not(:disabled):active { filter: brightness(1.12); }
+
+.cs-error {
+  margin: 0;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 90, 120, 0.4);
+  border-radius: 10px;
+  background: rgba(255, 90, 120, 0.07);
+  font-size: 13.5px;
+  color: #ff8098;
+}
+
+/* ── Confirmación ─────────────────────────────────────────────────────── */
+
+.cs-listo {
+  padding: 34px 22px;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  border-radius: 14px;
+  background: rgba(124, 58, 237, 0.06);
+  text-align: center;
+}
+
+.cs-listo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.16);
+  color: var(--violet-light);
+}
+
+.cs-listo-title {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.cs-listo-text {
+  margin: 0 0 24px;
+  padding: 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.cs-comprobante {
+  margin: 0;
+  text-align: left;
+  border-top: 1px solid var(--border);
+}
+
+.cs-comprobante > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cs-comprobante dt {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cs-comprobante dd {
+  margin: 0;
+  /* El id es un UUID: en monoespaciada se puede leer y dictar sin errores. */
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  word-break: break-all;
+  color: var(--text);
+}
+
+/* ── Pie ──────────────────────────────────────────────────────────────── */
+
+.cs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cs-footer a { color: var(--violet-light); }
+
+/* ── Desde tablet ─────────────────────────────────────────────────────── */
+
+@media (min-width: 620px) {
+  .cs-main { padding: 48px 28px 72px; }
+  .cs-title { font-size: 34px; }
+  .cs-bloque { padding: 28px 26px; }
+
+  /* Los pares de campos cortos —DNI y fecha, teléfono y mail— entran en una
+     línea recién cuando hay ancho para que ninguno quede apretado. */
+  .cs-fila { flex-direction: row; gap: 14px; }
+  .cs-fila .cs-campo { flex: 1; min-width: 0; }
+
+  .cs-firma-canvas { height: 210px; }
+}
+
+/* Quien pidió menos movimiento no necesita las transiciones de foco. */
+@media (prefers-reduced-motion: reduce) {
+  .cs-page *,
+  .cs-page *::before {
+    transition: none !important;
+    animation: none !important;
+  }
+}

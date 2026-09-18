@@ -503,7 +503,7 @@ Estos son comandos cortos que el usuario escribe. Ejecutarlos sin pedir confirma
 
 | Comando   | Acción                                                                 |
 |-----------|------------------------------------------------------------------------|
-| `out`     | `npm run build` — compila y verifica que el export estático salga limpio |
+| `out`     | `npm run build` — compila y verifica que el build salga limpio          |
 | `dev`     | `npm run dev` — inicia servidor de desarrollo                          |
 | `lint`    | `npm run lint` — corre ESLint                                          |
 | `git`     | `npm run build`, commitear lo pendiente y `git push origin main`       |
@@ -521,7 +521,7 @@ Después de cada `out` exitoso: dar 2-3 sugerencias proactivas de mejora sobre l
 
 ```bash
 npm run dev      # Start development server
-npm run build    # Build static export to /out/
+npm run build    # Build de producción (.next/), prerenderiza todas las páginas
 npm run start    # Serve production build
 npm run lint     # Run ESLint
 ```
@@ -539,20 +539,31 @@ El sitio vive en **Git + Vercel**. No se sube nada a mano.
   `.vercelignore`. Sin eso el upload se va a medio giga y muere contra el
   límite de 100 MB por archivo.
 
-Antes de commitear, siempre correr el build: el export estático falla en cosas
-que `dev` no muestra, y un push roto es un deploy roto.
+Antes de commitear, siempre correr el build: falla en cosas que `dev` no
+muestra, y un push roto es un deploy roto.
 
 Los commits van en español, en imperativo y con prefijo (`feat:`, `fix:`,
 `chore:`), describiendo el efecto para el usuario y no el archivo tocado.
 
-`/out/` es artefacto de build, no un método de deploy: no se commitea ni se
-zipea para subir a un servidor.
+`.next/` es artefacto de build, no un método de deploy: no se commitea ni se
+zipea para subir a un servidor. (`/out/` quedó del export estático anterior y
+ya no se genera.)
+
+### Variables de entorno
+
+`/cesion` necesita `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` e `IP_HASH_SALT`
+—ver `.env.example`—. Van cargadas en Vercel además de en `.env.local`: si
+faltan en producción, el formulario responde 500 y la firma se pierde. La
+`service_role` key saltea las políticas RLS, así que nunca lleva prefijo
+`NEXT_PUBLIC_` ni se toca desde un componente cliente.
 
 ### Redirects (`vercel.json`)
 
-El export estático no ejecuta la función `redirects()` de `next.config.ts`: sin
-servidor no hay quién la corra. Cualquier redirección permanente vive en
-`vercel.json`, que es lo que sí se aplica en el borde.
+Las redirecciones viven en `vercel.json` y no en `redirects()` de
+`next.config.ts`. Nacieron ahí porque el export estático no ejecutaba esa
+función; hoy el sitio corre con servidor y las dos opciones andarían, pero se
+quedan juntas en un solo lugar que además se aplica en el borde, antes de que
+la request llegue a la app.
 
 - **`/web` → `/` (301).** La institucional volvió a ser la portada del
   dominio después de pasar por `/web`, y esa URL llegó al sitemap y a links
@@ -583,20 +594,23 @@ de cada regla vive acá:
 ## Architecture
 
 **hivrido.com** son dos portadas sobre un mismo dominio. Usa el App Router de
-Next con `output: "export"` (estático puro, sin runtime). El build sale en `/out/`.
+Next en modo servidor. Todas las páginas se prerenderizan igual que antes —el
+build las marca `○ (Static)`—, así que en la práctica se sirven estáticas; lo
+único dinámico es `/api/cesion`.
 
 ### Las dos portadas
 
 - **`/` — la institucional**, el anillo 3D. **No es una página de Next**:
   es `public/index.html`, HTML escrito a mano con el CSS incrustado por
-  `prebuild` y el motor en `public/cosmos/`. Se sirve porque el export copia
-  `public/` tal cual. Es la puerta del dominio.
+  `prebuild` y el motor en `public/cosmos/`. Como no hay `app/page.tsx` que
+  responda `/`, la sirve el rewrite `/` → `/index.html` de `next.config.ts`.
+  Es la puerta del dominio: si ese rewrite se rompe, se cae la portada.
 - **`/play/` — Hivrido PLAY**, la plataforma de contenidos. Es una página de
   Next (`app/play/page.tsx`, servidor, con la metadata y el schema.org) que
   monta `app/components/play/PlayHome.tsx` (cliente).
 
-Ojo con la primera: si alguna vez se crea `app/page.tsx`, colisiona con
-`public/index.html` por el mismo `out/index.html`.
+Ojo con la primera: si alguna vez se crea `app/page.tsx`, gana sobre el rewrite
+—el filesystem se resuelve antes— y tapa el anillo sin avisar.
 
 El catálogo de PLAY sale entero de `app/lib/catalog.ts`, que es la fuente
 única: `type` (`"serie" | "pelicula"`) decide en qué fila entra cada ficha y
@@ -605,7 +619,8 @@ revés.
 
 ### Key decisions
 
-- **Static export**: No server-side rendering, no API routes, no dynamic segments. All pages are pre-rendered at build time. `images.unoptimized: true` is required because Next.js image optimization needs a server. Como corolario, los fondos que se pintan por CSS no pasan por `next/image`: se preprocesan en `prebuild` (ver `scripts/build-hero-images.mjs`).
+- **Prerender por defecto**: salvo `/api/cesion`, todo se genera en build time. `images.unoptimized: true` se mantiene desde la época del export: las imágenes ya vienen dimensionadas por `prebuild` y dejarlo apagado conserva el render idéntico. Como corolario, los fondos que se pintan por CSS no pasan por `next/image`: se preprocesan en `prebuild` (ver `scripts/build-hero-images.mjs`).
+- **`/cesion`**: la cesión de derechos de imagen que firman los participantes de castings y rodajes, con alias `/firma`. Es la razón por la que el sitio dejó de ser `output: "export"`: la hora del servidor, la IP del header y el hash del texto legal son lo que convierte la firma en prueba, y ninguna de las tres existe sin servidor. El texto legal vive versionado en `app/lib/cesion/textos.ts` y es inmutable: corregir una coma implica agregar una versión, nunca editar la que alguien ya firmó. El esquema de la tabla está en `scripts/cesiones.sql` y se corre a mano en Supabase.
 - **`/estudio`**: la portada larga por secciones —Hero, About, Services, Portfolio, Artists, Clients— con anclas `#sec1`–`#sec6`. Fue la home original del sitio; hoy es una ruta más.
 - **Client-heavy**: Animations (GSAP + ScrollTrigger), smooth scroll (Lenis), custom cursor, and the loader all live in client components. `ClientShell` (`app/components/layout/ClientShell.tsx`) is the root `"use client"` wrapper that owns this state.
 - **Tailwind v4**: Uses `@tailwindcss/postcss` v4. There is no `tailwind.config.*` — theme customizations live as CSS variables in `app/globals.css` (colors, fonts, borders). Use CSS variables, not Tailwind config, when adding design tokens.

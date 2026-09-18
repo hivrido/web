@@ -1,20 +1,23 @@
 import type { NextConfig } from "next";
-import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
 
-export default function config(phase: string): NextConfig {
-  return {
-    output: "export",
-    trailingSlash: true,
-    images: {
-      unoptimized: true,
-    },
-    devIndicators: false,
-    /* La portada es public/index.html, no una página de Next. En producción
-       la sirve el export, que la copia a out/index.html; el servidor de
-       desarrollo, en cambio, no mapea "/" a ese archivo y responde 404. La
-       reescritura va solo en dev porque el export no admite rewrites. */
-    ...(phase === PHASE_DEVELOPMENT_SERVER && {
-      rewrites: async () => [{ source: "/", destination: "/index.html" }],
-    }),
-  };
-}
+const nextConfig: NextConfig = {
+  trailingSlash: true,
+  images: {
+    /* Las imágenes ya vienen dimensionadas por los scripts de prebuild y los
+       fondos se pintan por CSS, así que el optimizador no tiene nada que
+       hacer: dejarlo apagado mantiene el render idéntico al del export. */
+    unoptimized: true,
+  },
+  devIndicators: false,
+  /* La portada del dominio es public/index.html, no una página de Next: no hay
+     app/page.tsx que responda "/". El rewrite la sirve desde el archivo.
+
+     Antes vivía solo en desarrollo porque `output: "export"` no admite
+     rewrites y en producción el export copiaba el archivo a out/index.html.
+     Al salir del export el sitio pasa a modo servidor —que es lo que habilita
+     los route handlers de /api/cesion, imposibles en un export— y el rewrite
+     vale en los dos lados. */
+  rewrites: async () => [{ source: "/", destination: "/index.html" }],
+};
+
+export default nextConfig;

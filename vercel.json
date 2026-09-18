@@ -6,7 +6,9 @@
     { "source": "/movie/okupas", "destination": "/okupas", "permanent": true },
     { "source": "/movie/okupas/", "destination": "/okupas", "permanent": true },
     { "source": "/movie", "destination": "/play/", "permanent": true },
-    { "source": "/movie/", "destination": "/play/", "permanent": true }
+    { "source": "/movie/", "destination": "/play/", "permanent": true },
+    { "source": "/firma", "destination": "/cesion/", "permanent": true },
+    { "source": "/firma/", "destination": "/cesion/", "permanent": true }
   ],
   "headers": [
     {

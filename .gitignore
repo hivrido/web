@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# ...salvo la plantilla: es la única lista de qué variables hace falta cargar.
+# Sin ella, un clone nuevo compila bien y recién falla en producción, cuando
+# /cesion no encuentra las credenciales de Supabase. No lleva ningún valor.
+!.env.example
+
 # vercel
 .vercel
 
