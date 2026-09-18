@@ -15,10 +15,13 @@ create table if not exists public.cesiones (
   -- que ser el mismo dato en los dos lados.
   id                    uuid primary key,
 
-  -- Hora del servidor con offset de Buenos Aires. Es timestamptz, no text:
-  -- Postgres la guarda normalizada y las comparaciones por rango —las del
-  -- freno por IP— funcionan de verdad.
+  -- El mismo instante, dos veces. `creado_en` es timestamptz: Postgres lo
+  -- normaliza a UTC, que es lo que hace que ordenar y filtrar por fecha
+  -- funcionen —incluido el freno por IP—, pero al leerlo después muestra una
+  -- hora que no es la que vio quien firmó. `creado_en_local` guarda la cadena
+  -- literal con el offset de Buenos Aires, que es lo que vale como constancia.
   creado_en             timestamptz not null,
+  creado_en_local       text        not null,
   registrado_en         timestamptz not null default now(),
 
   -- ── Participante ────────────────────────────────────────────────────────

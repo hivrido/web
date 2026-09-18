@@ -174,9 +174,17 @@ export async function POST(req: NextRequest) {
   const ua = req.headers.get("user-agent") || "";
   const parsed = parseUserAgent(ua);
 
+  /* El mismo instante guardado dos veces, a propósito: `creado_en` es
+     timestamptz y Postgres lo normaliza a UTC —que es lo que hace que ordenar
+     y filtrar por fecha funcione—, pero al mirarlo después se lee una hora que
+     no es la que vio quien firmó. `creado_en_local` conserva la cadena tal
+     cual, con el offset de Buenos Aires, que es lo que vale como constancia. */
+  const firmadoEn = ahoraBuenosAires();
+
   const fila: FilaCesion = {
     id: crypto.randomUUID(),
-    creado_en: ahoraBuenosAires(),
+    creado_en: firmadoEn,
+    creado_en_local: firmadoEn,
     nombre,
     dni,
     fecha_nacimiento: fechaNacimiento,
@@ -220,5 +228,5 @@ export async function POST(req: NextRequest) {
 
   /* Se devuelve el id y la hora para que la confirmación pueda mostrarle a la
      persona la constancia de lo que quedó registrado. */
-  return NextResponse.json({ ok: true, id: fila.id, creado_en: fila.creado_en });
+  return NextResponse.json({ ok: true, id: fila.id, creado_en: fila.creado_en_local });
 }

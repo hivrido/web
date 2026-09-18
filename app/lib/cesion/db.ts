@@ -20,6 +20,7 @@ const TABLA = "cesiones";
 export type FilaCesion = {
   id: string;
   creado_en: string;
+  creado_en_local: string;
   nombre: string;
   dni: string;
   fecha_nacimiento: string;
