@@ -21,6 +21,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      /* Convocatoria con fecha: mientras esté abierta es de lo más buscado
+         del sitio, y después de la jornada baja sola de prioridad. */
+      url: `${baseUrl}/casting`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/estudio`,
       lastModified: new Date(),
       changeFrequency: "monthly",

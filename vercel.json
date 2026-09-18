@@ -8,7 +8,9 @@
     { "source": "/movie", "destination": "/play/", "permanent": true },
     { "source": "/movie/", "destination": "/play/", "permanent": true },
     { "source": "/firma", "destination": "/cesion/", "permanent": true },
-    { "source": "/firma/", "destination": "/cesion/", "permanent": true }
+    { "source": "/firma/", "destination": "/cesion/", "permanent": true },
+    { "source": "/casting/cuchillo-paz", "destination": "/casting/", "permanent": true },
+    { "source": "/casting/cuchillo-paz/", "destination": "/casting/", "permanent": true }
   ],
   "headers": [
     {

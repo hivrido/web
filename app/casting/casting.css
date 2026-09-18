@@ -1,0 +1,855 @@
+/**
+ * Estilos de /casting.
+ *
+ * La página se abre casi siempre en un teléfono de gama media, con datos
+ * móviles, parado en la calle y al sol. Eso manda sobre todo lo demás:
+ *
+ * - Mobile first. Los breakpoints suben, nunca bajan.
+ * - Sin imágenes de fondo. La atmósfera son dos degradados y una trama, que
+ *   no cuestan una petición y no compiten con el LCP, que acá es el título.
+ * - Contraste alto y cuerpo grande. `--text-muted` de globals.css queda en
+ *   4,3:1 sobre el fondo, por debajo del AA: esta ruta define sus propios
+ *   grises, todos por encima de 4,5:1.
+ * - Tipografía de la casa —Orbitron para los títulos, Rubik para el texto—,
+ *   paleta de la casa. El tono del proyecto es crudo, así que la identidad
+ *   entra por el peso y el espaciado, no por brillos.
+ */
+
+.cst-page {
+  /* Grises propios: los de globals.css no llegan al AA sobre este fondo. */
+  --cst-texto: #f5f5f5;
+  --cst-suave: rgba(245, 245, 245, 0.76);
+  --cst-tenue: rgba(245, 245, 245, 0.56);
+  --cst-linea: rgba(255, 255, 255, 0.09);
+  --cst-panel: rgba(255, 255, 255, 0.028);
+
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--cst-texto);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  /* globals.css centra el body entero; acá se lee en bloque, no en cartel. */
+  text-align: left;
+}
+
+/* Luz fija detrás de todo: un degradado pintado una vez, sin repintados al
+   scrollear porque no se mueve. */
+.cst-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 55% at 50% -10%, rgba(124, 58, 237, 0.22), transparent 68%),
+    radial-gradient(60% 40% at 0% 100%, rgba(201, 168, 76, 0.05), transparent 70%);
+}
+
+.cst-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Reset de lo que globals.css impone a <p> a nivel documento. */
+.cst-page p {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.cst-page ul,
+.cst-page ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cst-wrap {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Foco visible en todo lo que se puede enfocar. Se lee al sol. */
+.cst-page a:focus-visible,
+.cst-page summary:focus-visible {
+  outline: 2px solid var(--violet-light);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────────── */
+
+.cst-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--cst-linea);
+}
+
+.cst-top-logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.cst-top-kicker {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cst-tenue);
+}
+
+/* ── 1 · Hero ─────────────────────────────────────────────────────────── */
+
+.cst-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 44px 0 52px;
+  border-bottom: 1px solid var(--cst-linea);
+}
+
+/* Haz diagonal, como la luz de una obra. Estático: no anima nada. */
+.cst-hero-luz {
+  position: absolute;
+  inset: -40% -30% auto -30%;
+  height: 120%;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(167, 139, 250, 0.10) 50%,
+    transparent 62%
+  );
+  pointer-events: none;
+}
+
+/* Trama de proyección. Dos píxeles de gradiente repetido, cero descargas. */
+.cst-hero-trama {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.028) 0px,
+    rgba(255, 255, 255, 0.028) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.cst-hero-inner {
+  position: relative;
+}
+
+/* Orbitron avanza cerca de un em por carácter: con 0.24em de separación,
+   "Convocatoria abierta" se parte en dos líneas en un teléfono de 360 px y el
+   punto queda flotando al medio. El ojo se mantiene chico y el aire baja. */
+.cst-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet-light);
+}
+
+.cst-hero-punto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--violet-light);
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.9);
+}
+
+.cst-hero-titulo {
+  margin: 0 0 26px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.cst-hero-titulo-1 {
+  display: block;
+  font-size: clamp(1.55rem, 7.6vw, 2.6rem);
+  letter-spacing: 0.08em;
+  color: var(--cst-suave);
+}
+
+/* El nombre de la serie es lo que tiene que quedar. Va en el peso máximo y
+   ocupa el ancho que haga falta. */
+.cst-hero-titulo-2 {
+  display: block;
+  margin-top: 6px;
+  font-size: clamp(2.9rem, 14.5vw, 5.2rem);
+  font-weight: 900;
+  letter-spacing: -0.005em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.cst-hero-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 30px;
+  padding-left: 15px;
+  border-left: 2px solid var(--violet);
+}
+
+.cst-hero-datos li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 16.5px;
+  font-weight: 500;
+  color: var(--cst-texto);
+}
+
+.cst-hero-datos svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--violet-light);
+}
+
+.cst-hero-datos time {
+  font-weight: 600;
+}
+
+.cst-hero-datos em {
+  display: block;
+  font-style: normal;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--cst-suave);
+}
+
+/* El mensaje central. Caja, no párrafo: tiene que leerse desde lejos. */
+.cst-claim {
+  margin: 0 0 12px !important;
+  padding: 18px 18px 18px 20px !important;
+  border-left: 4px solid var(--gold);
+  background: linear-gradient(
+    90deg,
+    rgba(201, 168, 76, 0.13),
+    rgba(201, 168, 76, 0) 85%
+  );
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 7.4vw, 2.3rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--gold-light) !important;
+}
+
+.cst-claim-apoyo {
+  margin-bottom: 28px !important;
+  font-size: 16px;
+  color: var(--cst-suave) !important;
+}
+
+/* ── Botones ──────────────────────────────────────────────────────────── */
+
+.cst-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  /* 52 px de alto: el mínimo cómodo para un pulgar, con o sin guantes. */
+  min-height: 52px;
+  padding: 14px 24px;
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  border-radius: 12px;
+  background: rgba(124, 58, 237, 0.14);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.cst-btn svg {
+  flex-shrink: 0;
+}
+
+.cst-btn:hover {
+  background: rgba(124, 58, 237, 0.24);
+  border-color: var(--violet-light);
+}
+
+.cst-btn:active {
+  transform: scale(0.985);
+}
+
+.cst-btn-mapa {
+  width: 100%;
+}
+
+/* El de acción plena: violeta sólido, para lo que sí queremos que se toque. */
+.cst-btn-pleno {
+  width: 100%;
+  border-color: transparent;
+  background: var(--violet);
+}
+
+.cst-btn-pleno:hover {
+  background: #8b4bf0;
+  border-color: transparent;
+}
+
+/* ── Secciones ────────────────────────────────────────────────────────── */
+
+.cst-seccion {
+  padding: 46px 0;
+  border-bottom: 1px solid var(--cst-linea);
+}
+
+.cst-h2 {
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 6vw, 1.95rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.cst-h2-chico {
+  font-size: clamp(1.1rem, 5vw, 1.5rem);
+}
+
+.cst-lead {
+  margin-bottom: 26px !important;
+  font-size: 16px;
+  color: var(--cst-suave) !important;
+}
+
+.cst-nota {
+  margin-top: 18px !important;
+  font-size: 14.5px;
+  color: var(--cst-tenue) !important;
+}
+
+/* ── 2 · Datos clave ──────────────────────────────────────────────────── */
+
+.cst-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cst-dato {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 17px 16px;
+  border: 1px solid var(--cst-linea);
+  border-radius: 14px;
+  background: var(--cst-panel);
+}
+
+.cst-dato-icono {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: rgba(124, 58, 237, 0.16);
+  color: var(--violet-light);
+}
+
+/* El aviso de la estafa no es un dato más: es lo único que protege a alguien
+   de que le saquen plata en nuestro nombre. Entra en dorado. */
+.cst-dato-alerta {
+  border-color: rgba(201, 168, 76, 0.42);
+  background: rgba(201, 168, 76, 0.07);
+}
+
+.cst-dato-alerta .cst-dato-icono {
+  background: rgba(201, 168, 76, 0.16);
+  color: var(--gold-light);
+}
+
+.cst-dato-alerta .cst-dato-titulo {
+  color: var(--gold-light);
+}
+
+.cst-dato-titulo {
+  margin: 0 0 5px;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.cst-dato-texto {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--cst-suave) !important;
+}
+
+/* ── 3 · Qué vas a hacer ──────────────────────────────────────────────── */
+
+.cst-pasos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cst-paso {
+  position: relative;
+  padding: 20px 18px 20px 18px;
+  border: 1px solid var(--cst-linea);
+  border-radius: 14px;
+  background: var(--cst-panel);
+}
+
+.cst-paso-num {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--violet-light);
+}
+
+.cst-paso-titulo {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.cst-paso-texto {
+  font-size: 15.5px;
+  color: var(--cst-suave) !important;
+}
+
+/* Las cuatro negaciones. Es la lista que baja la ansiedad, así que se lee
+   como una lista de tildes, no como letra chica. */
+.cst-noes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.cst-noes li {
+  padding: 9px 14px;
+  border: 1px solid rgba(167, 139, 250, 0.26);
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.08);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cst-texto);
+}
+
+/* ── 4 · Cómo llegar ──────────────────────────────────────────────────── */
+
+.cst-direccion {
+  display: block;
+  padding: 22px 18px;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 16px;
+  background: rgba(124, 58, 237, 0.07);
+  font-style: normal;
+}
+
+.cst-direccion-calle {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(1.28rem, 6.2vw, 1.75rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.cst-direccion-zona {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: var(--cst-suave);
+}
+
+.cst-transporte {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 22px;
+  border: 1px solid var(--cst-linea);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.cst-transporte li {
+  padding: 15px 16px;
+  background: var(--cst-panel);
+}
+
+.cst-transporte li + li {
+  border-top: 1px solid var(--cst-linea);
+}
+
+.cst-transporte-medio {
+  margin: 0 0 3px;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet-light);
+}
+
+.cst-transporte-detalle {
+  font-size: 15px;
+  color: var(--cst-suave) !important;
+}
+
+/* ── 5 · Qué llevar ───────────────────────────────────────────────────── */
+
+/* En fila, una debajo de la otra. Tres columnas sobre 360 px dejan 90 px por
+   tarjeta y "PACIENCIA" en Orbitron 900 no entra ni achicándola hasta que
+   deja de leerse: es una lista de tres cosas, se lee mejor como lista. */
+.cst-llevar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cst-llevar li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--cst-linea);
+  border-radius: 14px;
+  background: var(--cst-panel);
+}
+
+.cst-llevar strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 5vw, 1.4rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.cst-llevar span {
+  flex-shrink: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: right;
+  color: var(--cst-tenue);
+}
+
+/* El remate de la sección: es la respuesta completa a "qué llevo", así que
+   se lee, no se insinúa. */
+.cst-llevar-cierre {
+  margin-top: 18px !important;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cst-suave) !important;
+}
+
+/* ── 6 · Si no podés venir ────────────────────────────────────────────── */
+
+.cst-video {
+  padding: 24px 20px;
+  border: 1px solid var(--cst-linea);
+  border-radius: 16px;
+  background: linear-gradient(
+    150deg,
+    rgba(124, 58, 237, 0.13),
+    rgba(255, 255, 255, 0.02) 70%
+  );
+}
+
+.cst-video-texto {
+  margin-bottom: 22px !important;
+  font-size: 15.5px;
+  color: var(--cst-suave) !important;
+}
+
+/* ── 7 · Preguntas ────────────────────────────────────────────────────── */
+
+.cst-faq {
+  border: 1px solid var(--cst-linea);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.cst-faq-item + .cst-faq-item {
+  border-top: 1px solid var(--cst-linea);
+}
+
+.cst-faq-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  /* 56 px de alto real: se abre con el pulgar sin apuntar. */
+  min-height: 56px;
+  padding: 15px 16px;
+  background: var(--cst-panel);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+/* La flechita por defecto de Safari y Chrome, fuera: el signo es el + . */
+.cst-faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.cst-faq-pregunta {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--cst-texto);
+}
+
+/* Un + que gira a × al abrirse. Dos barras y una rotación: nada que cargar. */
+.cst-faq-mas {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
+}
+
+.cst-faq-mas::before,
+.cst-faq-mas::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--violet-light);
+  transform: translate(-50%, -50%);
+}
+
+.cst-faq-mas::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.cst-faq-item[open] .cst-faq-mas {
+  transform: rotate(45deg);
+}
+
+.cst-faq-item[open] .cst-faq-summary {
+  background: rgba(124, 58, 237, 0.09);
+}
+
+.cst-faq-respuesta {
+  padding: 0 16px 18px !important;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--cst-suave) !important;
+}
+
+/* ── 8 · Pie ──────────────────────────────────────────────────────────── */
+
+.cst-pie {
+  /* El colchón de abajo deja pasar el flotante de compartir sin taparse con
+     el último link del pie. */
+  padding: 34px 0 calc(104px + env(safe-area-inset-bottom, 0px));
+}
+
+.cst-pie-marca {
+  margin-bottom: 16px !important;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cst-tenue) !important;
+}
+
+.cst-pie-marca strong {
+  color: var(--cst-texto);
+}
+
+.cst-pie-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 20px;
+}
+
+.cst-pie-links a {
+  display: block;
+  padding: 11px 0;
+  font-size: 15px;
+  color: var(--violet-light);
+}
+
+.cst-pie-links a:hover {
+  color: #fff;
+}
+
+.cst-pie-legal {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--cst-tenue) !important;
+}
+
+/* ── Flotante de compartir ────────────────────────────────────────────── */
+
+.cst-compartir {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 52px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: rgb(8, 210, 143);
+  color: #04281c;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cst-compartir:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(8, 210, 143, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.cst-compartir:active {
+  transform: scale(0.97);
+}
+
+/* ── Escritorio ───────────────────────────────────────────────────────── */
+
+@media (min-width: 720px) {
+  .cst-wrap {
+    padding: 0 32px;
+  }
+
+  .cst-hero {
+    padding: 72px 0 80px;
+  }
+
+  .cst-seccion {
+    padding: 70px 0;
+  }
+
+  .cst-hero-datos {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 32px;
+    align-items: center;
+  }
+
+  .cst-btn-mapa,
+  .cst-btn-pleno {
+    width: auto;
+    min-width: 280px;
+  }
+
+  .cst-datos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
+  }
+
+  /* El aviso del dinero cruza las dos columnas: es el que no se saltea. */
+  .cst-dato-alerta {
+    grid-column: 1 / -1;
+  }
+
+  .cst-pasos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Acá sí entran las tres en fila: la columna pasa de 200 px y "PACIENCIA"
+     respira. */
+  .cst-llevar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .cst-llevar li {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 12px;
+  }
+
+  .cst-llevar strong {
+    font-size: 1.2rem;
+  }
+
+  .cst-llevar span {
+    text-align: center;
+  }
+
+  .cst-pie-links {
+    flex-direction: row;
+    gap: 26px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cst-wrap {
+    max-width: 880px;
+  }
+}
+
+/* ── Movimiento reducido ──────────────────────────────────────────────── */
+
+/* `Reveal` ya se desactiva solo leyendo esta misma consulta; esto cubre lo
+   que anima por CSS: el + del FAQ y los estados de los botones. */
+@media (prefers-reduced-motion: reduce) {
+  .cst-page *,
+  .cst-page *::before,
+  .cst-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

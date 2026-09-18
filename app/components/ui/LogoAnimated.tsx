@@ -33,12 +33,20 @@ export default function LogoAnimated({
    * llega hasta abajo encuentra la animación ya terminada.
    */
   startOnView = false,
+  /**
+   * Apagado, el logo se pinta lleno y quieto, sin trazo ni barrido y sin
+   * pedir GSAP. Para rutas con presupuesto de carga ajustado —/casting se
+   * abre con datos móviles— y, sobre todo, porque el estado inicial del
+   * dibujo es invisible: si el chunk de GSAP no llega, el logo tampoco.
+   */
+  animate = true,
 }: {
   delay?: number;
   height?: number;
   accent?: string;
   accentBright?: string;
   startOnView?: boolean;
+  animate?: boolean;
 }) {
   // Los ids del <defs> tienen que ser únicos por instancia: el logo se monta
   // dos veces a la vez (loader y header) y con ids fijos las dos referencias
@@ -53,6 +61,7 @@ export default function LogoAnimated({
   const sweepRef = useRef<SVGRectElement>(null);
 
   useEffect(() => {
+    if (!animate) return;
     const strokes = strokeRefs.current.filter(Boolean) as SVGPathElement[];
     const fills = fillRefs.current.filter(Boolean) as SVGPathElement[];
     const sweep = sweepRef.current;
@@ -114,7 +123,7 @@ export default function LogoAnimated({
       clearTimeout(t);
       observer?.disconnect();
     };
-  }, [delay, startOnView]);
+  }, [animate, delay, startOnView]);
 
   const onEnter = () => {
     if (!svgRef.current) return;
@@ -142,6 +151,10 @@ export default function LogoAnimated({
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
+      {!animate ? (
+        PATHS.map((d, i) => <path key={`p${i}`} d={d} fill="#f0f0f0" />)
+      ) : (
+        <>
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="964.874" y2="0" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor={accent} stopOpacity={0} />
@@ -185,6 +198,8 @@ export default function LogoAnimated({
         opacity="0"
         style={{ pointerEvents: "none" }}
       />
+        </>
+      )}
     </svg>
   );
 }
