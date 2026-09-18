@@ -15,6 +15,20 @@
  *   entra por el peso y el espaciado, no por brillos.
  */
 
+/* globals.css deja html y body en `height: 100%`, y como ambos llevan
+   `overflow-x: hidden` el eje vertical computa `auto`: el body queda de la
+   altura de la pantalla con toda la página adentro y se convierte en un
+   segundo scroller. El resultado es que el contenido se termina y el dedo
+   sigue arrastrando sobre nada. Misma cura que play.css aplica a `.mp-app`.
+
+   Va acotado con `:has()` para no tocar el resto del sitio: esta hoja se
+   carga solo en esta ruta, pero en una navegación de cliente el navegador la
+   conserva y una regla suelta sobre `body` viajaría a la página siguiente. */
+html:has(.cst-page),
+html:has(.cst-page) body {
+  height: auto;
+}
+
 .cst-page {
   /* Grises propios: los de globals.css no llegan al AA sobre este fondo. */
   --cst-texto: #f5f5f5;

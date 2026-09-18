@@ -9,6 +9,18 @@
  * Escrito mobile-first. Los breakpoints suben, nunca bajan.
  */
 
+/* globals.css deja html y body en `height: 100%`, y como ambos llevan
+   `overflow-x: hidden` el eje vertical computa `auto`: el body queda de la
+   altura de la pantalla con todo el formulario adentro y se convierte en un
+   segundo scroller. El resultado es que el contenido se termina y el dedo
+   sigue arrastrando sobre nada —molesto en cualquier página, peor en una que
+   se completa scrolleando con el pulgar—. Misma cura que play.css aplica a
+   `.mp-app`. */
+html:has(.cs-page),
+html:has(.cs-page) body {
+  height: auto;
+}
+
 .cs-page {
   min-height: 100dvh;
   display: flex;
