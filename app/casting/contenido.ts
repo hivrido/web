@@ -60,6 +60,22 @@ export const HERO = {
     "Venís, te anotás, charlás un minuto e improvisás dos. Nada más que eso.",
 } as const;
 
+/* ── El arte ────────────────────────────────────────────────────────── */
+
+/* El afiche va debajo del hero, no dentro: es lo que contesta "¿qué es esto?"
+   apenas después de "¿cuándo y dónde?", y al quedar bajo el pliegue carga
+   diferido sin pelearle el LCP al título. */
+export const ARTE = {
+  titulo: "La serie",
+  texto:
+    "Buscamos caras nuevas para la primera temporada. Si nunca actuaste, mejor: el casting está pensado para eso.",
+  /* El alt describe la escena, no repite el título: quien usa lector de
+     pantalla ya escuchó el nombre de la serie tres veces más arriba. */
+  alt: "Afiche de Cuchillo Paz: cuatro jóvenes de espaldas, en una loma, miran el conurbano al atardecer.",
+  poster400: "/images/casting/cuchillo-paz-poster-400.webp",
+  poster800: "/images/casting/cuchillo-paz-poster-800.webp",
+} as const;
+
 /* ── 2 · Datos clave ────────────────────────────────────────────────────── */
 
 export type Icono = "fila" | "dni" | "gratis" | "menores" | "camara";

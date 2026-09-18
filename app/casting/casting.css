@@ -351,6 +351,38 @@
   color: var(--cst-tenue) !important;
 }
 
+/* ── El arte ──────────────────────────────────────────────────────────── */
+
+.cst-arte-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  text-align: center;
+}
+
+/* El afiche entero, sin recortar: la composición es el grupo mirando el
+   conurbano y un recorte la deshace. El borde y la sombra lo despegan del
+   fondo, que es casi del mismo negro. */
+.cst-arte-poster {
+  display: block;
+  width: min(72vw, 300px);
+  height: auto;
+  border: 1px solid var(--cst-linea);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+.cst-arte-copy {
+  max-width: 44ch;
+}
+
+.cst-arte-texto {
+  font-size: 15.5px;
+  color: var(--cst-suave) !important;
+  text-align: center !important;
+}
+
 /* ── 2 · Datos clave ──────────────────────────────────────────────────── */
 
 .cst-datos {
@@ -789,6 +821,23 @@
   .cst-btn-pleno {
     width: auto;
     min-width: 280px;
+  }
+
+  /* Con aire de sobra, el afiche se pone al lado del texto en vez de encima. */
+  .cst-arte-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 36px;
+    text-align: left;
+  }
+
+  .cst-arte-poster {
+    flex-shrink: 0;
+    width: 300px;
+  }
+
+  .cst-arte-texto {
+    text-align: left !important;
   }
 
   .cst-datos {

@@ -11,6 +11,7 @@ import {
   IconoWhatsApp,
 } from "./Iconos";
 import {
+  ARTE,
   AUDICION_VIDEO_URL,
   COMO_LLEGAR,
   CONTACTO,
@@ -183,6 +184,39 @@ export default function CastingPage() {
               <IconoPin />
               Ver cómo llegar
             </a>
+          </div>
+        </section>
+
+        {/* ── El arte ──────────────────────────────────────────────────
+            <img> a secas y no next/image: el proyecto corre con
+            `images.unoptimized`, así que el componente no optimizaría nada y
+            solo sumaría JS. Las dos variantes ya vienen dimensionadas desde
+            scripts/build-casting-assets.mjs; `width` y `height` reservan el
+            hueco antes de que baje, así nada salta al aparecer. */}
+        <section className="cst-seccion cst-arte" aria-labelledby="t-arte">
+          <div className="cst-wrap cst-arte-inner">
+            {/* eslint-disable-next-line @next/next/no-img-element --
+                next/image no optimiza nada en este proyecto (`unoptimized` en
+                next.config.ts) y con esa bandera tampoco arma el srcset: daría
+                una sola variante y JS de más. Las dos webp ya vienen del
+                script de assets. */}
+            <img
+              className="cst-arte-poster"
+              src={ARTE.poster400}
+              srcSet={`${ARTE.poster400} 400w, ${ARTE.poster800} 800w`}
+              sizes="(min-width: 720px) 300px, min(72vw, 300px)"
+              width={400}
+              height={600}
+              alt={ARTE.alt}
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="cst-arte-copy">
+              <h2 className="cst-h2 cst-h2-chico" id="t-arte">
+                {ARTE.titulo}
+              </h2>
+              <p className="cst-arte-texto">{ARTE.texto}</p>
+            </div>
           </div>
         </section>
 
