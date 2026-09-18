@@ -17,6 +17,15 @@
 # Zips y volcados sueltos
 *.zip
 
+# Material pesado que producción deja suelto en el árbol y que el repo no
+# versiona: masters de video, audio y los PSD/PNG de los que salen las
+# variantes servidas. Por `git push` no viajan —no están trackeados—, pero el
+# CLI empaqueta el directorio tal cual, y un master de medio giga muere contra
+# el límite de 100 MB por archivo y se lleva el deploy puesto.
+/public/images/**/*.webm
+/public/images/**/*.m4a
+/public/images/bg/cuchillo paz.png
+
 # Local
 /.vercel
 /.agents

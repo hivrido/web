@@ -149,12 +149,23 @@ export const QUE_VAS_A_HACER = {
 
 export const COMO_LLEGAR = {
   titulo: "Cómo llegar",
-  /* PENDIENTE: completar con las líneas reales. El bloque se muestra igual;
-     lo que manda visualmente es la dirección, que va aparte y en grande. */
+  /**
+   * PENDIENTE: las líneas reales.
+   *
+   * El bloque está armado pero cada vía se muestra solo cuando su `detalle`
+   * tiene texto. Escribilo y aparece sola; vacío, no se publica. Es a
+   * propósito: un "a completar" en la página que la gente abre para orientarse
+   * no orienta a nadie y deja el sitio con cara de borrador. Mientras tanto la
+   * sección se sostiene con la dirección en grande, el botón a Maps y la nota
+   * del WhatsApp, que es lo que de verdad resuelve llegar.
+   *
+   * Ejemplo de cómo se completa:
+   *   { medio: "Colectivo", detalle: "Líneas 740 y 315, bajás en Quiroz." }
+   */
   transporte: [
-    { medio: "Colectivo", detalle: "Líneas y parada más cercana — a completar." },
-    { medio: "Tren", detalle: "Estación y cómo seguir desde ahí — a completar." },
-    { medio: "En auto", detalle: "Referencias para estacionar en la zona — a completar." },
+    { medio: "Colectivo", detalle: "" },
+    { medio: "Tren", detalle: "" },
+    { medio: "En auto", detalle: "" },
   ],
   nota: "Si te perdés, escribinos por WhatsApp y te guiamos.",
 } as const;

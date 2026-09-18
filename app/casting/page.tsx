@@ -31,6 +31,19 @@ import {
 } from "./contenido";
 import "./casting.css";
 
+/* La barra del navegador acompaña al fondo de la página. El link se abre casi
+   siempre desde el navegador incrustado de WhatsApp o Instagram en Android,
+   que sin esto pinta la barra de blanco arriba de un sitio negro.
+
+   Los tres campos van declarados aunque dos repitan el layout raíz: así la
+   ruta no depende de cómo Next resuelva la mezcla, y un `width` perdido acá
+   significaría la página entera sin escalar en el celular. */
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0a0a",
+};
+
 /* El link se reparte por WhatsApp e Instagram: la tarjeta de previsualización
    es lo primero que ve la mayoría, antes que la página. Por eso la imagen se
    declara con medidas y alt, y la descripción dice fecha y lugar —que es lo
@@ -119,6 +132,7 @@ const waCompartir = `https://api.whatsapp.com/send?text=${encodeURIComponent(TEX
 
 export default function CastingPage() {
   const audicionUrl = AUDICION_VIDEO_URL || waProduccion(SI_NO_PODES.fallbackTexto);
+  const transporte = COMO_LLEGAR.transporte.filter((via) => via.detalle.trim());
 
   return (
     <div className="cst-page">
@@ -304,14 +318,18 @@ export default function CastingPage() {
             </Reveal>
 
             <Reveal delay={0.06}>
-              <ul className="cst-transporte">
-                {COMO_LLEGAR.transporte.map((via) => (
-                  <li key={via.medio}>
-                    <h3 className="cst-transporte-medio">{via.medio}</h3>
-                    <p className="cst-transporte-detalle">{via.detalle}</p>
-                  </li>
-                ))}
-              </ul>
+              {/* Solo las vías que ya tienen indicación escrita. Ver la nota
+                  en COMO_LLEGAR: sin texto, la vía no se publica. */}
+              {transporte.length > 0 && (
+                <ul className="cst-transporte">
+                  {transporte.map((via) => (
+                    <li key={via.medio}>
+                      <h3 className="cst-transporte-medio">{via.medio}</h3>
+                      <p className="cst-transporte-detalle">{via.detalle}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
               <p className="cst-nota">{COMO_LLEGAR.nota}</p>
             </Reveal>
           </div>
