@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import LogoAnimated from "../components/ui/LogoAnimated";
+import WhatsAppBtn from "../components/ui/WhatsAppBtn";
 import CesionForm from "./CesionForm";
 import "./cesion.css";
 
@@ -17,8 +19,10 @@ export default function CesionPage() {
   return (
     <div className="cs-page">
       <header className="cs-header">
-        <Link href="/" className="cs-logo">
-          HIVRIDO
+        <Link href="/" className="cs-logo" aria-label="Hivrido — ir al inicio">
+          {/* Mismo par que /play y /okupas: esta ruta no tiene loader que
+              esperar, así que el trazo arranca casi enseguida. */}
+          <LogoAnimated height={26} delay={300} />
         </Link>
         <span className="cs-kicker">Documento de producción</span>
       </header>
@@ -40,10 +44,13 @@ export default function CesionPage() {
 
       <footer className="cs-footer">
         <span>© 2026 Hivrido</span>
-        <a href="https://wa.me/5491156072460?text=Hola!%20Tengo%20una%20consulta%20sobre%20la%20cesi%C3%B3n%20de%20derechos" target="_blank" rel="noopener noreferrer">
-          Consultar por WhatsApp
-        </a>
+        <span>Cualquier duda, escribinos por WhatsApp</span>
       </footer>
+
+      {/* El flotante del resto del sitio. Reemplaza al link que estaba en el
+          pie: dos accesos al mismo WhatsApp a diez píxeles uno del otro era
+          ruido, no una opción más. */}
+      <WhatsAppBtn />
     </div>
   );
 }

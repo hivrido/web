@@ -45,12 +45,12 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* El logo es el SVG animado del resto del sitio, no texto: el <a> solo tiene
+   que darle una caja donde apoyarse sin recortarle el glow del hover. */
 .cs-logo {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 0.22em;
-  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
 }
 
 .cs-kicker {
@@ -69,7 +69,9 @@
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
-  padding: 32px 20px 56px;
+  /* El fondo generoso deja que el botón de enviar suba por encima del flotante
+     de WhatsApp al llegar al final, en vez de quedar tapado por él. */
+  padding: 32px 20px 96px;
 }
 
 .cs-intro { margin-bottom: 32px; }
@@ -459,23 +461,33 @@
 
 /* ── Pie ──────────────────────────────────────────────────────────────── */
 
+/* El flotante de WhatsApp ocupa la esquina inferior derecha —60 px de botón a
+   24 px del borde—, así que el pie se reserva ese ancho. Sin eso, el texto
+   queda debajo del botón y no se lee. */
 .cs-footer {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 20px;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 96px 20px 20px;
   border-top: 1px solid var(--border);
   font-size: 12px;
+  line-height: 1.5;
   color: var(--text-muted);
 }
 
-.cs-footer a { color: var(--violet-light); }
+@media (min-width: 620px) {
+  .cs-footer {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    padding-left: 28px;
+  }
+}
 
 /* ── Desde tablet ─────────────────────────────────────────────────────── */
 
 @media (min-width: 620px) {
-  .cs-main { padding: 48px 28px 72px; }
+  .cs-main { padding: 48px 28px 112px; }
   .cs-title { font-size: 34px; }
   .cs-bloque { padding: 28px 26px; }
 
