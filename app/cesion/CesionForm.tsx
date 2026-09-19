@@ -98,11 +98,23 @@ function CampoFirma({
     /* El canvas se dibuja a escala del dispositivo para que el PNG salga
        nítido en papel. El piso de 2 evita que una pantalla de ratio 1 entregue
        una firma pixelada cuando se imprime. */
+    let ultimoAncho = 0;
+    let ultimoAlto = 0;
+
     const dimensionar = () => {
+      const ancho = canvas.offsetWidth;
+      const alto = canvas.offsetHeight;
+      /* Sin cambio real de caja no se rehace nada: rehacerlo vacía el lienzo
+         y repone los trazos, y hacerlo de más en medio de una firma se ve. */
+      if (ancho === ultimoAncho && alto === ultimoAlto) return;
+      if (!ancho || !alto) return;
+      ultimoAncho = ancho;
+      ultimoAlto = alto;
+
       const previo = pad.toData();
       const ratio = Math.max(window.devicePixelRatio || 1, 2);
-      canvas.width = canvas.offsetWidth * ratio;
-      canvas.height = canvas.offsetHeight * ratio;
+      canvas.width = ancho * ratio;
+      canvas.height = alto * ratio;
       canvas.getContext("2d")?.scale(ratio, ratio);
       // Redimensionar vacía el lienzo: los trazos se reponen a mano.
       pad.clear();
@@ -118,15 +130,27 @@ function CampoFirma({
     };
     pad.addEventListener("endStroke", marcar);
 
-    /* Solo se re-dimensiona al girar el teléfono. Escuchar `resize` a secas
-       haría que la barra de direcciones de Chrome en Android, que aparece y
-       desaparece con el scroll, rehiciera el lienzo en medio de la firma. */
-    const alGirar = () => window.setTimeout(dimensionar, 120);
-    window.addEventListener("orientationchange", alGirar);
+    /* Se observa la caja del lienzo, no la ventana.
+       `resize` a secas no servía: la barra de direcciones de Chrome en Android
+       aparece y desaparece con el scroll y habría rehecho el lienzo en medio
+       de la firma. Pero escuchar solo `orientationchange` dejaba afuera todo
+       lo que cambia el ancho sin girar nada: redimensionar la ventana en
+       escritorio y, sobre todo, la barra de scroll que aparece cuando el
+       formulario crece —al declarar una fecha de menor se agrega un segundo
+       recuadro de firma y la página pasa a scrollear—. En esos casos el
+       lienzo CSS se estiraba pero su resolución interna quedaba en el tamaño
+       viejo, y desde ahí el trazo salía corrido del dedo y con el grosor
+       equivocado. En una página cuyo producto es una prueba, eso es grave.
+
+       El ResizeObserver dispara exactamente cuando cambia la caja del lienzo
+       —el alto es fijo por CSS, así que la barra de direcciones no lo mueve—,
+       y `dimensionar` ignora los avisos que no traen cambio. */
+    const observador = new ResizeObserver(dimensionar);
+    observador.observe(canvas);
 
     return () => {
       pad.removeEventListener("endStroke", marcar);
-      window.removeEventListener("orientationchange", alGirar);
+      observador.disconnect();
       pad.off();
     };
   }, [onCambio]);
@@ -201,6 +225,24 @@ export default function CesionForm() {
 
   const parrafos = useMemo(() => version.texto.split("\n\n"), [version.texto]);
 
+  /* La fecha de nacimiento es el único campo que monta y desmonta otra parte
+     del formulario, así que tiene su propio handler.
+
+     Al desmontarse, el recuadro de firma del adulto se lleva el trazo pero no
+     se llevaba el "ya firmó": quedaba prendido. Si después se volvía a poner
+     una fecha de menor —pasa seguido, se tipea mal el año y se corrige— el
+     recuadro reaparecía en blanco con el botón de enviar ya habilitado,
+     prometiendo una firma que no existía. Se apaga justo cuando la persona
+     deja de ser menor, que es cuando el recuadro desaparece; mientras siga
+     siéndolo no se toca, para no invalidar una firma que sigue en pantalla. */
+  const setFechaNacimiento = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valor = e.target.value;
+    setCampos((c) => ({ ...c, fecha_nacimiento: valor }));
+    const nuevaEdad = calcularEdad(valor);
+    if (nuevaEdad === null || nuevaEdad >= 18) setFirmadoAdulto(false);
+    if (error) setError(null);
+  };
+
   /* El botón se habilita solo cuando están las dos condiciones que pediste:
      términos aceptados y trazo en el lienzo. Si es menor, además la firma del
      adulto. El servidor vuelve a exigir las tres, porque un botón deshabilitado
@@ -254,10 +296,17 @@ export default function CesionForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cuerpo),
       });
-      const data = await res.json();
+      /* La respuesta puede no ser JSON. Si faltan las variables de entorno en
+         producción, el 500 lo devuelve la plataforma con su propia página en
+         HTML y `res.json()` tira: sin este `catch`, el error caía en el de
+         abajo y se le decía a la persona "no hay conexión, revisá los datos
+         móviles" cuando su conexión estaba perfecta y el problema era del
+         servidor. Mandarla a reiniciar el celular mientras la firma se pierde
+         es la peor forma de fallar que tiene esta página. */
+      const data = await res.json().catch(() => null);
 
-      if (!res.ok || !data.ok) {
-        setError(data.error || "No pudimos registrar la firma. Intentá de nuevo.");
+      if (!res.ok || !data?.ok) {
+        setError(data?.error || "No pudimos registrar la firma. Intentá de nuevo.");
         setEnviando(false);
         return;
       }
@@ -320,7 +369,7 @@ export default function CesionForm() {
 
           <label className="cs-campo">
             <span className="cs-label">Fecha de nacimiento</span>
-            <input type="date" value={campos.fecha_nacimiento} onChange={set("fecha_nacimiento")} required />
+            <input type="date" value={campos.fecha_nacimiento} onChange={setFechaNacimiento} required />
           </label>
         </div>
 

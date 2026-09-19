@@ -44,7 +44,16 @@ html:has(.cs-page) body {
   z-index: 0;
 }
 
-.cs-page > * { position: relative; z-index: 1; }
+/* Los tres bloques del documento se levantan por encima del halo de arriba.
+   Van nombrados uno por uno y NO como `.cs-page > *`: esa regla alcanzaba
+   también al flotante de WhatsApp, que es hijo directo de `.cs-page`, y le
+   pisaba el `position: fixed` con `relative` —misma especificidad, y esta
+   hoja se carga después de globals.css, así que ganaba—. El botón dejaba de
+   estar anclado al viewport, se convertía en un ítem más de la columna flex
+   y terminaba abajo a la izquierda, cortado contra el borde. */
+.cs-header,
+.cs-main,
+.cs-footer { position: relative; z-index: 1; }
 
 /* ── Cabecera ─────────────────────────────────────────────────────────── */
 
@@ -327,12 +336,17 @@ html:has(.cs-page) body {
   touch-action: none;
 }
 
+/* Apoyado sobre la línea de firma, no centrado en el panel. Centrado quedaba
+   flotando a media altura, lejos de la única marca que dice dónde firmar, y
+   el recuadro se leía como un bloque blanco vacío con un texto suelto en el
+   medio. Acá los dos elementos se leen juntos: la indicación y el renglón. */
 .cs-firma-hint {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 22px;
+  right: 22px;
+  bottom: 50px;
+  display: block;
+  text-align: center;
   pointer-events: none;
   font-size: 13px;
   letter-spacing: 0.1em;
