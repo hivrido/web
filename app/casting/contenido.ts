@@ -5,9 +5,14 @@
  * casting hay que poder corregir una hora o un teléfono sin abrir el JSX ni
  * entender React. Si algo se lee en pantalla, se edita en este archivo.
  *
- * Lo que NO va acá ni en ninguna parte de la página: las consignas de las
- * escenas de improvisación. La prueba sirve porque nadie la preparó de
- * antemano; publicarla la anula. Solo se describe el formato.
+ * Las consignas de las escenas SÍ se publican. Durante un tiempo no lo
+ * hicieron —el criterio era que una prueba preparada de antemano no prueba
+ * nada—, y se cambió a propósito: lo que se busca no es sorprender a nadie,
+ * es ver cómo escucha y cómo reacciona. Las cuatro situaciones están armadas
+ * para que leerlas no dé ventaja: ninguna tiene una respuesta que se pueda
+ * memorizar, y la sección de preparación lo dice con todas las letras. Lo que
+ * sí evita publicarlas es que la persona llegue con miedo a algo que no sabe
+ * qué es, que es lo que hace que no venga.
  */
 
 /* ── Lo que falta definir ─────────────────────────────────────────────────
@@ -57,7 +62,7 @@ export const HERO = {
   tituloAbajo: EVENTO.serie,
   claim: "No hay que preparar nada.",
   claimApoyo:
-    "Venís, te anotás, charlás un minuto e improvisás dos. Nada más que eso.",
+    "Venís, te anotás y son tres minutos: uno hablando y dos en una escena. Nada más que eso.",
 } as const;
 
 /* ── El arte ────────────────────────────────────────────────────────── */
@@ -118,23 +123,32 @@ export const DATOS_CLAVE: {
   },
 ];
 
-/* ── 3 · Qué vas a hacer ────────────────────────────────────────────────── */
+/* ── 3 · Cómo va a ser ──────────────────────────────────────────────────
+   Esta sección y las dos que siguen están escritas en primera persona: no
+   habla la producción, habla la persona que va a estar del otro lado de la
+   cámara ese día. El cambio de voz es deliberado y no se corrige "para que
+   quede uniforme" con el resto de la página: es lo que convierte un
+   instructivo en alguien explicándote qué va a pasar.                     */
 
-export const QUE_VAS_A_HACER = {
-  titulo: "Qué vas a hacer",
-  lead: "Son dos pruebas cortas. Las hace todo el mundo igual, sin importar si actuaste alguna vez o nunca.",
-  pasos: [
+export const COMO_VA_A_SER = {
+  titulo: "Cómo va a ser",
+  lead: "Son dos momentos, tres minutos en total.",
+  momentos: [
     {
-      numero: "01",
-      titulo: "Una charla de un minuto",
+      etiqueta: "Momento 1",
+      titulo: "Hablamos",
+      duracion: "Un minuto",
       texto:
-        "Te preguntamos quién sos, de dónde venís, a qué te dedicás. Se contesta hablando normal. No hay respuesta correcta.",
+        "Vas a decir tu nombre y tu edad mirando a cámara. Después te voy a pedir que me cuentes algo que te haya pasado a vos. Lo que quieras. Algo que te haya cambiado algo.",
+      nota: "No hay respuesta correcta. No busques la historia más impresionante. La que te venga.",
     },
     {
-      numero: "02",
-      titulo: "Una escena improvisada de dos minutos",
+      etiqueta: "Momento 2",
+      titulo: "Una escena",
+      duracion: "Dos minutos",
       texto:
-        "Te damos una situación en el momento y la resolvés ahí mismo. Es a propósito: queremos ver cómo reaccionás, no cómo ensayaste.",
+        "Te voy a dar un papel con una situación. Lo leés veinte segundos, te lo saco, y la hacemos juntos. Yo te doy pie.",
+      nota: "Son las cuatro que están acá abajo. A cada persona le toca una sola.",
     },
   ],
   aclaraciones: [
@@ -145,7 +159,92 @@ export const QUE_VAS_A_HACER = {
   ],
 } as const;
 
-/* ── 4 · Cómo llegar ────────────────────────────────────────────────────── */
+/* ── 4 · Las situaciones ────────────────────────────────────────────────
+   Cada situación se escribe en frases sueltas, no en un párrafo. Son beats:
+   una premisa, una complicación y el límite que no se puede cruzar. Leídas
+   en bloque se vuelven un enunciado; leídas una debajo de la otra se
+   entienden de una pasada, que es lo único que se necesita.
+
+   El orden importa: el último renglón de cada una es siempre el obstáculo,
+   y es el que hay que retener.                                           */
+
+export const SITUACIONES = {
+  titulo: "Las situaciones",
+  lead: "Son estas cuatro. A cada persona le toca una sola, y te la damos ese día, impresa.",
+  escenas: [
+    {
+      letra: "A",
+      nombre: "El que debe",
+      beats: [
+        "Venís a pedirle plata prestada a alguien que ya te prestó dos veces.",
+        "Nunca le devolviste.",
+        "No te podés ir sin la plata.",
+        "No la vas a conseguir gritando.",
+      ],
+    },
+    {
+      letra: "B",
+      nombre: "El que sabe",
+      beats: [
+        "Sabés exactamente lo que te están por preguntar.",
+        "No se lo podés decir.",
+        "Tampoco podés dejarle ver que lo sabés.",
+      ],
+    },
+    {
+      letra: "C",
+      nombre: "Arreglalo",
+      beats: [
+        "Tenés algo roto en las manos. No es tuyo.",
+        "Lo estás arreglando con lo que hay.",
+        "Llega el dueño y te habla.",
+        "Vos seguís. No lo mirás hasta que terminás.",
+      ],
+    },
+    {
+      letra: "D",
+      nombre: "El que no se acuerda",
+      beats: [
+        "Alguien te saluda por tu nombre en la calle.",
+        "Te conoce bien.",
+        "Vos no tenés idea quién es.",
+        "Y no podés admitirlo.",
+      ],
+    },
+  ],
+} as const;
+
+/* ── 5 · Cómo prepararte ────────────────────────────────────────────────
+   La sección existe para desarmar el ensayo, no para pedirlo. Por eso abre
+   con la prohibición y recién después da los tres consejos: si el orden se
+   invierte, se lee como una lista de tareas y la gente llega actuando.    */
+
+export const PREPARACION = {
+  titulo: "Cómo prepararte",
+  advertencia: "No las ensayes frente al espejo. No sirve.",
+  texto:
+    "Lo que buscamos no es que salga perfecto, es que salga verdadero. Lo único que te conviene hacer es leerlas una vez y entender qué querés conseguir en cada una. Eso es todo.",
+  subtitulo: "Tres cosas que sí ayudan",
+  consejos: [
+    {
+      titulo: "Escuchá",
+      texto:
+        "La escena es con otra persona. Si venís con todo decidido de casa, no vas a escuchar lo que te digo y se nota enseguida.",
+    },
+    {
+      titulo: "No te apures",
+      texto:
+        "Los silencios están permitidos. Un silencio bien aguantado dice más que tres frases.",
+    },
+    {
+      titulo: "Si te trabás, no pasa nada",
+      texto:
+        "Casi todos se traban en los primeros veinte segundos. Lo que miramos es lo que pasa después. Si te bloqueás, frenamos, tomás agua y arrancamos de nuevo. Pasa todo el tiempo.",
+    },
+  ],
+} as const;
+
+/* ── 6 · Cómo llegar ────────────────────────────────────────────────────── */
 
 export const COMO_LLEGAR = {
   titulo: "Cómo llegar",
@@ -170,7 +269,7 @@ export const COMO_LLEGAR = {
   nota: "Si te perdés, escribinos por WhatsApp y te guiamos.",
 } as const;
 
-/* ── 5 · Qué llevar ─────────────────────────────────────────────────────── */
+/* ── 7 · Qué llevar ─────────────────────────────────────────────────────── */
 
 export const QUE_LLEVAR = {
   titulo: "Qué llevar",
@@ -182,7 +281,7 @@ export const QUE_LLEVAR = {
   cierre: "Nada más.",
 } as const;
 
-/* ── 6 · Si no podés venir ──────────────────────────────────────────────── */
+/* ── 8 · Si no podés venir ──────────────────────────────────────────────── */
 
 export const SI_NO_PODES = {
   titulo: "Si no podés venir",
@@ -195,13 +294,28 @@ export const SI_NO_PODES = {
     "Hola Hivrido! No puedo ir al casting presencial de Cuchillo Paz. Quiero audicionar por video.",
 } as const;
 
-/* ── 7 · Preguntas ──────────────────────────────────────────────────────── */
+/* ── 9 · Preguntas ──────────────────────────────────────────────────────── */
 
 export const FAQ: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: "¿Tengo que tener experiencia?",
     respuesta:
       "No. Buscamos caras nuevas. Mucha gente que queda nunca actuó antes, y esa es justamente la idea.",
+  },
+  {
+    pregunta: "¿Tengo que aprenderme las cuatro situaciones?",
+    respuesta:
+      "No. A cada persona le toca una sola y te la damos ese día en papel, con veinte segundos para leerla. Están publicadas para que sepas de qué se trata, no para que las estudies: no hay nada para memorizar.",
+  },
+  {
+    pregunta: "¿Puedo elegir cuál me toca?",
+    respuesta:
+      "No, la asignamos nosotros. Las cuatro están pensadas para que cualquiera pueda hacer cualquiera, así que no hay una más fácil ni una que convenga.",
+  },
+  {
+    pregunta: "¿Y si me quedo en blanco?",
+    respuesta:
+      "Pasa todo el tiempo y no descalifica a nadie. Frenamos, tomás agua y arrancamos de nuevo. Casi todo el mundo se traba en los primeros veinte segundos: lo que miramos es lo que pasa después.",
   },
   {
     pregunta: "¿Cuánto cuesta?",

@@ -14,6 +14,7 @@ import {
   ARTE,
   AUDICION_VIDEO_URL,
   COMO_LLEGAR,
+  COMO_VA_A_SER,
   CONTACTO,
   DATOS_CLAVE,
   DIRECCION_COMPLETA,
@@ -21,10 +22,11 @@ import {
   FAQ,
   HERO,
   MAPS_URL,
+  PREPARACION,
   QUE_LLEVAR,
-  QUE_VAS_A_HACER,
   SEO,
   SI_NO_PODES,
+  SITUACIONES,
   TEXTO_COMPARTIR,
   URL_PAGINA,
   WHATSAPP_PRODUCCION,
@@ -262,35 +264,103 @@ export default function CastingPage() {
           </div>
         </section>
 
-        {/* ── 3 · Qué vas a hacer ──────────────────────────────────────── */}
+        {/* ── 3 · Cómo va a ser ────────────────────────────────────────
+            <ol> y no <ul>: los dos momentos pasan en ese orden y no en
+            otro, y esa es la única pregunta que la sección contesta. */}
         <section className="cst-seccion" aria-labelledby="t-hacer">
           <div className="cst-wrap">
             <h2 className="cst-h2" id="t-hacer">
-              {QUE_VAS_A_HACER.titulo}
+              {COMO_VA_A_SER.titulo}
             </h2>
-            <p className="cst-lead">{QUE_VAS_A_HACER.lead}</p>
+            <p className="cst-lead">{COMO_VA_A_SER.lead}</p>
 
             <ol className="cst-pasos">
-              {QUE_VAS_A_HACER.pasos.map((paso, i) => (
-                <Reveal as="li" key={paso.numero} delay={i * 0.08} className="cst-paso">
-                  <span className="cst-paso-num" aria-hidden="true">
-                    {paso.numero}
-                  </span>
-                  <h3 className="cst-paso-titulo">{paso.titulo}</h3>
-                  <p className="cst-paso-texto">{paso.texto}</p>
+              {COMO_VA_A_SER.momentos.map((momento, i) => (
+                <Reveal as="li" key={momento.etiqueta} delay={i * 0.08} className="cst-paso">
+                  <p className="cst-paso-meta">
+                    <span className="cst-paso-num">{momento.etiqueta}</span>
+                    <span className="cst-paso-duracion">{momento.duracion}</span>
+                  </p>
+                  <h3 className="cst-paso-titulo">{momento.titulo}</h3>
+                  <p className="cst-paso-texto">{momento.texto}</p>
+                  <p className="cst-paso-nota">{momento.nota}</p>
                 </Reveal>
               ))}
             </ol>
 
             <ul className="cst-noes">
-              {QUE_VAS_A_HACER.aclaraciones.map((texto) => (
+              {COMO_VA_A_SER.aclaraciones.map((texto) => (
                 <li key={texto}>{texto}</li>
               ))}
             </ul>
           </div>
         </section>
 
-        {/* ── 4 · Cómo llegar ──────────────────────────────────────────── */}
+        {/* ── 4 · Las situaciones ──────────────────────────────────────
+            La letra vive dentro del <h3>, no en un adorno aparte: es cómo
+            se llama la escena el día del casting ("te tocó la C"), así que
+            el lector de pantalla tiene que leerla con el nombre. */}
+        <section className="cst-seccion" aria-labelledby="t-situaciones">
+          <div className="cst-wrap">
+            <h2 className="cst-h2" id="t-situaciones">
+              {SITUACIONES.titulo}
+            </h2>
+            <p className="cst-lead">{SITUACIONES.lead}</p>
+
+            <ul className="cst-situaciones">
+              {SITUACIONES.escenas.map((escena, i) => (
+                <Reveal
+                  as="li"
+                  key={escena.letra}
+                  delay={i * 0.06}
+                  className="cst-situacion"
+                >
+                  <h3 className="cst-situacion-nombre">
+                    <span className="cst-situacion-letra">{escena.letra}</span>
+                    {escena.nombre}
+                  </h3>
+                  <ul className="cst-beats">
+                    {escena.beats.map((beat) => (
+                      <li key={beat}>{beat}</li>
+                    ))}
+                  </ul>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* ── 5 · Cómo prepararte ──────────────────────────────────────── */}
+        <section className="cst-seccion" aria-labelledby="t-preparar">
+          <div className="cst-wrap">
+            <h2 className="cst-h2" id="t-preparar">
+              {PREPARACION.titulo}
+            </h2>
+
+            <Reveal className="cst-preparar">
+              <p className="cst-preparar-alerta">{PREPARACION.advertencia}</p>
+              <p className="cst-preparar-texto">{PREPARACION.texto}</p>
+            </Reveal>
+
+            <h3 className="cst-preparar-sub">{PREPARACION.subtitulo}</h3>
+
+            <ol className="cst-consejos">
+              {PREPARACION.consejos.map((consejo, i) => (
+                <Reveal
+                  as="li"
+                  key={consejo.titulo}
+                  delay={i * 0.06}
+                  className="cst-consejo"
+                >
+                  <h4 className="cst-consejo-titulo">{consejo.titulo}</h4>
+                  <p className="cst-consejo-texto">{consejo.texto}</p>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ── 6 · Cómo llegar ──────────────────────────────────────────── */}
         <section className="cst-seccion" aria-labelledby="t-llegar">
           <div className="cst-wrap">
             <h2 className="cst-h2" id="t-llegar">
@@ -335,7 +405,7 @@ export default function CastingPage() {
           </div>
         </section>
 
-        {/* ── 5 · Qué llevar ───────────────────────────────────────────── */}
+        {/* ── 7 · Qué llevar ───────────────────────────────────────────── */}
         <section className="cst-seccion" aria-labelledby="t-llevar">
           <div className="cst-wrap">
             <h2 className="cst-h2" id="t-llevar">
@@ -356,7 +426,7 @@ export default function CastingPage() {
           </div>
         </section>
 
-        {/* ── 6 · Si no podés venir ────────────────────────────────────── */}
+        {/* ── 8 · Si no podés venir ────────────────────────────────────── */}
         <section className="cst-seccion" aria-labelledby="t-video">
           <div className="cst-wrap">
             <Reveal className="cst-video">
@@ -377,7 +447,7 @@ export default function CastingPage() {
           </div>
         </section>
 
-        {/* ── 7 · Preguntas ────────────────────────────────────────────
+        {/* ── 9 · Preguntas ────────────────────────────────────────────
             <details> nativo: se abre y se cierra sin una línea de
             JavaScript, responde al teclado y al lector de pantalla solo, y
             los buscadores leen la respuesta aunque esté plegada. */}
@@ -402,7 +472,7 @@ export default function CastingPage() {
         </section>
       </main>
 
-      {/* ── 8 · Pie ────────────────────────────────────────────────────── */}
+      {/* ── 10 · Pie ────────────────────────────────────────────────────── */}
       <footer className="cst-pie">
         <div className="cst-wrap">
           <p className="cst-pie-marca">

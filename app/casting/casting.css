@@ -459,7 +459,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 3 · Qué vas a hacer ──────────────────────────────────────────────── */
+/* ── 3 · Cómo va a ser ────────────────────────────────────────────────── */
 
 .cst-pasos {
   display: flex;
@@ -469,20 +469,55 @@ html:has(.cst-page) body {
 
 .cst-paso {
   position: relative;
-  padding: 20px 18px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px;
   border: 1px solid var(--cst-linea);
   border-radius: 14px;
   background: var(--cst-panel);
 }
 
+/* "MOMENTO 1" a la izquierda y la duración a la derecha, en la misma línea:
+   son las dos cosas que se buscan de un vistazo —cuál es y cuánto dura— y
+   ocupan un solo renglón en vez de dos. */
+.cst-paso-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px !important;
+}
+
 .cst-paso-num {
-  display: block;
-  margin-bottom: 8px;
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
   color: var(--violet-light);
+}
+
+.cst-paso-duracion {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border: 1px solid rgba(167, 139, 250, 0.26);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--cst-suave);
+}
+
+/* La bajada de cada momento: lo que no es instrucción sino permiso ("no hay
+   respuesta correcta"). Va separada por un filete para que no se lea como
+   continuación del párrafo de arriba. */
+.cst-paso-nota {
+  margin-top: 14px !important;
+  padding-top: 13px;
+  border-top: 1px solid var(--cst-linea);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--cst-tenue) !important;
 }
 
 .cst-paso-titulo {
@@ -518,7 +553,161 @@ html:has(.cst-page) body {
   color: var(--cst-texto);
 }
 
-/* ── 4 · Cómo llegar ──────────────────────────────────────────────────── */
+/* ── 4 · Las situaciones ──────────────────────────────────────────────── */
+
+.cst-situaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* La tarjeta imita la hoja que se entrega el día del casting: fondo apenas
+   levantado, filete violeta a la izquierda y las frases una debajo de la
+   otra. Nada de iconos ni de adornos: el texto es el objeto. */
+.cst-situacion {
+  padding: 20px 18px;
+  border: 1px solid var(--cst-linea);
+  border-left: 3px solid rgba(124, 58, 237, 0.55);
+  border-radius: 4px 14px 14px 4px;
+  background: var(--cst-panel);
+}
+
+.cst-situacion-nombre {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--cst-linea);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* La letra es el nombre operativo de la escena: el día del casting se dice
+   "te tocó la C". Por eso va en chapa, no en tipografía corrida. */
+.cst-situacion-letra {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.18);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: var(--violet-light);
+}
+
+/* Cada frase en su renglón. El interlineado suelto es lo que las mantiene
+   como beats separados en lugar de volverlas un párrafo picado. */
+.cst-beats li {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cst-suave);
+}
+
+.cst-beats li + li {
+  margin-top: 9px;
+}
+
+/* El último renglón es siempre el obstáculo —lo que no se puede hacer o no
+   se puede decir—. Es lo único que hay que retener de la consigna, así que
+   es lo único que cambia de color. */
+.cst-beats li:last-child {
+  font-weight: 500;
+  color: var(--gold-light);
+}
+
+/* ── 5 · Cómo prepararte ──────────────────────────────────────────────── */
+
+.cst-preparar {
+  margin-bottom: 30px;
+}
+
+/* La prohibición abre la sección y pesa más que el resto: si se lee al
+   final, la gente ya ensayó. */
+.cst-preparar-alerta {
+  margin-bottom: 14px !important;
+  padding: 16px 16px 16px 18px !important;
+  border-left: 4px solid var(--gold);
+  background: linear-gradient(
+    90deg,
+    rgba(201, 168, 76, 0.11),
+    rgba(201, 168, 76, 0) 85%
+  );
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--gold-light) !important;
+}
+
+.cst-preparar-texto {
+  font-size: 16px;
+  color: var(--cst-suave) !important;
+}
+
+.cst-preparar-sub {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--violet-light);
+}
+
+/* Numerados por CSS: el <ol> ya lleva el orden en el marcado y el contador
+   evita repetir el número en el texto. */
+.cst-consejos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: consejo;
+}
+
+.cst-consejo {
+  counter-increment: consejo;
+  padding: 17px 18px;
+  border: 1px solid var(--cst-linea);
+  border-radius: 14px;
+  background: var(--cst-panel);
+}
+
+.cst-consejo-titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 7px;
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.cst-consejo-titulo::before {
+  content: counter(consejo);
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--violet-light);
+}
+
+.cst-consejo-texto {
+  font-size: 15.5px;
+  color: var(--cst-suave) !important;
+}
+
+/* ── 6 · Cómo llegar ──────────────────────────────────────────────────── */
 
 .cst-direccion {
   display: block;
@@ -580,7 +769,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 5 · Qué llevar ───────────────────────────────────────────────────── */
+/* ── 7 · Qué llevar ───────────────────────────────────────────────────── */
 
 /* En fila, una debajo de la otra. Tres columnas sobre 360 px dejan 90 px por
    tarjeta y "PACIENCIA" en Orbitron 900 no entra ni achicándola hasta que
@@ -631,7 +820,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 6 · Si no podés venir ────────────────────────────────────────────── */
+/* ── 8 · Si no podés venir ────────────────────────────────────────────── */
 
 .cst-video {
   padding: 24px 20px;
@@ -650,7 +839,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 7 · Preguntas ────────────────────────────────────────────────────── */
+/* ── 9 · Preguntas ────────────────────────────────────────────────────── */
 
 .cst-faq {
   border: 1px solid var(--cst-linea);
@@ -730,7 +919,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 8 · Pie ──────────────────────────────────────────────────────────── */
+/* ── 10 · Pie ──────────────────────────────────────────────────────────── */
 
 .cst-pie {
   /* El colchón de abajo deja pasar el flotante de compartir sin taparse con
@@ -868,6 +1057,22 @@ html:has(.cst-page) body {
   .cst-pasos {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Dos por dos. Las cuatro consignas tienen largo parecido, así que la
+     grilla no queda desnivelada y se leen como un juego cerrado —que es lo
+     que son: de estas cuatro sale la tuya—. */
+  .cst-situaciones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
+  }
+
+  /* Los consejos NO pasan a tres columnas: el tercero es el doble de largo
+     que los otros dos y la fila quedaría con dos tarjetas medio vacías. En
+     una sola columna se lee como lo que es, una lista de tres cosas. */
+  .cst-consejo {
+    padding: 20px 22px;
   }
 
   /* Acá sí entran las tres en fila: la columna pasa de 200 px y "PACIENCIA"
