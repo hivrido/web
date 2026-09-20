@@ -50,6 +50,24 @@ export type Title = {
 export const CATALOG: Title[] = [
   /* ── SERIES ─────────────────────────────────────────────────────────── */
   {
+    /* La producción en curso, por eso abre la fila. No lleva `isPlaceholder`:
+       tiene afiche propio y una sinopsis apoyada en lo que el casting ya
+       publica —el conurbano, los cuatro pibes—, no en un plot inventado, así
+       que puede viajar al schema.org. Sin `rating` porque todavía no hay
+       nada que puntuar, y sin `ytId` porque no hay tráiler: eso la deja
+       fuera del slider, que pide `hero` y `ytId`. */
+    id: "cuchillo-paz",
+    title: "Cuchillo Paz",
+    type: "serie",
+    year: "T1 · 2026",
+    seasons: "1 temporada",
+    genre: "Drama",
+    synopsis:
+      "Cuatro pibes del conurbano, una loma al atardecer y todo lo que no se dicen. Primera temporada en producción, con elenco salido del casting abierto.",
+    badge: "PRONTO",
+    poster: "/images/casting/cuchillo-paz-poster-800.webp",
+  },
+  {
     id: "el-docke",
     title: "El Docke",
     type: "serie",

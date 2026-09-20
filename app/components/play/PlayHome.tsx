@@ -53,7 +53,16 @@ function Card({ item, index, wide, onPlay }: {
   onPlay: (ytId: string) => void;
 }) {
   const grad = CARD_COLORS[index % CARD_COLORS.length];
-  const badgeClass = item.badge === "NEW" || item.badge === "SERIE" ? "new" : "";
+  /* Verde para lo que ya se puede ver, dorado para lo que todavía no. El
+     dorado estaba escrito en play.css desde siempre y sin nadie que lo
+     pidiera: "PRONTO" es el primer caso que lo necesita, y la distinción
+     importa —una ficha que no reproduce tiene que avisarlo desde la tapa. */
+  const badgeClass =
+    item.badge === "NEW" || item.badge === "SERIE"
+      ? "new"
+      : item.badge === "PRONTO"
+      ? "soon"
+      : "";
   const plays = !item.href && !!item.ytId;
 
   const activate = plays ? () => onPlay(item.ytId!) : undefined;
