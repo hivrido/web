@@ -131,18 +131,18 @@ export const PROJECTS = [
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Equipo'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Lucas Manzano & Sergio Podeley',
+    kicker: 'Lucas Ariel Manzano',
     category: 'Equipo',
     /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'Los que te atienden son los que hacen',
+    meta: 'El que te atiende es el que hace',
     year: '2025',
     /* Sin `client`: es la propia agencia */
-    body: 'Hivrido lo dirigen Lucas Manzano y Sergio Podeley, sus dos CEOs. Dos perfiles opuestos complementarios: la dirección artística que pone lo emocional en cada pieza, y la capa tecnológica que la convierte en un sistema que escala. No trabajamos con equipos tercerizados.',
-    tags: ['Dirección', 'Estrategia', 'IA', 'Producción'],
+    body: 'Hivrido lo dirige Lucas Ariel Manzano, su CEO e ingeniero en prompt. Un solo perfil que cubre las dos mitades del oficio: la dirección creativa que pone lo emocional en cada pieza, y la ingeniería de inteligencia artificial que la convierte en un sistema que escala. No trabajamos con equipos tercerizados: el que te atiende es el que hace.',
+    tags: ['Prompt', 'Dirección', 'IA', 'Estrategia'],
     /* Destino del botón del panel: la página del equipo */
     link: { label: 'Ir a Equipo', href: '/equipo/' },
     accent: '#FF6A00',
-    image: '/images/team/1.jpg',
+    image: '/images/team/2.jpg',
   },
   {
     id: 'puny',
@@ -164,6 +164,9 @@ export const PROJECTS = [
     /* Destino del botón del panel: la landing de publicidad */
     link: { label: 'Ir a Publicidad', href: '/publicidad/' },
     accent: '#A78BFA',
-    image: '/images/team/2.jpg',
+    /* Sin `image` a propósito, por la misma razón que BRANDING: la ficha se
+       pintaba con el retrato que ahora ilustra EQUIPO, y la misma cara en dos
+       tarjetas del anillo se lee como un error. Hasta que haya arte propio de
+       campañas va el fondo procedural en su acento. */
   },
 ];

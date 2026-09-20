@@ -92,13 +92,13 @@ export default function About() {
                 <span>las creamos</span>
               </h2>
               <p>
-                El proyecto está impulsado por dos perfiles opuestos complementarios que le dan forma a nuestra manera de crear.
+                El proyecto lo impulsa Lucas Ariel Manzano, CEO e ingeniero en prompt, desde las dos mitades del oficio que casi nunca viven en la misma cabeza.
               </p>
               <p>
-                Sergio Podeley aporta una mirada enfocada en la dirección de actores y en la construcción de personajes naturalistas, buscando que lo emocional esté siempre presente en cada pieza.
+                De un lado la dirección creativa: el concepto antes que la herramienta, la construcción de personajes y la búsqueda de que lo emocional esté presente en cada pieza.
               </p>
               <p>
-                Lucas impulsa la capa estratégica y tecnológica de Hivrido, creando plataformas de inteligencia artificial que amplifican la creatividad y la convierten en sistemas de crecimiento. Su trabajo transforma el contenido en una estructura viva, automatizada y diseñada para escalar.
+                Del otro, la ingeniería de inteligencia artificial: plataformas y colmenas de agentes que amplifican esa creatividad y la convierten en sistemas de crecimiento. Es lo que transforma el contenido en una estructura viva, automatizada y diseñada para escalar.
               </p>
               <div style={{ display: "flex", gap: 12, marginTop: 32, flexWrap: "wrap" }}>
                 <MagneticBtn href="#sec3" className="btn-violet">Nuestros servicios</MagneticBtn>

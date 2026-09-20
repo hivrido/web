@@ -1501,6 +1501,15 @@ body:has(.orbital) { --col-w: 0px; }
 }
 @media (max-width: 1024px) { .artists-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .artists-grid { grid-template-columns: 1fr; } }
+/* Una sola ficha: la grilla de cuatro columnas la dejaría angosta contra el
+   margen. Acá pasa a retrato centrado, con el ancho acotado para que no se
+   estire a pantalla completa en un monitor grande. */
+.artists-grid--solo {
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
+  padding: 0 20px;
+}
+@media (max-width: 1024px) { .artists-grid--solo { grid-template-columns: minmax(0, 420px); } }
 .artist-card {
   position: relative;
   aspect-ratio: 3/4;
@@ -3337,6 +3346,12 @@ html.lenis { height: auto; }
 .web-works--retrato {
   max-width: 900px;
   margin-inline: auto;
+}
+/* Una sola persona: `auto-fit` le da los 900 px enteros y, con el 4/5 de
+   retrato, la foto sale de 900 × 1125 ocupando una pantalla entera. Acotada,
+   vuelve a leerse como un retrato y no como un afiche. */
+.web-works--retrato:has(> .web-work:only-child) {
+  max-width: 420px;
 }
 .web-works--retrato .web-work-media { aspect-ratio: 4 / 5; }
 .web-works--retrato .web-work-media img { object-position: 50% 18%; }

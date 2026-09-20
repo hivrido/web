@@ -33,7 +33,9 @@ const SOURCES = [
   "bg/docke.jpg",
   "bg/animacion-poster.jpg",
   "bg/hivrido-chrome.jpg",
-  "team/1.jpg",
+  /* team/1.jpg salió de la lista cuando dejó de estar declarada en
+     projects.js: generar su variante era trabajo para una imagen que ninguna
+     ficha pide. El original sigue en public/images/team/. */
   "team/2.jpg",
 ];
 

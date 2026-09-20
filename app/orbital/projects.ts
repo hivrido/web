@@ -75,10 +75,10 @@ export const PROJECTS: Project[] = [
     category: "Equipo",
     year: "2025",
     client: "HIVRIDO",
-    body: "Hivrido lo dirigen Lucas Manzano y Sergio Podeley, sus dos CEOs. Dos perfiles opuestos complementarios: la dirección artística que pone lo emocional en cada pieza, y la capa tecnológica que la convierte en un sistema que escala.",
-    tags: ["Dirección", "Estrategia", "IA", "Producción"],
+    body: "Hivrido lo dirige Lucas Ariel Manzano, su CEO e ingeniero en prompt. Un solo perfil que cubre las dos mitades del oficio: la dirección creativa que pone lo emocional en cada pieza, y la ingeniería de inteligencia artificial que la convierte en un sistema que escala.",
+    tags: ["Prompt", "Dirección", "IA", "Estrategia"],
     accent: "#FF6A00",
-    image: "/images/team/1.jpg",
+    image: "/images/team/2.jpg",
   },
   {
     id: "monolito",
@@ -102,6 +102,7 @@ export const PROJECTS: Project[] = [
     body: "Campañas en Meta, Google y YouTube en todos sus formatos: búsqueda, Performance Max, Shopping, in-stream, bumpers y Shorts. Los creativos los producimos nosotros, y el crecimiento de redes y las colaboraciones con artistas sostienen lo que la pauta empuja.",
     tags: ["Meta Ads", "Google Ads", "YouTube", "Influencers"],
     accent: "#A78BFA",
-    image: "/images/team/2.jpg",
+    /* Sin `image`: el retrato pasó a ilustrar EQUIPO y la misma cara en dos
+       fichas se lee como un error. Fondo procedural en su acento. */
   },
 ];

@@ -6,17 +6,10 @@ import GlitchText from "../ui/GlitchText";
 
 const ARTISTS = [
   {
-    img: "/images/team/1.jpg",
-    name: "Sergio Podeley",
-    role: "CEO · Identidad Artística & Performance",
-    bio: "Más de 10 años creando experiencias culturales de impacto en Argentina y Latinoamérica.",
-    instagram: "https://www.instagram.com/sergiopodeley",
-  },
-  {
     img: "/images/team/2.jpg",
-    name: "Lucas Manzano",
-    role: "CEO · Visión y Estrategia",
-    bio: "Prompt engineer · Creativo developer · Estratega",
+    name: "Lucas Ariel Manzano",
+    role: "CEO · Ingeniero en Prompt",
+    bio: "Dirección creativa e ingeniería de IA en la misma cabeza: el que te atiende es el que hace.",
     instagram: "https://instagram.com/lucasmanzano",
   },
 ];
@@ -63,7 +56,14 @@ export default function Artists() {
         </ScrollReveal>
       </div>
 
-      <div ref={gridRef} className="artists-grid">
+      {/* La grilla es de cuatro columnas: con una sola ficha quedaría una
+          tarjeta a un cuarto de ancho pegada al margen izquierdo, que se lee
+          como un error de maquetado. El modificador la centra y le da tamaño
+          de retrato. */}
+      <div
+        ref={gridRef}
+        className={`artists-grid${ARTISTS.length === 1 ? " artists-grid--solo" : ""}`}
+      >
         {ARTISTS.map((a) => (
           <div key={a.name} className="artist-card">
             <Image

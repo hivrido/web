@@ -9,33 +9,36 @@ import WebDesign, { type LandingContent } from "../components/sections/WebDesign
  *
  * Monta el mismo recorrido que las otras landings, con dos vueltas de tuerca
  * que impone el tema: la grilla de "trabajos" —la única con imágenes— aloja a
- * las dos personas, porque una página de equipo sin caras no es una página de
- * equipo; y la lista con modal queda para las disciplinas que cubren entre los
- * dos. Sin bloque de colmena.
+ * la persona, porque una página de equipo sin cara no es una página de
+ * equipo; y la lista con modal queda para las disciplinas que cubre. Sin
+ * bloque de colmena.
  *
- * El contenido sale de la home: las fichas de la sección Equipo y los párrafos
- * de About sobre los dos perfiles complementarios.
+ * El argumento dejó de ser "dos perfiles complementarios" y pasó a ser uno
+ * solo que cubre las dos mitades del oficio. No es un recorte: para quien
+ * contrata, una sola cabeza a cargo de la dirección y del sistema es menos
+ * teléfono descompuesto, y esa es la promesa que la página sostiene.
  */
 
 const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
   encodeURIComponent("Hola Hivrido! Quiero hablar con el equipo.");
 
 export const metadata: Metadata = {
-  title: "Equipo | Lucas Manzano y Sergio Podeley | Hivrido",
+  title: "Equipo | Lucas Ariel Manzano, Ingeniero en Prompt | Hivrido",
   description:
-    "El equipo de Hivrido: Lucas Manzano y Sergio Podeley, CEOs. Dos perfiles opuestos y complementarios —dirección artística e inteligencia artificial— detrás de cada proyecto.",
+    "Hivrido lo dirige Lucas Ariel Manzano, CEO e ingeniero en prompt. Dirección creativa e ingeniería de inteligencia artificial en la misma cabeza, detrás de cada proyecto.",
   keywords: [
     "equipo hivrido",
+    "Lucas Ariel Manzano",
     "Lucas Manzano",
-    "Sergio Podeley",
-    "productora audiovisual equipo",
+    "ingeniero en prompt",
+    "prompt engineer argentina",
     "dirección creativa",
   ],
   alternates: { canonical: "/equipo" },
   openGraph: {
     title: "Equipo | Hivrido",
     description:
-      "Lucas Manzano y Sergio Podeley, CEOs de Hivrido. Dos perfiles opuestos complementarios: dirección artística y tecnología.",
+      "Lucas Ariel Manzano, CEO e ingeniero en prompt de Hivrido. Dirección creativa e ingeniería de IA en la misma cabeza.",
     url: "https://hivrido.com/equipo",
     siteName: "Hivrido",
     locale: "es_AR",
@@ -56,14 +59,15 @@ const CONTENT: LandingContent = {
     "Identidad de marca",
     "Growth",
   ],
-  title: { eyebrow: "Cómo trabajamos", lines: ["Dos perfiles", "complementarios"] },
+  title: { eyebrow: "Cómo trabajamos", lines: ["Las dos mitades", "del oficio"] },
   lead: (
     <>
-      El proyecto está impulsado por <strong>dos perfiles opuestos complementarios</strong>{" "}
-      que le dan forma a nuestra manera de crear: la <strong>dirección artística</strong>{" "}
-      que pone lo emocional en cada pieza, y la <strong>capa tecnológica</strong> que la
-      convierte en un sistema que escala. No trabajamos con equipos tercerizados: los
-      que te atienden son los que hacen.
+      Hivrido lo dirige <strong>Lucas Ariel Manzano</strong>, su CEO e{" "}
+      <strong>ingeniero en prompt</strong>. Un solo perfil que cubre las dos mitades
+      del oficio: la <strong>dirección creativa</strong> que pone lo emocional en cada
+      pieza, y la <strong>ingeniería de inteligencia artificial</strong> que la
+      convierte en un sistema que escala. No trabajamos con equipos tercerizados: el
+      que te atiende es el que hace.
     </>
   ),
   servicios: [
@@ -82,16 +86,16 @@ const CONTENT: LandingContent = {
       tags: ["Casting", "Naturalismo", "Personaje"],
       desc: "Construcción de personajes naturalistas, buscando que lo emocional esté siempre presente en cada pieza.",
       headline: "Que se crea, no que se actúe.",
-      body: "Sergio aporta una mirada enfocada en la dirección de actores y en la construcción de personajes naturalistas, buscando que lo emocional esté siempre presente en cada pieza. Es lo que separa un video correcto de uno que se recuerda.",
+      body: "Dirección de actores y construcción de personajes naturalistas, buscando que lo emocional esté siempre presente en cada pieza. Es lo que separa un video correcto de uno que se recuerda.",
       stat: ["10+ años", "Dirigiendo en Argentina y Latinoamérica"],
     },
     {
       num: "03",
-      title: "Inteligencia artificial",
+      title: "Ingeniería en prompt",
       tags: ["Prompt", "Agentes", "Automatización"],
       desc: "Plataformas de IA que amplifican la creatividad y la convierten en sistemas de crecimiento, sin resignar autoría.",
       headline: "La IA hace el volumen, la dirección elige.",
-      body: "Lucas impulsa la capa estratégica y tecnológica de Hivrido, creando plataformas de inteligencia artificial que amplifican la creatividad y la convierten en sistemas de crecimiento. Su trabajo transforma el contenido en una estructura viva, automatizada y diseñada para escalar.",
+      body: "La capa estratégica y tecnológica de Hivrido son plataformas de inteligencia artificial y colmenas de agentes que amplifican la creatividad y la convierten en sistemas de crecimiento. Es lo que transforma el contenido en una estructura viva, automatizada y diseñada para escalar.",
       stat: ["PUNY", "El motor que corre dentro de Hivrido"],
     },
     {
@@ -122,24 +126,17 @@ const CONTENT: LandingContent = {
       stat: ["24 h", "Propuesta concreta el mismo día"],
     },
   ],
-  /* La grilla con imágenes es la única del recorrido: acá van las personas. */
+  /* La grilla con imágenes es la única del recorrido: acá va la persona. */
   trabajos: [
     {
       num: ".01",
-      titulo: "Sergio Podeley",
-      tags: ["CEO", "Dirección artística", "Performance"],
-      desc: "Más de 10 años creando experiencias culturales de impacto en Argentina y Latinoamérica. Dirige actores y construye personajes naturalistas, buscando que lo emocional esté presente en cada pieza.",
-      img: "/images/team/1.jpg",
-    },
-    {
-      num: ".02",
-      titulo: "Lucas Manzano",
-      tags: ["CEO", "Estrategia", "IA"],
-      desc: "Prompt engineer, creative developer y estratega. Impulsa la capa tecnológica de Hivrido: plataformas de inteligencia artificial que amplifican la creatividad y la convierten en sistemas que escalan.",
+      titulo: "Lucas Ariel Manzano",
+      tags: ["CEO", "Ingeniero en Prompt", "Dirección"],
+      desc: "Ingeniero en prompt, creative developer y estratega. Dirige la parte creativa y construye la capa tecnológica: plataformas de inteligencia artificial y colmenas de agentes que amplifican la creatividad y la convierten en sistemas que escalan.",
       img: "/images/team/2.jpg",
     },
   ],
-  trabajosTitle: { eyebrow: "Equipo", lines: ["Quiénes", "somos"] },
+  trabajosTitle: { eyebrow: "Equipo", lines: ["Quién", "está detrás"] },
   trabajosRetrato: true,
   testimonios: [
     { nombre: "M. Maioli", empresa: "mympropiedades.com.ar", texto: "Desde el primer día se pusieron la camiseta y llevaron adelante todo nuestro proyecto con una visión increíble. Manual de marca, logo, renders, material para redes, una web y app móvil impecables, un ERP a medida que nos ordenó la vida y una plataforma publicitaria que nos hizo volar en el mercado inmobiliario." },
@@ -147,14 +144,14 @@ const CONTENT: LandingContent = {
     { nombre: "H. Winnik", empresa: "flow.com.ar", texto: "Estamos más que satisfechos con los resultados y confiamos plenamente en su capacidad para seguir impulsando nuestro crecimiento. Totalmente recomendados para cualquier empresa que busque innovación y calidad en sus proyectos digitales." },
   ],
   garantias: [
-    ["Respuesta", "El mismo día, de uno de los dos"],
+    ["Respuesta", "El mismo día, del que hace el trabajo"],
     ["A cargo", "Una sola persona para todo el proyecto"],
     ["Equipo", "Propio, sin cadena de proveedores"],
     ["Después", "Seguimiento y ajustes sin costo"],
   ],
   cta: {
     title: "Hablemos directo",
-    text: "Nos escribís y te contesta uno de los dos, no un formulario. Contanos qué tenés en mente y te respondemos con una propuesta concreta.",
+    text: "Nos escribís y te contesta el que hace el trabajo, no un formulario. Contanos qué tenés en mente y te respondemos con una propuesta concreta.",
     asunto: "un proyecto con el equipo",
     mail: "Consulta para el equipo",
   },
@@ -171,7 +168,7 @@ export default function EquipoPage() {
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
           <div className="section-container">
-            <p className="dw-hero-eyebrow">Equipo · Lucas Manzano & Sergio Podeley</p>
+            <p className="dw-hero-eyebrow">Equipo · Lucas Ariel Manzano</p>
 
             <h1 className="dw-hero-title">
               No seguimos tendencias,
@@ -180,10 +177,10 @@ export default function EquipoPage() {
             </h1>
 
             <p className="dw-hero-text">
-              Hivrido lo dirigen <strong>Lucas Manzano</strong> y{" "}
-              <strong>Sergio Podeley</strong>, sus dos CEOs: dirección artística e
-              inteligencia artificial trabajando sobre la misma pieza. Los que te
-              atienden son los que hacen.
+              Hivrido lo dirige <strong>Lucas Ariel Manzano</strong>, su CEO e{" "}
+              <strong>ingeniero en prompt</strong>: dirección creativa e inteligencia
+              artificial trabajando sobre la misma pieza. El que te atiende es el que
+              hace.
             </p>
 
             <div className="dw-hero-actions">
