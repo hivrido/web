@@ -1,0 +1,819 @@
+/**
+ * Estilos de /artistas y de cada ficha.
+ *
+ * La sección nace sin material fotográfico: no hay sesión, no hay arte de
+ * tapa, no hay backstage. Eso no es una limitación a disimular, es la premisa
+ * de diseño, y de ahí sale todo lo demás:
+ *
+ * - El peso visual lo cargan la tipografía y el aire, no una imagen de fondo.
+ *   Los títulos van a escala de afiche y el espacio entre bloques es grande a
+ *   propósito: una página vacía con ritmo se lee como editorial, una página
+ *   vacía sin ritmo se lee como sin terminar.
+ * - Una sola pieza gráfica por ficha, dibujada en CSS. Para Amplax es la
+ *   cápsula. No cuesta una petición, no se pixela y no envejece como envejece
+ *   una foto de hace dos años.
+ * - El color propio del artista entra por `--art-acento`, que la ficha setea
+ *   inline desde el dato. Se usa en líneas, cifras y un subrayado; nunca en
+ *   fondos grandes. Es lo que hace que dos artistas no se confundan sin que
+ *   la sección deje de ser Hivrido.
+ * - Grises propios: `--text-muted` de globals.css queda en 4,3:1 sobre este
+ *   fondo, por debajo del AA. Los de acá pasan.
+ *
+ * Mobile first. Los breakpoints suben, nunca bajan.
+ */
+
+/* globals.css deja html y body en `height: 100%` con `overflow-x: hidden`, y
+   el eje vertical computa `auto`: el body queda de la altura de la pantalla
+   con la página adentro y se vuelve un segundo scroller. Misma cura que
+   casting.css y play.css, acotada con `:has()` para que la regla no viaje a
+   la ruta siguiente en una navegación de cliente. */
+html:has(.art-page),
+html:has(.art-page) body {
+  height: auto;
+}
+
+.art-page {
+  --art-texto: #f5f5f5;
+  --art-suave: rgba(245, 245, 245, 0.74);
+  --art-tenue: rgba(245, 245, 245, 0.52);
+  --art-linea: rgba(255, 255, 255, 0.10);
+  --art-panel: rgba(255, 255, 255, 0.026);
+
+  /* Por defecto el violeta de la casa. Cada ficha lo pisa con el suyo. */
+  --art-acento: var(--violet-light);
+  --art-acento-suave: var(--violet-dim);
+
+  position: relative;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--art-texto);
+  padding-top: var(--header-h);
+  overflow-x: hidden;
+}
+
+/* Atmósfera: dos degradados y una trama fina. Sin peticiones, sin competir
+   con el LCP —que acá es el nombre del artista—. */
+.art-page::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 90vh;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 70% at 50% 0%, var(--art-acento-suave) 0%, transparent 62%),
+    radial-gradient(90% 60% at 80% 12%, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+}
+
+.art-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.014) 0px,
+    rgba(255, 255, 255, 0.014) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.art-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.art-wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 22px;
+  text-align: left;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Tipografía compartida
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Micro-línea de prospecto: la etiqueta que encabeza cada bloque. */
+.art-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--art-tenue);
+}
+
+.art-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  flex: none;
+  background: var(--art-acento);
+}
+
+.art-h2 {
+  margin: 0 0 28px;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 5.4vw, 2.9rem);
+  font-weight: 900;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+}
+
+.art-page p {
+  color: var(--art-suave);
+  font-size: 15px;
+  line-height: 28px;
+  padding: 0;
+}
+
+.art-section {
+  padding: clamp(62px, 11vw, 120px) 0;
+  border-top: 1px solid var(--art-linea);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Hero de la ficha
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-hero {
+  padding: clamp(44px, 9vw, 96px) 0 clamp(56px, 10vw, 104px);
+}
+
+.art-hero-grid {
+  display: grid;
+  gap: clamp(38px, 7vw, 64px);
+}
+
+/* La cápsula aparece recién en desktop: en un teléfono le robaría la
+   pantalla al nombre, que es lo que tiene que leerse primero. */
+@media (min-width: 900px) {
+  .art-hero-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    align-items: center;
+  }
+}
+
+.art-hero-alias {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--art-acento);
+}
+
+.art-hero-nombre {
+  margin: 0;
+  font-family: var(--font-display);
+  /* Escala de afiche: es la pieza principal de una página sin fotos. */
+  font-size: clamp(2.9rem, 13vw, 7.4rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* El sufijo de la dosis, en el peso del prospecto y no en el del nombre. */
+.art-hero-dosis {
+  display: block;
+  margin-top: 10px;
+  font-size: clamp(0.8rem, 2.4vw, 1.15rem);
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  color: var(--art-tenue);
+}
+
+.art-hero-tagline {
+  max-width: 34ch;
+  margin: 26px 0 0;
+  font-size: clamp(1.02rem, 2.6vw, 1.32rem) !important;
+  line-height: 1.55 !important;
+  color: var(--art-texto) !important;
+}
+
+.art-hero-disciplinas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.art-hero-disciplinas li {
+  padding: 7px 13px;
+  border: 1px solid var(--art-linea);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--art-suave);
+}
+
+.art-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+  margin-top: 34px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Botones
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border: none;
+  clip-path: var(--clip-bevel);
+  background: var(--art-acento);
+  color: #0a0a0a;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.art-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.art-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.art-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.art-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--art-linea);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--art-suave);
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.art-link:hover {
+  color: var(--art-texto);
+  border-color: var(--art-acento);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   La cápsula — única pieza gráfica de la ficha, dibujada en CSS
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-capsula {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .art-capsula {
+    display: block;
+    position: relative;
+    width: 200px;
+    height: 400px;
+    margin: 0 auto;
+    border-radius: 100px;
+    /* Mitad sólida, mitad vacía: la pastilla partida en dos, que es
+       exactamente el argumento del artista. */
+    background: linear-gradient(
+      180deg,
+      var(--art-acento) 0%,
+      var(--art-acento) 50%,
+      transparent 50%,
+      transparent 100%
+    );
+    border: 1px solid var(--art-acento);
+    box-shadow: 0 0 70px -14px var(--art-acento-suave);
+    animation: art-flotar 7s ease-in-out infinite;
+  }
+
+  /* La línea de corte. */
+  .art-capsula::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: 50%;
+    height: 2px;
+    background: var(--bg);
+  }
+
+  /* La dosis grabada en la mitad vacía. */
+  .art-capsula::after {
+    content: "10 MG";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 68%;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-align: center;
+    color: var(--art-acento);
+  }
+}
+
+@keyframes art-flotar {
+  0%, 100% { transform: translateY(0) rotate(-7deg); }
+  50%      { transform: translateY(-16px) rotate(-7deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-capsula { animation: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Manifiesto — maquetado como un prospecto
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-manifiesto p {
+  max-width: 62ch;
+  font-size: clamp(1rem, 2.3vw, 1.12rem);
+  line-height: 1.85;
+}
+
+.art-manifiesto p + p {
+  margin-top: 22px;
+}
+
+/* La primera entra con más presencia: es la tesis de la carrera. */
+.art-manifiesto p:first-child {
+  color: var(--art-texto);
+  font-size: clamp(1.1rem, 2.8vw, 1.3rem);
+  line-height: 1.7;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Ejes
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-ejes {
+  display: grid;
+  gap: 1px;
+  margin-top: 8px;
+  background: var(--art-linea);
+  border: 1px solid var(--art-linea);
+}
+
+@media (min-width: 760px) {
+  .art-ejes { grid-template-columns: 1fr 1fr; }
+}
+
+.art-eje {
+  padding: clamp(26px, 4vw, 40px);
+  background: var(--bg);
+  transition: background 0.3s ease;
+}
+
+.art-eje:hover {
+  background: var(--art-panel);
+}
+
+.art-eje-num {
+  display: block;
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--art-acento);
+}
+
+.art-eje h3 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--art-texto);
+}
+
+.art-eje p {
+  font-size: 14px;
+  line-height: 26px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Lanzamientos
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--art-linea);
+  background: var(--bg-2);
+}
+
+.art-player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Fachada: la portada de YouTube y un botón. El iframe recién se monta al
+   hacer clic — un embed que carga solo arrastra medio megabyte de terceros
+   a una página cuyo LCP es el título. */
+.art-player-tapa {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.art-player-tapa img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.62;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+}
+
+.art-player-tapa:hover img {
+  opacity: 0.78;
+  transform: scale(1.03);
+}
+
+.art-player-play {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--art-acento);
+  color: #0a0a0a;
+  transition: transform 0.3s ease;
+}
+
+.art-player-tapa:hover .art-player-play {
+  transform: scale(1.09);
+}
+
+.art-lanz-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 18px;
+  margin-top: 22px;
+}
+
+.art-lanz-titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+}
+
+.art-lanz-credito {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--art-tenue);
+}
+
+/* Estado honesto: no hay más material publicado y la página lo dice. */
+.art-vacio {
+  margin-top: 26px;
+  padding: clamp(26px, 4vw, 38px);
+  border: 1px dashed var(--art-linea);
+  background: var(--art-panel);
+}
+
+.art-vacio h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--art-acento);
+}
+
+.art-vacio p {
+  max-width: 56ch;
+  margin: 0;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Métricas y enlaces
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-datos {
+  display: grid;
+  gap: clamp(38px, 6vw, 64px);
+}
+
+@media (min-width: 860px) {
+  .art-datos { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+}
+
+.art-metricas {
+  display: grid;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.art-metrica {
+  padding-left: 18px;
+  border-left: 2px solid var(--art-acento);
+}
+
+.art-metrica b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 6vw, 2.7rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.art-metrica span {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--art-suave);
+}
+
+.art-metrica small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--art-tenue);
+}
+
+.art-enlaces {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--art-linea);
+}
+
+.art-enlace {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--art-linea);
+  transition: padding-left 0.3s ease, background 0.3s ease;
+}
+
+.art-enlace:hover {
+  padding-left: 14px;
+  background: var(--art-panel);
+}
+
+.art-enlace-icono {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--art-linea);
+  border-radius: 50%;
+  color: var(--art-suave);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.art-enlace:hover .art-enlace-icono {
+  color: var(--art-acento);
+  border-color: var(--art-acento);
+}
+
+.art-enlace-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.art-enlace-texto b {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--art-texto);
+}
+
+.art-enlace-texto span {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--art-tenue);
+}
+
+.art-enlace-flecha {
+  flex: none;
+  color: var(--art-tenue);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.art-enlace:hover .art-enlace-flecha {
+  transform: translate(3px, -3px);
+  color: var(--art-acento);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CTA de cierre
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-cta {
+  padding: clamp(48px, 8vw, 88px) clamp(26px, 5vw, 64px);
+  border: 1px solid var(--art-linea);
+  background:
+    radial-gradient(90% 140% at 0% 0%, var(--art-acento-suave) 0%, transparent 60%),
+    var(--art-panel);
+}
+
+.art-cta h2 {
+  max-width: 18ch;
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.art-cta p {
+  max-width: 54ch;
+  margin: 0 0 30px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Índice del roster
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-index-hero {
+  padding: clamp(50px, 10vw, 110px) 0 clamp(40px, 7vw, 76px);
+}
+
+.art-index-titulo {
+  max-width: 15ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 8.5vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.art-index-lead {
+  max-width: 52ch;
+  margin: 26px 0 0;
+  font-size: clamp(1rem, 2.4vw, 1.18rem) !important;
+  line-height: 1.75 !important;
+}
+
+.art-roster {
+  display: grid;
+  gap: 1px;
+  background: var(--art-linea);
+  border-block: 1px solid var(--art-linea);
+}
+
+.art-ficha {
+  display: block;
+  padding: clamp(32px, 6vw, 56px) clamp(22px, 4vw, 44px);
+  background: var(--bg);
+  transition: background 0.35s ease;
+}
+
+.art-ficha:hover {
+  background: var(--art-panel);
+}
+
+.art-ficha-alias {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--art-acento);
+}
+
+.art-ficha-nombre {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+  transition: color 0.3s ease;
+}
+
+.art-ficha:hover .art-ficha-nombre {
+  color: #fff;
+}
+
+.art-ficha-tagline {
+  max-width: 44ch;
+  margin: 16px 0 0 !important;
+}
+
+.art-ficha-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 24px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--art-tenue);
+}
+
+.art-ficha-pie span::after {
+  content: "·";
+  margin-left: 16px;
+  color: var(--art-linea);
+}
+
+.art-ficha-pie span:last-of-type::after {
+  content: none;
+}
+
+.art-ficha-ver {
+  margin-left: auto;
+  color: var(--art-acento);
+  transition: transform 0.3s ease;
+}
+
+.art-ficha:hover .art-ficha-ver {
+  transform: translateX(5px);
+}
+
+/* Hueco del roster: invita en vez de fingir que el plantel está completo. */
+.art-sumate {
+  padding: clamp(32px, 6vw, 56px) clamp(22px, 4vw, 44px);
+  background: var(--bg);
+}
+
+.art-sumate h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3.4vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--art-suave);
+}
+
+.art-sumate p {
+  max-width: 50ch;
+  margin: 0 0 24px;
+}

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { ARTISTAS } from "./lib/artistas";
 
 export const dynamic = "force-static";
 
@@ -70,6 +71,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    /* Roster y una entrada por artista. Las fichas van altas a propósito: son
+       la URL que el artista pega en su bio y la que tiene que ganar cuando
+       alguien busca su nombre, que hoy no devuelve nada propio. */
+    {
+      url: `${baseUrl}/artistas`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...ARTISTAS.map((a) => ({
+      url: `${baseUrl}/artistas/${a.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
     {
       url: `${baseUrl}/orbital`,
       lastModified: new Date(),

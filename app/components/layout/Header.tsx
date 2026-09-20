@@ -5,7 +5,12 @@ import ScrambleLink from "../ui/ScrambleLink";
 
 /* El menú es el mismo mapa que dibujan las fichas del cosmos: una entrada por
    tarjeta, en su orden. Se fueron las anclas a secciones —#sec1, #sec4— porque
-   la raíz ya no es la página larga sino el anillo, y ahí no existen. */
+   la raíz ya no es la página larga sino el anillo, y ahí no existen.
+
+   Artistas es hoy la única excepción: el roster todavía no tiene ficha en
+   `public/cosmos/projects.js`, y sin entrada acá la sección quedaría sin
+   ninguna puerta desde el sitio. Cuando el anillo la incorpore, esta línea
+   deja de ser una excepción y vuelve a espejar una tarjeta. */
 const NAV_ITEMS = [
   { label: "Home",         href: "/" },
   { label: "Grow Digital", href: "/diseno-web" },
@@ -14,6 +19,7 @@ const NAV_ITEMS = [
   { label: "Agentes IA",   href: "/colmena-agentes" },
   { label: "Branding",     href: "/branding" },
   { label: "Hivrido PLAY", href: "/play" },
+  { label: "Artistas",     href: "/artistas" },
   { label: "Equipo",       href: "/equipo" },
 ];
 
