@@ -65,7 +65,10 @@ export const CATALOG: Title[] = [
     synopsis:
       "Cuatro pibes del conurbano, una loma al atardecer y todo lo que no se dicen. Primera temporada en producción, con elenco salido del casting abierto.",
     badge: "PRONTO",
-    poster: "/images/casting/cuchillo-paz-poster-800.webp",
+    /* Pieza propia, no el afiche de /casting: ese es 2:3 y la tarjeta es
+       16:9, así que al recortarlo se perdía la mitad del título. La genera
+       scripts/build-casting-assets.mjs desde el mismo máster. */
+    poster: "/images/series/cuchillo-paz.webp",
   },
   {
     id: "el-docke",

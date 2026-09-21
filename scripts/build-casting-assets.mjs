@@ -1,7 +1,7 @@
 /**
  * Genera las imágenes de /casting a partir del póster de Cuchillo Paz.
  *
- * Produce dos cosas:
+ * Produce tres cosas:
  *
  * 1. `casting-cuchillo-paz.jpg` — la tarjeta que se ve al pegar el link en
  *    WhatsApp. Es lo primero que mira casi todo el mundo: antes que la
@@ -12,6 +12,10 @@
  *
  * 2. `cuchillo-paz-poster-{400,800}.webp` — el arte que se muestra en la
  *    página. Dos anchos para el `srcset`: el teléfono baja el de 400.
+ *
+ * 3. `series/cuchillo-paz.webp` — la tarjeta apaisada del catálogo de PLAY.
+ *    El póster es vertical y la fila de Series es 16:9: sin una pieza propia,
+ *    el recorte automático parte el título al medio.
  *
  * NO corre en `prebuild`. La salida está commiteada y la fuente no —misma
  * convención que `scripts/lib/resize-images.mjs`: las fuentes pesadas viven
@@ -159,3 +163,53 @@ for (const ancho of [400, 800]) {
     `cuchillo-paz-poster-${ancho}.webp — ${info.width}x${info.height}, ${(info.size / 1024).toFixed(0)} kB`
   );
 }
+
+/* ── 3 · La tarjeta del catálogo de PLAY ────────────────────────────────── */
+
+/**
+ * El mismo máster, recortado a 16:9 para la fila de Series.
+ *
+ * La tarjeta de PLAY es apaisada y el póster es 2:3: puesto entero con
+ * `cover`, el navegador se quedaba con la banda del medio y partía la palabra
+ * CUCHILLO al ras. Se leía "…HILLO PAZ" sobre una ciudad, que es justo lo que
+ * una miniatura no puede permitirse.
+ *
+ * La ventana se toma del logotipo, no del centro geométrico: entra el bloque
+ * tipográfico completo —corona, las dos palabras y los chorreados— y queda
+ * afuera el mango del cuchillo, que sigue fuera de cuadro sin que se note. El
+ * atardecer y los cuatro pibes viven en el póster vertical de /casting, que no
+ * se toca: son dos piezas para dos formatos, no un recorte peleando con los
+ * dos usos.
+ *
+ * El recorte se expresa en fracciones del alto de la fuente y no en píxeles,
+ * así un re-export del póster a otra medida sigue cayendo en el mismo lugar.
+ */
+const cardDir = path.join(root, "public", "images", "series");
+const { width: srcW, height: srcH } = await sharp(POSTER).metadata();
+
+/* Dónde arranca la ventana, medido sobre el alto del póster. Subirlo recorta
+   más chorreado abajo; bajarlo se come la corona. */
+const CARD_TOP = 0.163;
+const CARD_W = 1280;
+
+await mkdir(cardDir, { recursive: true });
+
+const bandaAlto = Math.round((srcW * 9) / 16);
+const card = path.join(cardDir, "cuchillo-paz.webp");
+const cardInfo = await sharp(POSTER)
+  .extract({
+    left: 0,
+    top: Math.min(Math.round(srcH * CARD_TOP), srcH - bandaAlto),
+    width: srcW,
+    height: bandaAlto,
+  })
+  .resize(CARD_W, Math.round((CARD_W * 9) / 16))
+  /* 76 y no 84: el arte es puro grano, vidrio roto y salpicadura, y eso no
+     comprime. A 84 la miniatura pesaba 152 kB —más que cualquier otra de la
+     fila— para un detalle que a 320 px nadie ve. */
+  .webp({ quality: 76, effort: 6 })
+  .toFile(card);
+
+console.log(
+  `series/cuchillo-paz.webp — ${cardInfo.width}x${cardInfo.height}, ${(cardInfo.size / 1024).toFixed(0)} kB`
+);

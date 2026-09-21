@@ -100,15 +100,21 @@ function Card({ item, index, wide, onPlay }: {
           <div className="mp-card-play">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
           </div>
-          <div
-            style={{
-              position: "absolute", bottom: 12, left: 12, right: 12,
-              fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,.5)",
-              letterSpacing: ".05em",
-            }}
-          >
-            {item.title}
-          </div>
+          {/* Solo cuando no hay portada. Es el rótulo del degradado —lo
+              único que nombra una ficha sin arte—, pero sobre una portada se
+              superponía al afiche y repetía el título que ya se lee justo
+              debajo, en la ficha. */}
+          {!item.poster && (
+            <div
+              style={{
+                position: "absolute", bottom: 12, left: 12, right: 12,
+                fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,.5)",
+                letterSpacing: ".05em",
+              }}
+            >
+              {item.title}
+            </div>
+          )}
         </div>
         <div className="mp-card-info">
           <div className="mp-card-title">{item.title}</div>

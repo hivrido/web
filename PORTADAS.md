@@ -41,6 +41,7 @@ Dos cosas que importan tanto como la medida:
 
 | Título | Archivo sugerido | Estado |
 |---|---|---|
+| Cuchillo Paz | — | **ya está** (`/images/series/cuchillo-paz.webp`) |
 | El Docke | — | **ya está** (`/images/series/eldocke.jpg`) |
 | Session One | — | **ya está** (`/images/series/sessionone.webp`) |
 | El Monarco | — | **ya está** (`/images/series/elmonarco.jpg`) |
@@ -49,6 +50,11 @@ Dos cosas que importan tanto como la medida:
 | Hackers | `hackers.jpg` | falta |
 | Alma | `alma.jpg` | falta |
 | Okupas | — | **ya está** (`/images/okupas/okupas-home.webp`) |
+
+**Cuchillo Paz es un caso aparte.** Su tarjeta no se sube a mano: la genera
+`node scripts/build-casting-assets.mjs` recortando el afiche vertical del
+casting a una ventana 16:9 que respeta el logotipo completo. Si el afiche
+cambia, se vuelve a correr el script — no se edita la imagen por fuera.
 
 ### Películas
 
