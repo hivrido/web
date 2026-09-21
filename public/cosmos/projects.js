@@ -169,4 +169,30 @@ export const PROJECTS = [
        tarjetas del anillo se lee como un error. Hasta que haya arte propio de
        campañas va el fondo procedural en su acento. */
   },
+  {
+    id: 'roster',
+    index: '08',
+    title: 'ARTISTAS',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Artistas'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Representación',
+    /* La palabra con la que se busca: es la que va a la lista de disciplinas */
+    category: 'Artistas',
+    /* El título ya dice ARTISTAS: el rótulo aporta lo que hacemos con ellos */
+    hudCategory: 'Representación',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Una carrera, no un feed',
+    year: '2026',
+    /* Sin `client`: el roster es casa propia, no una pieza para alguien */
+    body: 'Representamos artistas con audiencia real y ninguna casa: les construimos identidad, catálogo y una URL propia. Dirección creativa, producción audiovisual, contenido y pauta, para que lo que ya funciona en un feed se pueda mostrar, contratar y medir. Trabajamos con pocos a la vez porque cada carrera lleva producción propia.',
+    tags: ['Representación', 'Dirección', 'Contenido', 'Pauta'],
+    /* Destino del botón del panel: el roster */
+    link: { label: 'Ir a Artistas', href: '/artistas/' },
+    accent: '#FF1B8D',
+    /* Sin `image` a propósito, como BRANDING y PUBLICIDAD: no hay arte propio
+       del roster todavía, y la foto de un artista en la tarjeta de la sección
+       la convertiría en la ficha de esa persona. Hasta entonces, el fondo
+       procedural en su acento, que es de la casa. */
+  },
 ];
