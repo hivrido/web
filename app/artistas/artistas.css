@@ -10,8 +10,9 @@
  *   propósito: una página vacía con ritmo se lee como editorial, una página
  *   vacía sin ritmo se lee como sin terminar.
  * - Una sola pieza gráfica por ficha, dibujada en CSS: la cápsula de Amplax,
- *   el encuadre vertical de Kareen. No cuesta una petición, no se pixela y no
- *   envejece como envejece una foto de hace dos años.
+ *   el encuadre vertical de Kareen, los tres aros de Jairito. No cuesta una
+ *   petición, no se pixela y no envejece como envejece una foto de hace dos
+ *   años.
  * - El color va en dos niveles y no se mezclan. `--art-marca` es el magenta
  *   de ARTISTAS: el mismo de la placa en el anillo de la portada, y el que
  *   pinta todo lo que habla en nombre de la sección —atmósfera, índice,
@@ -435,6 +436,28 @@ html:has(.art-page) body {
   .art-emblema--reel::after {
     bottom: 34px;
   }
+
+  /* ── Junta ──────────────────────────────────────────────────────────
+     Tres aros cruzados. Es la única figura del set que no habla de una
+     persona sino de un grupo, que es exactamente el argumento de Jairito:
+     nunca aparece solo. Se dibuja con degradados radiales de corte duro
+     —el aro es la franja entre dos radios— porque un `box-shadow` copia
+     la caja y no el trazo, y tres elementos para tres aros serían tres
+     nodos de adorno en el DOM. */
+  .art-emblema--junta {
+    width: 200px;
+    height: 400px;
+    background:
+      radial-gradient(circle 56px at 66px 152px, transparent 0 53px, var(--art-acento) 53px 55px, transparent 55px),
+      radial-gradient(circle 56px at 134px 152px, transparent 0 53px, var(--art-acento) 53px 55px, transparent 55px),
+      radial-gradient(circle 56px at 100px 212px, transparent 0 53px, var(--art-acento) 53px 55px, transparent 55px),
+      radial-gradient(76% 42% at 50% 45%, var(--art-acento-suave) 0%, transparent 70%);
+    filter: drop-shadow(0 0 38px var(--art-acento-suave));
+  }
+
+  .art-emblema--junta::after {
+    bottom: 96px;
+  }
 }
 
 @keyframes art-flotar {
@@ -644,6 +667,97 @@ html:has(.art-page) body {
   margin: 0;
   font-size: 14px;
   line-height: 26px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   El mismo universo
+
+   El cruce entre fichas. Dos de los tres representados publican juntos, y
+   una ficha que no lo dice tira a la basura la prueba más fuerte que tiene
+   el roster: que acá hay una escena y no tres carpetas.
+
+   Cada tarjeta se pinta con el acento del artista al que lleva, no con el
+   de la ficha donde está: el color es lo que hace que el salto se lea como
+   una puerta a otro lado y no como un módulo más de esta página.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-universo {
+  display: grid;
+  gap: 1px;
+  margin-top: 8px;
+  background: var(--art-linea);
+  border: 1px solid var(--art-linea);
+}
+
+@media (min-width: 600px) {
+  .art-universo { grid-template-columns: 1fr 1fr; }
+}
+
+.art-vecino {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: clamp(22px, 3.4vw, 30px) clamp(20px, 3vw, 30px);
+  background: var(--bg);
+  transition: background 0.3s ease;
+}
+
+.art-vecino:hover {
+  background: var(--art-panel);
+}
+
+/* El punto de color del vecino: su acento, del tamaño justo para leerse
+   como una firma y no como un bullet. */
+.art-vecino::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--art-acento);
+  box-shadow: 0 0 16px -2px var(--art-acento);
+}
+
+.art-vecino-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.art-vecino-alias {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--art-acento);
+}
+
+.art-vecino-nombre {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+  transition: color 0.3s ease;
+}
+
+.art-vecino:hover .art-vecino-nombre {
+  color: #fff;
+}
+
+.art-vecino-flecha {
+  flex: none;
+  color: var(--art-tenue);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.art-vecino:hover .art-vecino-flecha {
+  transform: translateX(4px);
+  color: var(--art-acento);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

@@ -4,7 +4,12 @@ import { notFound } from "next/navigation";
 import ClientShell from "../../components/layout/ClientShell";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
-import { ARTISTAS, getArtista, type Artista } from "../../lib/artistas";
+import {
+  ARTISTAS,
+  getArtista,
+  vecinosDe,
+  type Artista,
+} from "../../lib/artistas";
 import RedIcono, { NOMBRE_RED } from "../RedIcono";
 import PlayerLite from "../PlayerLite";
 import "../artistas.css";
@@ -101,6 +106,8 @@ export default async function FichaArtistaPage({
     a.lanzamientos.find((l) => l.id === a.destacado && l.ytId) ??
     a.lanzamientos.find((l) => l.ytId);
   const resto = a.lanzamientos.filter((l) => l.id !== destacado?.id);
+
+  const vecinos = vecinosDe(a);
 
   const waArtista =
     WA_BASE + encodeURIComponent(`Hola Hivrido! Quiero contratar a ${a.nombre}.`);
@@ -274,6 +281,43 @@ export default async function FichaArtistaPage({
             )}
           </div>
         </section>
+
+        {/* ── El mismo universo ────────────────────────────────────────── */}
+        {vecinos.length > 0 && (
+          <section className="art-section">
+            <div className="art-wrap">
+              <p className="art-eyebrow">En el mismo universo</p>
+              <h2 className="art-h2">La escena</h2>
+
+              <div className="art-universo">
+                {vecinos.map((v) => (
+                  <Link
+                    key={v.slug}
+                    href={`/artistas/${v.slug}`}
+                    className="art-vecino"
+                    /* El acento es el del destino, no el de esta ficha: el
+                       color es lo que anuncia que el click lleva a otro
+                       lado antes de que se lea el nombre. */
+                    style={
+                      {
+                        "--art-acento": v.acento.hex,
+                        "--art-acento-suave": v.acento.suave,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <span className="art-vecino-texto">
+                      <span className="art-vecino-alias">{v.alias}</span>
+                      <span className="art-vecino-nombre">{v.nombre}</span>
+                    </span>
+                    <svg className="art-vecino-flecha" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ── Datos y plataformas ──────────────────────────────────────── */}
         <section className="art-section">

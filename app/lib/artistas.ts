@@ -94,7 +94,7 @@ export type Artista = {
    * figura y `leyenda` es lo que va grabado en ella. Es lo que impide que
    * dos fichas sin fotos se vean iguales.
    */
-  emblema: { forma: "capsula" | "reel"; leyenda: string };
+  emblema: { forma: "capsula" | "reel" | "junta"; leyenda: string };
   /**
    * El concepto de la carrera, en párrafos. Es dirección creativa, no bio:
    * dice qué es el proyecto, no dónde nació el artista. Los datos personales
@@ -122,6 +122,14 @@ export type Artista = {
    * prometer "temas y videoclips" a quien hace humor es prometer de más.
    */
   enConstruccion?: string;
+  /**
+   * Slugs de los artistas con los que comparte escena. El roster no es una
+   * lista de contratos sueltos: dos de estos tres publican juntos, y una
+   * ficha que no lo dice desperdicia la prueba más fuerte que tiene —que
+   * acá hay un universo y no tres carpetas—. Se declara en los dos lados,
+   * a mano y no por inferencia: colaborar una vez no es compartir escena.
+   */
+  universo?: string[];
 };
 
 export const ARTISTAS: Artista[] = [
@@ -220,6 +228,7 @@ export const ARTISTAS: Artista[] = [
     destacado: "la-fina",
     enConstruccion:
       "El catálogo está abierto. Los próximos lanzamientos —temas, videoclips y piezas de contenido— se suman a esta página a medida que salen.",
+    universo: ["kareen-nahirr", "jairito-veras"],
   },
 
   {
@@ -231,10 +240,12 @@ export const ARTISTAS: Artista[] = [
     /* No es una banda: es una creadora. El schema lo dice así. */
     schema: "Person",
     rol: "Creadora de contenido",
-    /* Cian de pantalla encendida. Elegido por distancia: tiene que separarse
-       del magenta de la sección y de la lima de Amplax para que dos fichas
-       seguidas no se lean como la misma plantilla. */
-    acento: { hex: "#22E1FF", suave: "rgba(34, 225, 255, 0.14)" },
+    /* Rosa chicle. Es su color, no el de la casa: el magenta #FF1B8D de la
+       sección ya está ocupado —es el de la placa ARTISTAS en el anillo— y
+       dárselo a ella borraría la diferencia entre la artista y el contenedor
+       que la presenta. Este es dos tonos más claro y más cálido: se lee rosa
+       de lejos y no se pisa con el magenta cuando los dos están en pantalla. */
+    acento: { hex: "#FF8FC5", suave: "rgba(255, 143, 197, 0.14)" },
     /* El encuadre vertical del teléfono con la cifra del mes grabada: el
        formato y el número son, literalmente, de lo que se trata. */
     emblema: { forma: "reel", leyenda: "2,53 M" },
@@ -331,12 +342,140 @@ export const ARTISTAS: Artista[] = [
     ],
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: formatos de marca integrada sobre el POV y la serie por partes, y el salto del reel a la cámara.",
+    universo: ["amplax"],
+  },
+
+  {
+    slug: "jairito-veras",
+    nombre: "Jairito Veras",
+    /* "Jairo Vera" es un cantante con carrera propia y gana en cualquier
+       buscador: el nombre de la ficha arranca del handle del artista para no
+       competir contra alguien que no es él. */
+    alias: "El de la junta",
+    tagline: "El amigo que todos etiquetan.",
+    disciplinas: ["Humor", "Reels", "Elenco", "Contenido", "Performance"],
+    schema: "Person",
+    rol: "Creador de contenido",
+    /* Cian de pantalla. Queda a la máxima distancia de los otros tres tonos
+       en juego —el magenta de la casa, la lima de Amplax, el rosa de
+       Kareen—: con tres fichas en el índice, el color es lo primero que
+       distingue una de otra antes de que se lea un nombre. */
+    acento: { hex: "#22E1FF", suave: "rgba(34, 225, 255, 0.14)" },
+    /* Tres aros cruzados: la junta. Es literalmente el argumento —nunca
+       aparece solo— y la única figura del set que no habla de una persona. */
+    emblema: { forma: "junta", leyenda: "2,04 M" },
+    manifiesto: [
+      "En los últimos treinta días lo vieron 2.042.356 veces. Lo siguen 4.941 personas. Entraron a su perfil 1.563, y tocaron el link 2. No es un problema de talento ni de alcance: es que no hay nada del otro lado.",
+      "Lo que hace es humor de junta. El amigo envidioso, el gobernado, el fantasma, el que te pide plata, el que no sabe disimular: cada reel es alguien que el que mira conoce, y por eso termina etiquetado. No trabaja solo frente a cámara. Es parte de un elenco que se repite entre cuentas y se reconoce de un video al otro.",
+      "Hivrido no viene a sacarlo del grupo ni a inventarle un personaje. Viene a darle nombre, ficha y un contacto: que los dos millones que lo ven cada mes sepan quién es, y que el que quiera trabajar con él lo encuentre.",
+    ],
+    ejes: [
+      {
+        titulo: "La junta es el formato",
+        texto:
+          "El chiste funciona porque detrás hay un grupo real. No se reemplaza por un monólogo a cámara: se dirige, se produce y se sostiene como elenco.",
+      },
+      {
+        titulo: "Todos tienen un amigo así",
+        texto:
+          "«Tu amigo el ___» no es una frase, es un catálogo. Cada arquetipo nuevo es una pieza que la audiencia distribuye sola, etiquetando.",
+      },
+      {
+        titulo: "De co-autor a autor",
+        texto:
+          "Hoy el alcance vive en cuentas ajenas. El trabajo es que cada colaboración deje algo en casa: nombre, seguidores y un lugar adonde volver.",
+      },
+      {
+        titulo: "La marca es un amigo más",
+        texto:
+          "Una marca no interrumpe la junta, se sienta en ella. El arquetipo y el «etiquetá a ese amigo» aguantan una integración con la misma voz.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "jairitoveras3279",
+        href: "https://www.instagram.com/jairitoveras3279/",
+      },
+    ],
+    metricas: [
+      {
+        valor: "2,04 M",
+        label: "Visualizaciones en 30 días",
+        fuente: "Panel @jairitoveras3279 · 22/09/2026",
+      },
+      {
+        valor: "97,6 %",
+        label: "Vistas de gente que todavía no lo sigue",
+        fuente: "Panel @jairitoveras3279 · 30 días",
+      },
+      {
+        valor: "210 K",
+        label: "Interacciones en 30 días",
+        fuente: "Panel @jairitoveras3279 · 30 días",
+      },
+      {
+        valor: "9,4 M",
+        label: "Vistas en 45 reels en 100 días",
+        fuente: "Reels · jun–sep 2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que la gente etiquetó" },
+    /* Los tres son colaborativos y salieron publicados desde la cuenta del
+       co-autor, así que `con` lleva de quién es el posteo. Sin ese crédito
+       la cifra se leería como tráfico propio y no lo es: es exactamente lo
+       que la ficha se propone cambiar, y decirlo mal acá sería vender humo
+       a la marca que viene a mirar los números. */
+    lanzamientos: [
+      {
+        id: "carrera-de-flash",
+        titulo: "Carrera de flash",
+        tipo: "reel",
+        year: "2026",
+        con: "@emii_chede",
+        dato: "822 K vistas · 110 K me gusta · 6,1 K compartidos",
+      },
+      {
+        id: "cuando-hay-amistad-se-nota",
+        titulo: "Cuando hay amistad se nota",
+        tipo: "reel",
+        year: "2026",
+        con: "@amplax10mg",
+        dato: "782 K vistas · 62,1 K me gusta · 3,1 K compartidos",
+      },
+      {
+        id: "la-unica-amiga-del-grupo",
+        titulo: "Cuando sos la única amiga del grupo",
+        tipo: "reel",
+        year: "2026",
+        con: "@amplax10mg",
+        dato: "667 K vistas · 36,9 K me gusta · 6 K compartidos",
+      },
+    ],
+    enConstruccion:
+      "Está en producción el primer ciclo con Hivrido: una serie propia de arquetipos de amigo, formatos de marca integrada dentro de la junta y el cruce con el universo de Amplax 10 mg.",
+    universo: ["amplax", "kareen-nahirr"],
   },
 ];
 
 /** Ficha por slug. `undefined` si no existe: la ruta responde 404. */
 export function getArtista(slug: string): Artista | undefined {
   return ARTISTAS.find((a) => a.slug === slug);
+}
+
+/**
+ * Los artistas con los que comparte escena, ya resueltos.
+ *
+ * Descarta el slug que no existe en vez de romper la página: si alguien sale
+ * del roster, la ficha del que se queda pierde una tarjeta y no la vista
+ * entera. Y descarta al propio artista, que es el único enlace de esta lista
+ * que no lleva a ningún lado.
+ */
+export function vecinosDe(a: Artista): Artista[] {
+  return (a.universo ?? [])
+    .filter((slug) => slug !== a.slug)
+    .map(getArtista)
+    .filter((v): v is Artista => v !== undefined);
 }
 
 /** Portada de un lanzamiento. Sale de YouTube: no hay arte propio todavía. */
