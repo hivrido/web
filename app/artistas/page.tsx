@@ -91,11 +91,19 @@ export default function ArtistasPage() {
                 <p className="art-ficha-tagline">{a.tagline}</p>
 
                 <div className="art-ficha-pie">
-                  {a.disciplinas.slice(0, 3).map((d) => (
-                    <span key={d}>{d}</span>
-                  ))}
+                  {/* Las disciplinas van en su propio contenedor: el separador
+                      se dibuja entre ellas y no después de la última, que es
+                      donde quedaba colgado cuando el botón era un hermano más. */}
+                  <span className="art-ficha-tags">
+                    {a.disciplinas.slice(0, 3).map((d) => (
+                      <span key={d}>{d}</span>
+                    ))}
+                  </span>
                   <span className="art-ficha-ver" aria-hidden>
-                    Ver ficha →
+                    Ver ficha
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
                   </span>
                 </div>
               </Link>

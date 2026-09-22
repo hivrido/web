@@ -30,7 +30,12 @@
 
   /* ─ Layout ─ */
   --header-h: 90px;
-  --col-w: 320px;
+
+  /* Ancho reservado a la columna fija de la derecha. Cero por defecto: la
+     columna la monta una sola ruta —/estudio— y cualquier otra que reserve
+     ese hueco sin dibujarlo termina con el header cortado y una franja negra
+     al costado. Ver `body:has(.fixed-column)` más abajo. */
+  --col-w: 0px;
 
   /* ─ Forma de botón (identidad Fuxxia): esquinas biseladas ─
      Sobrescribí --bevel en cualquier botón para ajustar el corte. */
@@ -225,29 +230,35 @@ a { text-decoration: none; color: inherit; }
   z-index: 50;
   height: var(--header-h);
   width: calc(100% - var(--col-w));
-  background: var(--bg-2);
+  /* Mismo cristal que la portada institucional: translúcido y con blur, no
+     un bloque opaco. Es lo que hace que la barra se lea como una sola pieza
+     en todo el sitio en vez de cambiar de material según la ruta. */
+  background: rgba(10, 9, 16, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   padding: 0 0 0 0;
   overflow: hidden;
 }
+/* La barra mide 100% − col-w y .page-wrapper deja ese margen a la derecha,
+   para que ni una ni otro se metan debajo de la columna fija. Solo la ruta
+   que la monta reserva el hueco: el resto la barra llega al borde. Abajo de
+   1024 la columna no se dibuja, así que tampoco ahí. */
+body:has(.fixed-column) { --col-w: 320px; }
 @media (max-width: 1024px) {
-  .main-header { width: 100%; }
-  :root { --col-w: 0px; }
+  body:has(.fixed-column) { --col-w: 0px; }
 }
-/* --col-w es el ancho que el layout le reserva a la columna fija de la home:
-   la barra mide 100% − col-w y .page-wrapper deja ese margen a la derecha.
-   Las rutas que no montan esa columna tienen que ponerlo en cero, o queda una
-   franja negra de 320 px al costado y el header cortado antes del borde. */
-body:has(.dw-page),
-body:has(.orbital) { --col-w: 0px; }
 
 /* En pantallas angostas los tres bloques del header suman más que el ancho
    disponible —logo 258 + social 76 + menú 136 = 470— y como la barra recorta
    y los extremos no encogen, el botón de menú queda cortado. Se achican las
    piezas, no la altura de la barra, para no mover el resto del layout. */
 @media (max-width: 560px) {
+  /* La barra baja a 72, como en la portada: 90 px de cromo fijo sobre una
+     pantalla de teléfono se comen el primer golpe de vista de la página. */
+  :root { --header-h: 72px; }
   .logo-holder { padding: 0 14px; }
   .logo-holder svg { height: 30px; width: auto; }
   .header-social { padding: 0 10px; }
@@ -260,7 +271,8 @@ body:has(.orbital) { --col-w: 0px; }
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--bg);
+  /* Sin fondo propio: el recuadro negro detrás del logo partía la barra en
+     dos materiales distintos. El cristal del header pasa entero por debajo. */
   padding: 0 24px;
   flex-shrink: 0;
 }
@@ -309,6 +321,7 @@ body:has(.orbital) { --col-w: 0px; }
   -webkit-tap-highlight-color: transparent;
 }
 .nav-btn-text {
+  font-family: var(--font-display);
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;

@@ -717,20 +717,67 @@ html:has(.art-page) body {
 
 .art-roster {
   display: grid;
-  gap: 1px;
-  background: var(--art-linea);
-  border-block: 1px solid var(--art-linea);
+  gap: clamp(18px, 3vw, 26px);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   La ficha del roster
+
+   Con un solo artista en el plantel, una fila a sangre entre dos hairlines
+   se leía como un renglón de tabla: la sección parecía un índice a la espera
+   de contenido en vez de la presentación de un representado. Pasa a tarjeta
+   con el mismo haz de luz que recorre los botones del anillo, que es lo que
+   en este sitio significa "esto está activo".
+   ───────────────────────────────────────────────────────────────────────── */
+
 .art-ficha {
+  position: relative;
   display: block;
-  padding: clamp(32px, 6vw, 56px) clamp(22px, 4vw, 44px);
-  background: var(--bg);
-  transition: background 0.35s ease;
+  padding: clamp(30px, 5.4vw, 54px) clamp(22px, 4vw, 44px);
+  border-radius: 18px;
+  border: 1px solid var(--art-linea);
+  background:
+    radial-gradient(120% 140% at 12% 0%, var(--art-acento-suave) 0%, transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 .art-ficha:hover {
-  background: var(--art-panel);
+  border-color: color-mix(in srgb, var(--art-acento) 45%, transparent);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 60px -30px var(--art-acento);
+}
+
+/* El cometa del borde. Gira el ángulo del degradado, no el elemento: rotar
+   la tarjeta la sacaría de su sitio y arrastraría la máscara con ella. La
+   máscara es de dos capas restadas —borde menos contenido— porque el recorte
+   radial del aro no le sirve a un rectángulo. `--beam` y `beam-run` los
+   define globals.css, que es de donde salen los botones de la portada. */
+.art-ficha::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 186deg,
+    color-mix(in srgb, var(--art-acento) 55%, transparent) 296deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: beam-run 4.4s linear infinite;
+  pointer-events: none;
+}
+
+.art-ficha > * {
+  position: relative;
+  z-index: 1;
 }
 
 .art-ficha-alias {
@@ -769,38 +816,130 @@ html:has(.art-page) body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 16px;
-  margin-top: 24px;
+  gap: 18px;
+  margin-top: 28px;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--art-tenue);
 }
 
-.art-ficha-pie span::after {
-  content: "·";
+.art-ficha-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.art-ficha-tags span::after {
+  content: " b7";
   margin-left: 16px;
   color: var(--art-linea);
 }
 
-.art-ficha-pie span:last-of-type::after {
+.art-ficha-tags span:last-child::after {
   content: none;
 }
 
+/* El botón repite la píldora de la portada: relleno translúcido del acento,
+   haz blanco recorriendo el trazo y destello al pasar el cursor. */
 .art-ficha-ver {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   margin-left: auto;
-  color: var(--art-acento);
+  padding: 12px 24px;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--art-acento) 45%, transparent);
+  background: color-mix(in srgb, var(--art-acento) 14%, transparent);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #fff;
+  transition: background 0.4s ease, border-color 0.4s ease,
+              box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.art-ficha-ver::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 200deg,
+    color-mix(in srgb, var(--art-acento) 70%, transparent) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: beam-run 2.6s linear infinite;
+  pointer-events: none;
+}
+
+/* El destello viaja con `background-position` y no desplazando el pseudo:
+   desplazado se lleva su propio recorte puesto y la luz termina flotando al
+   costado del botón. */
+.art-ficha-ver::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.22) 50%, transparent 70%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  transition: background-position 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.art-ficha-ver svg {
+  position: relative;
+  z-index: 1;
   transition: transform 0.3s ease;
 }
 
 .art-ficha:hover .art-ficha-ver {
-  transform: translateX(5px);
+  background: color-mix(in srgb, var(--art-acento) 26%, transparent);
+  border-color: var(--art-acento);
+  box-shadow: 0 0 34px -6px var(--art-acento);
 }
 
-/* Hueco del roster: invita en vez de fingir que el plantel está completo. */
+.art-ficha:hover .art-ficha-ver::after {
+  background-position: 0 0;
+}
+
+.art-ficha:hover .art-ficha-ver svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 560px) {
+  .art-ficha-pie {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .art-ficha-ver {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Hueco del roster: invita en vez de fingir que el plantel está completo.
+   Sin haz ni relleno: la luz es del artista que ya está, no de la vacante. */
 .art-sumate {
-  padding: clamp(32px, 6vw, 56px) clamp(22px, 4vw, 44px);
-  background: var(--bg);
+  padding: clamp(30px, 5.4vw, 48px) clamp(22px, 4vw, 44px);
+  border-radius: 18px;
+  border: 1px dashed var(--art-linea);
+  background: transparent;
 }
 
 .art-sumate h2 {
@@ -816,4 +955,10 @@ html:has(.art-page) body {
 .art-sumate p {
   max-width: 50ch;
   margin: 0 0 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-ficha::before,
+  .art-ficha-ver::before { animation: none; }
+  .art-ficha:hover { transform: none; }
 }
