@@ -97,6 +97,9 @@ export const ARTISTAS: Artista[] = [
     disciplinas: ["Música", "RKT", "Humor", "Performance", "Contenido"],
     /* Lima clínica: es el color de una cápsula, no un neón de moda. Entra
        solo en líneas y cifras — el 95% de la ficha sigue siendo negro. */
+    /* El color es del artista, no de la sección: solo se pinta dentro de lo
+       que le pertenece —su tarjeta en el índice y su ficha—. El magenta de
+       ARTISTAS lo pone `--art-marca` y no se toca desde acá. */
     acento: { hex: "#CDF564", suave: "rgba(205, 245, 100, 0.14)" },
     manifiesto: [
       "Amplax 10 mg es el nombre de un ansiolítico. Charly se lo puso a su proyecto, y ahí quedó dicho todo: lo que hace es una dosis. No dos carreras en paralelo —el que hace reír y el que hace bailar— sino una sola receta con dos formas de tomarla.",

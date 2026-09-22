@@ -189,6 +189,11 @@ export const PROJECTS = [
     tags: ['Representación', 'Dirección', 'Contenido', 'Pauta'],
     /* Destino del botón del panel: el roster */
     link: { label: 'Ir a Artistas', href: '/artistas/' },
+    /* El magenta de la sección. No se mueve solo: `--art-marca` en
+       `app/artistas/artistas.css` es el mismo valor, y es lo que hace que
+       la placa y la página que abre se lean como una sola habitación. El
+       acento de cada artista —el lima de Amplax— vive dentro de su ficha,
+       nunca acá: esta placa habla por la sección, no por el roster. */
     accent: '#FF1B8D',
     /* Sin `image` a propósito, como BRANDING y PUBLICIDAD: no hay arte propio
        del roster todavía, y la foto de un artista en la tarjeta de la sección

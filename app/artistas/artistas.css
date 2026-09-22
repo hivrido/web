@@ -12,10 +12,14 @@
  * - Una sola pieza gráfica por ficha, dibujada en CSS. Para Amplax es la
  *   cápsula. No cuesta una petición, no se pixela y no envejece como envejece
  *   una foto de hace dos años.
- * - El color propio del artista entra por `--art-acento`, que la ficha setea
- *   inline desde el dato. Se usa en líneas, cifras y un subrayado; nunca en
- *   fondos grandes. Es lo que hace que dos artistas no se confundan sin que
- *   la sección deje de ser Hivrido.
+ * - El color va en dos niveles y no se mezclan. `--art-marca` es el magenta
+ *   de ARTISTAS: el mismo de la placa en el anillo de la portada, y el que
+ *   pinta todo lo que habla en nombre de la sección —atmósfera, índice,
+ *   convocatoria, la vuelta al roster—. `--art-acento` es el del artista,
+ *   que la ficha setea inline desde el dato y solo vive dentro de lo suyo:
+ *   su tarjeta y su página. En líneas, cifras y subrayados; nunca en fondos
+ *   grandes. Así dos artistas no se confunden entre sí y ninguno se confunde
+ *   con la casa que los presenta.
  * - Grises propios: `--text-muted` de globals.css queda en 4,3:1 sobre este
  *   fondo, por debajo del AA. Los de acá pasan.
  *
@@ -39,9 +43,28 @@ html:has(.art-page) body {
   --art-linea: rgba(255, 255, 255, 0.10);
   --art-panel: rgba(255, 255, 255, 0.026);
 
-  /* Por defecto el violeta de la casa. Cada ficha lo pisa con el suyo. */
-  --art-acento: var(--violet-light);
-  --art-acento-suave: var(--violet-dim);
+  /* ── Identidad de la sección ──────────────────────────────────────────
+     Magenta. No es una elección de esta hoja: es el color con el que la
+     placa ARTISTAS se anuncia en el anillo de la portada —`accent` de la
+     ficha `roster` en `public/cosmos/projects.js`— y el mismo que atraviesa
+     el degradado del título del anillo. Los dos valores tienen que moverse
+     juntos: si la placa es de un color y la sección de otro, el click deja
+     de ser una puerta y pasa a ser un salto.
+
+     Antes acá había violeta, que no es de nadie: es el color de CINE &
+     VIDEO en el anillo. La sección entera se leía como otra sección. */
+  --art-marca: #FF1B8D;
+  --art-marca-suave: rgba(255, 27, 141, 0.16);
+  --art-marca-tenue: rgba(255, 27, 141, 0.09);
+
+  /* ── Acento del artista ───────────────────────────────────────────────
+     Arranca en el de la sección y solo lo pisa el artista, dentro de lo
+     que es suyo: su tarjeta en el índice y su ficha completa. El cromo de
+     la sección —índice, convocatoria, atmósfera— nunca lo toma. Un roster
+     de varios se lee por el color de cada uno; la casa que los presenta,
+     por el propio. */
+  --art-acento: var(--art-marca);
+  --art-acento-suave: var(--art-marca-suave);
 
   position: relative;
   min-height: 100dvh;
@@ -61,7 +84,10 @@ html:has(.art-page) body {
   pointer-events: none;
   background:
     radial-gradient(120% 70% at 50% 0%, var(--art-acento-suave) 0%, transparent 62%),
-    radial-gradient(90% 60% at 80% 12%, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+    /* El hilo de la sección. Aunque la ficha de un artista traiga su color
+       y se lleve el primer degradado, el magenta de ARTISTAS sigue en el
+       aire: es lo que dice de quién es la casa donde estás parado. */
+    radial-gradient(90% 60% at 80% 12%, var(--art-marca-tenue) 0%, transparent 70%);
 }
 
 .art-page::after {
@@ -171,6 +197,19 @@ html:has(.art-page) body {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--art-acento);
+}
+
+/* El traspaso, dicho en color: "Roster Hivrido" va en el magenta de la
+   sección y el alias en el del artista, separados por el punto medio. Se lee
+   de quién es la casa y de quién es el nombre sin una palabra de más. */
+.art-hero-alias a {
+  color: var(--art-marca);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+
+.art-hero-alias a:hover {
+  border-bottom-color: var(--art-marca);
 }
 
 .art-hero-nombre {
@@ -832,7 +871,7 @@ html:has(.art-page) body {
 }
 
 .art-ficha-tags span::after {
-  content: " b7";
+  content: "·";
   margin-left: 16px;
   color: var(--art-linea);
 }
