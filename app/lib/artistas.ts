@@ -134,10 +134,16 @@ export const ARTISTAS: Artista[] = [
         handle: "amplax10mg",
         href: "https://www.instagram.com/amplax10mg/",
       },
+      /* El canal, no el video. Este módulo lista dónde vive el artista, así
+         que cada fila tiene que llamarse como él y llevar a su casa en esa
+         plataforma: acá decía "La Fina" —el nombre de un tema— y apuntaba al
+         watch de ese clip. Además es lo que alimenta el `sameAs` del
+         schema.org, que ata perfiles a una entidad; un video suelto ahí no
+         ata nada. El clip sigue donde corresponde, en `lanzamientos`. */
       {
         tipo: "youtube",
-        handle: "La Fina",
-        href: "https://www.youtube.com/watch?v=sGd3CrSPdOE",
+        handle: "Amplax10mg",
+        href: "https://www.youtube.com/@Amplax10mg",
       },
       {
         tipo: "soundcloud",
@@ -154,7 +160,7 @@ export const ARTISTAS: Artista[] = [
        reproducciones o de fecha, entran acá con su fuente. */
     metricas: [
       {
-        valor: "11,4 K",
+        valor: "11,6 K",
         label: "Seguidores en Instagram",
         fuente: "@amplax10mg",
       },

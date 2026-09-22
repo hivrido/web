@@ -187,17 +187,23 @@ export const PROJECTS = [
     /* Sin `client`: el roster es casa propia, no una pieza para alguien */
     body: 'Representamos artistas con audiencia real y ninguna casa: les construimos identidad, catálogo y una URL propia. Dirección creativa, producción audiovisual, contenido y pauta, para que lo que ya funciona en un feed se pueda mostrar, contratar y medir. Trabajamos con pocos a la vez porque cada carrera lleva producción propia.',
     tags: ['Representación', 'Dirección', 'Contenido', 'Pauta'],
-    /* Destino del botón del panel: el roster */
-    link: { label: 'Ir a Artistas', href: '/artistas/' },
+    /* Con `href` la tarjeta enciende la pastilla y el click va derecho al
+       roster. Estaba en `link`, que es la variante para las fichas sin nada
+       publicado: abría el panel y recién ahí aparecía el botón. La sección ya
+       está publicada y tiene ficha adentro, así que ese paso de más sobraba. */
+    href: '/artistas/',
+    cta: 'Ver el roster',
+    playLabel: 'VER',
     /* El magenta de la sección. No se mueve solo: `--art-marca` en
        `app/artistas/artistas.css` es el mismo valor, y es lo que hace que
        la placa y la página que abre se lean como una sola habitación. El
        acento de cada artista —el lima de Amplax— vive dentro de su ficha,
        nunca acá: esta placa habla por la sección, no por el roster. */
     accent: '#FF1B8D',
-    /* Sin `image` a propósito, como BRANDING y PUBLICIDAD: no hay arte propio
-       del roster todavía, y la foto de un artista en la tarjeta de la sección
-       la convertiría en la ficha de esa persona. Hasta entonces, el fondo
-       procedural en su acento, que es de la casa. */
+    /* Arte propio y no la foto de un artista: una cara acá convertiría la
+       tarjeta de la sección en la ficha de esa persona. Es un escenario vacío
+       con los cañones encendidos, pintado en el magenta de la sección. Lo
+       genera `scripts/build-artistas-card.mjs`. */
+    image: '/images/bg/artistas.jpg',
   },
 ];
