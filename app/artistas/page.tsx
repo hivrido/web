@@ -9,14 +9,14 @@ import "./artistas.css";
 /**
  * Índice del roster.
  *
- * Hoy hay un solo artista, y eso plantea la pregunta de si la página se
- * justifica. Se justifica: una ficha suelta colgando de un menú es un favor
- * personal, una sección con criterio declarado es una unidad de negocio. El
- * índice existe para decir qué hace Hivrido con una carrera, y el artista es
- * la prueba de que lo hace.
+ * El índice no es una lista de nombres: existe para decir qué hace Hivrido
+ * con una carrera, y los artistas son la prueba de que lo hace. Una ficha
+ * suelta colgando de un menú es un favor personal; una sección con criterio
+ * declarado es una unidad de negocio.
  *
- * Por eso el bloque final no disimula el hueco —no repite tarjetas fantasma
- * para llenar la grilla— sino que lo usa de convocatoria.
+ * El plantel es corto a propósito, así que el bloque final no disimula el
+ * hueco —no repite tarjetas fantasma para llenar la grilla— sino que lo usa
+ * de convocatoria.
  */
 
 const WA =

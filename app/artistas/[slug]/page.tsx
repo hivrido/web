@@ -58,18 +58,29 @@ export async function generateMetadata({
   };
 }
 
-/** Entidad única que junta las cuentas dispersas bajo un mismo nombre. */
+/**
+ * Entidad única que junta las cuentas dispersas bajo un mismo nombre.
+ *
+ * El tipo lo trae el dato: un proyecto musical es `MusicGroup` y admite
+ * `genre`; una creadora de contenido es `Person`, donde ese campo no existe y
+ * lo que corresponde es qué hace y de qué sabe. Emitir una banda donde hay
+ * una persona no es un detalle de formato: es enseñarle a Google algo que no
+ * es cierto sobre alguien.
+ */
 function jsonLd(a: Artista) {
-  return {
+  const base = {
     "@context": "https://schema.org",
-    "@type": "MusicGroup",
+    "@type": a.schema,
     name: a.nombre,
     alternateName: a.alias,
     url: `https://hivrido.com/artistas/${a.slug}`,
     description: a.tagline,
-    genre: a.disciplinas,
     sameAs: a.enlaces.map((e) => e.href),
   };
+
+  return a.schema === "MusicGroup"
+    ? { ...base, genre: a.disciplinas }
+    : { ...base, ...(a.rol && { jobTitle: a.rol }), knowsAbout: a.disciplinas };
 }
 
 export default async function FichaArtistaPage({
@@ -81,8 +92,14 @@ export default async function FichaArtistaPage({
   const a = getArtista(slug);
   if (!a) notFound();
 
+  /* El destacado es el que abre el módulo con reproductor, así que solo
+     califica si tiene video embebible. Sin ese filtro, un artista sin YouTube
+     —el caso de quien publica en reels— ascendía su primera pieza a un hero
+     que no se dibuja y la perdía de la grilla: quedaba fuera de la página
+     sin que nada lo avisara. */
   const destacado =
-    a.lanzamientos.find((l) => l.id === a.destacado) ?? a.lanzamientos[0];
+    a.lanzamientos.find((l) => l.id === a.destacado && l.ytId) ??
+    a.lanzamientos.find((l) => l.ytId);
   const resto = a.lanzamientos.filter((l) => l.id !== destacado?.id);
 
   const waArtista =
@@ -156,9 +173,19 @@ export default async function FichaArtistaPage({
                 </div>
               </div>
 
-              {/* La cápsula. Decorativa: el lector de pantalla no la anuncia
-                  porque no dice nada que el texto no diga mejor. */}
-              <div className="art-capsula" aria-hidden />
+              {/* El emblema del artista. Decorativo: el lector de pantalla no
+                  lo anuncia porque no dice nada que el texto no diga mejor.
+                  La figura la elige el dato y la leyenda entra por variable,
+                  así un artista nuevo trae la suya sin tocar el CSS. */}
+              <div
+                className={`art-emblema art-emblema--${a.emblema.forma}`}
+                style={
+                  {
+                    "--art-leyenda": `"${a.emblema.leyenda}"`,
+                  } as React.CSSProperties
+                }
+                aria-hidden
+              />
             </div>
           </div>
         </section>
@@ -199,8 +226,8 @@ export default async function FichaArtistaPage({
         {/* ── Lanzamientos ─────────────────────────────────────────────── */}
         <section className="art-section" id="lanzamientos">
           <div className="art-wrap">
-            <p className="art-eyebrow">Obra</p>
-            <h2 className="art-h2">Lanzamientos</h2>
+            <p className="art-eyebrow">{a.obra?.eyebrow ?? "Obra"}</p>
+            <h2 className="art-h2">{a.obra?.titulo ?? "Lanzamientos"}</h2>
 
             {destacado?.ytId && (
               <>
@@ -217,12 +244,21 @@ export default async function FichaArtistaPage({
             )}
 
             {resto.length > 0 && (
-              <div className="art-ejes" style={{ marginTop: 40 }}>
+              <div
+                className="art-ejes"
+                style={{ marginTop: destacado ? 40 : 8 }}
+              >
                 {resto.map((l) => (
                   <article className="art-eje" key={l.id}>
-                    <span className="art-eje-num">{l.tipo}</span>
+                    <span className="art-eje-num">
+                      {l.tipo}
+                      {l.year && ` · ${l.year}`}
+                    </span>
                     <h3>{l.titulo}</h3>
                     {l.con && <p>con {l.con}</p>}
+                    {/* La cifra pública de la pieza, en el peso de una
+                        métrica y no en el de un pie de foto. */}
+                    {l.dato && <p className="art-eje-dato">{l.dato}</p>}
                   </article>
                 ))}
               </div>
@@ -233,11 +269,7 @@ export default async function FichaArtistaPage({
             {a.enConstruccion && (
               <div className="art-vacio">
                 <h3>En producción</h3>
-                <p>
-                  El catálogo está abierto. Los próximos lanzamientos —temas,
-                  videoclips y piezas de contenido— se suman a esta página a
-                  medida que salen.
-                </p>
+                <p>{a.enConstruccion}</p>
               </div>
             )}
           </div>
@@ -293,9 +325,10 @@ export default async function FichaArtistaPage({
             <div className="art-cta">
               <h2>¿Lo querés en tu marca?</h2>
               <p>
-                {a.nombre} trabaja con Hivrido: campañas, colaboraciones, fechas y
-                contenido de marca con producción propia de punta a punta.
-                Contanos qué tenés en mente y te respondemos el mismo día.
+                {a.nombre} trabaja con Hivrido: campañas, colaboraciones,
+                presencias y contenido de marca con producción propia de punta
+                a punta. Contanos qué tenés en mente y te respondemos el mismo
+                día.
               </p>
               <a
                 className="art-btn"

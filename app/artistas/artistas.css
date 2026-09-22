@@ -9,9 +9,9 @@
  *   Los títulos van a escala de afiche y el espacio entre bloques es grande a
  *   propósito: una página vacía con ritmo se lee como editorial, una página
  *   vacía sin ritmo se lee como sin terminar.
- * - Una sola pieza gráfica por ficha, dibujada en CSS. Para Amplax es la
- *   cápsula. No cuesta una petición, no se pixela y no envejece como envejece
- *   una foto de hace dos años.
+ * - Una sola pieza gráfica por ficha, dibujada en CSS: la cápsula de Amplax,
+ *   el encuadre vertical de Kareen. No cuesta una petición, no se pixela y no
+ *   envejece como envejece una foto de hace dos años.
  * - El color va en dos niveles y no se mezclan. `--art-marca` es el magenta
  *   de ARTISTAS: el mismo de la placa en el anillo de la portada, y el que
  *   pinta todo lo que habla en nombre de la sección —atmósfera, índice,
@@ -180,8 +180,8 @@ html:has(.art-page) body {
   gap: clamp(38px, 7vw, 64px);
 }
 
-/* La cápsula aparece recién en desktop: en un teléfono le robaría la
-   pantalla al nombre, que es lo que tiene que leerse primero. */
+/* La columna del emblema solo existe en desktop: en un teléfono le robaría
+   la pantalla al nombre, que es lo que tiene que leerse primero. */
 @media (min-width: 900px) {
   .art-hero-grid {
     grid-template-columns: minmax(0, 1fr) 300px;
@@ -328,20 +328,53 @@ html:has(.art-page) body {
    La cápsula — única pieza gráfica de la ficha, dibujada en CSS
    ───────────────────────────────────────────────────────────────────────── */
 
-.art-capsula {
+/* ─────────────────────────────────────────────────────────────────────────
+   El emblema del hero
+
+   Una figura por artista, dibujada en CSS: no cuesta una petición, no se
+   pixela y no envejece como envejece una foto de hace dos años. La forma la
+   elige el dato (`emblema.forma`) y la leyenda grabada entra por
+   `--art-leyenda`, así sumar un artista es sumar una figura y no reescribir
+   el hero. El color es siempre el suyo, nunca el de la casa.
+
+   Aparece recién en desktop: en un teléfono le robaría la pantalla al
+   nombre, que es lo que tiene que leerse primero.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-emblema {
   display: none;
 }
 
 @media (min-width: 900px) {
-  .art-capsula {
+  .art-emblema {
     display: block;
     position: relative;
+    margin: 0 auto;
+    animation: art-flotar 7s ease-in-out infinite;
+  }
+
+  /* La leyenda grabada. Común a todas las figuras; cada una decide dónde
+     se apoya. Sin dato no se dibuja nada, en vez de una caja vacía. */
+  .art-emblema::after {
+    content: var(--art-leyenda, "");
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-align: center;
+    color: var(--art-acento);
+  }
+
+  /* ── Cápsula ────────────────────────────────────────────────────────
+     Mitad sólida, mitad vacía: la pastilla partida en dos, que es
+     exactamente el argumento de Amplax. */
+  .art-emblema--capsula {
     width: 200px;
     height: 400px;
-    margin: 0 auto;
     border-radius: 100px;
-    /* Mitad sólida, mitad vacía: la pastilla partida en dos, que es
-       exactamente el argumento del artista. */
     background: linear-gradient(
       180deg,
       var(--art-acento) 0%,
@@ -351,11 +384,10 @@ html:has(.art-page) body {
     );
     border: 1px solid var(--art-acento);
     box-shadow: 0 0 70px -14px var(--art-acento-suave);
-    animation: art-flotar 7s ease-in-out infinite;
   }
 
   /* La línea de corte. */
-  .art-capsula::before {
+  .art-emblema--capsula::before {
     content: "";
     position: absolute;
     left: -1px;
@@ -365,19 +397,43 @@ html:has(.art-page) body {
     background: var(--bg);
   }
 
-  /* La dosis grabada en la mitad vacía. */
-  .art-capsula::after {
-    content: "10 MG";
-    position: absolute;
-    left: 0;
-    right: 0;
+  .art-emblema--capsula::after {
     top: 68%;
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.26em;
-    text-align: center;
-    color: var(--art-acento);
+  }
+
+  /* ── Reel ───────────────────────────────────────────────────────────
+     El encuadre vertical del teléfono. Es el formato entero de una
+     creadora de reels, con el play en el centro y la cifra del mes abajo,
+     donde va el contador de una vista. */
+  .art-emblema--reel {
+    width: 224px;
+    height: 400px;
+    border-radius: 26px;
+    border: 1px solid var(--art-acento);
+    background:
+      radial-gradient(120% 68% at 50% 100%, var(--art-acento-suave) 0%, transparent 64%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
+    box-shadow: 0 0 70px -14px var(--art-acento-suave);
+  }
+
+  /* El play: un triángulo de bordes, sin una sola petición extra. El
+     desplazamiento horizontal es de -42% y no de -50% porque un triángulo
+     se ve centrado en su centro óptico, no en el geométrico. */
+  .art-emblema--reel::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: translate(-42%, -50%);
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 33px solid var(--art-acento);
+  }
+
+  .art-emblema--reel::after {
+    bottom: 34px;
   }
 }
 
@@ -387,7 +443,7 @@ html:has(.art-page) body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .art-capsula { animation: none; }
+  .art-emblema { animation: none; }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -458,6 +514,18 @@ html:has(.art-page) body {
 .art-eje p {
   font-size: 14px;
   line-height: 26px;
+}
+
+/* La cifra de una pieza dentro de su tarjeta. Sube a la caja del display y
+   toma el acento: en un reel el número no es un pie de foto, es el
+   argumento, y tiene que leerse antes que la descripción. */
+.art-eje-dato {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 12px !important;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--art-acento) !important;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
