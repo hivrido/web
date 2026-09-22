@@ -367,8 +367,8 @@ export const TEXTO_COMPARTIR = [
 export const CONTACTO = {
   whatsappTexto:
     "Hola Hivrido! Tengo una consulta sobre el casting de Cuchillo Paz.",
-  instagram: "https://www.instagram.com/hivrido.agencia_producciones/",
-  instagramHandle: "@hivrido.agencia_producciones",
+  instagram: "https://www.instagram.com/hivrido.productora_ok/",
+  instagramHandle: "@hivrido.productora_ok",
   /**
    * PENDIENTE. El sitio todavía no tiene política de privacidad publicada: no
    * existe /privacidad ni ninguna otra ruta equivalente. Queda vacío a

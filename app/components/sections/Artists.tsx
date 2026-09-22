@@ -10,7 +10,11 @@ const ARTISTS = [
     name: "Lucas Ariel Manzano",
     role: "CEO · Ingeniero en Prompt",
     bio: "Dirección creativa e ingeniería de IA en la misma cabeza: el que te atiende es el que hace.",
-    instagram: "https://instagram.com/lucasmanzano",
+    /* La cuenta real, que además es la de la marca: el perfil se llama Lucas
+       Ariel Manzano. Acá había un `@lucasmanzano` que no es él —es una cuenta
+       privada de otra persona—, así que la ficha del equipo estaba mandando
+       gente al Instagram de un desconocido. */
+    instagram: "https://www.instagram.com/hivrido.productora_ok/",
   },
 ];
 
