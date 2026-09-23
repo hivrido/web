@@ -21,8 +21,9 @@
  *   su tarjeta y su página. En líneas, cifras y subrayados; nunca en fondos
  *   grandes. Así dos artistas no se confunden entre sí y ninguno se confunde
  *   con la casa que los presenta.
- * - Grises propios: `--text-muted` de globals.css queda en 4,3:1 sobre este
- *   fondo, por debajo del AA. Los de acá pasan.
+ * - Grises de la portada: el violado bajo del anillo, no un neutro de
+ *   imprenta. `--text-muted` de globals.css queda en 4,3:1 sobre este fondo,
+ *   por debajo del AA; los de acá pasan de largo.
  *
  * Mobile first. Los breakpoints suben, nunca bajan.
  */
@@ -38,9 +39,14 @@ html:has(.art-page) body {
 }
 
 .art-page {
-  --art-texto: #f5f5f5;
-  --art-suave: rgba(245, 245, 245, 0.74);
-  --art-tenue: rgba(245, 245, 245, 0.52);
+  /* La familia de grises de la portada: violados, no neutros. El claro es
+     `--ink` del anillo tal cual y los dos que bajan de ahí sostienen la misma
+     temperatura en vez de irse al gris de imprenta —un blanco frío sobre un
+     negro violado es lo que hacía que esta sección se leyera de otra paleta—.
+     Miden 18,1:1, 11,2:1 y 7:1 sobre este fondo: los tres pasan AA de sobra. */
+  --art-texto: #f2f0f7;
+  --art-suave: #c2bdd0;
+  --art-tenue: #9a94ab;
   --art-linea: rgba(255, 255, 255, 0.10);
   --art-panel: rgba(255, 255, 255, 0.026);
 
@@ -168,6 +174,12 @@ html:has(.art-page) body {
   z-index: 1;
 }
 
+/* La portada pinta la selección con su acento; acá con el de quien habla. */
+.art-page ::selection {
+  background: var(--art-acento);
+  color: #06060c;
+}
+
 .art-wrap {
   width: 100%;
   max-width: 1180px;
@@ -191,7 +203,12 @@ html:has(.art-page) body {
   font-weight: 700;
   letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: var(--art-tenue);
+  /* La etiqueta de la portada —`.epic-eyebrow-text`— es de color y con halo,
+     no un gris. Acá toma el de quien habla: magenta de la casa en el índice,
+     el del artista dentro de su ficha, igual que el anillo retinta `--ac` con
+     el proyecto que está al frente. */
+  color: var(--art-acento);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--art-acento) 45%, transparent);
 }
 
 .art-eyebrow::before {
@@ -202,6 +219,32 @@ html:has(.art-page) body {
   background: var(--art-acento);
 }
 
+/* ── El título de la portada ──
+   En el anillo ningún título es blanco: todos llevan el mismo degradado
+   —blanco, lila, violeta, magenta, blanco— con un barrido de siete segundos
+   que lo recorre. No es un adorno por ficha, es la identidad del título en
+   este sitio, y era lo último que acá seguía en blanco plano.
+
+   El degradado lo declara `.epic-word-inner` en globals.css y la animación
+   es `epicSheen`, de ahí mismo: se reusa en vez de copiarse, así un cambio
+   de paleta se hace en un solo lado.
+
+   Nada de eco cromático: `text-shadow` dibuja con la forma del glifo aunque
+   el relleno sea transparente y ensucia el degradado. */
+.art-index-titulo,
+.art-hero-nombre,
+.art-ficha-nombre,
+.art-cta h2,
+.art-h2 {
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: epicSheen 7s ease-in-out infinite;
+}
+
 .art-h2 {
   margin: 0 0 28px;
   font-family: var(--font-display);
@@ -210,10 +253,15 @@ html:has(.art-page) body {
   line-height: 1.04;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: var(--art-texto);
 }
 
-.art-page p {
+/* El cuerpo de texto por defecto. Va envuelto en `:where()` a propósito: un
+   `.art-page p` pesa más que cualquier clase de un solo nombre, así que se
+   comía el cuerpo y el color de todo párrafo con clase propia —el eyebrow
+   salía a 15px en gris en vez de 10px en color— y cada uno se defendía con
+   un `!important`. Sin peso, es lo que tiene que ser: un piso que cualquier
+   clase pisa. */
+:where(.art-page) p {
   color: var(--art-suave);
   font-size: 15px;
   line-height: 28px;
@@ -279,25 +327,28 @@ html:has(.art-page) body {
   line-height: 0.88;
   letter-spacing: -0.045em;
   text-transform: uppercase;
-  color: #fff;
 }
 
-/* El sufijo de la dosis, en el peso del prospecto y no en el del nombre. */
+/* El sufijo de la dosis, en el peso del prospecto y no en el del nombre.
+   Cuelga del nombre, así que hereda su relleno transparente y el recorte del
+   degradado: sin devolverle el color, el segundo renglón se borra. */
 .art-hero-dosis {
   display: block;
   margin-top: 10px;
   font-size: clamp(0.8rem, 2.4vw, 1.15rem);
   font-weight: 400;
   letter-spacing: 0.42em;
+  background: none;
   color: var(--art-tenue);
+  -webkit-text-fill-color: var(--art-tenue);
 }
 
 .art-hero-tagline {
   max-width: 34ch;
   margin: 26px 0 0;
-  font-size: clamp(1.02rem, 2.6vw, 1.32rem) !important;
-  line-height: 1.55 !important;
-  color: var(--art-texto) !important;
+  font-size: clamp(1.02rem, 2.6vw, 1.32rem);
+  line-height: 1.55;
+  color: var(--art-texto);
 }
 
 .art-hero-disciplinas {
@@ -692,7 +743,8 @@ html:has(.art-page) body {
   color: var(--art-texto);
 }
 
-.art-eje p {
+/* Mismo piso, mismo motivo: sin `:where()` se comía a `.art-eje-dato`. */
+:where(.art-eje) p {
   font-size: 14px;
   line-height: 26px;
 }
@@ -703,10 +755,10 @@ html:has(.art-page) body {
 .art-eje-dato {
   margin-top: 10px;
   font-family: var(--font-display);
-  font-size: 12px !important;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--art-acento) !important;
+  color: var(--art-acento);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -902,12 +954,9 @@ html:has(.art-page) body {
   font-weight: 900;
   letter-spacing: -0.02em;
   text-transform: uppercase;
+  /* Sin hover propio: el nombre ya está en la tinta más alta de la página y
+     el que la tarjeta responde lo dicen el fondo, el punto y la flecha. */
   color: var(--art-texto);
-  transition: color 0.3s ease;
-}
-
-.art-vecino:hover .art-vecino-nombre {
-  color: #fff;
 }
 
 .art-vecino-flecha {
@@ -954,7 +1003,7 @@ html:has(.art-page) body {
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--art-texto);
 }
 
 .art-metrica span {
@@ -1088,14 +1137,13 @@ html:has(.art-page) body {
   line-height: 0.95;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  color: #fff;
 }
 
 .art-index-lead {
   max-width: 52ch;
   margin: 26px 0 0;
-  font-size: clamp(1rem, 2.4vw, 1.18rem) !important;
-  line-height: 1.75 !important;
+  font-size: clamp(1rem, 2.4vw, 1.18rem);
+  line-height: 1.75;
 }
 
 .art-roster {
@@ -1185,17 +1233,24 @@ html:has(.art-page) body {
   line-height: 0.96;
   letter-spacing: -0.035em;
   text-transform: uppercase;
-  color: var(--art-texto);
-  transition: color 0.3s ease;
+  transition: filter 0.3s ease;
 }
 
+/* El hover sube el brillo y no el color: con el relleno recortado al
+   degradado, un `color` no pinta nada. */
 .art-ficha:hover .art-ficha-nombre {
-  color: #fff;
+  filter: brightness(1.14);
 }
+
+/* El barrido entra desfasado en cada tarjeta. Tres nombres encendiéndose al
+   mismo tiempo se leen como un parpadeo del navegador; escalonados, como luz
+   que recorre la lista. */
+.art-roster .art-ficha:nth-child(3n + 2) .art-ficha-nombre { animation-delay: -2.33s; }
+.art-roster .art-ficha:nth-child(3n + 3) .art-ficha-nombre { animation-delay: -4.66s; }
 
 .art-ficha-tagline {
   max-width: 44ch;
-  margin: 16px 0 0 !important;
+  margin: 16px 0 0;
 }
 
 .art-ficha-pie {
@@ -1349,4 +1404,15 @@ html:has(.art-page) body {
   .art-btn::before,
   .art-ficha-ver::before { animation: none; }
   .art-ficha:hover { transform: none; }
+
+  /* El degradado se planta en el tramo donde se lee mejor, como en la
+     portada: sin barrido, pero sin perder el color del título. */
+  .art-index-titulo,
+  .art-hero-nombre,
+  .art-ficha-nombre,
+  .art-cta h2,
+  .art-h2 {
+    animation: none;
+    background-position: 30% 50%;
+  }
 }
