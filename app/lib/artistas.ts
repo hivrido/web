@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 /**
  * Roster de artistas de Hivrido.
  *
@@ -87,8 +89,16 @@ export type Artista = {
    * para rotular a alguien.
    */
   rol?: string;
-  /** Identidad propia dentro del sistema. Ver nota de cabecera. */
-  acento: { hex: string; suave: string };
+  /**
+   * Identidad propia dentro del sistema. Ver nota de cabecera.
+   *
+   * `tomaLaMarca` hace que el color del artista reemplace también al magenta
+   * de la sección en todo lo suyo —su tarjeta y su página—: el degradado de
+   * los títulos, el aire del fondo y los rosas de la nebulosa. Es para un
+   * artista cuyo color convive mal con el magenta al lado, no un atajo para
+   * teñir más.
+   */
+  acento: { hex: string; suave: string; tomaLaMarca?: boolean };
   /**
    * La única pieza gráfica de la ficha, dibujada en CSS. `forma` elige la
    * figura y `leyenda` es lo que va grabado en ella. Es lo que impide que
@@ -240,12 +250,14 @@ export const ARTISTAS: Artista[] = [
     /* No es una banda: es una creadora. El schema lo dice así. */
     schema: "Person",
     rol: "Creadora de contenido",
-    /* Rosa chicle. Es su color, no el de la casa: el magenta #FF1B8D de la
-       sección ya está ocupado —es el de la placa ARTISTAS en el anillo— y
-       dárselo a ella borraría la diferencia entre la artista y el contenedor
-       que la presenta. Este es dos tonos más claro y más cálido: se lee rosa
-       de lejos y no se pisa con el magenta cuando los dos están en pantalla. */
-    acento: { hex: "#FF8FC5", suave: "rgba(255, 143, 197, 0.14)" },
+    /* El violeta de Hivrido: es el color que la representa. El tono que
+       pinta —rótulos, filo, relleno del botón— es #A78BFA, el violeta claro
+       de la casa, porque sobre él va texto oscuro y como texto va sobre
+       negro: el #7C3AED no llega al AA en ninguno de los dos casos. El halo
+       sí es el #7C3AED, que es donde el violeta profundo se luce. Toma la
+       marca: un violeta con el magenta de la sección al lado se lee rosa, y
+       en lo suyo no queda nada rosa. */
+    acento: { hex: "#A78BFA", suave: "rgba(124, 58, 237, 0.18)", tomaLaMarca: true },
     /* El encuadre vertical del teléfono con la cifra del mes grabada: el
        formato y el número son, literalmente, de lo que se trata. */
     emblema: { forma: "reel", leyenda: "2,53 M" },
@@ -357,7 +369,7 @@ export const ARTISTAS: Artista[] = [
     schema: "Person",
     rol: "Creador de contenido",
     /* Cian de pantalla. Queda a la máxima distancia de los otros tres tonos
-       en juego —el magenta de la casa, la lima de Amplax, el rosa de
+       en juego —el magenta de la casa, la lima de Amplax, el violeta de
        Kareen—: con tres fichas en el índice, el color es lo primero que
        distingue una de otra antes de que se lea un nombre. */
     acento: { hex: "#22E1FF", suave: "rgba(34, 225, 255, 0.14)" },
@@ -459,6 +471,24 @@ export const ARTISTAS: Artista[] = [
 ];
 
 /** Ficha por slug. `undefined` si no existe: la ruta responde 404. */
+/**
+ * Las variables de color que pinta lo que es de un artista: su página, su
+ * tarjeta en el índice y el cruce desde la ficha de otro. Van en un solo
+ * lugar para que las tres piezas no puedan contar colores distintos.
+ */
+export function estiloAcento({ acento }: Artista): CSSProperties {
+  const vars: Record<string, string> = {
+    "--art-acento": acento.hex,
+    "--art-acento-suave": acento.suave,
+  };
+  if (acento.tomaLaMarca) {
+    vars["--art-marca"] = acento.hex;
+    vars["--art-marca-suave"] = acento.suave;
+    vars["--art-marca-tenue"] = `color-mix(in srgb, ${acento.hex} 9%, transparent)`;
+  }
+  return vars as CSSProperties;
+}
+
 export function getArtista(slug: string): Artista | undefined {
   return ARTISTAS.find((a) => a.slug === slug);
 }

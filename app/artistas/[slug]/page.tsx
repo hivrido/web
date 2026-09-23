@@ -6,6 +6,7 @@ import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import {
   ARTISTAS,
+  estiloAcento,
   getArtista,
   vecinosDe,
   type Artista,
@@ -130,12 +131,7 @@ export default async function FichaArtistaPage({
 
       <main
         className="art-page"
-        style={
-          {
-            "--art-acento": a.acento.hex,
-            "--art-acento-suave": a.acento.suave,
-          } as React.CSSProperties
-        }
+        style={estiloAcento(a)}
       >
         {/* La `key` no es decorativa: al saltar de una ficha a otra React
             reusaría la misma instancia, el efecto no volvería a correr y el
@@ -304,12 +300,7 @@ export default async function FichaArtistaPage({
                     /* El acento es el del destino, no el de esta ficha: el
                        color es lo que anuncia que el click lleva a otro
                        lado antes de que se lea el nombre. */
-                    style={
-                      {
-                        "--art-acento": v.acento.hex,
-                        "--art-acento-suave": v.acento.suave,
-                      } as React.CSSProperties
-                    }
+                    style={estiloAcento(v)}
                   >
                     <span className="art-vecino-texto">
                       <span className="art-vecino-alias">{v.alias}</span>

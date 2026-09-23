@@ -19,7 +19,7 @@ import { useEffect, useRef } from "react";
  *
  * Lo que sí se adapta de verdad es la sección: el acento del artista entra en
  * la paleta de la nebulosa y en el corazón, así la página de Amplax respira
- * lima y la de Kareen rosa, sobre el mismo violeta de la casa. El de la
+ * lima y la de Kareen el violeta de la casa. El de la
  * portada retinta `--ac` con el proyecto que está al frente; este hace lo
  * mismo con quien está hablando.
  *
@@ -36,6 +36,10 @@ const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
 
 /** La paleta de la nebulosa del anillo, tal cual. */
 const PALETA = ["#B026FF", "#FF2E9A", "#FF3355", "#00E5FF", "#7C3AED"];
+
+/** Los rosas de esa paleta, y el magenta de ARTISTAS que los justifica. */
+const ROSAS = ["#FF2E9A", "#FF3355"];
+const CASA = "#FF1B8D";
 
 /** El polvo cercano de la escena: `0xc9a6ff`. */
 const POLVO = "#c9a6ff";
@@ -100,12 +104,16 @@ export default function FondoVivo() {
     /* El acento lo pone la página: en el índice es el magenta de la casa y
        dentro de una ficha, el del artista. */
     const estilo = getComputedStyle(canvas.parentElement ?? canvas);
-    const acento = estilo.getPropertyValue("--art-acento").trim() || "#FF1B8D";
-    const marca = estilo.getPropertyValue("--art-marca").trim() || "#FF1B8D";
+    const acento = estilo.getPropertyValue("--art-acento").trim() || CASA;
+    const marca = estilo.getPropertyValue("--art-marca").trim() || CASA;
 
     /* La paleta de la portada con el acento adentro: el color del artista se
        mezcla con el violeta de la casa en vez de reemplazarlo. */
-    const colores = [...PALETA, acento, acento].map(aRgb);
+    /* Si el artista tomó la marca, los rosas de la paleta pasan a su color:
+       en su página no queda nube rosa aunque el anillo las tenga. */
+    const propia = marca.toUpperCase() !== CASA;
+    const base = propia ? PALETA.map((c) => (ROSAS.includes(c) ? marca : c)) : PALETA;
+    const colores = [...base, acento, acento].map(aRgb);
     const sprites = colores.map((c) => hacerPunto(c));
     const sprPolvo = hacerPunto(aRgb(POLVO));
     const sprEstrella = hacerPunto([255, 245, 255], 32);
@@ -116,7 +124,7 @@ export default function FondoVivo() {
        portada; el segundo toma el color de quien habla en lugar del magenta
        fijo, que es lo único que ahí no podía variar. */
     const heartA = hacerPunto(aRgb("#7C3AED"), 256);
-    const heartB = hacerPunto(aRgb(marca === acento ? "#FF2E9A" : acento), 256);
+    const heartB = hacerPunto(aRgb(marca === acento && !propia ? "#FF2E9A" : acento), 256);
 
     /* ── Las capas ─────────────────────────────────────────────────────── */
     const nuevas = (n: number, hacer: (i: number) => Particula) =>

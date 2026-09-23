@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { ARTISTAS } from "../lib/artistas";
+import { ARTISTAS, estiloAcento } from "../lib/artistas";
 import FondoVivo from "./FondoVivo";
 import FichaViva from "./FichaViva";
 import "./artistas.css";
@@ -161,12 +161,7 @@ export default function ArtistasPage() {
                 href={`/artistas/${a.slug}`}
                 /* El acento propio del artista tiñe su fila del índice: dos
                    fichas seguidas no se leen como la misma plantilla. */
-                style={
-                  {
-                    "--art-acento": a.acento.hex,
-                    "--art-acento-suave": a.acento.suave,
-                  } as React.CSSProperties
-                }
+                style={estiloAcento(a)}
               >
                 <span className="art-ficha-alias">{a.alias}</span>
                 <h2 className="art-ficha-nombre">{a.nombre}</h2>

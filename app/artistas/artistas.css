@@ -291,7 +291,10 @@ html:has(.art-page) body {
 .art-ficha-nombre,
 .art-cta h2,
 .art-h2 {
-  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF1B8D 78%, #FFFFFF 100%);
+  /* El tramo magenta es `--art-marca` y no el hex: un artista que toma la
+     marca lo tiñe con su color y en su página el título deja de pasar por
+     el rosa. */
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, var(--art-marca) 78%, #FFFFFF 100%);
   background-size: 250% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -448,7 +451,7 @@ html:has(.art-page) body {
    destello al pasar el cursor.
 
    Lo único que no se copia es el color del texto. En la portada va blanco
-   sobre violeta; los acentos de los artistas son claros —lima, rosa, cian—
+   sobre violeta; los acentos de los artistas son claros —lima, violeta, cian—
    y sobre ellos el blanco no se lee. El haz sí sigue siendo blanco: corre por
    fuera del borde, sobre el negro de la página, nunca sobre el relleno. */
 .art-btn {
