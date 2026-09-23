@@ -12,6 +12,7 @@ import {
 } from "../../lib/artistas";
 import RedIcono, { NOMBRE_RED } from "../RedIcono";
 import PlayerLite from "../PlayerLite";
+import FondoVivo from "../FondoVivo";
 import "../artistas.css";
 
 /**
@@ -136,6 +137,11 @@ export default async function FichaArtistaPage({
           } as React.CSSProperties
         }
       >
+        {/* La `key` no es decorativa: al saltar de una ficha a otra React
+            reusaría la misma instancia, el efecto no volvería a correr y el
+            fondo se quedaría con el acento del artista anterior. */}
+        <FondoVivo key={a.slug} />
+
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="art-hero">
           <div className="art-wrap">

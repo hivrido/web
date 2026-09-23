@@ -125,15 +125,44 @@ html:has(.art-page) body {
   background-position: top center, top center, top center;
 }
 
+/* El fondo vivo, en su propio lienzo: la atmósfera del anillo —estrellas,
+   polvo, nebulosa y hélice— pintada por `FondoVivo.tsx`. Va fija a la
+   pantalla, por encima del fondo pintado de la página y por debajo de la
+   viñeta, igual que en la portada, donde el velo tapa al canvas y no al revés.
+
+   El selector lleva el padre adelante para ganarle a `.art-page > *`, que le
+   pondría `z-index: 1` y la subiría por encima de todo el texto. */
+.art-page > .art-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Mientras el lienzo no mide, no hay nada que mostrar: sin esto el primer
+     cuadro entra de golpe sobre un negro plano. */
+  animation: art-fondo-entra 1.6s ease-out both;
+}
+
+@keyframes art-fondo-entra {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Viñeta: la misma de la portada —`.veil--vig` de cosmos.styles.css—, fija
-   a la pantalla y por debajo del contenido. Cierra los cuatro bordes para que
-   el centro de la página tenga foco propio y el negro deje de ser plano.
-   Sin peticiones y sin competir con el LCP, que acá es el nombre del artista. */
+   a la pantalla, sobre el lienzo y por debajo del contenido. Cierra los cuatro
+   bordes para que el centro de la página tenga foco propio y para que el campo
+   de partículas se apague contra el marco en vez de cortarse.
+
+   `z-index: 1` es el mismo que el del contenido, y eso alcanza: un
+   pseudo-elemento ::before cuenta como el primer hijo, así que con el mismo
+   valor el texto igual se pinta después. */
 .art-page::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
   background: radial-gradient(
     ellipse 80% 72% at 50% 48%,
@@ -1399,6 +1428,7 @@ html:has(.art-page) body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .art-page > .art-fondo,
   .art-page::after,
   .art-ficha::before,
   .art-btn::before,

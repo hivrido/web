@@ -4,6 +4,7 @@ import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { ARTISTAS } from "../lib/artistas";
+import FondoVivo from "./FondoVivo";
 import "./artistas.css";
 
 /**
@@ -54,6 +55,8 @@ export default function ArtistasPage() {
       <Header base="/" logoDelay={300} />
 
       <main className="art-page">
+        <FondoVivo />
+
         <section className="art-index-hero">
           <div className="art-wrap">
             <p className="art-eyebrow">Roster · Hivrido</p>
