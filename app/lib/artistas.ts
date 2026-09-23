@@ -534,17 +534,30 @@ export const ARTISTAS: Artista[] = [
       },
     ],
     /* Del perfil y de la grilla públicos, no de un panel: sin acceso a sus
-       estadísticas no hay alcance mensual ni interacciones que publicar. */
+       estadísticas no hay alcance mensual ni interacciones, y no se estiman.
+       Lo que sí se publica es cuenta hecha sobre lo visible: las vistas de
+       los últimos 24 reels, sumadas una por una. Si mañana alguien las
+       vuelve a contar, tienen que dar lo mismo. */
     metricas: [
+      {
+        valor: "4,28 M",
+        label: "Vistas sumadas de sus últimos 24 reels",
+        fuente: "Grilla de reels @enzo_arancibia14 · 23/09/2026",
+      },
+      {
+        valor: "7 de 24",
+        label: "Reels que pasaron las 100 K vistas",
+        fuente: "Grilla de reels · 23/09/2026",
+      },
       {
         valor: "1,5 M",
         label: "Vistas de su reel más visto",
         fuente: "Reel «Pov: salís a dar una vuelta por J.C.P»",
       },
       {
-        valor: "2",
-        label: "Reels que pasaron el millón de vistas",
-        fuente: "Grilla de reels · 23/09/2026",
+        valor: "219×",
+        label: "Su reel más visto contra la cantidad de seguidores",
+        fuente: "1,5 M vistas / 6.854 seguidores",
       },
       {
         valor: "6.854",
