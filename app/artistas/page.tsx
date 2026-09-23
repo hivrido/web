@@ -24,6 +24,50 @@ const WA =
   "https://api.whatsapp.com/send?phone=5491156072460&text=" +
   encodeURIComponent("Hola Hivrido! Soy artista y quiero que representen mi carrera.");
 
+/**
+ * Qué pone Hivrido según el oficio.
+ *
+ * El índice decía que construimos "identidad, catálogo y una URL propia", que
+ * es cierto y no alcanza: un músico lee eso y no sabe si le grabamos el tema.
+ * Acá se declara la infraestructura, por disciplina y con nombre propio, que
+ * es lo único que separa a una representación de una promesa.
+ *
+ * La lista cierra abierta a propósito: los oficios no son cuatro, y una
+ * grilla que finge cubrirlos todos miente igual que una que deja gente afuera.
+ */
+const OFICIOS = [
+  {
+    titulo: "Músicos y cantantes",
+    texto:
+      "Estudio de producción musical: preproducción, grabación, mezcla y máster. Y después lo que decide si el tema existe o no —que se escuche—: entra a las plataformas de streaming del momento con arte de tapa, visualizer y un lanzamiento armado detrás, no un archivo subido un martes.",
+    tags: ["Estudio", "Mezcla y máster", "Distribución", "Lanzamiento"],
+  },
+  {
+    titulo: "Actores y actrices",
+    texto:
+      "Teatro, obras, series y películas. Te movemos donde se reparte el trabajo: castings, producciones propias y ajenas, y el material con el que te presentás —reel, book y ficha— hecho para que del otro lado digan que sí antes de terminar de verlo.",
+    tags: ["Casting", "Teatro", "Series y cine", "Reel y book"],
+  },
+  {
+    titulo: "Creadores y youtubers",
+    texto:
+      "Viajes y locaciones. Un canal se gasta filmando siempre en el mismo cuarto: producimos salidas, conseguimos los lugares y viajamos con equipo propio para que cada video tenga un escenario que tu audiencia todavía no vio.",
+    tags: ["Locaciones", "Viajes", "Producción", "Cámara"],
+  },
+  {
+    titulo: "Streamers",
+    texto:
+      "Lo que haga falta. Setup, escena, arte de canal, overlays y los clips que convierten cuatro horas de directo en una semana de contenido. Un vivo no se puede parar a resolver problemas: los resolvemos antes de que salgas al aire.",
+    tags: ["Setup", "Arte de canal", "Clips", "Soporte"],
+  },
+  {
+    titulo: "Y lo que no esté en esta lista",
+    texto:
+      "Bailarines, modelos, humoristas, artistas visuales. La lista no se cierra acá porque los oficios tampoco: si el tuyo no está, el criterio es el mismo de siempre —qué necesita para que lo que hacés se vea, se contrate y se pague—. Eso es lo que armamos.",
+    tags: ["A medida"],
+  },
+];
+
 export const metadata: Metadata = {
   title: "Artistas | Representación y desarrollo de carrera | Hivrido",
   description:
@@ -34,6 +78,12 @@ export const metadata: Metadata = {
     "desarrollo de carrera musical",
     "productora de artistas",
     "Hivrido artistas",
+    /* Las disciplinas del bloque de oficios: desde que la página las cubre
+       de verdad, son las palabras con las que cada uno se busca. */
+    "representacion de musicos",
+    "representacion de actores",
+    "management de streamers",
+    "productora para youtubers",
   ],
   alternates: { canonical: "/artistas" },
   openGraph: {
@@ -70,6 +120,36 @@ export default function ArtistasPage() {
               propia— para que lo que ya funciona se pueda mostrar, contratar y
               medir.
             </p>
+          </div>
+        </section>
+
+        <section className="art-oficios-sec">
+          <div className="art-wrap">
+            <p className="art-eyebrow">Qué ponemos</p>
+            <h2 className="art-h2">Cada oficio pide otra cosa</h2>
+            <p className="art-oficios-lead">
+              Un músico no necesita lo mismo que una actriz, y una streamer no
+              necesita lo mismo que ninguno de los dos. Por eso no hay un
+              paquete: hay una estructura que se arma alrededor de lo que tu
+              carrera necesita para crecer, y la ponemos nosotros.
+            </p>
+
+            <div className="art-oficios">
+              {OFICIOS.map((o, i) => (
+                <article className="art-oficio" key={o.titulo}>
+                  <span className="art-oficio-num" aria-hidden>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3>{o.titulo}</h3>
+                  <p>{o.texto}</p>
+                  <span className="art-oficio-tags">
+                    {o.tags.map((t) => (
+                      <span key={t}>{t}</span>
+                    ))}
+                  </span>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 

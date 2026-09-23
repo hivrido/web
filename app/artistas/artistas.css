@@ -1232,6 +1232,142 @@ html:has(.art-page) body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   Los oficios
+
+   Va antes del roster y no después: primero qué ponemos, después los
+   artistas como prueba de que lo ponemos, y recién al final la convocatoria.
+   Invertido, un plantel corto queda pidiendo una explicación antes de darla.
+
+   Cinco tarjetas en dos columnas y la última a lo ancho: la que dice que la
+   lista sigue abierta no puede entrar en media grilla como una más, porque
+   lo que hace no es sumar un oficio sino cerrar el bloque.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-oficios-sec {
+  padding: clamp(46px, 8vw, 96px) 0 clamp(18px, 3vw, 34px);
+}
+
+.art-oficios-lead {
+  max-width: 56ch;
+  margin: -6px 0 clamp(30px, 5vw, 48px);
+  font-size: clamp(0.98rem, 2.2vw, 1.1rem);
+  line-height: 1.7;
+}
+
+.art-oficios {
+  display: grid;
+  gap: clamp(14px, 2.4vw, 20px);
+}
+
+@media (min-width: 820px) {
+  .art-oficios { grid-template-columns: 1fr 1fr; }
+  .art-oficios > :last-child { grid-column: 1 / -1; }
+}
+
+.art-oficio {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 4vw, 40px) clamp(22px, 3.4vw, 36px);
+  border-radius: 16px;
+  border: 1px solid var(--art-linea);
+  border-top-color: rgba(255, 255, 255, 0.17);
+  border-bottom-color: rgba(0, 0, 0, 0.55);
+  background:
+    radial-gradient(120% 130% at 100% 0%, var(--art-acento-suave) 0%, transparent 56%),
+    var(--art-cara),
+    var(--art-base);
+  box-shadow: var(--art-relieve);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.art-oficio:hover {
+  border-top-color: rgba(255, 255, 255, 0.28);
+  border-color: color-mix(in srgb, var(--art-acento) 38%, transparent);
+  box-shadow: var(--art-relieve-alto);
+  transform: translateY(-2px);
+}
+
+/* El número es marca de agua, no dato: grande, arriba a la derecha y casi
+   apagado. Da ritmo de índice sin pelearle el primer renglón al título. */
+.art-oficio-num {
+  position: absolute;
+  top: -0.24em;
+  right: 0.12em;
+  font-family: var(--font-display);
+  font-size: clamp(4.4rem, 11vw, 7.2rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--art-acento);
+  opacity: 0.11;
+  pointer-events: none;
+  user-select: none;
+}
+
+.art-oficio h3 {
+  position: relative;
+  margin: 0 0 14px;
+  /* Deja el hueco del número: sin esto un título largo se le mete encima. */
+  padding-right: 2.2em;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.8vw, 1.4rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+}
+
+/* El filo de color bajo el título: lo mismo que hace el eyebrow arriba del
+   bloque, a escala de tarjeta. */
+.art-oficio h3::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 2px;
+  margin-top: 14px;
+  background: var(--art-acento);
+  box-shadow: 0 0 14px -2px var(--art-acento);
+}
+
+.art-oficio p {
+  position: relative;
+  margin: 0;
+  max-width: 58ch;
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.art-oficio-tags {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.art-oficio-tags span {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--art-linea);
+  background: var(--art-cara), rgba(255, 255, 255, 0.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--art-tenue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-oficio:hover { transform: none; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
    La ficha del roster
 
    Con un solo artista en el plantel, una fila a sangre entre dos hairlines
