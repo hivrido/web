@@ -1229,6 +1229,9 @@ html:has(.art-page) body {
 .art-roster {
   display: grid;
   gap: clamp(18px, 3vw, 26px);
+  /* El escenario de las fichas: sin perspectiva en el padre, girarlas en X
+     o en Y solo las achata en vez de acercarles un canto. */
+  perspective: 1400px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -1378,6 +1381,24 @@ html:has(.art-page) body {
    ───────────────────────────────────────────────────────────────────────── */
 
 .art-ficha {
+  /* El puntero los escribe desde FichaViva.tsx; en reposo, la ficha de
+     frente. */
+  --rx: 0deg;
+  --ry: 0deg;
+  --lift: 0px;
+  /* El neón de las tarjetas del anillo: un filo del acento pegado al
+     contorno interior, el acento que sangra apenas hacia adentro y el halo
+     que se escapa por fuera. En reposo encendido a media luz, como las que
+     no están al frente; con el cursor, a pleno. */
+  --neon:
+    inset 0 0 0 1px color-mix(in srgb, var(--art-acento) 26%, transparent),
+    inset 0 0 70px -34px color-mix(in srgb, var(--art-acento) 55%, transparent),
+    0 0 38px -14px color-mix(in srgb, var(--art-acento) 40%, transparent);
+  --neon-alto:
+    inset 0 0 0 1px color-mix(in srgb, var(--art-acento) 55%, transparent),
+    inset 0 0 80px -30px color-mix(in srgb, var(--art-acento) 75%, transparent),
+    0 0 56px -12px color-mix(in srgb, var(--art-acento) 62%, transparent);
+
   position: relative;
   display: block;
   padding: clamp(30px, 5.4vw, 54px) clamp(22px, 4vw, 44px);
@@ -1395,14 +1416,91 @@ html:has(.art-page) body {
     radial-gradient(120% 140% at 12% 0%, var(--art-acento-suave) 0%, transparent 58%),
     var(--art-cara),
     var(--art-base);
-  box-shadow: var(--art-relieve);
-  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: var(--art-relieve), var(--neon);
+  /* preserve-3d deja que la tipografía se separe de la cara en Z: al
+     inclinarse, el nombre se corre más que el fondo y la pieza tiene grosor. */
+  transform-style: preserve-3d;
+  transform: translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
+  /* La vuelta a reposo es lenta, como el anillo cuando suelta el foco. */
+  transition: border-color 0.35s ease, box-shadow 0.45s ease,
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  /* La flotación va en `translate`, que se compone con `transform` sin
+     pisarlo: el giro del cursor y la respiración corren a la vez. */
+  animation: art-ficha-flota 7s ease-in-out infinite;
 }
 
 .art-ficha:hover {
+  --lift: -6px;
   border-color: color-mix(in srgb, var(--art-acento) 45%, transparent);
-  transform: translateY(-3px);
-  box-shadow: var(--art-relieve-alto), 0 24px 60px -30px var(--art-acento);
+  box-shadow: var(--art-relieve-alto), var(--neon-alto),
+              0 34px 70px -30px var(--art-acento);
+  /* Mientras el cursor está encima el giro lo sigue de cerca. */
+  transition: border-color 0.35s ease, box-shadow 0.45s ease,
+              transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Desfasadas, las fichas no suben y bajan en bloque: se leen como piezas
+   sueltas en el aire, igual que las tarjetas de la órbita. */
+.art-roster .art-ficha:nth-child(3n + 2) { animation-delay: -2.4s; }
+.art-roster .art-ficha:nth-child(3n + 3) { animation-delay: -4.8s; }
+
+@keyframes art-ficha-flota {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+
+/* Entrada. FichaViva marca "espera" solo en las que están bajo el pliegue;
+   al asomar pasan a "si" y llegan desde abajo, volcadas hacia atrás, como
+   una tarjeta del anillo que gira hasta quedar de frente. */
+.art-ficha[data-entra="espera"] {
+  opacity: 0;
+  animation: none;
+}
+
+.art-ficha[data-entra="si"] {
+  animation:
+    art-ficha-entra 1.1s cubic-bezier(0.22, 1, 0.36, 1) both,
+    art-ficha-flota 7s ease-in-out 1.1s infinite;
+}
+
+.art-roster .art-ficha[data-entra="si"]:nth-child(3n + 2) { animation-delay: 0.12s, 1.22s; }
+.art-roster .art-ficha[data-entra="si"]:nth-child(3n + 3) { animation-delay: 0.24s, 1.34s; }
+
+@keyframes art-ficha-entra {
+  from {
+    opacity: 0;
+    translate: 0 56px;
+    rotate: x 16deg;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    rotate: x 0deg;
+  }
+}
+
+/* La luz especular: sigue al cursor sobre la cara, blanca en el centro y
+   teñida del acento hacia afuera. Es lo que convierte el giro en volumen:
+   sin un reflejo que se mueva, una pieza inclinada es solo una pieza
+   torcida. */
+.art-ficha::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 0%),
+    rgba(255, 255, 255, 0.11) 0%,
+    color-mix(in srgb, var(--art-acento) 10%, transparent) 26%,
+    transparent 52%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.art-ficha:hover::after {
+  opacity: 1;
 }
 
 /* El cometa del borde. Gira el ángulo del degradado, no el elemento: rotar
@@ -1435,6 +1533,13 @@ html:has(.art-page) body {
 .art-ficha > * {
   position: relative;
   z-index: 1;
+  transform: translateZ(18px);
+}
+
+/* El nombre va más adelante que el resto: es la capa que más se desplaza
+   al girar, y la que da la medida del grosor. */
+.art-ficha > .art-ficha-nombre {
+  transform: translateZ(38px);
 }
 
 .art-ficha-alias {
@@ -1627,6 +1732,8 @@ html:has(.art-page) body {
   .art-ficha::before,
   .art-btn::before,
   .art-ficha-ver::before { animation: none; }
+  .art-ficha { animation: none; }
+  .art-ficha,
   .art-ficha:hover { transform: none; }
 
   /* El degradado se planta en el tramo donde se lee mejor, como en la

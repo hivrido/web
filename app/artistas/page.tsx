@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import { ARTISTAS } from "../lib/artistas";
 import FondoVivo from "./FondoVivo";
+import FichaViva from "./FichaViva";
 import "./artistas.css";
 
 /**
@@ -156,10 +156,9 @@ export default function ArtistasPage() {
         <section className="art-wrap" aria-label="Artistas representados">
           <div className="art-roster">
             {ARTISTAS.map((a) => (
-              <Link
+              <FichaViva
                 key={a.slug}
                 href={`/artistas/${a.slug}`}
-                className="art-ficha"
                 /* El acento propio del artista tiñe su fila del índice: dos
                    fichas seguidas no se leen como la misma plantilla. */
                 style={
@@ -189,7 +188,7 @@ export default function ArtistasPage() {
                     </svg>
                   </span>
                 </div>
-              </Link>
+              </FichaViva>
             ))}
 
             <div className="art-sumate">
