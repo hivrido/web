@@ -27,7 +27,8 @@ export type TipoEnlace =
   | "soundcloud"
   | "spotify"
   | "tiktok"
-  | "threads";
+  | "threads"
+  | "facebook";
 
 export type Enlace = {
   tipo: TipoEnlace;
@@ -104,7 +105,7 @@ export type Artista = {
    * figura y `leyenda` es lo que va grabado en ella. Es lo que impide que
    * dos fichas sin fotos se vean iguales.
    */
-  emblema: { forma: "capsula" | "reel" | "junta"; leyenda: string };
+  emblema: { forma: "capsula" | "reel" | "junta" | "camara"; leyenda: string };
   /**
    * El concepto de la carrera, en párrafos. Es dirección creativa, no bio:
    * dice qué es el proyecto, no dónde nació el artista. Los datos personales
@@ -467,6 +468,84 @@ export const ARTISTAS: Artista[] = [
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: una serie propia de arquetipos de amigo, formatos de marca integrada dentro de la junta y el cruce con el universo de Amplax 10 mg.",
     universo: ["amplax", "kareen-nahirr"],
+  },
+
+  {
+    slug: "enzo-arancibia",
+    nombre: "Enzo Arancibia",
+    alias: "Enzo en la cámara",
+    tagline: "457 publicaciones: la constancia ya está, falta la casa.",
+    disciplinas: ["Contenido", "Cámara", "Redes", "Performance"],
+    schema: "Person",
+    rol: "Creador de contenido",
+    /* Ámbar. El único cálido que quedaba libre en el roster —lima, violeta y
+       cian ya tienen dueño— y el que mejor dice "luz de cámara encendida".
+       Es claro a propósito: va como texto sobre negro y como relleno bajo
+       texto oscuro, y los dos pasan el AA. */
+    acento: { hex: "#F5B942", suave: "rgba(245, 185, 66, 0.14)" },
+    /* El visor con el REC encendido: "Enzo en la cámara" dibujado. La
+       leyenda es la cifra de su comunidad, lo único que la figura mide. */
+    emblema: { forma: "camara", leyenda: "6,8 K" },
+    /* Todo lo que sigue sale de lo que se puede comprobar en su perfil: la
+       cantidad de publicaciones y la comunidad. Nada sobre de qué se ríe,
+       dónde vive o qué formatos hace: eso lo dice él, no la ficha. */
+    manifiesto: [
+      "Cuatrocientas cincuenta y siete publicaciones. Eso no se hace por impulso: es alguien que se pone frente a la cámara una vez, y otra, y otra, hasta que hacerlo deja de ser un evento y pasa a ser un oficio.",
+      "Casi siete mil personas lo siguen en Instagram. No es una cifra para inflar ni para esconder: es una comunidad del tamaño justo para conocerse, y la base sobre la que se construye todo lo que viene.",
+      "Hivrido no viene a cambiarle la voz ni a fabricarle un personaje. Viene a ponerle estructura a lo que ya hace: dirección, producción y un lugar propio donde la constancia se convierta en carrera.",
+    ],
+    ejes: [
+      {
+        titulo: "La constancia es el capital",
+        texto:
+          "Cientos de publicaciones son cientos de pruebas. Antes de pedir más alcance, se ordena lo que ya existe: qué funcionó, qué se repite y qué merece una serie.",
+      },
+      {
+        titulo: "Frente a la cámara, en serio",
+        texto:
+          "El que ya se sostiene solo frente a un teléfono está listo para un rodaje. Equipo, guion y dirección no le quitan naturalidad: le suben el techo.",
+      },
+      {
+        titulo: "Dos redes, una misma voz",
+        texto:
+          "Instagram y Facebook no hablan con la misma gente. El trabajo es que cada una reciba su formato sin que Enzo deje de sonar como Enzo.",
+      },
+      {
+        titulo: "De seguidores a comunidad que trabaja",
+        texto:
+          "Una comunidad chica y fiel vale más para una marca que una grande que pasa de largo. Se mide, se muestra y se ofrece con los números reales.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "enzo_arancibia14",
+        href: "https://www.instagram.com/enzo_arancibia14/",
+      },
+      {
+        tipo: "facebook",
+        handle: "enzodaniel",
+        href: "https://www.facebook.com/enzodaniel",
+      },
+    ],
+    /* Del perfil público, no de un panel: sin acceso a sus estadísticas no
+       hay vistas ni alcance que publicar, y no se estiman. */
+    metricas: [
+      {
+        valor: "6.846",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @enzo_arancibia14 · 23/09/2026",
+      },
+      {
+        valor: "457",
+        label: "Publicaciones en Instagram",
+        fuente: "Perfil @enzo_arancibia14 · 23/09/2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que viene" },
+    lanzamientos: [],
+    enConstruccion:
+      "Está en producción el primer ciclo con Hivrido: el relevamiento de lo que ya publicó, los formatos propios que salen de ahí y las primeras piezas producidas con equipo.",
   },
 ];
 

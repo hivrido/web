@@ -10,7 +10,8 @@
  *   propósito: una página vacía con ritmo se lee como editorial, una página
  *   vacía sin ritmo se lee como sin terminar.
  * - Una sola pieza gráfica por ficha, dibujada en CSS: la cápsula de Amplax,
- *   el encuadre vertical de Kareen, los tres aros de Jairito. No cuesta una
+ *   el encuadre vertical de Kareen, los tres aros de Jairito, el visor de
+ *   Enzo. No cuesta una
  *   petición, no se pixela y no envejece como envejece una foto de hace dos
  *   años.
  * - El color va en dos niveles y no se mezclan. `--art-marca` es el magenta
@@ -719,6 +720,53 @@ html:has(.art-page) body {
   .art-emblema--junta::after {
     bottom: 96px;
   }
+
+  /* ── Cámara ─────────────────────────────────────────────────────────
+     El visor con el REC encendido: "Enzo en la cámara", dibujado. Las
+     cuatro escuadras y la cruz del centro son degradados de un solo color
+     con tamaño fijo, así el marco entero es una caja y no nueve nodos. */
+  .art-emblema--camara {
+    --visor: linear-gradient(var(--art-acento), var(--art-acento));
+    width: 240px;
+    height: 360px;
+    background:
+      var(--visor) left top / 40px 2px no-repeat,
+      var(--visor) left top / 2px 40px no-repeat,
+      var(--visor) right top / 40px 2px no-repeat,
+      var(--visor) right top / 2px 40px no-repeat,
+      var(--visor) left bottom / 40px 2px no-repeat,
+      var(--visor) left bottom / 2px 40px no-repeat,
+      var(--visor) right bottom / 40px 2px no-repeat,
+      var(--visor) right bottom / 2px 40px no-repeat,
+      var(--visor) center / 28px 1px no-repeat,
+      var(--visor) center / 1px 28px no-repeat,
+      radial-gradient(70% 50% at 50% 50%, var(--art-acento-suave) 0%, transparent 72%);
+    filter: drop-shadow(0 0 30px var(--art-acento-suave));
+  }
+
+  /* El REC: el punto titila como en un visor de verdad. Va en el acento y
+     no en rojo: el color de la figura es siempre el del artista. */
+  .art-emblema--camara::before {
+    content: "● REC";
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--art-acento);
+    animation: art-rec 1.6s steps(1, end) infinite;
+  }
+
+  .art-emblema--camara::after {
+    bottom: 30px;
+  }
+}
+
+@keyframes art-rec {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
 }
 
 @keyframes art-flotar {
@@ -727,7 +775,8 @@ html:has(.art-page) body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .art-emblema { animation: none; }
+  .art-emblema,
+  .art-emblema--camara::before { animation: none; }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
