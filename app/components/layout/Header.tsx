@@ -4,23 +4,28 @@ import LogoAnimated from "../ui/LogoAnimated";
 import ScrambleLink from "../ui/ScrambleLink";
 
 /* El menú es el mismo mapa que dibujan las fichas del cosmos: una entrada por
-   tarjeta, en su orden. Se fueron las anclas a secciones —#sec1, #sec4— porque
-   la raíz ya no es la página larga sino el anillo, y ahí no existen.
+   tarjeta, en su orden —el del anillo en `public/cosmos/projects.js`, que
+   arranca en ARTISTAS y cierra en la colmena—. Se fueron las anclas a
+   secciones —#sec1, #sec4— porque la raíz ya no es la página larga sino el
+   anillo, y ahí no existen.
 
-   Artistas es hoy la única excepción: el roster todavía no tiene ficha en
-   `public/cosmos/projects.js`, y sin entrada acá la sección quedaría sin
-   ninguna puerta desde el sitio. Cuando el anillo la incorpore, esta línea
-   deja de ser una excepción y vuelve a espejar una tarjeta. */
+   Home va primero y no espeja ninguna tarjeta: es la vuelta a la portada, que
+   desde una ruta interna no tiene otra puerta.
+
+   Si acá y allá el orden se separa, el menú deja de ser el mapa del sitio y
+   pasa a ser una lista de links: lo mismo dos veces en dos ordenes distintos.
+   Esta lista está duplicada a mano en el drawer de `public/index.html`, que no
+   comparte código con este componente; las dos se mueven juntas. */
 const NAV_ITEMS = [
   { label: "Home",         href: "/" },
+  { label: "Artistas",     href: "/artistas" },
+  { label: "Hivrido PLAY", href: "/play" },
   { label: "Grow Digital", href: "/diseno-web" },
   { label: "Cine & Video", href: "/cine-video" },
+  { label: "Branding",     href: "/branding" },
+  { label: "Equipo",       href: "/equipo" },
   { label: "Publicidad",   href: "/publicidad" },
   { label: "Agentes IA",   href: "/colmena-agentes" },
-  { label: "Branding",     href: "/branding" },
-  { label: "Hivrido PLAY", href: "/play" },
-  { label: "Artistas",     href: "/artistas" },
-  { label: "Equipo",       href: "/equipo" },
 ];
 
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
