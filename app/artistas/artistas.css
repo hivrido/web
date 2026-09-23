@@ -67,43 +67,100 @@ html:has(.art-page) body {
   --art-acento: var(--art-marca);
   --art-acento-suave: var(--art-marca-suave);
 
+  /* ── El negro de la portada ───────────────────────────────────
+     El fondo de acá era #0a0a0a y el del anillo es #04040a: dos negros
+     distintos a un click de distancia se leen como dos sitios. Con el de la
+     portada —más la viñeta que cierra los bordes y el grano encima— la
+     sección queda parada sobre el mismo aire que la home.
+  */
+  --art-void: #04040a;
+
+  /* ── Relieve ───────────────────────────────────────────────
+     El material con el que la portada dibuja sus botones, pasado a las
+     superficies: un filo de luz sobre el canto de arriba, el de abajo en
+     sombra y la pieza despegada del fondo. Así una tarjeta deja de ser un
+     rectángulo pintado y pasa a ser algo apoyado sobre la página.
+  */
+  --art-relieve:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 22px 46px -30px rgba(0, 0, 0, 0.95);
+  --art-relieve-alto:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 30px 62px -28px rgba(0, 0, 0, 1);
+
   position: relative;
   min-height: 100dvh;
-  background: var(--bg);
   color: var(--art-texto);
   padding-top: var(--header-h);
   overflow-x: hidden;
-}
 
-/* Atmósfera: dos degradados y una trama fina. Sin peticiones, sin competir
-   con el LCP —que acá es el nombre del artista—. */
-.art-page::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 90vh;
-  pointer-events: none;
-  background:
+  /* Las capas que viajan con la página van en el fondo propio del elemento,
+     por debajo de todo el contenido: el halo del artista, el hilo magenta de
+     la sección y la trama de líneas. La viñeta y el grano van aparte, en los
+     pseudos, porque tienen que quedarse clavados a la pantalla. */
+  background-color: var(--art-void);
+  background-image:
     radial-gradient(120% 70% at 50% 0%, var(--art-acento-suave) 0%, transparent 62%),
     /* El hilo de la sección. Aunque la ficha de un artista traiga su color
        y se lleve el primer degradado, el magenta de ARTISTAS sigue en el
        aire: es lo que dice de quién es la casa donde estás parado. */
-    radial-gradient(90% 60% at 80% 12%, var(--art-marca-tenue) 0%, transparent 70%);
+    radial-gradient(90% 60% at 80% 12%, var(--art-marca-tenue) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.014) 0px,
+      rgba(255, 255, 255, 0.014) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size: 100% 90vh, 100% 90vh, 100% 3px;
+  background-position: top center, top center, top center;
 }
 
+/* Viñeta: la misma de la portada —`.veil--vig` de cosmos.styles.css—, fija
+   a la pantalla y por debajo del contenido. Cierra los cuatro bordes para que
+   el centro de la página tenga foco propio y el negro deje de ser plano.
+   Sin peticiones y sin competir con el LCP, que acá es el nombre del artista. */
+.art-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 72% at 50% 48%,
+    transparent 0%,
+    rgba(4, 4, 10, 0.3) 60%,
+    rgba(4, 4, 10, 0.86) 100%
+  );
+}
+
+/* Grano de película, por encima de todo: `.veil--grain` de la portada, con el
+   mismo ruido, la misma opacidad y el mismo salteo de cuadros. Es lo que le
+   saca el plano digital al negro.
+
+   El recuadro se pasa de la pantalla por los cuatro lados: la animación
+   desplaza la capa un 2% y con `inset: 0` ese corrimiento dejaría una franja
+   sin grano contra el borde. */
 .art-page::after {
   content: "";
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  inset: -4%;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0.4;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.014) 0px,
-    rgba(255, 255, 255, 0.014) 1px,
-    transparent 1px,
-    transparent 3px
-  );
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 170px 170px;
+  animation: art-grain 0.5s steps(1) infinite;
+}
+
+@keyframes art-grain {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(-2%, 1%); }
+  66%      { transform: translate(2%, -2%); }
 }
 
 .art-page > * {
@@ -256,6 +313,8 @@ html:has(.art-page) body {
   padding: 7px 13px;
   border: 1px solid var(--art-linea);
   border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -275,30 +334,93 @@ html:has(.art-page) body {
    Botones
    ───────────────────────────────────────────────────────────────────────── */
 
+/* ── El primario: la píldora de la portada ──
+   Era un bisel con `clip-path`, forma que la home ya dejó atrás. Ahora es
+   `.btn-bevel` calcado: relleno del acento, haz de luz recorriendo el trazo y
+   destello al pasar el cursor.
+
+   Lo único que no se copia es el color del texto. En la portada va blanco
+   sobre violeta; los acentos de los artistas son claros —lima, rosa, cian—
+   y sobre ellos el blanco no se lee. El haz sí sigue siendo blanco: corre por
+   fuera del borde, sobre el negro de la página, nunca sobre el relleno. */
 .art-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 24px;
+  padding: 14px 28px;
+  min-height: 48px;
   border: none;
-  clip-path: var(--clip-bevel);
+  border-radius: 999px;
+  clip-path: none;
   background: var(--art-acento);
-  color: #0a0a0a;
+  color: #06060c;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  transition: transform 0.2s ease, filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-.art-btn:hover {
+.art-btn:hover,
+.art-btn:focus-visible {
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  filter: brightness(1.08);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--art-acento) 40%, transparent);
+}
+
+/* La luz del borde. La máscara son dos capas restadas —borde menos
+   contenido— porque la píldora no es un círculo y la radial del aro no le
+   sirve. `--beam` y `beam-run` los declara globals.css, de donde salen los
+   botones de la portada. */
+.art-btn::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 200deg,
+    rgba(255, 255, 255, 0.45) 300deg,
+    #ffffff 342deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: beam-run 2.6s linear infinite;
+  pointer-events: none;
+}
+
+/* El destello viaja con `background-position` y no desplazando el pseudo:
+   desplazado se lleva su propio recorte puesto y la luz termina flotando al
+   costado del botón. */
+.art-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  transition: background-position 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.art-btn:hover::after,
+.art-btn:focus-visible::after {
+  background-position: 0 0;
 }
 
 .art-btn svg {
+  position: relative;
+  z-index: 1;
   transition: transform 0.25s ease;
 }
 
@@ -306,23 +428,51 @@ html:has(.art-page) body {
   transform: translateX(3px);
 }
 
+/* ── El secundario: la misma píldora, tratada como vidrio ──
+   Acompaña la forma del primario pero no su luz: dos haces corriendo uno al
+   lado del otro se anulan y el ojo pierde cuál es la acción principal. Lo que
+   lo sostiene es el relieve —filo claro arriba, fondo apenas velado—, igual
+   que los secundarios de globals.css. Era un subrayado, y al lado de un CTA
+   relleno un subrayado no se lee como algo que se pueda tocar. */
 .art-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid var(--art-linea);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  gap: 10px;
+  padding: 13px 26px;
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid var(--art-linea);
+  background-color: rgba(255, 255, 255, 0.035);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--art-suave);
-  transition: color 0.25s ease, border-color 0.25s ease;
+  transition: background-color 0.35s ease, border-color 0.35s ease,
+              box-shadow 0.35s ease, transform 0.3s ease, color 0.3s ease;
 }
 
-.art-link:hover {
-  color: var(--art-texto);
-  border-color: var(--art-acento);
+.art-link:hover,
+.art-link:focus-visible {
+  color: #fff;
+  border-color: color-mix(in srgb, var(--art-acento) 55%, transparent);
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              0 8px 24px -12px rgba(0, 0, 0, 0.9);
+  transform: translateY(-2px);
+}
+
+.art-link svg {
+  transition: transform 0.25s ease;
+}
+
+.art-link:hover svg {
+  transform: translateX(3px);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -494,12 +644,16 @@ html:has(.art-page) body {
    Ejes
    ───────────────────────────────────────────────────────────────────────── */
 
+/* El panel completo se apoya sobre la página y cada chapa de adentro sube
+   medio milímetro sobre la junta: la grilla a sangre se lee como una pieza
+   labrada y no como una tabla. */
 .art-ejes {
   display: grid;
   gap: 1px;
   margin-top: 8px;
   background: var(--art-linea);
   border: 1px solid var(--art-linea);
+  box-shadow: var(--art-relieve);
 }
 
 @media (min-width: 760px) {
@@ -508,12 +662,16 @@ html:has(.art-page) body {
 
 .art-eje {
   padding: clamp(26px, 4vw, 40px);
+  /* Un punto por encima del negro de la página: la chapa se ve levantada
+     antes incluso del filo. */
   background: var(--bg);
-  transition: background 0.3s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .art-eje:hover {
   background: var(--art-panel);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .art-eje-num {
@@ -687,6 +845,7 @@ html:has(.art-page) body {
   margin-top: 8px;
   background: var(--art-linea);
   border: 1px solid var(--art-linea);
+  box-shadow: var(--art-relieve);
 }
 
 @media (min-width: 600px) {
@@ -699,11 +858,13 @@ html:has(.art-page) body {
   gap: 18px;
   padding: clamp(22px, 3.4vw, 30px) clamp(20px, 3vw, 30px);
   background: var(--bg);
-  transition: background 0.3s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .art-vecino:hover {
   background: var(--art-panel);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 /* El punto de color del vecino: su acento, del tamaño justo para leerse
@@ -891,6 +1052,7 @@ html:has(.art-page) body {
   background:
     radial-gradient(90% 140% at 0% 0%, var(--art-acento-suave) 0%, transparent 60%),
     var(--art-panel);
+  box-shadow: var(--art-relieve);
 }
 
 .art-cta h2 {
@@ -960,13 +1122,16 @@ html:has(.art-page) body {
   background:
     radial-gradient(120% 140% at 12% 0%, var(--art-acento-suave) 0%, transparent 58%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  /* El relieve es lo que la despega del fondo: sin él, con el negro de la
+     portada debajo, la tarjeta y la página eran el mismo plano. */
+  box-shadow: var(--art-relieve);
   transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
 
 .art-ficha:hover {
   border-color: color-mix(in srgb, var(--art-acento) 45%, transparent);
   transform: translateY(-3px);
-  box-shadow: 0 24px 60px -30px var(--art-acento);
+  box-shadow: var(--art-relieve-alto), 0 24px 60px -30px var(--art-acento);
 }
 
 /* El cometa del borde. Gira el ángulo del degradado, no el elemento: rotar
@@ -1179,7 +1344,9 @@ html:has(.art-page) body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .art-page::after,
   .art-ficha::before,
+  .art-btn::before,
   .art-ficha-ver::before { animation: none; }
   .art-ficha:hover { transform: none; }
 }
