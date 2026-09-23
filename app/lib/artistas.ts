@@ -474,8 +474,8 @@ export const ARTISTAS: Artista[] = [
     slug: "enzo-arancibia",
     nombre: "Enzo Arancibia",
     alias: "Enzo en la cámara",
-    tagline: "457 publicaciones: la constancia ya está, falta la casa.",
-    disciplinas: ["Contenido", "Cámara", "Redes", "Performance"],
+    tagline: "Un millón y medio de vistas dando una vuelta por José C. Paz.",
+    disciplinas: ["Humor", "Reels", "POV", "Contenido", "Performance"],
     schema: "Person",
     rol: "Creador de contenido",
     /* Ámbar. El único cálido que quedaba libre en el roster —lima, violeta y
@@ -483,37 +483,37 @@ export const ARTISTAS: Artista[] = [
        Es claro a propósito: va como texto sobre negro y como relleno bajo
        texto oscuro, y los dos pasan el AA. */
     acento: { hex: "#F5B942", suave: "rgba(245, 185, 66, 0.14)" },
-    /* El visor con el REC encendido: "Enzo en la cámara" dibujado. La
-       leyenda es la cifra de su comunidad, lo único que la figura mide. */
-    emblema: { forma: "camara", leyenda: "6,8 K" },
-    /* Todo lo que sigue sale de lo que se puede comprobar en su perfil: la
-       cantidad de publicaciones y la comunidad. Nada sobre de qué se ríe,
-       dónde vive o qué formatos hace: eso lo dice él, no la ficha. */
+    /* El visor con el REC encendido: "Enzo en la cámara" dibujado, con la
+       cifra de su reel más visto grabada abajo. */
+    emblema: { forma: "camara", leyenda: "1,5 M" },
+    /* Sale de su perfil público y de la grilla de reels, relevados el
+       23/09/2026. La bio también nombra a su familia: eso es suyo y no entra
+       en una ficha profesional. */
     manifiesto: [
-      "Cuatrocientas cincuenta y siete publicaciones. Eso no se hace por impulso: es alguien que se pone frente a la cámara una vez, y otra, y otra, hasta que hacerlo deja de ser un evento y pasa a ser un oficio.",
-      "Casi siete mil personas lo siguen en Instagram. No es una cifra para inflar ni para esconder: es una comunidad del tamaño justo para conocerse, y la base sobre la que se construye todo lo que viene.",
-      "Hivrido no viene a cambiarle la voz ni a fabricarle un personaje. Viene a ponerle estructura a lo que ya hace: dirección, producción y un lugar propio donde la constancia se convierta en carrera.",
+      "Su reel más visto lo vieron un millón y medio de personas. Lo siguen 6.854. Esa distancia es el proyecto entero: lo que hace sale del barrio y llega lejísimo, y cuando la gente vuelve a buscarlo no encuentra dónde quedarse.",
+      "Lo que hace es humor de barrio en primera persona. POV de salir a dar una vuelta por José C. Paz, el amigo que nunca se lo arranca, el que es re tóxico, el que pregunta si ella es tu novia. La calle, la plaza y los pibes no son escenografía: son el elenco, y por eso el que mira se reconoce.",
+      "Hivrido no viene a sacarlo de la esquina ni a cambiarle el tono. Viene a ponerle nombre, ficha y contacto a un alcance que ya tiene: que el próximo millón sepa quién es Enzo y que la marca que quiera estar ahí sepa cómo llegar.",
     ],
     ejes: [
       {
-        titulo: "La constancia es el capital",
+        titulo: "La calle es el set",
         texto:
-          "Cientos de publicaciones son cientos de pruebas. Antes de pedir más alcance, se ordena lo que ya existe: qué funcionó, qué se repite y qué merece una serie.",
+          "José C. Paz no es el fondo del video, es el idioma. Cada vuelta por el barrio es una locación que la audiencia reconoce antes de que empiece el chiste.",
       },
       {
-        titulo: "Frente a la cámara, en serio",
+        titulo: "Todos tienen un amigo así",
         texto:
-          "El que ya se sostiene solo frente a un teléfono está listo para un rodaje. Equipo, guion y dirección no le quitan naturalidad: le suben el techo.",
+          "El que nunca se lo arranca, el tóxico, el que tiene hambre. El POV del amigo es un catálogo infinito, y cada arquetipo es una pieza que la gente etiqueta sola.",
       },
       {
-        titulo: "Dos redes, una misma voz",
+        titulo: "Del pico al hábito",
         texto:
-          "Instagram y Facebook no hablan con la misma gente. El trabajo es que cada una reciba su formato sin que Enzo deje de sonar como Enzo.",
+          "Dos reels pasaron el millón y varios los cien mil. El trabajo es que esos picos dejen de ser golpes de suerte y se vuelvan una serie con cita fija.",
       },
       {
-        titulo: "De seguidores a comunidad que trabaja",
+        titulo: "La marca entra a la vuelta",
         texto:
-          "Una comunidad chica y fiel vale más para una marca que una grande que pasa de largo. Se mide, se muestra y se ofrece con los números reales.",
+          "Una marca no corta el POV, camina adentro de él. El barrio y la junta aguantan una integración con la misma voz, sin aviso leído al final.",
       },
     ],
     enlaces: [
@@ -527,12 +527,27 @@ export const ARTISTAS: Artista[] = [
         handle: "enzodaniel",
         href: "https://www.facebook.com/enzodaniel",
       },
+      {
+        tipo: "threads",
+        handle: "enzo_arancibia14",
+        href: "https://www.threads.net/@enzo_arancibia14",
+      },
     ],
-    /* Del perfil público, no de un panel: sin acceso a sus estadísticas no
-       hay vistas ni alcance que publicar, y no se estiman. */
+    /* Del perfil y de la grilla públicos, no de un panel: sin acceso a sus
+       estadísticas no hay alcance mensual ni interacciones que publicar. */
     metricas: [
       {
-        valor: "6.846",
+        valor: "1,5 M",
+        label: "Vistas de su reel más visto",
+        fuente: "Reel «Pov: salís a dar una vuelta por J.C.P»",
+      },
+      {
+        valor: "2",
+        label: "Reels que pasaron el millón de vistas",
+        fuente: "Grilla de reels · 23/09/2026",
+      },
+      {
+        valor: "6.854",
         label: "Seguidores en Instagram",
         fuente: "Perfil @enzo_arancibia14 · 23/09/2026",
       },
@@ -542,10 +557,31 @@ export const ARTISTAS: Artista[] = [
         fuente: "Perfil @enzo_arancibia14 · 23/09/2026",
       },
     ],
-    obra: { eyebrow: "Obra", titulo: "Lo que viene" },
-    lanzamientos: [],
+    obra: { eyebrow: "Obra", titulo: "Lo que dio la vuelta" },
+    /* Sin `year`: la grilla no muestra fechas y no se adivinan. Sin `ytId`:
+       los reels viven en Instagram, cada pieza se sostiene con su cifra. */
+    lanzamientos: [
+      {
+        id: "vuelta-por-jcp",
+        titulo: "Pov: salís a dar una vuelta por J.C.P",
+        tipo: "reel",
+        dato: "1,5 M vistas",
+      },
+      {
+        id: "tenes-un-mejor-amigo",
+        titulo: "Pov: tenés un mejor amigo",
+        tipo: "reel",
+        dato: "791 K vistas",
+      },
+      {
+        id: "amigo-ella-es-tu-novia",
+        titulo: "Amigo, ¿ella es tu novia?",
+        tipo: "reel",
+        dato: "192 K vistas",
+      },
+    ],
     enConstruccion:
-      "Está en producción el primer ciclo con Hivrido: el relevamiento de lo que ya publicó, los formatos propios que salen de ahí y las primeras piezas producidas con equipo.",
+      "Está en producción el primer ciclo con Hivrido: una serie propia de vueltas por el barrio, el catálogo de amigos en formato serie y las primeras integraciones de marca dentro del POV.",
   },
 ];
 
