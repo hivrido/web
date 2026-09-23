@@ -10,8 +10,11 @@
   --muted: #837d96;
   --dim:   #4d4860;
 
-  /* Acento: lo reescribe JS en cada proyecto activo */
-  --ac: #b026ff;
+  /* Acento: lo reescribe JS en cada proyecto activo. El valor de acá es el
+     de la ficha con la que arranca el anillo —ARTISTAS— y no un violeta
+     cualquiera: se pinta en el primer cuadro, antes de que corra el JS, y si
+     no coincide el rótulo y el botón cambian de color a la vista. */
+  --ac: #FF1B8D;
 
   /* Tipografía de la home: Rubik para el texto corrido y Orbitron para las
      etiquetas técnicas —la home no usa monoespaciada; su estilo "terminal"

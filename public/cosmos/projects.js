@@ -16,8 +16,45 @@
 
 export const PROJECTS = [
   {
-    id: 'monolito',
+    id: 'roster',
     index: '01',
+    title: 'ARTISTAS',
+    /* La ficha dice otra cosa que el HUD */
+    cardTitle: ['Artistas'],
+    /* Reemplaza al ornamento de índice sobre el título de la ficha */
+    kicker: 'Representación',
+    /* La palabra con la que se busca: es la que va a la lista de disciplinas */
+    category: 'Artistas',
+    /* El título ya dice ARTISTAS: el rótulo aporta lo que hacemos con ellos */
+    hudCategory: 'Representación',
+    /* Pie de la ficha, en lugar de `categoría · año` */
+    meta: 'Una carrera, no un feed',
+    year: '2026',
+    /* Sin `client`: el roster es casa propia, no una pieza para alguien */
+    body: 'Representamos artistas con audiencia real y ninguna casa: les construimos identidad, catálogo y una URL propia. Dirección creativa, producción audiovisual, contenido y pauta, para que lo que ya funciona en un feed se pueda mostrar, contratar y medir. Trabajamos con pocos a la vez porque cada carrera lleva producción propia.',
+    tags: ['Representación', 'Dirección', 'Contenido', 'Pauta'],
+    /* Con `href` la tarjeta enciende la pastilla y el click va derecho al
+       roster. Estaba en `link`, que es la variante para las fichas sin nada
+       publicado: abría el panel y recién ahí aparecía el botón. La sección ya
+       está publicada y tiene ficha adentro, así que ese paso de más sobraba. */
+    href: '/artistas/',
+    cta: 'Ver el roster',
+    playLabel: 'VER',
+    /* El magenta de la sección. No se mueve solo: `--art-marca` en
+       `app/artistas/artistas.css` es el mismo valor, y es lo que hace que
+       la placa y la página que abre se lean como una sola habitación. El
+       acento de cada artista —el lima de Amplax— vive dentro de su ficha,
+       nunca acá: esta placa habla por la sección, no por el roster. */
+    accent: '#FF1B8D',
+    /* Arte propio y no la foto de un artista: una cara acá convertiría la
+       tarjeta de la sección en la ficha de esa persona. Es un escenario vacío
+       con los cañones encendidos, pintado en el magenta de la sección. Lo
+       genera `scripts/build-artistas-card.mjs`. */
+    image: '/images/bg/artistas.jpg',
+  },
+  {
+    id: 'monolito',
+    index: '02',
     title: 'HIVRIDO PLAY',
     /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
     brandLogo: true,
@@ -40,7 +77,7 @@ export const PROJECTS = [
   },
   {
     id: 'nebula',
-    index: '02',
+    index: '03',
     title: 'GROW DIGITAL',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Digital'],
@@ -61,28 +98,28 @@ export const PROJECTS = [
     image: '/images/bg/21.jpg',
   },
   {
-    id: 'docke',
-    index: '03',
-    title: 'AGENTES',
+    id: 'animacion',
+    index: '04',
+    title: 'CINE & VIDEO',
     /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Colmena'],
+    cardTitle: ['Cine'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Agentes IA',
-    category: 'Automatización',
+    kicker: 'Producción Audiovisual',
+    category: 'Cine & Video',
     /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'Trabajan solos las 24 horas',
+    meta: 'De la idea a la pantalla',
     year: '2025',
     /* Sin `client`: es un servicio propio, no una pieza para alguien */
-    body: 'Colmenas de agentes IA que operan solas: atienden consultas, califican interesados, ejecutan procesos y reportan a escala. Conectados a tu CRM, tus campañas y tus canales de comunicación, trabajando mientras dormís. Es PUNY, el motor que corre dentro de Hivrido, adaptado a tu negocio.',
-    tags: ['Multi-agente', 'CRM', 'Autónomo', '24/7'],
-    /* Destino del botón del panel: la landing de la colmena */
-    link: { label: 'Ir a Colmena de agentes', href: '/colmena-agentes/' },
-    accent: '#39FF88',
-    image: '/images/bg/docke.jpg',
+    body: 'Producción cinematográfica, videoclips y contenido para marcas. Desarrollamos proyectos desde la idea hasta la pantalla, cuidando cada etapa: desarrollo, guion, rodaje y postproducción. Apostamos a narrativas que trascienden y construyen universos propios.',
+    tags: ['Cine', 'Videoclips', 'Dirección', 'Post'],
+    /* Destino del botón del panel: la landing audiovisual */
+    link: { label: 'Ir a Cine & Video', href: '/cine-video/' },
+    accent: '#7C3AED',
+    image: '/images/bg/animacion-poster.jpg',
   },
   {
     id: 'oraculo',
-    index: '04',
+    index: '05',
     title: 'BRANDING',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Marcas'],
@@ -103,26 +140,6 @@ export const PROJECTS = [
     /* Sin `image` a propósito: la ficha se pintaba con el logotipo de Okupas,
        una marca ajena ilustrando nuestra propia identidad. Hasta que tenga
        arte propio va el fondo procedural en su acento, que es de la casa. */
-  },
-  {
-    id: 'animacion',
-    index: '05',
-    title: 'CINE & VIDEO',
-    /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Cine'],
-    /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Producción Audiovisual',
-    category: 'Cine & Video',
-    /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'De la idea a la pantalla',
-    year: '2025',
-    /* Sin `client`: es un servicio propio, no una pieza para alguien */
-    body: 'Producción cinematográfica, videoclips y contenido para marcas. Desarrollamos proyectos desde la idea hasta la pantalla, cuidando cada etapa: desarrollo, guion, rodaje y postproducción. Apostamos a narrativas que trascienden y construyen universos propios.',
-    tags: ['Cine', 'Videoclips', 'Dirección', 'Post'],
-    /* Destino del botón del panel: la landing audiovisual */
-    link: { label: 'Ir a Cine & Video', href: '/cine-video/' },
-    accent: '#7C3AED',
-    image: '/images/bg/animacion-poster.jpg',
   },
   {
     id: 'ritual',
@@ -170,40 +187,23 @@ export const PROJECTS = [
        campañas va el fondo procedural en su acento. */
   },
   {
-    id: 'roster',
+    id: 'docke',
     index: '08',
-    title: 'ARTISTAS',
+    title: 'AGENTES',
     /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Artistas'],
+    cardTitle: ['Colmena'],
     /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Representación',
-    /* La palabra con la que se busca: es la que va a la lista de disciplinas */
-    category: 'Artistas',
-    /* El título ya dice ARTISTAS: el rótulo aporta lo que hacemos con ellos */
-    hudCategory: 'Representación',
+    kicker: 'Agentes IA',
+    category: 'Automatización',
     /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'Una carrera, no un feed',
-    year: '2026',
-    /* Sin `client`: el roster es casa propia, no una pieza para alguien */
-    body: 'Representamos artistas con audiencia real y ninguna casa: les construimos identidad, catálogo y una URL propia. Dirección creativa, producción audiovisual, contenido y pauta, para que lo que ya funciona en un feed se pueda mostrar, contratar y medir. Trabajamos con pocos a la vez porque cada carrera lleva producción propia.',
-    tags: ['Representación', 'Dirección', 'Contenido', 'Pauta'],
-    /* Con `href` la tarjeta enciende la pastilla y el click va derecho al
-       roster. Estaba en `link`, que es la variante para las fichas sin nada
-       publicado: abría el panel y recién ahí aparecía el botón. La sección ya
-       está publicada y tiene ficha adentro, así que ese paso de más sobraba. */
-    href: '/artistas/',
-    cta: 'Ver el roster',
-    playLabel: 'VER',
-    /* El magenta de la sección. No se mueve solo: `--art-marca` en
-       `app/artistas/artistas.css` es el mismo valor, y es lo que hace que
-       la placa y la página que abre se lean como una sola habitación. El
-       acento de cada artista —el lima de Amplax— vive dentro de su ficha,
-       nunca acá: esta placa habla por la sección, no por el roster. */
-    accent: '#FF1B8D',
-    /* Arte propio y no la foto de un artista: una cara acá convertiría la
-       tarjeta de la sección en la ficha de esa persona. Es un escenario vacío
-       con los cañones encendidos, pintado en el magenta de la sección. Lo
-       genera `scripts/build-artistas-card.mjs`. */
-    image: '/images/bg/artistas.jpg',
+    meta: 'Trabajan solos las 24 horas',
+    year: '2025',
+    /* Sin `client`: es un servicio propio, no una pieza para alguien */
+    body: 'Colmenas de agentes IA que operan solas: atienden consultas, califican interesados, ejecutan procesos y reportan a escala. Conectados a tu CRM, tus campañas y tus canales de comunicación, trabajando mientras dormís. Es PUNY, el motor que corre dentro de Hivrido, adaptado a tu negocio.',
+    tags: ['Multi-agente', 'CRM', 'Autónomo', '24/7'],
+    /* Destino del botón del panel: la landing de la colmena */
+    link: { label: 'Ir a Colmena de agentes', href: '/colmena-agentes/' },
+    accent: '#39FF88',
+    image: '/images/bg/docke.jpg',
   },
 ];
