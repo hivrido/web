@@ -82,19 +82,45 @@ html:has(.art-page) body {
   --art-void: #04040a;
 
   /* ── Relieve ───────────────────────────────────────────────
-     El material con el que la portada dibuja sus botones, pasado a las
-     superficies: un filo de luz sobre el canto de arriba, el de abajo en
-     sombra y la pieza despegada del fondo. Así una tarjeta deja de ser un
-     rectángulo pintado y pasa a ser algo apoyado sobre la página.
+     Sobre un fondo casi negro el relieve no sale de una sombra: una sombra
+     negra sobre #04040a no dibuja nada, y un filo blanco al 11% pegado a un
+     borde que ya es blanco al 10% es una luz al lado de otra igual. Ese fue
+     el primer intento y no se veía.
+
+     Lo que sí funciona es iluminar la pieza: la cara más clara que la página
+     y degradada de arriba abajo, el canto de arriba encendido, el de abajo
+     apagado. Eso es sombreado, no sombra, y se lee sobre negro liso igual que
+     sobre la nebulosa. La sombra proyectada queda igual —corta y dura contra
+     el canto, larga y difusa debajo— porque donde el fondo tiene brillo sí
+     tiene con qué recortarse.
+
+     La cara sube 1,20:1 sobre el fondo: un escalón franco de plano. Y el gris
+     más tenue sobre ella queda en 5,9:1, que sigue pasando AA.
   */
+  --art-base: rgba(9, 8, 16, 0.55);
+  --art-cara: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.085) 0%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.012) 100%
+  );
   --art-relieve:
-    inset 0 1px 0 rgba(255, 255, 255, 0.11),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
-    0 22px 46px -30px rgba(0, 0, 0, 0.95);
+    /* el canto de arriba, donde pega la luz */
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 16px 24px -22px rgba(255, 255, 255, 0.28),
+    /* el de abajo, en sombra */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.85),
+    inset 0 -18px 24px -24px rgba(0, 0, 0, 0.8),
+    /* apoyada: el contacto contra el canto y después el peso */
+    0 1px 2px rgba(0, 0, 0, 0.75),
+    0 18px 38px -16px rgba(0, 0, 0, 0.8);
   --art-relieve-alto:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.6),
-    0 30px 62px -28px rgba(0, 0, 0, 1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 16px 24px -22px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.85),
+    inset 0 -18px 24px -24px rgba(0, 0, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 30px 60px -18px rgba(0, 0, 0, 0.9);
 
   position: relative;
   min-height: 100dvh;
@@ -393,8 +419,10 @@ html:has(.art-page) body {
   padding: 7px 13px;
   border: 1px solid var(--art-linea);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: var(--art-cara), rgba(255, 255, 255, 0.02);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -742,16 +770,27 @@ html:has(.art-page) body {
 
 .art-eje {
   padding: clamp(26px, 4vw, 40px);
-  /* Un punto por encima del negro de la página: la chapa se ve levantada
-     antes incluso del filo. */
-  background: var(--bg);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  /* La chapa se ilumina como la ficha —cara degradada, canto de arriba
+     encendido, el de abajo apagado— sobre una base más clara que la página.
+     Dentro de una grilla a sangre el relieve es lo único que separa una
+     chapa de la de al lado. */
+  background: var(--art-cara), var(--bg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    inset 0 -16px 22px -24px rgba(0, 0, 0, 0.75);
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .art-eje:hover {
-  background: var(--art-panel);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  /* Un color solo es válido en la última capa de `background`, así que la
+     base del hover va resuelta y no apilando `--art-panel` en el medio: ahí
+     la declaración entera se cae y la chapa se queda sin fondo. */
+  background: var(--art-cara), #100f17;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    inset 0 -16px 22px -24px rgba(0, 0, 0, 0.75);
 }
 
 .art-eje-num {
@@ -938,14 +977,23 @@ html:has(.art-page) body {
   align-items: center;
   gap: 18px;
   padding: clamp(22px, 3.4vw, 30px) clamp(20px, 3vw, 30px);
-  background: var(--bg);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  background: var(--art-cara), var(--bg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    inset 0 -16px 22px -24px rgba(0, 0, 0, 0.75);
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .art-vecino:hover {
-  background: var(--art-panel);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  /* Un color solo es válido en la última capa de `background`, así que la
+     base del hover va resuelta y no apilando `--art-panel` en el medio: ahí
+     la declaración entera se cae y la chapa se queda sin fondo. */
+  background: var(--art-cara), #100f17;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    inset 0 -16px 22px -24px rgba(0, 0, 0, 0.75);
 }
 
 /* El punto de color del vecino: su acento, del tamaño justo para leerse
@@ -1127,9 +1175,12 @@ html:has(.art-page) body {
 .art-cta {
   padding: clamp(48px, 8vw, 88px) clamp(26px, 5vw, 64px);
   border: 1px solid var(--art-linea);
+  border-top-color: rgba(255, 255, 255, 0.17);
+  border-bottom-color: rgba(0, 0, 0, 0.55);
   background:
     radial-gradient(90% 140% at 0% 0%, var(--art-acento-suave) 0%, transparent 60%),
-    var(--art-panel);
+    var(--art-cara),
+    var(--art-base);
   box-shadow: var(--art-relieve);
 }
 
@@ -1196,11 +1247,18 @@ html:has(.art-page) body {
   padding: clamp(30px, 5.4vw, 54px) clamp(22px, 4vw, 44px);
   border-radius: 18px;
   border: 1px solid var(--art-linea);
+  /* Los cantos no son del mismo color: el de arriba recibe la luz y el de
+     abajo la pierde. Un borde parejo aplana la pieza por más sombra que
+     lleve. */
+  border-top-color: rgba(255, 255, 255, 0.17);
+  border-bottom-color: rgba(0, 0, 0, 0.55);
+  /* La base semiopaca hace dos cosas: apoya la cara sobre algo propio en vez
+     de dejarla flotando sobre la nebulosa, y calma el fondo justo debajo del
+     texto. */
   background:
     radial-gradient(120% 140% at 12% 0%, var(--art-acento-suave) 0%, transparent 58%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
-  /* El relieve es lo que la despega del fondo: sin él, con el negro de la
-     portada debajo, la tarjeta y la página eran el mismo plano. */
+    var(--art-cara),
+    var(--art-base);
   box-shadow: var(--art-relieve);
   transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
