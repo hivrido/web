@@ -11,8 +11,7 @@
  *   vacía sin ritmo se lee como sin terminar.
  * - Una sola pieza gráfica por ficha, dibujada en CSS: la cápsula de Amplax,
  *   el encuadre vertical de Kareen, los tres aros de Jairito, el visor de
- *   Enzo. No cuesta una
- *   petición, no se pixela y no envejece como envejece una foto de hace dos
+ *   Enzo, la pantalla en vivo de Nahuel. No cuesta una petición, no se pixela y no envejece como envejece una foto de hace dos
  *   años.
  * - El color va en dos niveles y no se mezclan. `--art-marca` es el magenta
  *   de ARTISTAS: el mismo de la placa en el anillo de la portada, y el que
@@ -762,6 +761,49 @@ html:has(.art-page) body {
   .art-emblema--camara::after {
     bottom: 30px;
   }
+
+  /* ── Stream ─────────────────────────────────────────────────────────
+     La pantalla apaisada de un vivo: la única figura horizontal del set,
+     porque el stream es lo único del roster que no se mira en vertical.
+     Las tres líneas de abajo a la derecha son el chat corriendo, dibujadas
+     como degradados de tamaño fijo para que la figura siga siendo una caja. */
+  .art-emblema--stream {
+    --chat: linear-gradient(var(--art-acento-suave), var(--art-acento-suave));
+    width: 320px;
+    height: 200px;
+    margin-top: 80px;
+    border-radius: 16px;
+    border: 1px solid var(--art-acento);
+    background:
+      var(--chat) right 22px bottom 58px / 74px 5px no-repeat,
+      var(--chat) right 22px bottom 44px / 52px 5px no-repeat,
+      var(--chat) right 22px bottom 30px / 88px 5px no-repeat,
+      radial-gradient(90% 80% at 40% 50%, var(--art-acento-suave) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012));
+    box-shadow: 0 0 70px -14px var(--art-acento-suave);
+  }
+
+  /* EN VIVO titila con el mismo pulso que el REC del visor: son primos. */
+  .art-emblema--stream::before {
+    content: "● EN VIVO";
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: var(--art-acento);
+    animation: art-rec 1.6s steps(1, end) infinite;
+  }
+
+  /* La leyenda al centro, a tamaño de reloj de transmisión. */
+  .art-emblema--stream::after {
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 34px;
+    letter-spacing: 0.12em;
+  }
 }
 
 @keyframes art-rec {
@@ -776,7 +818,8 @@ html:has(.art-page) body {
 
 @media (prefers-reduced-motion: reduce) {
   .art-emblema,
-  .art-emblema--camara::before { animation: none; }
+  .art-emblema--camara::before,
+  .art-emblema--stream::before { animation: none; }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────

@@ -3,7 +3,7 @@ import type { TipoEnlace } from "../lib/artistas";
 /**
  * Íconos de las plataformas donde vive un artista.
  *
- * Dibujados a mano y no traídos de lucide-react: son siete marcas y el paquete
+ * Dibujados a mano y no traídos de lucide-react: son ocho marcas y el paquete
  * entero pesa más que estas rutas. Todos comparten caja de 24 y `currentColor`
  * para que el hover de la fila los tiña sin que cada uno sepa nada del color.
  */
@@ -46,6 +46,13 @@ const RUTAS: Record<TipoEnlace, React.ReactNode> = {
       <path d="M13.2 21.2v-7.4h2.5l.4-2.9h-2.9V9.1c0-.8.3-1.4 1.4-1.4h1.6V5.1a19 19 0 0 0-2.3-.1c-2.3 0-3.8 1.4-3.8 3.9v2h-2.5v2.9h2.5v7.4" />
     </>
   ),
+  /* La K en bloque de Kick, con el mismo trazo que el resto. */
+  kick: (
+    <>
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+      <path d="M8.5 7v10M8.5 12l5-5M8.5 12l5 5" />
+    </>
+  ),
   threads: (
     <>
       <path d="M12 21.2c-5.2 0-8.4-3.4-8.4-9.2S6.8 2.8 12 2.8c4 0 6.7 1.9 7.8 5" />
@@ -63,6 +70,7 @@ export const NOMBRE_RED: Record<TipoEnlace, string> = {
   tiktok: "TikTok",
   threads: "Threads",
   facebook: "Facebook",
+  kick: "Kick",
 };
 
 export default function RedIcono({ tipo }: { tipo: TipoEnlace }) {

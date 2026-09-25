@@ -28,7 +28,8 @@ export type TipoEnlace =
   | "spotify"
   | "tiktok"
   | "threads"
-  | "facebook";
+  | "facebook"
+  | "kick";
 
 export type Enlace = {
   tipo: TipoEnlace;
@@ -37,7 +38,7 @@ export type Enlace = {
   href: string;
 };
 
-export type TipoLanzamiento = "videoclip" | "single" | "album" | "reel";
+export type TipoLanzamiento = "videoclip" | "single" | "album" | "reel" | "clip";
 
 export type Lanzamiento = {
   /** Slug estable: sirve de key y de ancla. */
@@ -105,7 +106,10 @@ export type Artista = {
    * figura y `leyenda` es lo que va grabado en ella. Es lo que impide que
    * dos fichas sin fotos se vean iguales.
    */
-  emblema: { forma: "capsula" | "reel" | "junta" | "camara"; leyenda: string };
+  emblema: {
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream";
+    leyenda: string;
+  };
   /**
    * El concepto de la carrera, en párrafos. Es dirección creativa, no bio:
    * dice qué es el proyecto, no dónde nació el artista. Los datos personales
@@ -595,6 +599,128 @@ export const ARTISTAS: Artista[] = [
     ],
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: una serie propia de vueltas por el barrio, el catálogo de amigos en formato serie y las primeras integraciones de marca dentro del POV.",
+  },
+
+  {
+    slug: "nahuel-m17",
+    /* Sin apellido: el perfil no lo da y no se completa. El nombre de la
+       ficha es el de sus dos cuentas —@nahuel.m17 y kick.com/nahuelm17—, que
+       es como lo busca quien ya lo vio en vivo. */
+    nombre: "Nahuel M17",
+    /* El nombre visible de su Instagram. No es invento de la casa: es como
+       firma él. */
+    alias: "0:55",
+    tagline: "Todos los días en vivo. Lo mejor queda en clip.",
+    disciplinas: ["Streaming", "Gaming", "IRL", "Clips", "Contenido"],
+    schema: "Person",
+    rol: "Streamer",
+    /* Verde menta. Es el tono del vivo —el de su plataforma y el del trébol
+       de su bio— sin caer en el verde ácido de Kick, que al lado de la lima
+       de Amplax se confundiría. Queda lejos del cian de Jairito por el lado
+       del amarillo y lejos de la lima por el del azul. Pasa el AA como texto
+       sobre negro y bajo texto oscuro. */
+    acento: { hex: "#3EE08F", suave: "rgba(62, 224, 143, 0.14)" },
+    /* La pantalla apaisada con el EN VIVO encendido y el chat corriendo: el
+       único formato del roster que no es vertical. La leyenda es su nombre
+       visible, que en una pantalla se lee como el reloj del stream. */
+    emblema: { forma: "stream", leyenda: "0:55" },
+    /* Sale de su perfil de Instagram y de su canal de Kick, relevados el
+       25/09/2026. Nada de cifras de alcance: no las hay públicas, y las
+       que hay son chicas. Esta ficha no vende un número, vende un hábito.
+       Del canal queda afuera a propósito la categoría de casino: Hivrido no
+       arma el perfil de un artista sobre apuestas. */
+    manifiesto: [
+      "Nahuel prende la cámara todos los días. Juega, charla, sale a la calle con el celular en la mano y deja que el chat decida para dónde va la noche. Lo que en otro formato sería un guion, en el suyo es una conversación de varias horas con gente que vuelve.",
+      "El stream es la materia prima e Instagram es la vidriera: de cada transmisión salen los mejores momentos, cortados para que el que no estuvo en vivo se entere de lo que se perdió. Counter-Strike, Free Fire, Minecraft, terror con Phasmophobia, charla e IRL. Cambia el juego; el que habla es el mismo.",
+      "Hivrido llega temprano, y a propósito. No viene a inflar números que todavía no existen: viene a darle a un streamer que ya tiene la constancia lo que le falta alrededor —dirección, edición, una ficha que lo presente y un contacto profesional— para que cada vivo deje más que un recuerdo en el chat.",
+    ],
+    ejes: [
+      {
+        titulo: "La constancia es el capital",
+        texto:
+          "Stream todos los días. En un formato donde la audiencia se arma por hábito, estar a la hora de siempre vale más que cualquier golpe de suerte.",
+      },
+      {
+        titulo: "Del vivo al clip",
+        texto:
+          "Horas de transmisión se vuelven segundos que viajan. El recorte es lo que lleva el stream a quien nunca lo abrió, y la vuelta del clip al canal es el crecimiento.",
+      },
+      {
+        titulo: "El juego cambia, la voz no",
+        texto:
+          "Del shooter al terror, del Minecraft a la calle. Lo que la gente sigue no es un título: es cómo lo vive él, y eso viaja de un juego al otro.",
+      },
+      {
+        titulo: "La marca entra al chat",
+        texto:
+          "Un vivo largo aguanta una marca dentro de la charla y del juego, no un banner pegado al costado. Es la integración más directa que tiene el formato.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "kick",
+        handle: "nahuelm17",
+        href: "https://kick.com/nahuelm17",
+      },
+      {
+        tipo: "instagram",
+        handle: "nahuel.m17",
+        href: "https://www.instagram.com/nahuel.m17/",
+      },
+    ],
+    /* De los perfiles públicos, sin panel. Van las cifras tal como están, por
+       chicas que sean: son la línea de base contra la que se va a medir el
+       primer ciclo, y una base inflada arruina la comparación. */
+    metricas: [
+      {
+        valor: "Diario",
+        label: "Frecuencia de stream",
+        fuente: "Bio @nahuel.m17 · 25/09/2026",
+      },
+      {
+        valor: "Afiliado",
+        label: "Canal con suscripciones activas en Kick",
+        fuente: "kick.com/nahuelm17 · 25/09/2026",
+      },
+      {
+        valor: "214",
+        label: "Seguidores en Kick",
+        fuente: "kick.com/nahuelm17 · 25/09/2026",
+      },
+      {
+        valor: "391",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @nahuel.m17 · 25/09/2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que salió del vivo" },
+    /* Sin `dato`: no hay cifra pública que valga la pena al lado de cada
+       pieza. Los clips de Kick con más vistas son de casino y no entran; los
+       que quedan se listan por lo que son, con el juego en el crédito. */
+    lanzamientos: [
+      {
+        id: "paciencia-de-mi-papa",
+        titulo: "Poniendo a prueba la paciencia de mi papá",
+        tipo: "reel",
+        year: "2026",
+      },
+      {
+        id: "tengo-que-revisar-bien",
+        titulo: "Tengo que revisar bien",
+        tipo: "clip",
+        year: "2026",
+        con: "Counter-Strike 2",
+      },
+      {
+        id: "y-ese-tiro",
+        titulo: "¿Y ese tiro?",
+        tipo: "clip",
+        year: "2026",
+        con: "Roblox",
+      },
+    ],
+    enConstruccion:
+      "Está en producción el primer ciclo con Hivrido: edición de los mejores momentos de cada stream, una grilla de horarios fija y el paso del vivo a formatos cortos pensados para crecer fuera del canal.",
   },
 ];
 
