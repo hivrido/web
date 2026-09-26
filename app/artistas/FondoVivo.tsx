@@ -304,11 +304,33 @@ export default function FondoVivo() {
 
     let raf = 0;
     let corriendo = true;
+    /* En pantallas chicas, 30 cuadros y no 60: la deriva es lenta y no se
+       nota, y la mitad del trabajo por cuadro es margen para el hilo. */
+    const paso = corto ? 1000 / 30 : 0;
+    let ultimo = 0;
+    /* Durante un toque o una tecla el lienzo se calla: el cuadro que sigue a
+       la interacción tiene que ser el de la respuesta, no uno de partículas.
+       Era lo que empujaba el INP de la ruta a casi medio segundo. */
+    let pausaHasta = 0;
+    const ceder = () => {
+      pausaHasta = performance.now() + 300;
+    };
     const bucle = (t: number) => {
+      raf = requestAnimationFrame(bucle);
+      if (t < pausaHasta || t - ultimo < paso) return;
+      ultimo = t;
       cuadro(t);
+    };
+    /* Arranca después del primer pintado útil: el lienzo entra con fundido
+       igual, así que no hay nada que ganar compitiendo con el LCP. */
+    const arrancar = () => {
       raf = requestAnimationFrame(bucle);
     };
-    raf = requestAnimationFrame(bucle);
+    // Safari todavía no trae requestIdleCallback.
+    const ric = "requestIdleCallback" in window;
+    const espera = ric
+      ? window.requestIdleCallback(arrancar, { timeout: 1200 })
+      : window.setTimeout(arrancar, 600);
 
     /* Con la pestaña en segundo plano el navegador ya estrangula el rAF, pero
        no siempre lo frena: sin esto, una pestaña abierta atrás sigue pagando
@@ -323,9 +345,15 @@ export default function FondoVivo() {
 
     window.addEventListener("resize", medir);
     document.addEventListener("visibilitychange", alCambiarVisibilidad);
+    window.addEventListener("pointerdown", ceder, { passive: true, capture: true });
+    window.addEventListener("keydown", ceder, { capture: true });
 
     return () => {
+      if (ric) window.cancelIdleCallback(espera);
+      else window.clearTimeout(espera);
       cancelAnimationFrame(raf);
+      window.removeEventListener("pointerdown", ceder, { capture: true });
+      window.removeEventListener("keydown", ceder, { capture: true });
       window.removeEventListener("resize", medir);
       document.removeEventListener("visibilitychange", alCambiarVisibilidad);
     };

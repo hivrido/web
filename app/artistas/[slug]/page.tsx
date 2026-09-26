@@ -121,7 +121,7 @@ export default async function FichaArtistaPage({
   const [principal, ...dosis] = a.nombre.split(/\s+(?=\d)/);
 
   return (
-    <ClientShell>
+    <ClientShell preloader={false}>
       <Header base="/" logoDelay={300} />
 
       <script

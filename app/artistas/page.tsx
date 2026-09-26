@@ -99,9 +99,7 @@ export const metadata: Metadata = {
 
 export default function ArtistasPage() {
   return (
-    <ClientShell>
-      {/* 300 y no el valor por defecto: ese espera a que se retire el
-          preloader de la home, que en esta ruta no existe. */}
+    <ClientShell preloader={false}>
       <Header base="/" logoDelay={300} />
 
       <main className="art-page">

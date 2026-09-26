@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   devIndicators: false,
+  experimental: {
+    /* El CSS va dentro del HTML en vez de en <link>: eran dos hojas que
+       bloqueaban el primer pintado ~450 ms en 4G. */
+    inlineCss: true,
+  },
   /* La portada del dominio es public/index.html, no una página de Next: no hay
      app/page.tsx que responda "/". El rewrite la sirve desde el archivo.
 

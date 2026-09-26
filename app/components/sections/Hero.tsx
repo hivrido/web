@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import MagneticBtn from "../ui/MagneticBtn";
 import Image from "next/image";
+import { preconnect } from "react-dom";
 
 const YT_ID = "GowGLVO0KHI";
 const YT_THUMB = "/images/bg/docke.jpg";
@@ -13,6 +14,10 @@ const SLIDE = {
 };
 
 export default function Hero() {
+  /* Solo acá: el hero es el único embed que arranca sin clic. En el layout
+     global el preconnect se abría en todas las rutas y no se usaba en ninguna
+     otra. */
+  preconnect("https://www.youtube.com");
   const ytWrapRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [videoActivated, setVideoActivated] = useState(false);

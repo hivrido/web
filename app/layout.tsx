@@ -61,13 +61,6 @@ export default function RootLayout({
         } as React.CSSProperties
       }
     >
-      <head>
-        {/* Preconnect para YouTube — reduce latencia al activar el video del hero */}
-        <link rel="preconnect" href="https://www.youtube.com" />
-        <link rel="preconnect" href="https://www.youtube-nocookie.com" />
-        <link rel="preconnect" href="https://i.ytimg.com" />
-        <link rel="dns-prefetch" href="https://img.youtube.com" />
-      </head>
       <body style={{ overflowX: "hidden" }}>
         <GoogleTag id={GOOGLE_ADS_ID} />
         <WhatsAppConversion />
