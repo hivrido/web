@@ -107,7 +107,7 @@ export type Artista = {
    * dos fichas sin fotos se vean iguales.
    */
   emblema: {
-    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda";
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta";
     leyenda: string;
   };
   /**
@@ -788,6 +788,74 @@ export const ARTISTAS: Artista[] = [
     lanzamientos: [],
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: sus primeros temas con producción propia, el material audiovisual que los acompaña y la ficha completa con su discografía.",
+  },
+  {
+    slug: "florencia-martinez",
+    /* "Florencia Martinez" es como firma su perfil; el handle dice "magalii".
+       Hasta que ella confirme nombre artístico y apellido con tilde, la ficha
+       usa lo que figura público y no completa nada. */
+    nombre: "Florencia Martinez",
+    alias: "@magalii845",
+    tagline: "Frente a cámara, sea set o pasarela.",
+    disciplinas: ["Actuación", "Modelaje", "Arte", "Contenido"],
+    schema: "Person",
+    rol: "Actriz y modelo",
+    /* Azul cielo. El tono libre que queda lejos de todos: frío como el cian
+       de Jairito pero más claro y corrido al azul, sin rozar el violeta de
+       Kareen ni el magenta de la casa. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#7AA8FF", suave: "rgba(122, 168, 255, 0.14)" },
+    /* La claqueta: la primera figura del roster que habla del set y de quien
+       está delante de la cámara. */
+    emblema: { forma: "claqueta", leyenda: "TOMA 1" },
+    /* Relevado del perfil público el 26/09/2026: bio "artista, actriz y
+       modelaje", seguidores y seguidos. Los reels y el Threads no se
+       pudieron leer sin sesión, así que el texto no le atribuye rodajes,
+       campañas ni marcas que no estén comprobadas. */
+    manifiesto: [
+      "Florencia se presenta en tres palabras: artista, actriz y modelo. No es una lista de oficios sueltos, es una misma cosa vista desde tres lugares —la escena, la foto y la pantalla— y en las tres el trabajo es sostener una mirada.",
+      "Hivrido no viene a inventarle una trayectoria. Viene a darle un marco profesional a la que está construyendo: una ficha a la altura, material producido con criterio de set y un contacto directo para castings, rodajes y marcas.",
+    ],
+    ejes: [
+      {
+        titulo: "La cámara como escenario",
+        texto:
+          "Actuar y posar piden lo mismo: saber qué ve el lente. Cada pieza se piensa como una toma, no como una foto más.",
+      },
+      {
+        titulo: "Una sola presencia",
+        texto:
+          "Actriz, modelo y creadora no son tres perfiles. El trabajo es que en cualquier formato se la reconozca a ella.",
+      },
+      {
+        titulo: "Del feed al set",
+        texto:
+          "Las redes son la vidriera; el destino son los rodajes, las campañas y las producciones de la casa.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "magalii845",
+        href: "https://www.instagram.com/magalii845/",
+      },
+      {
+        tipo: "threads",
+        handle: "magalii845",
+        href: "https://www.threads.net/@magalii845",
+      },
+    ],
+    metricas: [
+      {
+        valor: "1.620",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @magalii845 · 26/09/2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Frente a cámara" },
+    /* Vacío a propósito: todavía no hay una pieza verificada para listar. */
+    lanzamientos: [],
+    enConstruccion:
+      "Está en producción el primer ciclo con Hivrido: un book profesional, material de actuación para castings y su primera participación en las producciones de la casa.",
   },
 ];
 

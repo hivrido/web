@@ -830,6 +830,28 @@ html:has(.art-page) body {
   .art-emblema--onda::after {
     bottom: -44px;
   }
+
+  /* ── Claqueta ───────────────────────────────────────────────────────
+     La pizarra de rodaje: el set antes que el feed. Es la figura de quien
+     actúa y posa frente a cámara, no de quien la maneja. Las franjas del
+     brazo son un degradado repetido y la pizarra un borde: una sola caja. */
+  .art-emblema--claqueta {
+    width: 260px;
+    height: 250px;
+    margin-top: 70px;
+    border: 1px solid var(--art-acento);
+    border-radius: 6px;
+    background:
+      repeating-linear-gradient(-45deg, var(--art-acento) 0 18px, transparent 18px 36px) top / 100% 46px no-repeat,
+      linear-gradient(var(--art-acento), var(--art-acento)) 0 46px / 100% 1px no-repeat,
+      radial-gradient(80% 70% at 50% 60%, var(--art-acento-suave) 0%, transparent 72%);
+    filter: drop-shadow(0 0 28px var(--art-acento-suave));
+  }
+
+  .art-emblema--claqueta::after {
+    bottom: 80px;
+    font-size: 22px;
+  }
 }
 
 @keyframes art-rec {
