@@ -723,11 +723,11 @@ export const ARTISTAS: Artista[] = [
       "Está en producción el primer ciclo con Hivrido: edición de los mejores momentos de cada stream, una grilla de horarios fija y el paso del vivo a formatos cortos pensados para crecer fuera del canal.",
   },
   {
-    slug: "ale",
-    /* "Ale" es como lo presenta la casa. Su Instagram firma "N I C O L A S"
-       y el handle dice Alejandro: hasta que él confirme nombre y apellido,
-       la ficha usa el corto y no completa nada. */
-    nombre: "Ale",
+    slug: "nicolas",
+    /* Confirmado con él: Nicolas, como firma su Instagram, sin tilde. El
+       "alejandroo" del handle no es su nombre y la ficha no lo usa como tal.
+       Sin apellido hasta que lo dé. */
+    nombre: "Nicolas",
     alias: "@_alejandroo.okk_",
     tagline: "Lo que escribe, antes de que suene.",
     disciplinas: ["Composición", "Música", "Contenido", "Influencer"],
@@ -744,7 +744,7 @@ export const ARTISTAS: Artista[] = [
        pudieron leer sin sesión, así que el texto no le atribuye temas,
        géneros ni cifras que no estén comprobadas. */
     manifiesto: [
-      "Ale escribe canciones y tiene una audiencia que lo sigue antes de haberlas escuchado todas. Casi cinco mil personas con apenas siete publicaciones: la gente no está ahí por el volumen de lo que sube, está por quién es.",
+      "Nicolas escribe canciones y tiene una audiencia que lo sigue antes de haberlas escuchado todas. Casi cinco mil personas con apenas siete publicaciones: la gente no está ahí por el volumen de lo que sube, está por quién es.",
       "Hivrido no viene a fabricarle un catálogo. Viene a darle a lo que compone un lugar donde vivir —una ficha, un contacto profesional, una producción a la altura— para que cada tema que salga encuentre a esa audiencia esperándolo.",
     ],
     ejes: [
