@@ -804,6 +804,32 @@ html:has(.art-page) body {
     font-size: 34px;
     letter-spacing: 0.12em;
   }
+  /* ── Onda ───────────────────────────────────────────────────────────
+     Barras de una forma de onda: la canción antes que la imagen. Cada
+     barra es un degradado de tamaño fijo, así la figura sigue siendo una
+     sola caja y no suma nodos al DOM. */
+  .art-emblema--onda {
+    --barra: linear-gradient(var(--art-acento), var(--art-acento));
+    width: 300px;
+    height: 240px;
+    margin-top: 60px;
+    background:
+      var(--barra) 18px 50% / 8px 30% no-repeat,
+      var(--barra) 50px 50% / 8px 58% no-repeat,
+      var(--barra) 82px 50% / 8px 84% no-repeat,
+      var(--barra) 114px 50% / 8px 46% no-repeat,
+      var(--barra) 146px 50% / 8px 100% no-repeat,
+      var(--barra) 178px 50% / 8px 64% no-repeat,
+      var(--barra) 210px 50% / 8px 88% no-repeat,
+      var(--barra) 242px 50% / 8px 40% no-repeat,
+      var(--barra) 274px 50% / 8px 22% no-repeat,
+      radial-gradient(60% 60% at 50% 50%, var(--art-acento-suave) 0%, transparent 70%);
+    filter: drop-shadow(0 0 22px var(--art-acento-suave));
+  }
+
+  .art-emblema--onda::after {
+    bottom: -44px;
+  }
 }
 
 @keyframes art-rec {

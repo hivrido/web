@@ -107,7 +107,7 @@ export type Artista = {
    * dos fichas sin fotos se vean iguales.
    */
   emblema: {
-    forma: "capsula" | "reel" | "junta" | "camara" | "stream";
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda";
     leyenda: string;
   };
   /**
@@ -721,6 +721,73 @@ export const ARTISTAS: Artista[] = [
     ],
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: edición de los mejores momentos de cada stream, una grilla de horarios fija y el paso del vivo a formatos cortos pensados para crecer fuera del canal.",
+  },
+  {
+    slug: "ale",
+    /* "Ale" es como lo presenta la casa. Su Instagram firma "N I C O L A S"
+       y el handle dice Alejandro: hasta que él confirme nombre y apellido,
+       la ficha usa el corto y no completa nada. */
+    nombre: "Ale",
+    alias: "@_alejandroo.okk_",
+    tagline: "Lo que escribe, antes de que suene.",
+    disciplinas: ["Composición", "Música", "Contenido", "Influencer"],
+    schema: "Person",
+    rol: "Compositor",
+    /* Coral. El único tono libre que no pisa a nadie: cálido como el ámbar
+       de Enzo pero corrido al rojo, y lejos del magenta de la casa por el
+       lado del naranja. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#FF7A5C", suave: "rgba(255, 122, 92, 0.14)" },
+    /* Una onda de sonido: la canción antes de ser video. Es la primera figura
+       del roster que habla de lo que se escucha y no de lo que se mira. */
+    emblema: { forma: "onda", leyenda: "OKK" },
+    /* Relevado del perfil público el 26/09/2026: la bio y los reels no se
+       pudieron leer sin sesión, así que el texto no le atribuye temas,
+       géneros ni cifras que no estén comprobadas. */
+    manifiesto: [
+      "Ale escribe canciones y tiene una audiencia que lo sigue antes de haberlas escuchado todas. Casi cinco mil personas con apenas siete publicaciones: la gente no está ahí por el volumen de lo que sube, está por quién es.",
+      "Hivrido no viene a fabricarle un catálogo. Viene a darle a lo que compone un lugar donde vivir —una ficha, un contacto profesional, una producción a la altura— para que cada tema que salga encuentre a esa audiencia esperándolo.",
+    ],
+    ejes: [
+      {
+        titulo: "La canción primero",
+        texto:
+          "El contenido acompaña a la música, no la reemplaza. Cada pieza en redes es una puerta a algo que se escucha entero.",
+      },
+      {
+        titulo: "Poco y con peso",
+        texto:
+          "Siete publicaciones sostienen casi cinco mil seguidores. No hace falta subir todos los días: hace falta que cada salida valga.",
+      },
+      {
+        titulo: "Del autor a la voz",
+        texto:
+          "Quien escribe también puede ser la cara. El trabajo es que la canción y la persona se reconozcan como una sola cosa.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "_alejandroo.okk_",
+        href: "https://www.instagram.com/_alejandroo.okk_/",
+      },
+    ],
+    metricas: [
+      {
+        valor: "4.756",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @_alejandroo.okk_ · 26/09/2026",
+      },
+      {
+        valor: "7",
+        label: "Publicaciones en Instagram",
+        fuente: "Perfil @_alejandroo.okk_ · 26/09/2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que compone" },
+    /* Vacío a propósito: todavía no hay un tema verificado para listar. */
+    lanzamientos: [],
+    enConstruccion:
+      "Está en producción el primer ciclo con Hivrido: sus primeros temas con producción propia, el material audiovisual que los acompaña y la ficha completa con su discografía.",
   },
 ];
 
