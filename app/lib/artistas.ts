@@ -107,7 +107,7 @@ export type Artista = {
    * dos fichas sin fotos se vean iguales.
    */
   emblema: {
-    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena" | "parlante";
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena" | "parlante" | "partitura";
     leyenda: string;
   };
   /**
@@ -1020,7 +1020,7 @@ export const ARTISTAS: Artista[] = [
     destacado: "fanatica",
     enConstruccion:
       "El catálogo sigue abierto: los próximos lanzamientos con Hivrido se suman a esta página a medida que salen.",
-    universo: ["alan-torres"],
+    universo: ["alan-torres", "uriel-g3"],
   },
 
   {
@@ -1207,6 +1207,115 @@ export const ARTISTAS: Artista[] = [
     destacado: "rkt-volumen-v",
     enConstruccion:
       "Está en producción su primer ciclo con Hivrido: lanzamientos propios con dirección visual y estrategia para llevar a su canal la audiencia de sus featurings.",
+    universo: ["kevo-kbron"],
+  },
+
+  {
+    slug: "uriel-g3",
+    nombre: "Uriel G3",
+    alias: "@uriiel_g3",
+    /* Su bio de Threads, palabra por palabra. */
+    tagline: "Providencia al ritmo.",
+    disciplinas: ["Composición", "Letra", "Música", "Performance"],
+    schema: "Person",
+    rol: "Compositor de letra y música",
+    /* Naranja neón, el que él eligió. Quedó libre cuando Nicolas pasó a
+       violeta: más encendido y rojo que el ámbar de Enzo, lejos del rojo de
+       Alan por el lado del amarillo. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#FF7A1A", suave: "rgba(255, 122, 26, 0.16)" },
+    /* La partitura: el que escribe la letra y la música. Primera figura del
+       roster que habla de la canción desde el papel. */
+    emblema: { forma: "partitura", leyenda: "G3" },
+    /* Relevado el 27/09/2026 de su canal (@Uriel_g3), que enlaza a este
+       Instagram, y de su Threads ("Uriel De Jcp", bio "Providencia al
+       ritmo."). Sus temas los produce Kevo Kbron con La Antena Records: lo
+       dicen las descripciones de los videos. Sin Spotify encontrado; el
+       TikTok @uriel_g3 no está enlazado a nada suyo y no entra. */
+    manifiesto: [
+      "Uriel G3 escribe la letra y hace la música. Viene de José C. Paz y firma con una frase que es un programa entero: providencia al ritmo. Lo que tiene que pasar, pasa a tiempo.",
+      "Sus temas salen de La Antena Records, con Kevo Kbron en la producción: la misma escena, el mismo barrio y el mismo estudio. No es un nombre suelto, es la segunda voz de una casa que ya está sonando.",
+      "Hivrido entra en el comienzo, que es donde más pesa: darle a lo que escribe una producción a la altura, una imagen propia y un lugar donde cada tema encuentre a quien lo tiene que escuchar.",
+    ],
+    ejes: [
+      {
+        titulo: "La canción, de punta a punta",
+        texto:
+          "Letra y música salen de la misma mano. Eso es lo que hace que un tema suene a alguien y no a una fórmula.",
+      },
+      {
+        titulo: "Providencia al ritmo",
+        texto:
+          "Su propia consigna: nada forzado, todo a tiempo. Cada lanzamiento sale cuando está listo, no antes.",
+      },
+      {
+        titulo: "Hecho en La Antena",
+        texto:
+          "Produce con Kevo Kbron desde el primer video. Esa sociedad es su sello, y crece junto con la de él.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "uriiel_g3",
+        href: "https://www.instagram.com/uriiel_g3/",
+      },
+      {
+        tipo: "youtube",
+        handle: "Uriel_g3",
+        href: "https://www.youtube.com/@Uriel_g3",
+      },
+      {
+        tipo: "threads",
+        handle: "uriiel_g3",
+        href: "https://www.threads.net/@uriiel_g3",
+      },
+    ],
+    metricas: [
+      {
+        valor: "558",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @uriiel_g3 · 27/09/2026",
+      },
+      {
+        valor: "45",
+        label: "Suscriptores en YouTube",
+        fuente: "Canal @Uriel_g3 · 27/09/2026",
+      },
+      {
+        valor: "3",
+        label: "Temas publicados en YouTube",
+        fuente: "Canal @Uriel_g3 · 27/09/2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que escribe" },
+    lanzamientos: [
+      {
+        id: "pal-putero",
+        titulo: "Pal Putero",
+        tipo: "videoclip",
+        year: "2026",
+        con: "Prod. Kevo Kbron · La Antena Records",
+        ytId: "u_PmGUoqyPg",
+      },
+      {
+        id: "volviendo-al-inicio",
+        titulo: "Volviendo al inicio",
+        tipo: "videoclip",
+        year: "2026",
+        ytId: "S46f88XEbw8",
+      },
+      {
+        id: "challenge-bandolero",
+        titulo: "Challenge Bandolero",
+        tipo: "clip",
+        year: "2024",
+        con: "Prod. Kevo Kbron · La Antena Records",
+        ytId: "4iY2Fz2IBHE",
+      },
+    ],
+    destacado: "volviendo-al-inicio",
+    enConstruccion:
+      "Está en producción su primer ciclo con Hivrido: temas nuevos con La Antena Records, dirección visual para cada lanzamiento y su llegada a las plataformas de streaming.",
     universo: ["kevo-kbron"],
   },
 ];

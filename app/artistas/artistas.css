@@ -902,6 +902,36 @@ html:has(.art-page) body {
     bottom: 18px;
     font-size: 13px;
   }
+
+  /* ── Partitura ──────────────────────────────────────────────────────
+     El pentagrama con una nota: la canción escrita antes de sonar. Las
+     cinco líneas son un degradado repetido, la cabeza de la nota un
+     óvalo en el mismo fondo y la plica va en ::before. */
+  .art-emblema--partitura {
+    width: 300px;
+    height: 260px;
+    margin-top: 60px;
+    background:
+      radial-gradient(14px 10px at 140px 128px, var(--art-acento) 96%, transparent 100%),
+      repeating-linear-gradient(var(--art-acento) 0 1.5px, transparent 1.5px 22px) 0 70px / 100% 90px no-repeat,
+      radial-gradient(70% 60% at 50% 45%, var(--art-acento-suave) 0%, transparent 72%);
+    filter: drop-shadow(0 0 24px var(--art-acento-suave));
+  }
+
+  .art-emblema--partitura::before {
+    content: "";
+    position: absolute;
+    left: 150px;
+    top: 26px;
+    width: 3px;
+    height: 104px;
+    background: var(--art-acento);
+  }
+
+  .art-emblema--partitura::after {
+    bottom: 40px;
+    font-size: 22px;
+  }
 }
 
 @keyframes art-rec {
