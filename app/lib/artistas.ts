@@ -107,7 +107,7 @@ export type Artista = {
    * dos fichas sin fotos se vean iguales.
    */
   emblema: {
-    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena";
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena" | "parlante";
     leyenda: string;
   };
   /**
@@ -221,9 +221,9 @@ export const ARTISTAS: Artista[] = [
        reproducciones o de fecha, entran acá con su fuente. */
     metricas: [
       {
-        valor: "11,6 K",
+        valor: "12 K",
         label: "Seguidores en Instagram",
-        fuente: "@amplax10mg",
+        fuente: "Perfil @amplax10mg · 27/09/2026",
       },
       {
         valor: "Diario",
@@ -564,14 +564,14 @@ export const ARTISTAS: Artista[] = [
         fuente: "1,5 M vistas / 6.854 seguidores",
       },
       {
-        valor: "6.854",
+        valor: "6.994",
         label: "Seguidores en Instagram",
-        fuente: "Perfil @enzo_arancibia14 · 23/09/2026",
+        fuente: "Perfil @enzo_arancibia14 · 27/09/2026",
       },
       {
-        valor: "457",
+        valor: "465",
         label: "Publicaciones en Instagram",
-        fuente: "Perfil @enzo_arancibia14 · 23/09/2026",
+        fuente: "Perfil @enzo_arancibia14 · 27/09/2026",
       },
     ],
     obra: { eyebrow: "Obra", titulo: "Lo que dio la vuelta" },
@@ -614,12 +614,11 @@ export const ARTISTAS: Artista[] = [
     disciplinas: ["Streaming", "Gaming", "IRL", "Clips", "Contenido"],
     schema: "Person",
     rol: "Streamer",
-    /* Verde menta. Es el tono del vivo —el de su plataforma y el del trébol
-       de su bio— sin caer en el verde ácido de Kick, que al lado de la lima
-       de Amplax se confundiría. Queda lejos del cian de Jairito por el lado
-       del amarillo y lejos de la lima por el del azul. Pasa el AA como texto
-       sobre negro y bajo texto oscuro. */
-    acento: { hex: "#3EE08F", suave: "rgba(62, 224, 143, 0.14)" },
+    /* Blanco hielo: la luz de una pantalla encendida en un cuarto a oscuras.
+       Tuvo verde menta, pero el verde pasó a Kevo Kbron y dos verdes en el
+       índice se confunden. Es el único tono neutro del roster, así que no
+       pisa a nadie. */
+    acento: { hex: "#DCE4F0", suave: "rgba(220, 228, 240, 0.12)" },
     /* La pantalla apaisada con el EN VIVO encendido y el chat corriendo: el
        único formato del roster que no es vertical. La leyenda es su nombre
        visible, que en una pantalla se lee como el reloj del stream. */
@@ -688,9 +687,9 @@ export const ARTISTAS: Artista[] = [
         fuente: "kick.com/nahuelm17 · 25/09/2026",
       },
       {
-        valor: "391",
+        valor: "404",
         label: "Seguidores en Instagram",
-        fuente: "Perfil @nahuel.m17 · 25/09/2026",
+        fuente: "Perfil @nahuel.m17 · 27/09/2026",
       },
     ],
     obra: { eyebrow: "Obra", titulo: "Lo que salió del vivo" },
@@ -733,10 +732,11 @@ export const ARTISTAS: Artista[] = [
     disciplinas: ["Composición", "Música", "Contenido", "Influencer"],
     schema: "Person",
     rol: "Compositor",
-    /* Coral. El único tono libre que no pisa a nadie: cálido como el ámbar
-       de Enzo pero corrido al rojo, y lejos del magenta de la casa por el
-       lado del naranja. Pasa el AA como texto sobre negro. */
-    acento: { hex: "#FF7A5C", suave: "rgba(255, 122, 92, 0.14)" },
+    /* Naranja. Era coral, pero con el rojo de Alan Torres al lado los dos se
+       leían iguales: se corrió hacia el naranja, entre ese rojo y el ámbar
+       de Enzo, que es más claro y amarillo. Pasa el AA como texto sobre
+       negro. */
+    acento: { hex: "#FF8F3F", suave: "rgba(255, 143, 63, 0.14)" },
     /* Una onda de sonido: la canción antes de ser video. Es la primera figura
        del roster que habla de lo que se escucha y no de lo que se mira. */
     emblema: { forma: "onda", leyenda: "OKK" },
@@ -773,14 +773,14 @@ export const ARTISTAS: Artista[] = [
     ],
     metricas: [
       {
-        valor: "4.756",
+        valor: "4.758",
         label: "Seguidores en Instagram",
-        fuente: "Perfil @_alejandroo.okk_ · 26/09/2026",
+        fuente: "Perfil @_alejandroo.okk_ · 27/09/2026",
       },
       {
-        valor: "7",
+        valor: "6",
         label: "Publicaciones en Instagram",
-        fuente: "Perfil @_alejandroo.okk_ · 26/09/2026",
+        fuente: "Perfil @_alejandroo.okk_ · 27/09/2026",
       },
     ],
     obra: { eyebrow: "Obra", titulo: "Lo que compone" },
@@ -846,9 +846,9 @@ export const ARTISTAS: Artista[] = [
     ],
     metricas: [
       {
-        valor: "1.620",
+        valor: "1.646",
         label: "Seguidores en Instagram",
-        fuente: "Perfil @magalii845 · 26/09/2026",
+        fuente: "Perfil @magalii845 · 27/09/2026",
       },
     ],
     obra: { eyebrow: "Obra", titulo: "Frente a cámara" },
@@ -867,10 +867,10 @@ export const ARTISTAS: Artista[] = [
     tagline: "Trap y RKT hechos en casa, del beat al video.",
     disciplinas: ["Música", "Trap", "RKT", "Producción musical"],
     schema: "MusicGroup",
-    /* Carmesí. El rojo que faltaba: más frío y oscuro que el coral de
-       Nicolas, lejos del magenta de la casa. Pasa el AA como texto sobre
-       negro. */
-    acento: { hex: "#FF3B55", suave: "rgba(255, 59, 85, 0.14)" },
+    /* Verde, el que él eligió. Un verde pleno, lejos de la lima de Amplax
+       por el lado del azul y del cian de Jairito por el del amarillo. Es el
+       único verde del roster. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#2EE06E", suave: "rgba(46, 224, 110, 0.14)" },
     /* La antena: La Antena Records, el sello con el que produce desde el
        primer videoclip. Es la figura de quien emite desde su barrio. */
     emblema: { forma: "antena", leyenda: "LA ANTENA" },
@@ -947,6 +947,14 @@ export const ARTISTAS: Artista[] = [
     ],
     lanzamientos: [
       {
+        id: "yo-no-se",
+        titulo: "YO NO SÉ",
+        tipo: "single",
+        year: "2026",
+        con: "Alan Torres",
+        ytId: "VwkkfCSKnXQ",
+      },
+      {
         id: "fanatica",
         titulo: "FANÁTICA",
         tipo: "videoclip",
@@ -998,6 +1006,168 @@ export const ARTISTAS: Artista[] = [
     destacado: "fanatica",
     enConstruccion:
       "El catálogo sigue abierto: los próximos lanzamientos con Hivrido se suman a esta página a medida que salen.",
+    universo: ["alan-torres"],
+  },
+
+  {
+    slug: "alan-torres",
+    nombre: "Alan Torres",
+    alias: "@elalantorres_2",
+    tagline: "El RKT de los millones, ahora con nombre propio.",
+    disciplinas: ["Música", "RKT", "Trap", "Performance"],
+    schema: "MusicGroup",
+    /* Rojo. El rojo pleno del roster, el del perreo y la previa. Queda lejos
+       del magenta de la casa por el lado del naranja y lejos del naranja de
+       Nicolas por el del rosa. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#FF3B55", suave: "rgba(255, 59, 85, 0.14)" },
+    /* El parlante: el RKT se mide en bajo. La leyenda es el tema que lo
+       puso en millones. */
+    emblema: { forma: "parlante", leyenda: "VOL. V" },
+    /* Relevado el 27/09/2026 de su canal (@elalantorres_), su Spotify
+       —cuyos temas coinciden con los videos: RKT Volumen 5 y 7, Todo el
+       Point, Llegó El Verano— y los videos donde participa. Su canal y sus
+       videos enlazan al Instagram @elalantorres_ (24 K seguidores, 10
+       posts); la cuenta que dio para la ficha es @elalantorres_2. Hasta
+       confirmar si maneja la vieja, la cifra de esa no se publica. Las
+       vistas son de los videos oficiales, no de su canal: se dice de quién
+       es cada uno. */
+    manifiesto: [
+      "Alan Torres está en algunos de los RKT más escuchados de la escena: su verso en RKT Volumen V de Cotto Rng superó los cinco millones de vistas y ROCHOSPORT, con Issa The Kid, pasó los tres millones. El público ya lo escuchó; lo que falta es que lo busque por su nombre.",
+      "Tiene catálogo propio desde 2022 —BANDIDA RKT, Llegó El Verano, Atrevido Maleducado— y una red que se repite tema a tema: Santo Two en los beats, Rodrii Ortiz, Lalito Aimar, Navaja, y ahora Kevo Kbron.",
+      "Hivrido entra para convertir esos featurings en una carrera con centro: lanzamientos propios con dirección visual, estrategia y una casa donde todo eso se encuentre.",
+    ],
+    ejes: [
+      {
+        titulo: "Del feat al nombre propio",
+        texto:
+          "Los millones llegaron en temas de otros. Cada lanzamiento nuevo tiene que llevar esa audiencia a su canal.",
+      },
+      {
+        titulo: "RKT de pista",
+        texto:
+          "Temas hechos para la previa y el boliche. El formato es corto, directo y para bailar, y así se produce.",
+      },
+      {
+        titulo: "La escena como catálogo",
+        texto:
+          "Cotto Rng, Issa The Kid, Rodrii Ortiz, Lalito Aimar: su historial es una red de la escena, y esa red es su carta de presentación.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "elalantorres_2",
+        href: "https://www.instagram.com/elalantorres_2/",
+      },
+      {
+        tipo: "youtube",
+        handle: "elalantorres_",
+        href: "https://www.youtube.com/@elalantorres_",
+      },
+      {
+        tipo: "spotify",
+        handle: "Alan Torres",
+        href: "https://open.spotify.com/artist/0WhAfHGmEi2lPelrfzXFh5",
+      },
+    ],
+    metricas: [
+      {
+        valor: "5,18 M",
+        label: "Vistas de RKT Volumen V (Cotto Rng)",
+        fuente: "YouTube · Cotto Rng · 27/09/2026",
+      },
+      {
+        valor: "3,01 M",
+        label: "Vistas de ROCHOSPORT (Issa The Kid)",
+        fuente: "YouTube · Issa The Kid · 27/09/2026",
+      },
+      {
+        valor: "5,6 K",
+        label: "Oyentes mensuales en Spotify",
+        fuente: "Spotify · 27/09/2026",
+      },
+      {
+        valor: "2.675",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @elalantorres_2 · 27/09/2026",
+      },
+    ],
+    lanzamientos: [
+      {
+        id: "rkt-volumen-v",
+        titulo: "RKT Volumen V",
+        tipo: "videoclip",
+        year: "2023",
+        con: "Cotto Rng, Papichamp, Rodrii Ortiz",
+        ytId: "IQ4XkKd2C1Y",
+        dato: "5,18 M vistas",
+      },
+      {
+        id: "rochosport",
+        titulo: "ROCHOSPORT",
+        tipo: "videoclip",
+        year: "2022",
+        con: "Issa The Kid, Santo Two",
+        ytId: "fCBV3oP4ESM",
+        dato: "3,01 M vistas",
+      },
+      {
+        id: "todo-el-point",
+        titulo: "TODO EL POINT",
+        tipo: "videoclip",
+        year: "2022",
+        con: "Navaja",
+        ytId: "kwVqTdZsVWU",
+        dato: "758 K vistas",
+      },
+      {
+        id: "rkt-volumen-7",
+        titulo: "RKT Volumen 7",
+        tipo: "videoclip",
+        year: "2024",
+        con: "Cotto Rng, Lalito Aimar, Rossani, Nicky Hg, Panky",
+        ytId: "UE_PIEIB87g",
+        dato: "501 K vistas",
+      },
+      {
+        id: "bandida-rkt",
+        titulo: "BANDIDA RKT",
+        tipo: "videoclip",
+        year: "2022",
+        con: "Prod. Santo Two",
+        ytId: "b8Kb453b7WU",
+        dato: "107 K vistas",
+      },
+      {
+        id: "llego-el-verano",
+        titulo: "Llegó El Verano",
+        tipo: "videoclip",
+        year: "2023",
+        con: "Rodrii Ortiz",
+        ytId: "FquVE09C3Jw",
+        dato: "92 K vistas",
+      },
+      {
+        id: "atrevido-maleducado",
+        titulo: "Atrevido Maleducado",
+        tipo: "videoclip",
+        year: "2024",
+        con: "Lalito Aimar",
+        ytId: "CtzQUfB-aPk",
+      },
+      {
+        id: "yo-no-se",
+        titulo: "YO NO SÉ",
+        tipo: "single",
+        year: "2026",
+        con: "Kevo Kbron",
+        ytId: "VwkkfCSKnXQ",
+      },
+    ],
+    destacado: "rkt-volumen-v",
+    enConstruccion:
+      "Está en producción su primer ciclo con Hivrido: lanzamientos propios con dirección visual y estrategia para llevar a su canal la audiencia de sus featurings.",
+    universo: ["kevo-kbron"],
   },
 ];
 

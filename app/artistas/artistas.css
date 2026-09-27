@@ -881,6 +881,27 @@ html:has(.art-page) body {
   .art-emblema--antena::after {
     bottom: 20px;
   }
+
+  /* ── Parlante ───────────────────────────────────────────────────────
+     La caja del bafle con el tweeter arriba y el woofer abajo: el RKT se
+     mide en bajo. Conos y anillos son degradados radiales, una sola caja. */
+  .art-emblema--parlante {
+    width: 220px;
+    height: 300px;
+    margin-top: 40px;
+    border: 1px solid var(--art-acento);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 50% 62px, var(--art-acento) 0 5px, transparent 6px 20px, var(--art-acento) 20px 21.5px, transparent 22.5px),
+      radial-gradient(circle at 50% 180px, var(--art-acento) 0 10px, transparent 11px 38px, var(--art-acento) 38px 39.5px, transparent 40.5px 62px, var(--art-acento) 62px 63.5px, transparent 64.5px),
+      radial-gradient(70% 60% at 50% 60%, var(--art-acento-suave) 0%, transparent 72%);
+    filter: drop-shadow(0 0 26px var(--art-acento-suave));
+  }
+
+  .art-emblema--parlante::after {
+    bottom: 18px;
+    font-size: 13px;
+  }
 }
 
 @keyframes art-rec {
