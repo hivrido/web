@@ -729,22 +729,24 @@ export const ARTISTAS: Artista[] = [
     nombre: "Nicolas",
     alias: "@_alejandroo.okk_",
     tagline: "Lo que escribe, antes de que suene.",
-    disciplinas: ["Composición", "Música", "Contenido", "Influencer"],
+    disciplinas: ["Influencer", "Composición", "Música", "Contenido"],
     schema: "Person",
-    rol: "Compositor",
-    /* Naranja. Era coral, pero con el rojo de Alan Torres al lado los dos se
-       leían iguales: se corrió hacia el naranja, entre ese rojo y el ámbar
-       de Enzo, que es más claro y amarillo. Pasa el AA como texto sobre
-       negro. */
-    acento: { hex: "#FF8F3F", suave: "rgba(255, 143, 63, 0.14)" },
+    rol: "Influencer y compositor",
+    /* Violeta eléctrico, el que él eligió. Más saturado y corrido al
+       púrpura que la lavanda de Kareen, que no se toca; sin `tomaLaMarca`,
+       así el magenta de la casa lo separa de ella en el índice. Pasa el AA
+       como texto sobre negro. */
+    acento: { hex: "#B36CFF", suave: "rgba(179, 108, 255, 0.16)" },
     /* Una onda de sonido: la canción antes de ser video. Es la primera figura
        del roster que habla de lo que se escucha y no de lo que se mira. */
     emblema: { forma: "onda", leyenda: "OKK" },
-    /* Relevado del perfil público el 26/09/2026: la bio y los reels no se
-       pudieron leer sin sesión, así que el texto no le atribuye temas,
-       géneros ni cifras que no estén comprobadas. */
+    /* Relevado el 27/09/2026. El reel del Día del Padre (20/06/2026) es su
+       pieza viral: 234 K me gusta y 268 comentarios, públicos. Sus
+       reproducciones no se leen sin sesión: van cuando él pase la cifra
+       del panel, no antes. */
     manifiesto: [
-      "Nicolas escribe canciones y tiene una audiencia que lo sigue antes de haberlas escuchado todas. Casi cinco mil personas con apenas siete publicaciones: la gente no está ahí por el volumen de lo que sube, está por quién es.",
+      "Nicolas es primero una presencia: su reel del Día del Padre juntó más de 234 mil me gusta, y casi cinco mil personas lo siguen con apenas seis publicaciones. La gente no está ahí por el volumen de lo que sube, está por quién es.",
+      "Y además escribe canciones. Esa audiencia es la que va a estar esperando cuando salgan.",
       "Hivrido no viene a fabricarle un catálogo. Viene a darle a lo que compone un lugar donde vivir —una ficha, un contacto profesional, una producción a la altura— para que cada tema que salga encuentre a esa audiencia esperándolo.",
     ],
     ejes: [
@@ -756,7 +758,7 @@ export const ARTISTAS: Artista[] = [
       {
         titulo: "Poco y con peso",
         texto:
-          "Siete publicaciones sostienen casi cinco mil seguidores. No hace falta subir todos los días: hace falta que cada salida valga.",
+          "Seis publicaciones sostienen casi cinco mil seguidores. No hace falta subir todos los días: hace falta que cada salida valga.",
       },
       {
         titulo: "Del autor a la voz",
@@ -773,6 +775,11 @@ export const ARTISTAS: Artista[] = [
     ],
     metricas: [
       {
+        valor: "234 K",
+        label: "Me gusta en su reel del Día del Padre",
+        fuente: "Reel @_alejandroo.okk_ · 27/09/2026",
+      },
+      {
         valor: "4.758",
         label: "Seguidores en Instagram",
         fuente: "Perfil @_alejandroo.okk_ · 27/09/2026",
@@ -783,9 +790,16 @@ export const ARTISTAS: Artista[] = [
         fuente: "Perfil @_alejandroo.okk_ · 27/09/2026",
       },
     ],
-    obra: { eyebrow: "Obra", titulo: "Lo que compone" },
-    /* Vacío a propósito: todavía no hay un tema verificado para listar. */
-    lanzamientos: [],
+    obra: { eyebrow: "Obra", titulo: "Lo que ya se viralizó" },
+    lanzamientos: [
+      {
+        id: "dia-del-padre",
+        titulo: "Día del Padre",
+        tipo: "reel",
+        year: "2026",
+        dato: "234 K me gusta · 268 comentarios",
+      },
+    ],
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: sus primeros temas con producción propia, el material audiovisual que los acompaña y la ficha completa con su discografía.",
   },
@@ -1012,7 +1026,7 @@ export const ARTISTAS: Artista[] = [
   {
     slug: "alan-torres",
     nombre: "Alan Torres",
-    alias: "@elalantorres_2",
+    alias: "@elalantorres_",
     tagline: "El RKT de los millones, ahora con nombre propio.",
     disciplinas: ["Música", "RKT", "Trap", "Performance"],
     schema: "MusicGroup",
@@ -1026,9 +1040,8 @@ export const ARTISTAS: Artista[] = [
     /* Relevado el 27/09/2026 de su canal (@elalantorres_), su Spotify
        —cuyos temas coinciden con los videos: RKT Volumen 5 y 7, Todo el
        Point, Llegó El Verano— y los videos donde participa. Su canal y sus
-       videos enlazan al Instagram @elalantorres_ (24 K seguidores, 10
-       posts); la cuenta que dio para la ficha es @elalantorres_2. Hasta
-       confirmar si maneja la vieja, la cifra de esa no se publica. Las
+       videos enlazan al Instagram @elalantorres_, su cuenta principal
+       (confirmado que la maneja); @elalantorres_2 es la secundaria. Las
        vistas son de los videos oficiales, no de su canal: se dice de quién
        es cada uno. */
     manifiesto: [
@@ -1054,6 +1067,11 @@ export const ARTISTAS: Artista[] = [
       },
     ],
     enlaces: [
+      {
+        tipo: "instagram",
+        handle: "elalantorres_",
+        href: "https://www.instagram.com/elalantorres_/",
+      },
       {
         tipo: "instagram",
         handle: "elalantorres_2",
@@ -1087,9 +1105,9 @@ export const ARTISTAS: Artista[] = [
         fuente: "Spotify · 27/09/2026",
       },
       {
-        valor: "2.675",
+        valor: "24 K",
         label: "Seguidores en Instagram",
-        fuente: "Perfil @elalantorres_2 · 27/09/2026",
+        fuente: "Perfil @elalantorres_ · 27/09/2026",
       },
     ],
     lanzamientos: [
