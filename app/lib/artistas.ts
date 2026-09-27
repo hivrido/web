@@ -1046,7 +1046,7 @@ export const ARTISTAS: Artista[] = [
        es cada uno. */
     manifiesto: [
       "Alan Torres está en algunos de los RKT más escuchados de la escena: su verso en RKT Volumen V de Cotto Rng superó los cinco millones de vistas y ROCHOSPORT, con Issa The Kid, pasó los tres millones. El público ya lo escuchó; lo que falta es que lo busque por su nombre.",
-      "Tiene catálogo propio desde 2022 —BANDIDA RKT, Llegó El Verano, Atrevido Maleducado— y una red que se repite tema a tema: Santo Two en los beats, Rodrii Ortiz, Lalito Aimar, Navaja, y ahora Kevo Kbron.",
+      "Suma más de diez millones de vistas entre sus videos, y tiene catálogo propio desde 2022 —BANDIDA RKT, Llegó El Verano, Atrevido Maleducado—. Su red se repite tema a tema: Santo Two en los beats, Rodrii Ortiz, Lalito Aimar, Navaja, Ñero, Luz Eluney y ahora Kevo Kbron.",
       "Hivrido entra para convertir esos featurings en una carrera con centro: lanzamientos propios con dirección visual, estrategia y una casa donde todo eso se encuentre.",
     ],
     ejes: [
@@ -1110,6 +1110,9 @@ export const ARTISTAS: Artista[] = [
         fuente: "Perfil @elalantorres_ · 27/09/2026",
       },
     ],
+    /* Ordenados por vistas, relevadas el 27/09/2026. Casi todos salieron
+       desde el canal del otro artista: `con` dice con quién, y la cifra es
+       del video oficial, no del canal de Alan. */
     lanzamientos: [
       {
         id: "rkt-volumen-v",
@@ -1148,6 +1151,24 @@ export const ARTISTAS: Artista[] = [
         dato: "501 K vistas",
       },
       {
+        id: "exceso-de-facha",
+        titulo: "EXCESO DE FACHA",
+        tipo: "videoclip",
+        year: "2024",
+        con: "Luz Eluney, Facu HDR",
+        ytId: "9_AY7htbF24",
+        dato: "278 K vistas",
+      },
+      {
+        id: "chuleria-en-pote-rmx",
+        titulo: "CHULERÍA EN POTE RMX",
+        tipo: "videoclip",
+        year: "2024",
+        con: "Ñero, El Rossani, Nicky HG",
+        ytId: "OA2cxZFMwyM",
+        dato: "109 K vistas",
+      },
+      {
         id: "bandida-rkt",
         titulo: "BANDIDA RKT",
         tipo: "videoclip",
@@ -1172,6 +1193,7 @@ export const ARTISTAS: Artista[] = [
         year: "2024",
         con: "Lalito Aimar",
         ytId: "CtzQUfB-aPk",
+        dato: "17 K vistas",
       },
       {
         id: "yo-no-se",
