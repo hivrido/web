@@ -852,6 +852,35 @@ html:has(.art-page) body {
     bottom: 80px;
     font-size: 22px;
   }
+
+  /* ── Antena ─────────────────────────────────────────────────────────
+     El mástil que emite: la música que sale del barrio al aire. El mástil
+     y la baliza son la caja; las ondas van en ::before con su propia
+     máscara, para que el desvanecido no se coma la leyenda. */
+  .art-emblema--antena {
+    width: 280px;
+    height: 300px;
+    margin-top: 40px;
+    background:
+      radial-gradient(circle at 50% 100px, var(--art-acento) 0 6px, transparent 7px),
+      linear-gradient(var(--art-acento), var(--art-acento)) 50% 100px / 2px 140px no-repeat;
+    filter: drop-shadow(0 0 24px var(--art-acento-suave));
+  }
+
+  .art-emblema--antena::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-radial-gradient(circle at 50% 100px, transparent 0 24px, var(--art-acento) 24px 25.5px, transparent 26.5px 36px),
+      radial-gradient(circle at 50% 100px, var(--art-acento-suave) 0%, transparent 60%);
+    -webkit-mask-image: radial-gradient(circle at 50% 100px, #000 30px, transparent 110px);
+    mask-image: radial-gradient(circle at 50% 100px, #000 30px, transparent 110px);
+  }
+
+  .art-emblema--antena::after {
+    bottom: 20px;
+  }
 }
 
 @keyframes art-rec {

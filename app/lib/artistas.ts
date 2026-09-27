@@ -107,7 +107,7 @@ export type Artista = {
    * dos fichas sin fotos se vean iguales.
    */
   emblema: {
-    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta";
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena";
     leyenda: string;
   };
   /**
@@ -856,6 +856,148 @@ export const ARTISTAS: Artista[] = [
     lanzamientos: [],
     enConstruccion:
       "Está en producción el primer ciclo con Hivrido: un book profesional, material de actuación para castings y su primera participación en las producciones de la casa.",
+  },
+
+  {
+    slug: "kevo-kbron",
+    /* Nombre artístico, tal como firma en todas las plataformas. El nombre
+       real no es público y no se completa hasta que él lo dé. */
+    nombre: "Kevo Kbron",
+    alias: "@kevokbron",
+    tagline: "Trap y RKT hechos en casa, del beat al video.",
+    disciplinas: ["Música", "Trap", "RKT", "Producción musical"],
+    schema: "MusicGroup",
+    /* Carmesí. El rojo que faltaba: más frío y oscuro que el coral de
+       Nicolas, lejos del magenta de la casa. Pasa el AA como texto sobre
+       negro. */
+    acento: { hex: "#FF3B55", suave: "rgba(255, 59, 85, 0.14)" },
+    /* La antena: La Antena Records, el sello con el que produce desde el
+       primer videoclip. Es la figura de quien emite desde su barrio. */
+    emblema: { forma: "antena", leyenda: "LA ANTENA" },
+    /* Relevado el 27/09/2026 de su canal de YouTube (bio, videos, créditos
+       de cada descripción), Spotify, Apple Music, TikTok e Instagram. El
+       canal enlaza al perfil de Spotify, así que ese catálogo es suyo.
+       "José C. Paz" y "La Antena Records" los publica él en la bio del
+       canal. Su Instagram anterior era @kevo.kbron. */
+    manifiesto: [
+      "Kevo Kbron hace trap y RKT desde José C. Paz, y los hace completos: firma los temas, produce los beats junto a La Antena Records y saca cada lanzamiento con su videoclip. Desde 2023 viene sosteniendo un catálogo propio, no un tema suelto.",
+      "Su forma de trabajar es la del barrio que se junta: casi cada lanzamiento lleva a alguien más —Golden Monkey, Skinny, Alexis Flp, Fariel— y los videos los filman realizadores de la misma escena. Es un movimiento, no un solista aislado.",
+      "Hivrido entra para darle a eso escala: dirección visual, estrategia de lanzamiento y una casa donde el catálogo se pueda escuchar, mostrar y contratar.",
+    ],
+    ejes: [
+      {
+        titulo: "Del beat al video",
+        texto:
+          "Escribe, produce y lanza con imagen. Controlar la cadena entera es lo que le da identidad a cada pieza.",
+      },
+      {
+        titulo: "La escena como sello",
+        texto:
+          "Los featurings no son invitados de ocasión: son la misma gente, tema tras tema. Esa red es su mejor carta de presentación.",
+      },
+      {
+        titulo: "Lanzar con sistema",
+        texto:
+          "Cuenta regresiva, estreno, shorts de apoyo: FANÁTICA ya salió así. El paso siguiente es que cada lanzamiento llegue más lejos que el anterior.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "kevokbron",
+        href: "https://www.instagram.com/kevokbron/",
+      },
+      {
+        tipo: "youtube",
+        handle: "kevokbron",
+        href: "https://www.youtube.com/@kevokbron",
+      },
+      {
+        tipo: "spotify",
+        handle: "KEVO KBRON",
+        href: "https://open.spotify.com/artist/0KQchfhq5jqcFJCYX9Jgwi",
+      },
+      {
+        tipo: "tiktok",
+        handle: "kevokbron",
+        href: "https://www.tiktok.com/@kevokbron",
+      },
+      {
+        tipo: "threads",
+        handle: "kevokbron",
+        href: "https://www.threads.net/@kevokbron",
+      },
+    ],
+    metricas: [
+      {
+        valor: "2.037",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @kevokbron · 27/09/2026",
+      },
+      {
+        valor: "727",
+        label: "Suscriptores en YouTube",
+        fuente: "Canal @kevokbron · 27/09/2026",
+      },
+      {
+        valor: "10,2 K",
+        label: "Vistas de DESCONOCERNOS",
+        fuente: "YouTube · 27/09/2026",
+      },
+    ],
+    lanzamientos: [
+      {
+        id: "fanatica",
+        titulo: "FANÁTICA",
+        tipo: "videoclip",
+        year: "2026",
+        con: "Prod. La Antena Records",
+        ytId: "9i83WZ73YLA",
+      },
+      {
+        id: "polari",
+        titulo: "POLARI",
+        tipo: "single",
+        year: "2026",
+        con: "Fariel",
+        ytId: "O0c_YtIZEQQ",
+      },
+      {
+        id: "un-adios",
+        titulo: "UN ADIÓS",
+        tipo: "videoclip",
+        year: "2024",
+        con: "Skinny",
+        ytId: "zD2A5OF4i9A",
+      },
+      {
+        id: "desconocernos",
+        titulo: "DESCONOCERNOS",
+        tipo: "videoclip",
+        year: "2024",
+        con: "Golden Monkey, Alexis Flp, Facu222",
+        ytId: "xgqO8iT-G2U",
+        dato: "10,2 K vistas",
+      },
+      {
+        id: "malianteo",
+        titulo: "Malianteo",
+        tipo: "videoclip",
+        year: "2023",
+        con: "Golden Monkey, Skinny",
+        ytId: "zqI4yypo7yM",
+      },
+      {
+        id: "como-soy",
+        titulo: "COMO SOY",
+        tipo: "videoclip",
+        year: "2023",
+        ytId: "0Zb3gNXEYzo",
+      },
+    ],
+    destacado: "fanatica",
+    enConstruccion:
+      "El catálogo sigue abierto: los próximos lanzamientos con Hivrido se suman a esta página a medida que salen.",
   },
 ];
 
