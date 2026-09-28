@@ -38,7 +38,7 @@ export type Enlace = {
   href: string;
 };
 
-export type TipoLanzamiento = "videoclip" | "single" | "album" | "reel" | "clip";
+export type TipoLanzamiento = "videoclip" | "single" | "album" | "reel" | "clip" | "documental";
 
 export type Lanzamiento = {
   /** Slug estable: sirve de key y de ancla. */
@@ -1382,10 +1382,10 @@ export const ARTISTAS: Artista[] = [
     /* Así figura su nombre en el perfil; el handle lleva doble t. */
     nombre: "Flavia Rotela",
     alias: "@flaviarottella",
-    tagline: "La que convierte un artista en un proyecto.",
-    disciplinas: ["Producción", "Management", "Música"],
+    tagline: "Dirige lo que otros no se animan a filmar.",
+    disciplinas: ["Producción", "Dirección", "Documental", "Management"],
     schema: "Person",
-    rol: "Productora y ejecutiva musical",
+    rol: "Productora, directora y ejecutiva musical",
     /* Rosa cuarzo: cálido y claro, lejos del naranja de Uriel y del rojo de
        Alan. Pasa el AA como texto sobre negro. */
     acento: { hex: "#F4B6A6", suave: "rgba(244, 182, 166, 0.14)" },
@@ -1395,6 +1395,7 @@ export const ARTISTAS: Artista[] = [
        medir: no se publica cifra. */
     manifiesto: [
       "Flavia Rotela es productora y ejecutiva musical. Su trabajo no se ve en el escenario: es lo que hace que el escenario exista, que el tema salga a tiempo y que cada puerta se abra con un plan.",
+      "Firma como directora “Existir a Solas”, su cortometraje documental: la prueba de que su mirada no se queda detrás de escena, también sabe contar.",
       "Maneja la carrera de Fasterdakill, y con Hivrido suma una estructura para llevar esa forma de trabajar a más artistas.",
     ],
     ejes: [
@@ -1413,12 +1414,29 @@ export const ARTISTAS: Artista[] = [
         handle: "flaviarottella",
         href: "https://www.instagram.com/flaviarottella/",
       },
+      {
+        tipo: "youtube",
+        handle: "EXISTIRASOLAS",
+        href: "https://www.youtube.com/@EXISTIRASOLAS",
+      },
     ],
     metricas: [],
-    obra: { eyebrow: "Trabajo", titulo: "Lo que produce" },
-    lanzamientos: [],
+    obra: { eyebrow: "Obra", titulo: "Lo que dirige" },
+    /* Título y fecha salen del video oficial (canal @EXISTIRASOLAS,
+       publicado el 27/09/2026). */
+    lanzamientos: [
+      {
+        id: "existir-a-solas",
+        titulo: "Existir a Solas",
+        tipo: "documental",
+        year: "2026",
+        con: "Cortometraje",
+        ytId: "kDr7wzem-KQ",
+      },
+    ],
+    destacado: "existir-a-solas",
     enConstruccion:
-      "Está en producción su ficha completa: los proyectos que produce y su trabajo junto a Hivrido.",
+      "Está en producción su ficha completa: los proyectos que produce y los que dirige junto a Hivrido.",
     universo: ["fasterdakill"],
   },
 ];
