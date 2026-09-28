@@ -1362,6 +1362,11 @@ export const ARTISTAS: Artista[] = [
         handle: "fasterdakill",
         href: "https://www.instagram.com/fasterdakill/",
       },
+      {
+        tipo: "threads",
+        handle: "fasterdakill",
+        href: "https://www.threads.net/@fasterdakill",
+      },
     ],
     metricas: [
       {
@@ -1369,11 +1374,32 @@ export const ARTISTAS: Artista[] = [
         label: "Seguidores en Instagram",
         fuente: "Perfil @fasterdakill · 28/09/2026",
       },
+      {
+        valor: "318 K",
+        label: "Vistas del reel de No Hay Plan B",
+        fuente: "Instagram · 28/09/2026",
+      },
+      {
+        valor: "122 K",
+        label: "Vistas del reel de Perfume",
+        fuente: "Instagram · 28/09/2026",
+      },
     ],
     obra: { eyebrow: "Obra", titulo: "Lo que suena" },
-    lanzamientos: [],
+    /* Títulos y fechas de las placas de sus reels. Sin el ID de YouTube de
+       cada tema todavía: el bloque va sin portada hasta tenerlo. La cifra es
+       la del reel que lo anuncia, no la del video. */
+    lanzamientos: [
+      { id: "ultimo-mensaje", titulo: "Último Mensaje", tipo: "single", year: "2026", dato: "13,3 K vistas del adelanto" },
+      { id: "mafia", titulo: "Mafia", tipo: "videoclip" },
+      { id: "no-hay-plan-b", titulo: "No Hay Plan B", tipo: "videoclip", year: "2025", dato: "318 K vistas del adelanto" },
+      { id: "perfume", titulo: "Perfume", tipo: "videoclip", year: "2025", dato: "122 K vistas del adelanto" },
+      { id: "sabrina", titulo: "Sabrina", tipo: "single" },
+      { id: "susurran-dome", titulo: "Susurran Dome", tipo: "videoclip", dato: "14,4 K vistas del adelanto" },
+      { id: "shine", titulo: "Shine", tipo: "single", dato: "22,6 K vistas del adelanto" },
+    ],
     enConstruccion:
-      "Está en producción su primer ciclo con Hivrido: la discografía completa en esta ficha, lanzamientos con dirección visual y su llegada al público argentino.",
+      "Está en producción su primer ciclo con Hivrido: los videos de cada tema en esta ficha, lanzamientos con dirección visual y su llegada al público argentino.",
     universo: ["flavia-rotela"],
   },
 
@@ -1390,13 +1416,14 @@ export const ARTISTAS: Artista[] = [
        Alan. Pasa el AA como texto sobre negro. */
     acento: { hex: "#F4B6A6", suave: "rgba(244, 182, 166, 0.14)" },
     emblema: { forma: "onda", leyenda: "MNGM" },
-    /* Relevado el 28/09/2026: su bio dice "Productora & Ejecutiva Musical" y
-       el perfil de Fasterdakill la nombra en su management. Seguidores sin
-       medir: no se publica cifra. */
+    /* Relevado el 28/09/2026 de su perfil: "Productora & Ejecutiva Musical",
+       desarrollo de artistas en @f2incorporated, blog en @existirasolas y
+       conexión con Warner Music Argentina y Sony Music Colombia. El perfil de
+       Fasterdakill la nombra en su management. */
     manifiesto: [
       "Flavia Rotela es productora y ejecutiva musical. Su trabajo no se ve en el escenario: es lo que hace que el escenario exista, que el tema salga a tiempo y que cada puerta se abra con un plan.",
       "Firma como directora “Existir a Solas”, su cortometraje documental: la prueba de que su mirada no se queda detrás de escena, también sabe contar.",
-      "Maneja la carrera de Fasterdakill, y con Hivrido suma una estructura para llevar esa forma de trabajar a más artistas.",
+      "Desarrolla artistas desde F2 Incorporated y hace de puente con la industria grande: sus contactos llegan a Warner Music Argentina y Sony Music Colombia. Maneja la carrera de Fasterdakill, y con Hivrido suma una estructura para llevar esa forma de trabajar a más artistas.",
     ],
     ejes: [
       {
@@ -1419,8 +1446,29 @@ export const ARTISTAS: Artista[] = [
         handle: "EXISTIRASOLAS",
         href: "https://www.youtube.com/@EXISTIRASOLAS",
       },
+      {
+        tipo: "threads",
+        handle: "flaviarottella",
+        href: "https://www.threads.net/@flaviarottella",
+      },
     ],
-    metricas: [],
+    metricas: [
+      {
+        valor: "107 K",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @flaviarottella · 28/09/2026",
+      },
+      {
+        valor: "874 K",
+        label: "Vistas de su reel más visto",
+        fuente: "Instagram · 28/09/2026",
+      },
+      {
+        valor: "135",
+        label: "Publicaciones",
+        fuente: "Perfil @flaviarottella · 28/09/2026",
+      },
+    ],
     obra: { eyebrow: "Obra", titulo: "Lo que dirige" },
     /* Título y fecha salen del video oficial (canal @EXISTIRASOLAS,
        publicado el 27/09/2026). */
@@ -1430,7 +1478,6 @@ export const ARTISTAS: Artista[] = [
         titulo: "Existir a Solas",
         tipo: "documental",
         year: "2026",
-        con: "Cortometraje",
         ytId: "kDr7wzem-KQ",
       },
     ],
