@@ -1452,9 +1452,6 @@ html:has(.art-page) body {
 .art-roster {
   display: grid;
   gap: clamp(18px, 3vw, 26px);
-  /* El escenario de las fichas: sin perspectiva en el padre, girarlas en X
-     o en Y solo las achata en vez de acercarles un canto. */
-  perspective: 1400px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -1643,7 +1640,11 @@ html:has(.art-page) body {
   /* preserve-3d deja que la tipografía se separe de la cara en Z: al
      inclinarse, el nombre se corre más que el fondo y la pieza tiene grosor. */
   transform-style: preserve-3d;
-  transform: translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
+  /* La perspectiva va en la propia ficha y no en `.art-roster`: puesta en
+     la grilla, el punto de fuga quedaba en el centro de toda la lista y las
+     capas en Z de las fichas lejanas se corrían hacia afuera —el nombre se
+     montaba sobre el alias—. Así cada una se mira desde su propio centro. */
+  transform: perspective(1400px) translateY(var(--lift)) rotateX(var(--rx)) rotateY(var(--ry));
   /* La vuelta a reposo es lenta, como el anillo cuando suelta el foco. */
   transition: border-color 0.35s ease, box-shadow 0.45s ease,
               transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);

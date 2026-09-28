@@ -1318,9 +1318,111 @@ export const ARTISTAS: Artista[] = [
       "Está en producción su primer ciclo con Hivrido: temas nuevos con La Antena Records, dirección visual para cada lanzamiento y su llegada a las plataformas de streaming.",
     universo: ["kevo-kbron"],
   },
+  {
+    slug: "fasterdakill",
+    /* Nombre artístico tal como firma. El civil —Harol Buleje Bocanegra— lo
+       pasó él, pero no va en la ficha hasta que lo autorice. */
+    nombre: "Fasterdakill",
+    alias: "@fasterdakill",
+    tagline: "Rap independiente de Lima, del beat a la mezcla.",
+    disciplinas: ["Rap", "Composición", "Beatmaking", "Ingeniería de sonido", "Diseño"],
+    schema: "Person",
+    rol: "Rapero y productor",
+    /* Turquesa menta: más verde y apagado que el cian de Jairito, lejos del
+       verde pleno de Kevo. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#5EEAD4", suave: "rgba(94, 234, 212, 0.14)" },
+    /* El parlante: el que hace el beat, lo graba y lo mezcla. */
+    emblema: { forma: "parlante", leyenda: "F2" },
+    /* Relevado el 28/09/2026 de su Instagram: bio "Artista Independiente",
+       management de @flaviarottella, booking de @f2incorporated y su estudio
+       de diseño @dakilldesing. Libertad Mental (2010–2013) sale de su
+       presentación pública; sin discografía verificada, la obra queda vacía. */
+    manifiesto: [
+      "Fasterdakill rapea, compone, hace sus beats, graba y mezcla. Viene de Lima y de la escena que lo formó: en 2010 fundó Libertad Mental, y desde entonces sostiene una carrera independiente que no le pide permiso a nadie.",
+      "Lo que lo define es la autonomía: controla la cadena entera, del beat al arte de tapa, que también diseña él. Un artista así no necesita que le armen un personaje; necesita que su obra llegue más lejos.",
+      "Hivrido entra para eso: dirección visual, estrategia de lanzamiento y un puente entre su escena y la de este lado del mapa.",
+    ],
+    ejes: [
+      {
+        titulo: "Independiente de punta a punta",
+        texto: "Letra, beat, mezcla y diseño salen de la misma mano. Esa firma completa es su identidad.",
+      },
+      {
+        titulo: "Oficio de estudio",
+        texto: "Además de rapear, es ingeniero de sonido: sabe cómo tiene que sonar un tema antes de que salga.",
+      },
+      {
+        titulo: "Una casa propia",
+        texto: "F2 Incorporated y Dakill Design son su estructura. Hivrido se suma a ella, no la reemplaza.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "fasterdakill",
+        href: "https://www.instagram.com/fasterdakill/",
+      },
+    ],
+    metricas: [
+      {
+        valor: "6.029",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @fasterdakill · 28/09/2026",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que suena" },
+    lanzamientos: [],
+    enConstruccion:
+      "Está en producción su primer ciclo con Hivrido: la discografía completa en esta ficha, lanzamientos con dirección visual y su llegada al público argentino.",
+    universo: ["flavia-rotela"],
+  },
+
+  {
+    slug: "flavia-rotela",
+    /* Así figura su nombre en el perfil; el handle lleva doble t. */
+    nombre: "Flavia Rotela",
+    alias: "@flaviarottella",
+    tagline: "La que convierte un artista en un proyecto.",
+    disciplinas: ["Producción", "Management", "Música"],
+    schema: "Person",
+    rol: "Productora y ejecutiva musical",
+    /* Rosa cuarzo: cálido y claro, lejos del naranja de Uriel y del rojo de
+       Alan. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#F4B6A6", suave: "rgba(244, 182, 166, 0.14)" },
+    emblema: { forma: "onda", leyenda: "MNGM" },
+    /* Relevado el 28/09/2026: su bio dice "Productora & Ejecutiva Musical" y
+       el perfil de Fasterdakill la nombra en su management. Seguidores sin
+       medir: no se publica cifra. */
+    manifiesto: [
+      "Flavia Rotela es productora y ejecutiva musical. Su trabajo no se ve en el escenario: es lo que hace que el escenario exista, que el tema salga a tiempo y que cada puerta se abra con un plan.",
+      "Maneja la carrera de Fasterdakill, y con Hivrido suma una estructura para llevar esa forma de trabajar a más artistas.",
+    ],
+    ejes: [
+      {
+        titulo: "Estrategia antes que ruido",
+        texto: "Cada lanzamiento con un porqué, una fecha y un destino.",
+      },
+      {
+        titulo: "Del artista al proyecto",
+        texto: "Ordenar la carrera es lo que permite que la obra crezca sin perder identidad.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "flaviarottella",
+        href: "https://www.instagram.com/flaviarottella/",
+      },
+    ],
+    metricas: [],
+    obra: { eyebrow: "Trabajo", titulo: "Lo que produce" },
+    lanzamientos: [],
+    enConstruccion:
+      "Está en producción su ficha completa: los proyectos que produce y su trabajo junto a Hivrido.",
+    universo: ["fasterdakill"],
+  },
 ];
 
-/** Ficha por slug. `undefined` si no existe: la ruta responde 404. */
 /**
  * Las variables de color que pinta lo que es de un artista: su página, su
  * tarjeta en el índice y el cruce desde la ficha de otro. Van en un solo
@@ -1339,6 +1441,7 @@ export function estiloAcento({ acento }: Artista): CSSProperties {
   return vars as CSSProperties;
 }
 
+/** Ficha por slug. `undefined` si no existe: la ruta responde 404. */
 export function getArtista(slug: string): Artista | undefined {
   return ARTISTAS.find((a) => a.slug === slug);
 }
