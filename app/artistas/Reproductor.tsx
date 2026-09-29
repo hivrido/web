@@ -147,7 +147,7 @@ export default function Reproductor({ src, titulo, artista, credito, portada }: 
           {portada && <img src={portada} alt="" width={64} height={64} loading="lazy" />}
         </span>
         <span className="art-barra-texto">
-          <b>{titulo}</b>
+          <b>Escuchá {titulo}</b>
           <span>
             {artista}
             {credito && ` · con ${credito}`}

@@ -258,6 +258,43 @@ html:has(.art-barra) .wa-btn {
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
 }
 
+/* Apagado, una luz recorre el filo del play para invitar al toque. Sonando
+   se va: ahí el botón ya cumplió y respira con el pulso. */
+@property --art-giro {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.art-page > .art-barra .art-barra-play {
+  position: relative;
+}
+
+.art-page > .art-barra .art-barra-play::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  padding: 2px;
+  background: conic-gradient(from var(--art-giro), transparent 0 62%, rgba(255, 255, 255, 0.95) 80%, transparent 88%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  filter: drop-shadow(0 0 4px var(--art-acento));
+  animation: art-barra-giro 2.4s linear infinite;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.art-barra.is-sonando .art-barra-play::before {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes art-barra-giro {
+  to { --art-giro: 360deg; }
+}
+
 .art-page > .art-barra .art-barra-play:hover {
   transform: scale(1.06);
   box-shadow: 0 0 0 8px var(--art-acento-suave);
@@ -390,5 +427,6 @@ html:has(.art-barra) .wa-btn {
 @media (prefers-reduced-motion: reduce) {
   .art-franja-pista { animation-duration: 120s; }
   .art-page > .art-barra { transition: none; }
-  .art-barra.is-sonando .art-barra-play { animation: none; }
+  .art-barra.is-sonando .art-barra-play,
+  .art-page > .art-barra .art-barra-play::before { animation: none; }
 }
