@@ -351,6 +351,13 @@ html:has(.art-barra) .wa-btn {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
+  /* El WhatsApp queda encima de la barra, alineado con su margen derecho:
+     una columna limpia en el borde en vez de dos piezas encimadas. */
+  html:has(.art-barra) .wa-btn {
+    right: 16px;
+    bottom: calc(var(--art-barra-h, 72px) + 14px + env(safe-area-inset-bottom));
+  }
+
   .art-barra-extra,
   .art-page > .art-barra .art-barra-salto {
     display: none;
