@@ -237,19 +237,19 @@ export const ARTISTAS: Artista[] = [
        no trabaja, no su alcance. */
     metricas: [
       {
-        valor: "5 M",
-        label: "Vistas en Instagram",
-        fuente: "Panel de @amplax10mg · dato del artista · 29/09/2026",
+        valor: "5,2 M",
+        label: "Visualizaciones en 30 días",
+        fuente: "Panel de @amplax10mg · 30/08 – 28/09/2026",
+      },
+      {
+        valor: "2,2 K",
+        label: "Seguidores nuevos en 30 días",
+        fuente: "Panel de @amplax10mg · 30/08 – 28/09/2026",
       },
       {
         valor: "12 K",
         label: "Seguidores en Instagram",
         fuente: "Perfil @amplax10mg · 27/09/2026",
-      },
-      {
-        valor: "Diario",
-        label: "Frecuencia de publicación",
-        fuente: "Reels",
       },
       {
         valor: "27",
