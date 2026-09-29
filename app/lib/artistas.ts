@@ -857,13 +857,13 @@ export const ARTISTAS: Artista[] = [
     ticker: ["Influencer", "POV", "Streetwear", "Creador de contenido", "Humor de barrio"],
     /* El orden es el del abanico: la foto 1 queda al frente. */
     galeria: [
-      { img: "/images/artistas/nicolas/foto-5.webp", alt: "Nicolas con gorra negra junto a una amiga, reel POV", href: "https://www.instagram.com/p/DdzsH2ounwA/" },
-      { img: "/images/artistas/nicolas/foto-2.webp", alt: "Nicolas de noche con conjunto deportivo y la cara tapada, apoyado en un auto blanco", href: "https://www.instagram.com/p/DVPtFmaDLp0/" },
-      { img: "/images/artistas/nicolas/foto-3.webp", alt: "Nicolas en la calle con campera deportiva negra y pollera azul", href: "https://www.instagram.com/p/DUB7oERD1N7/" },
-      { img: "/images/artistas/nicolas/foto-1.webp", alt: "Nicolas sentado en un sillón con campera amarilla y pantalón azul", href: "https://www.instagram.com/p/DV788MPjs2T/" },
-      { img: "/images/artistas/nicolas/foto-4.webp", alt: "Nicolas con gorra roja y campera estampada frente a un muro", href: "https://www.instagram.com/p/DJZweSHvkDB/" },
-      { img: "/images/artistas/nicolas/foto-6.webp", alt: "Nicolas con gorra y campera Adidas mirando el celular, reel POV", href: "https://www.instagram.com/p/DdzWZUmglQv/" },
-      { img: "/images/artistas/nicolas/foto-7.webp", alt: "Nicolas junto a su moto en una calle arbolada", href: "https://www.instagram.com/p/DVFipdwjE10/" },
+      { img: "/images/artistas/nicolas/img-5.webp", alt: "Nicolas sonriendo en selfie con gorra hacia atrás y remera negra", href: "https://www.instagram.com/p/DdzsH2ounwA/" },
+      { img: "/images/artistas/nicolas/img-2.webp", alt: "Nicolas de noche con conjunto deportivo y la cara tapada, apoyado en un auto blanco", href: "https://www.instagram.com/p/DVPtFmaDLp0/" },
+      { img: "/images/artistas/nicolas/img-3.webp", alt: "Nicolas en la calle con campera Adidas negra y bermuda azul", href: "https://www.instagram.com/p/DUB7oERD1N7/" },
+      { img: "/images/artistas/nicolas/img-1.webp", alt: "Nicolas sentado en un sillón con campera amarilla y pantalón azul", href: "https://www.instagram.com/p/DV788MPjs2T/" },
+      { img: "/images/artistas/nicolas/img-4.webp", alt: "Nicolas en selfie con gorra roja y campera deportiva", href: "https://www.instagram.com/p/DJZweSHvkDB/" },
+      { img: "/images/artistas/nicolas/img-6.webp", alt: "Nicolas apoyado en un poste con campera azul, en una historia del Día del Padre", href: "https://www.instagram.com/p/DdzWZUmglQv/" },
+      { img: "/images/artistas/nicolas/img-7.webp", alt: "Nicolas junto a su moto en una calle arbolada", href: "https://www.instagram.com/p/DVFipdwjE10/" },
     ],
   },
   {
