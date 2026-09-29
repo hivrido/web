@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /**
  * Barra de audio de la ficha.
@@ -23,6 +23,10 @@ type Props = {
   portada?: string;
 };
 
+/* `useSyncExternalStore` sin fuente externa: da `false` en el servidor y
+   durante la hidratación, y `true` apenas el componente está vivo. */
+const sinSuscripcion = () => () => {};
+
 function mmss(s: number) {
   if (!Number.isFinite(s) || s < 0) return "0:00";
   const m = Math.floor(s / 60);
@@ -37,6 +41,11 @@ export default function Reproductor({ src, titulo, artista, credito, portada }: 
   const [duracion, setDuracion] = useState(0);
   const [volumen, setVolumen] = useState(0.8);
   const [mudo, setMudo] = useState(false);
+  /* La barra se muestra recién cuando React la conectó. El HTML llega antes
+     que el JS, y en un teléfono medio hay casi tres segundos en los que el
+     play se ve pero no responde: un toque ahí se pierde y el tema parece
+     roto. Entrar cuando ya funciona evita ese toque en el vacío. */
+  const listo = useSyncExternalStore(sinSuscripcion, () => true, () => false);
 
   const alternar = useCallback(() => {
     const el = audio.current;
@@ -115,7 +124,7 @@ export default function Reproductor({ src, titulo, artista, credito, portada }: 
   const nivel = mudo ? 0 : volumen;
 
   return (
-    <div className={`art-barra${sonando ? " is-sonando" : ""}`} role="region" aria-label={`Reproductor: ${titulo}`}>
+    <div className={`art-barra${listo ? " is-lista" : ""}${sonando ? " is-sonando" : ""}`} role="region" aria-label={`Reproductor: ${titulo}`}>
       <audio ref={audio} src={src} preload="metadata" />
 
       {/* El progreso es el filo superior de la barra, y se arrastra. */}

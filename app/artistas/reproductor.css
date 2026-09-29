@@ -96,7 +96,16 @@
     rgba(9, 8, 14, 0.9);
   -webkit-backdrop-filter: blur(20px) saturate(1.3);
   backdrop-filter: blur(20px) saturate(1.3);
-  animation: art-barra-entra 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.4s both;
+  /* Fuera de pantalla hasta que el JS la conecta (ver Reproductor.tsx). */
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), visibility 0s 0.8s;
+}
+
+.art-page > .art-barra.is-lista {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* El WhatsApp flotante sube para no pisarle los controles. */
@@ -333,10 +342,6 @@ html:has(.art-barra) .wa-btn {
   background: #fff;
 }
 
-@keyframes art-barra-entra {
-  from { transform: translateY(100%); }
-}
-
 @keyframes art-barra-pulso {
   50% { box-shadow: 0 0 0 7px var(--art-acento-suave), 0 0 26px -4px var(--art-acento); }
 }
@@ -384,6 +389,6 @@ html:has(.art-barra) .wa-btn {
 
 @media (prefers-reduced-motion: reduce) {
   .art-franja-pista { animation-duration: 120s; }
-  .art-page > .art-barra,
+  .art-page > .art-barra { transition: none; }
   .art-barra.is-sonando .art-barra-play { animation: none; }
 }
