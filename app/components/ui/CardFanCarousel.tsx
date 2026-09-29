@@ -309,20 +309,20 @@ export default function CardFanCarousel({ cards, etiqueta = "Ver en Instagram" }
     const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!card || !img?.complete || quieto) {
       /* Sin efecto: si el toque vino del link, el navegador lo sigue solo. */
-      if (e.currentTarget.tagName !== "A") window.open(href, "_blank", "noopener");
+      if (e.currentTarget.tagName !== "A") window.location.assign(href);
       return;
     }
     e.preventDefault();
     if (rompiendo.current) return;
     rompiendo.current = true;
+    /* Después del estallido se navega en esta pestaña. Una pestaña nueva
+       abierta con demora es una ventana emergente para el navegador: unos la
+       bloquean callados y el navegador interno de Instagram —donde vive el
+       link de la bio— devuelve una ventana que no hace nada. En el celular,
+       además, así el link lo toma la app de Instagram. */
     shatter(card, img, e.clientX, e.clientY).then(() => {
       rompiendo.current = false;
-      /* Sin `noopener` en el open: con él devuelve null siempre y no se sabría
-         si la pestaña se abrió. Se corta el vínculo a mano. Si el navegador
-         la bloqueó por la demora, el post se abre en esta. */
-      const tab = window.open(href, "_blank");
-      if (tab) tab.opener = null;
-      else window.location.href = href;
+      window.location.assign(href);
     });
   };
 

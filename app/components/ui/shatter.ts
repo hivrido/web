@@ -173,5 +173,18 @@ export function shatter(card: HTMLElement, img: HTMLImageElement, clientX: numbe
     };
 
     raf = requestAnimationFrame(cuadro);
+
+    /* Quien vuelve con "atrás" recibe la página congelada a mitad de la
+       rotura (bfcache): se limpia para que la foto esté entera. */
+    window.addEventListener(
+      "pageshow",
+      (ev) => {
+        if (!ev.persisted) return;
+        cancelAnimationFrame(raf);
+        canvas.remove();
+        card.classList.remove("is-rota");
+      },
+      { once: true },
+    );
   });
 }
