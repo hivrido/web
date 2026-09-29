@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { shatter } from "./shatter";
 import "./card-fan.css";
 
 /**
@@ -296,6 +297,35 @@ export default function CardFanCarousel({ cards, etiqueta = "Ver en Instagram" }
     };
   }, []);
 
+  /* Un toque: la foto estalla y se abre el post. Con Ctrl/Cmd o el botón del
+     medio el navegador ya sabe qué hacer, y con movimiento reducido no hay
+     vidrio que romper: en esos casos el link sigue solo. */
+  const rompiendo = useRef(false);
+  const romperYAbrir = (e: React.MouseEvent<HTMLElement>, href: string) => {
+    e.stopPropagation();
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    const card = e.currentTarget.closest<HTMLElement>(".fan-card");
+    const img = card?.querySelector("img");
+    const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!card || !img?.complete || quieto) {
+      /* Sin efecto: si el toque vino del link, el navegador lo sigue solo. */
+      if (e.currentTarget.tagName !== "A") window.open(href, "_blank", "noopener");
+      return;
+    }
+    e.preventDefault();
+    if (rompiendo.current) return;
+    rompiendo.current = true;
+    shatter(card, img, e.clientX, e.clientY).then(() => {
+      rompiendo.current = false;
+      /* Sin `noopener` en el open: con él devuelve null siempre y no se sabría
+         si la pestaña se abrió. Se corta el vínculo a mano. Si el navegador
+         la bloqueó por la demora, el post se abre en esta. */
+      const tab = window.open(href, "_blank");
+      if (tab) tab.opener = null;
+      else window.location.href = href;
+    });
+  };
+
   if (!total) return null;
 
   const flecha = (dir: "left" | "right") => (
@@ -311,7 +341,12 @@ export default function CardFanCarousel({ cards, etiqueta = "Ver en Instagram" }
           <div
             key={card.img}
             className={`fan-card${activa === i ? " is-activa" : ""}`}
-            onClick={() => setActiva(i)}
+            onClick={(e) => {
+              /* Con mouse la foto entera es el link. En táctil el primer
+                 toque solo la levanta y muestra el botón. */
+              if (card.href && window.matchMedia("(hover: hover)").matches) romperYAbrir(e, card.href);
+              else setActiva(i);
+            }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- ya viene a 720px desde el preprocesado; next/image no suma nada con `unoptimized` */}
             <img src={card.img} alt={card.alt} width={720} height={1080} loading="lazy" decoding="async" />
@@ -324,7 +359,7 @@ export default function CardFanCarousel({ cards, etiqueta = "Ver en Instagram" }
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={card.dato ? `${etiqueta} · ${card.dato}` : etiqueta}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => romperYAbrir(e, card.href!)}
               >
                 <IconoInstagram />
                 <span>{etiqueta}</span>

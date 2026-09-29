@@ -169,6 +169,24 @@
   pointer-events: auto;
 }
 
+/* Mientras vuelan los pedazos, la tarjeta original no está: el vidrio es
+   ella. Vuelve con un fundido cuando termina. */
+.fan-card {
+  transition: visibility 0s;
+}
+
+.fan-card.is-rota {
+  visibility: hidden;
+}
+
+.fan-card:not(.is-rota) > img {
+  animation: fan-vuelve 0.5s ease;
+}
+
+@keyframes fan-vuelve {
+  from { opacity: 0; }
+}
+
 @keyframes fan-giro {
   to { --fan-giro: 360deg; }
 }
