@@ -862,7 +862,7 @@ export const ARTISTAS: Artista[] = [
       { img: "/images/artistas/nicolas/img-3.webp", alt: "Nicolas en la calle con campera Adidas negra y bermuda azul", href: "https://www.instagram.com/p/DUB7oERD1N7/" },
       { img: "/images/artistas/nicolas/img-1.webp", alt: "Nicolas sentado en un sillón con campera amarilla y pantalón azul", href: "https://www.instagram.com/p/DV788MPjs2T/" },
       { img: "/images/artistas/nicolas/img-4.webp", alt: "Nicolas en selfie con gorra roja y campera deportiva", href: "https://www.instagram.com/p/DJZweSHvkDB/" },
-      { img: "/images/artistas/nicolas/img-6.webp", alt: "Nicolas apoyado en un poste con campera azul, en una historia del Día del Padre", href: "https://www.instagram.com/p/DdzWZUmglQv/" },
+      { img: "/images/artistas/nicolas/img-6.webp", alt: "Nicolas apoyado en un poste con campera azul, en una historia del Día del Padre", href: "https://www.instagram.com/p/DZ1bsB1ObQO/" },
       { img: "/images/artistas/nicolas/img-7.webp", alt: "Nicolas junto a su moto en una calle arbolada", href: "https://www.instagram.com/p/DVFipdwjE10/" },
     ],
   },
