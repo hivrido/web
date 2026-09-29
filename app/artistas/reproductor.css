@@ -1,0 +1,581 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Franja y reproductor de la ficha.
+
+   Van aparte de artistas.css porque son módulos opcionales: solo se dibujan
+   en una ficha que tenga `ticker` o un lanzamiento con `audio`. Usan los
+   tokens de allá (--art-acento, --art-linea…), así que se importan después.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.art-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── Franja ── */
+
+.art-franja {
+  overflow: hidden;
+  padding: clamp(22px, 4vw, 38px) 0;
+  border-block: 1px solid var(--art-linea);
+  /* Los bordes se apagan en vez de cortar la palabra en seco. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+.art-franja-pista {
+  display: flex;
+  width: max-content;
+  animation: art-franja 38s linear infinite;
+  will-change: transform;
+}
+
+.art-franja-item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: clamp(22px, 3.4vw, 44px);
+  padding-right: clamp(22px, 3.4vw, 44px);
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 6.4vw, 4.6rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--art-texto);
+}
+
+/* La palabra calada: solo el filo, en el blanco de la casa bajado. */
+.art-franja-calada {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(242, 240, 247, 0.34);
+}
+
+.art-franja-sep {
+  font-size: 0.5em;
+  color: var(--art-acento);
+  text-shadow: 0 0 18px var(--art-acento);
+}
+
+@keyframes art-franja {
+  to { transform: translateX(-50%); }
+}
+
+/* ── Reproductor ── */
+
+/* Cada hijo de la página es su propio contexto de apilado con z-index 1. El
+   dock vive adentro de esta sección, así que la sección entera tiene que
+   quedar por encima de las que vienen después —si no, el dock pasaría por
+   debajo de ellas al bajar—. Sigue bajo el menú (40) y el header (50). */
+.art-page > .art-section--escucha {
+  z-index: 5;
+}
+
+.art-rep {
+  position: relative;
+  display: grid;
+  gap: clamp(30px, 5vw, 56px);
+  align-items: center;
+  padding: clamp(24px, 4.6vw, 48px);
+  border: 1px solid var(--art-linea);
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 90% at 0% 50%, var(--art-acento-suave), transparent 62%),
+    var(--art-base);
+  box-shadow: var(--art-relieve);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+@media (min-width: 820px) {
+  .art-rep {
+    grid-template-columns: minmax(240px, 380px) minmax(0, 1fr);
+  }
+}
+
+.art-rep-disco {
+  position: relative;
+  width: min(100%, 380px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.art-rep-vinilo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    /* El reflejo gira con el disco: es lo que hace ver el giro. */
+    conic-gradient(from 20deg, transparent 0 8%, rgba(255, 255, 255, 0.13) 12%, transparent 17% 55%, rgba(255, 255, 255, 0.09) 60%, transparent 65%),
+    /* Los surcos. */
+    repeating-radial-gradient(circle, #0b0b10 0 2px, #16161d 2.5px 3.5px),
+    #0b0b10;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 30px 70px -20px rgba(0, 0, 0, 0.95),
+    0 0 90px -30px var(--art-acento);
+  animation: art-girar 2.4s linear infinite paused;
+  transition: box-shadow 0.6s ease;
+}
+
+.art-rep.is-sonando .art-rep-vinilo {
+  animation-play-state: running;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 30px 70px -20px rgba(0, 0, 0, 0.95),
+    0 0 120px -18px var(--art-acento);
+}
+
+.art-rep-etiqueta {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  width: 36%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #0b0b10 0 5%, var(--art-acento) 5.5%);
+  color: #0a0a0a;
+  text-align: center;
+}
+
+.art-rep-etiqueta b {
+  margin-top: 26%;
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 2.6vw, 1.15rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.art-rep-etiqueta small {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* El brazo: apoyado cuando suena, levantado en pausa. */
+.art-rep-brazo {
+  position: absolute;
+  top: -2%;
+  right: 4%;
+  width: 6px;
+  height: 52%;
+  border-radius: 3px;
+  background: linear-gradient(#d9d6e2, #7d7a88);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+  transform-origin: 50% 6%;
+  transform: rotate(-4deg);
+  transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.art-rep-brazo::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #8d8a98;
+  border-radius: 50%;
+  background: #2a2833;
+  translate: -50% 0;
+}
+
+.art-rep-brazo::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 14px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--art-acento);
+  translate: -50% 0;
+}
+
+.art-rep.is-sonando .art-rep-brazo {
+  transform: rotate(22deg);
+}
+
+.art-rep-cuerpo {
+  min-width: 0;
+}
+
+.art-rep-estado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--art-acento);
+}
+
+.art-rep-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--art-tenue);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.art-rep.is-sonando .art-rep-led {
+  background: var(--art-acento);
+  box-shadow: 0 0 12px var(--art-acento);
+  animation: art-latido 1.1s ease-in-out infinite;
+}
+
+.art-rep-titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 8vw, 4.4rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+}
+
+.art-rep-credito {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--art-tenue);
+}
+
+.art-rep-espectro {
+  display: block;
+  width: 100%;
+  height: clamp(64px, 11vw, 96px);
+  margin: 26px 0 18px;
+  color: var(--art-acento);
+  /* Antes del primer play el lienzo está vacío: la línea de base dice que
+     ahí va algo. */
+  background: linear-gradient(var(--art-linea), var(--art-linea)) center / 100% 1px no-repeat;
+}
+
+.art-rep-linea {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--art-tenue);
+}
+
+.art-rep-barra {
+  flex: 1;
+  min-width: 0;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.art-rep-barra::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--art-acento) var(--p, 0%), rgba(255, 255, 255, 0.12) var(--p, 0%));
+}
+
+.art-rep-barra::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--art-acento) var(--p, 0%), rgba(255, 255, 255, 0.12) var(--p, 0%));
+}
+
+.art-rep-barra::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--art-acento-suave), 0 0 16px var(--art-acento);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: transform 0.2s ease;
+}
+
+.art-rep-barra::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px var(--art-acento-suave), 0 0 16px var(--art-acento);
+}
+
+.art-rep-barra:hover::-webkit-slider-thumb,
+.art-rep-barra:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.3);
+}
+
+.art-rep-barra:focus-visible {
+  outline: 2px solid var(--art-acento);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.art-rep-controles {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+.art-rep-play {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--art-acento);
+  color: #0a0a0a;
+  cursor: pointer;
+  box-shadow: 0 0 0 0 var(--art-acento-suave), 0 14px 40px -12px var(--art-acento);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+}
+
+.art-rep-play:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 0 10px var(--art-acento-suave), 0 14px 40px -10px var(--art-acento);
+}
+
+.art-rep-play:active {
+  transform: scale(0.96);
+}
+
+.art-rep-salto {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--art-linea);
+  border-radius: 50%;
+  background: var(--art-panel);
+  color: var(--art-suave);
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.art-rep-salto span {
+  position: absolute;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.art-rep-salto:hover {
+  color: var(--art-acento);
+  border-color: var(--art-acento);
+}
+
+.art-rep-play:focus-visible,
+.art-rep-salto:focus-visible,
+.art-dock button:focus-visible {
+  outline: 2px solid var(--art-acento);
+  outline-offset: 3px;
+}
+
+/* ── Dock ──
+   Aparece abajo cuando el bloque grande sale de pantalla con el tema ya
+   iniciado. Cristal oscuro, filo del acento y el progreso como una línea
+   sobre el borde superior. */
+.art-dock {
+  position: fixed;
+  left: calc((100vw - var(--col-w, 0px)) / 2);
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(calc(100vw - var(--col-w, 0px) - 32px), 460px);
+  padding: 10px 10px 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--art-acento) 30%, transparent);
+  border-radius: 999px;
+  background: rgba(9, 8, 16, 0.82);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.9), 0 0 40px -18px var(--art-acento);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 140%);
+  transition:
+    transform 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.4s ease,
+    visibility 0s linear 0.6s;
+}
+
+.art-dock.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition:
+    transform 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.4s ease,
+    visibility 0s;
+}
+
+.art-dock-progreso {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--art-acento);
+  box-shadow: 0 0 10px var(--art-acento);
+  transition: width 0.25s linear;
+}
+
+.art-dock-disco {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #0b0b10 0 8%, var(--art-acento) 9% 30%, transparent 31%),
+    repeating-radial-gradient(circle, #0b0b10 0 1.5px, #1b1b23 2px 2.6px);
+  animation: art-girar 2.4s linear infinite paused;
+}
+
+.art-dock.is-sonando .art-dock-disco {
+  animation-play-state: running;
+}
+
+.art-dock-info {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.art-dock-info b,
+.art-dock-info span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.art-dock-info b {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--art-texto);
+}
+
+.art-dock-info span {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--art-tenue);
+}
+
+/* Cuatro barras que laten mientras suena: el espectro en miniatura. */
+.art-dock-ondas {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+}
+
+.art-dock-ondas i {
+  width: 3px;
+  height: 30%;
+  border-radius: 2px;
+  background: var(--art-acento);
+  animation: art-onda 0.9s ease-in-out infinite paused;
+}
+
+.art-dock-ondas i:nth-child(2) { animation-delay: -0.3s; }
+.art-dock-ondas i:nth-child(3) { animation-delay: -0.6s; }
+.art-dock-ondas i:nth-child(4) { animation-delay: -0.15s; }
+
+.art-dock.is-sonando .art-dock-ondas i {
+  animation-play-state: running;
+}
+
+.art-dock-play,
+.art-dock-cerrar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.art-dock-play {
+  width: 42px;
+  height: 42px;
+  background: var(--art-acento);
+  color: #0a0a0a;
+  transition: transform 0.25s ease;
+}
+
+.art-dock-play:hover {
+  transform: scale(1.08);
+}
+
+.art-dock-cerrar {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  color: var(--art-tenue);
+  transition: color 0.25s ease;
+}
+
+.art-dock-cerrar:hover {
+  color: var(--art-texto);
+}
+
+@keyframes art-girar {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes art-latido {
+  50% { opacity: 0.35; }
+}
+
+@keyframes art-onda {
+  0%, 100% { height: 30%; }
+  50%      { height: 100%; }
+}
+
+@media (max-width: 480px) {
+  .art-dock-ondas { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-franja-pista { animation-duration: 120s; }
+  .art-rep-vinilo,
+  .art-dock-disco,
+  .art-dock-ondas i,
+  .art-rep.is-sonando .art-rep-led { animation: none; }
+}

@@ -57,6 +57,12 @@ export type Lanzamiento = {
    * nada, y la cifra es lo que una marca mira. Vacío si no hay medición.
    */
   dato?: string;
+  /**
+   * Master en audio servido desde /public (`/mp3/...`). Es lo que monta el
+   * reproductor propio de la ficha: escuchar un tema no debería depender de
+   * cargar YouTube, y una pista de 64 kbps pesa menos que su embed.
+   */
+  audio?: string;
 };
 
 /** Métrica pública verificable. Nada de números redondeados para arriba. */
@@ -145,6 +151,13 @@ export type Artista = {
    * a mano y no por inferencia: colaborar una vez no es compartir escena.
    */
   universo?: string[];
+  /**
+   * Las palabras de la franja que corre bajo el hero. No son las
+   * disciplinas repetidas: es el vocabulario del proyecto —temas, apodos,
+   * frases de la casa— y va a mano porque cada artista habla distinto.
+   * Vacío, la franja no se dibuja.
+   */
+  ticker?: string[];
 };
 
 export const ARTISTAS: Artista[] = [
@@ -238,12 +251,14 @@ export const ARTISTAS: Artista[] = [
         tipo: "videoclip",
         con: "DJ Cofla",
         ytId: "sGd3CrSPdOE",
+        audio: "/mp3/LafinaAmplax.mp3",
       },
     ],
     destacado: "la-fina",
     enConstruccion:
       "El catálogo está abierto. Los próximos lanzamientos —temas, videoclips y piezas de contenido— se suman a esta página a medida que salen.",
     universo: ["kareen-nahirr", "jairito-veras"],
+    ticker: ["La Fina", "Dosis exacta", "El Charlyy", "RKT", "Cumbia", "Humor", "10 MG", "Previa", "Sin receta"],
   },
 
   {

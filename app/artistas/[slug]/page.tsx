@@ -14,7 +14,10 @@ import {
 import RedIcono, { NOMBRE_RED } from "../RedIcono";
 import PlayerLite from "../PlayerLite";
 import FondoVivo from "../FondoVivo";
+import Franja from "../Franja";
+import Reproductor from "../Reproductor";
 import "../artistas.css";
+import "../reproductor.css";
 
 /**
  * Ficha de artista.
@@ -108,6 +111,10 @@ export default async function FichaArtistaPage({
     a.lanzamientos.find((l) => l.id === a.destacado && l.ytId) ??
     a.lanzamientos.find((l) => l.ytId);
   const resto = a.lanzamientos.filter((l) => l.id !== destacado?.id);
+  /* La pista que abre el reproductor: el destacado si tiene master, si no el
+     primer lanzamiento que lo tenga. */
+  const pista =
+    (destacado?.audio ? destacado : undefined) ?? a.lanzamientos.find((l) => l.audio);
 
   const vecinos = vecinosDe(a);
 
@@ -198,6 +205,25 @@ export default async function FichaArtistaPage({
             </div>
           </div>
         </section>
+
+        {a.ticker && a.ticker.length > 0 && <Franja palabras={a.ticker} />}
+
+        {/* ── Escuchá ──────────────────────────────────────────────────── */}
+        {pista?.audio && (
+          <section className="art-section art-section--escucha" id="escucha">
+            <div className="art-wrap">
+              <p className="art-eyebrow">Escuchá</p>
+              <h2 className="art-h2">Una dosis, ahora</h2>
+              <Reproductor
+                src={pista.audio}
+                titulo={pista.titulo}
+                artista={a.nombre}
+                credito={pista.con}
+                sello={a.emblema.leyenda}
+              />
+            </div>
+          </section>
+        )}
 
         {/* ── Manifiesto ───────────────────────────────────────────────── */}
         <section className="art-section">
