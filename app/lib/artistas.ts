@@ -158,6 +158,12 @@ export type Artista = {
    * Vacío, la franja no se dibuja.
    */
   ticker?: string[];
+  /**
+   * Posts de Instagram en abanico, bajo la franja. El orden es el del
+   * abanico: la del medio de la lista queda al frente. `dato` es la cifra
+   * del post ("386 K vistas"); sin ella la tarjeta no muestra número.
+   */
+  galeria?: { img: string; alt: string; href: string; dato?: string }[];
 };
 
 export const ARTISTAS: Artista[] = [
@@ -272,6 +278,17 @@ export const ARTISTAS: Artista[] = [
       "El catálogo está abierto. Los próximos lanzamientos —temas, videoclips y piezas de contenido— se suman a esta página a medida que salen.",
     universo: ["kareen-nahirr", "jairito-veras"],
     ticker: ["La Fina", "Dosis exacta", "El Charlyy", "RKT", "Cumbia", "Humor", "10 MG", "Previa", "Sin receta"],
+    /* La 1 al frente, como la pidió el artista; el resto se reparte a los
+       lados en el orden en que las mandó. */
+    galeria: [
+      { img: "/images/artistas/amplax/post-2.webp", alt: "Amplax 10 mg, post de Instagram", href: "https://www.instagram.com/p/Dcb-uNfpNKO/" },
+      { img: "/images/artistas/amplax/post-3.webp", alt: "Amplax 10 mg, post de Instagram", href: "https://www.instagram.com/p/DWXg1RdjjWT/" },
+      { img: "/images/artistas/amplax/post-4.webp", alt: "Amplax 10 mg, post de Instagram", href: "https://www.instagram.com/p/Dbfc6dqDtms/" },
+      { img: "/images/artistas/amplax/post-1.webp", alt: "Amplax 10 mg, su último post de Instagram", href: "https://www.instagram.com/p/Dde7Gv6p8-g/" },
+      { img: "/images/artistas/amplax/post-5.webp", alt: "Amplax 10 mg con campera roja y gorra, de pie en un deck", href: "https://www.instagram.com/p/DWXg1RdjjWT/" },
+      { img: "/images/artistas/amplax/post-6.webp", alt: "Amplax 10 mg, post de Instagram", href: "https://www.instagram.com/p/DE_NQl_u9fh/" },
+      { img: "/images/artistas/amplax/post-7.webp", alt: "Amplax 10 mg, post de Instagram", href: "https://www.instagram.com/p/DcZ7Fm8jsUH/" },
+    ],
   },
 
   {

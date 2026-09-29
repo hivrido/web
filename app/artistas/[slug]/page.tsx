@@ -17,6 +17,7 @@ import FondoVivo from "../FondoVivo";
 import Franja from "../Franja";
 import Reproductor from "../Reproductor";
 import Cifra from "../Cifra";
+import CardFanCarousel from "../../components/ui/CardFanCarousel";
 import "../artistas.css";
 import "../reproductor.css";
 
@@ -221,6 +222,12 @@ export default async function FichaArtistaPage({
         </section>
 
         {a.ticker && a.ticker.length > 0 && <Franja palabras={a.ticker} />}
+
+        {a.galeria && a.galeria.length > 0 && (
+          <section aria-label={`Posts de ${a.nombre} en Instagram`}>
+            <CardFanCarousel cards={a.galeria} />
+          </section>
+        )}
 
         {/* ── Manifiesto ───────────────────────────────────────────────── */}
         <section className="art-section">

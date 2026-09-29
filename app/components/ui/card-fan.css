@@ -1,0 +1,242 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Abanico de tarjetas (CardFanCarousel.tsx).
+
+   GSAP escribe el transform de cada tarjeta, así que el centrado va por
+   `left` + margen negativo y nunca por `translate`: si no, se pisan. Los
+   anchos siguen los cortes de `anchoMult` del componente.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.fan {
+  --fan-w: 16rem;
+  --fan-h: 38rem;
+  --fan-acento: var(--art-acento, #7c3aed);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(24px, 4vw, 48px) 16px;
+  overflow: hidden;
+}
+
+.fan-layout {
+  position: relative;
+  width: 100%;
+  max-width: 80rem;
+  height: min(var(--fan-h), 70vh);
+}
+
+.fan-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--fan-w);
+  aspect-ratio: 2 / 3;
+  margin: calc(var(--fan-w) * -0.75) 0 0 calc(var(--fan-w) / -2);
+  overflow: hidden;
+  border-radius: calc(var(--fan-w) * 0.1);
+  background: #111;
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fan-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* El velo baja la foto lo justo para que el botón se lea sobre cualquier
+   imagen, y solo aparece cuando aparece el botón. */
+.fan-velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6, 5, 12, 0.85) 0%, rgba(6, 5, 12, 0.2) 45%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.fan-dato {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: rgba(10, 8, 18, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* ── Botón a Instagram ──
+   Borde con el degradé de la marca que gira, vidrio adentro y un brillo que
+   lo cruza. Entra desde abajo con resorte. */
+@property --fan-giro {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.fan-ig {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #fff;
+  text-decoration: none;
+  background:
+    linear-gradient(rgba(14, 10, 24, 0.82), rgba(14, 10, 24, 0.82)) padding-box,
+    conic-gradient(from var(--fan-giro), #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75) border-box;
+  box-shadow: 0 10px 30px -8px rgba(214, 41, 118, 0.7);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translate(-50%, 16px) scale(0.9);
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  animation: fan-giro 3s linear infinite;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fan-ig::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.fan-ig:hover {
+  box-shadow: 0 12px 36px -6px rgba(214, 41, 118, 0.95);
+}
+
+.fan-ig:hover::after {
+  transform: translateX(120%);
+  transition: transform 0.7s ease;
+}
+
+.fan-ig:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* Visible: hover real (no el pegado de un toque), tarjeta tocada o foco. */
+@media (hover: hover) {
+  .fan-card:hover .fan-ig,
+  .fan-card:hover .fan-velo {
+    opacity: 1;
+  }
+  .fan-card:hover .fan-ig {
+    transform: translate(-50%, 0) scale(1);
+    pointer-events: auto;
+  }
+  .fan-card:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.fan-card.is-activa .fan-velo,
+.fan-card:focus-within .fan-velo {
+  opacity: 1;
+}
+
+.fan-card.is-activa .fan-ig,
+.fan-card:focus-within .fan-ig {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  pointer-events: auto;
+}
+
+@keyframes fan-giro {
+  to { --fan-giro: 360deg; }
+}
+
+/* ── Navegación (solo con más de siete) ── */
+.fan-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.fan-nav button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.fan-nav button:hover {
+  color: #fff;
+  border-color: var(--fan-acento);
+}
+
+.fan-puntos {
+  display: flex;
+  gap: 8px;
+}
+
+.fan-puntos span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.fan-puntos .is-actual {
+  background: var(--fan-acento);
+  transform: scale(1.3);
+}
+
+@media (max-width: 1023px) {
+  .fan { --fan-w: 13rem; --fan-h: 34rem; }
+}
+
+@media (max-width: 767px) {
+  .fan { --fan-w: 11rem; --fan-h: 28rem; }
+}
+
+@media (max-width: 639px) {
+  .fan { --fan-w: 10rem; --fan-h: 26rem; }
+  .fan-ig { padding: 9px 14px; font-size: 12px; }
+}
+
+@media (max-width: 479px) {
+  .fan { --fan-w: 8.5rem; --fan-h: 22rem; }
+  .fan-ig span { display: none; }
+  .fan-ig { padding: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-ig { animation: none; transition: opacity 0.2s ease; }
+  .fan-card img { transition: none; }
+}
