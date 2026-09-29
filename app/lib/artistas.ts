@@ -296,10 +296,10 @@ export const ARTISTAS: Artista[] = [
     nombre: "Kareen Nahirr",
     alias: "ŁaMazBerraka",
     tagline: "Dos millones y medio de personas por mes, desde José C. Paz.",
-    disciplinas: ["Humor", "Reels", "Actuación", "Contenido", "Performance"],
-    /* No es una banda: es una creadora. El schema lo dice así. */
+    disciplinas: ["Actuación", "Modelaje", "Danza", "Streaming", "Tatuaje"],
+    /* No es una banda: es una persona. El schema lo dice así. */
     schema: "Person",
-    rol: "Creadora de contenido",
+    rol: "Actriz, modelo y creadora de contenido",
     /* El violeta de Hivrido: es el color que la representa. El tono que
        pinta —rótulos, filo, relleno del botón— es #A78BFA, el violeta claro
        de la casa, porque sobre él va texto oscuro y como texto va sobre
@@ -406,16 +406,15 @@ export const ARTISTAS: Artista[] = [
       "Está en producción el primer ciclo con Hivrido: formatos de marca integrada sobre el POV y la serie por partes, y el salto del reel a la cámara.",
     universo: ["amplax"],
     ticker: ["Actriz", "Modelo", "Bailarina", "Streamer", "Tattoo artist"],
-    /* Bajadas del og:image de cada post: 640 px como mucho, y cuadradas salvo
-       la 3. Alcanzan para el abanico; si llegan los originales, se cambian. */
+    /* La 2 al frente, como la pidió; el resto a los lados en orden. */
     galeria: [
-      { img: "/images/artistas/kareen/post-2.webp", alt: "Kareen Nahirr, retrato de perfil con la ciudad de noche detrás", href: "https://www.instagram.com/p/DWJNPxcjnuY/" },
-      { img: "/images/artistas/kareen/post-3.webp", alt: "Kareen Nahirr frente al espejo, en un reel", href: "https://www.instagram.com/p/Da0WcS9kRsH/" },
-      { img: "/images/artistas/kareen/post-4.webp", alt: "Kareen Nahirr de cuerpo entero en la vereda, con los brazos tatuados", href: "https://www.instagram.com/p/DAD3PLPJXWU/" },
-      { img: "/images/artistas/kareen/post-1.webp", alt: "Kareen Nahirr, selfie con anteojos de sol en la cabeza", href: "https://www.instagram.com/p/DZaibwXEZed/" },
-      { img: "/images/artistas/kareen/post-5.webp", alt: "Kareen Nahirr, primer plano en blanco y negro", href: "https://www.instagram.com/p/Dd4TvUzFJz5/" },
-      { img: "/images/artistas/kareen/post-6.webp", alt: "Kareen Nahirr con anteojos, primer plano", href: "https://www.instagram.com/p/DaYBs0yEQgN/" },
-      { img: "/images/artistas/kareen/post-7.webp", alt: "Kareen Nahirr con anteojos y el tatuaje en la sien", href: "https://www.instagram.com/p/DW9Y6DkEbVu/" },
+      { img: "/images/artistas/kareen/post-1.webp", alt: "Kareen Nahirr, selfie frente al espejo con camisa blanca", href: "https://www.instagram.com/p/DZaibwXEZed/" },
+      { img: "/images/artistas/kareen/post-3.webp", alt: "Kareen Nahirr con anteojos de sol en la cabeza y el pecho tatuado, bajo luz celeste", href: "https://www.instagram.com/p/Da0WcS9kRsH/" },
+      { img: "/images/artistas/kareen/post-4.webp", alt: "Kareen Nahirr de cuerpo entero en la vereda, con un bolso azul", href: "https://www.instagram.com/p/DAD3PLPJXWU/" },
+      { img: "/images/artistas/kareen/post-2.webp", alt: "Kareen Nahirr con vestido rojo en un balcón, con la ciudad de noche detrás", href: "https://www.instagram.com/p/DWJNPxcjnuY/" },
+      { img: "/images/artistas/kareen/post-5.webp", alt: "Kareen Nahirr en blanco y negro, con la cara tapada por un pañuelo", href: "https://www.instagram.com/p/Dd4TvUzFJz5/" },
+      { img: "/images/artistas/kareen/post-6.webp", alt: "Kareen Nahirr con anteojos rosados, primer plano", href: "https://www.instagram.com/p/DaYBs0yEQgN/" },
+      { img: "/images/artistas/kareen/post-7.webp", alt: "Kareen Nahirr con anteojos y labios rojos, el brazo tatuado", href: "https://www.instagram.com/p/DW9Y6DkEbVu/" },
     ],
   },
 
