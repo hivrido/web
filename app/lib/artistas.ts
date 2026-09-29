@@ -784,42 +784,43 @@ export const ARTISTAS: Artista[] = [
        Sin apellido hasta que lo dé. */
     nombre: "Nicolas",
     alias: "@_alejandroo.okk_",
-    tagline: "Lo que escribe, antes de que suene.",
-    disciplinas: ["Influencer", "Composición", "Música", "Contenido"],
+    tagline: "Estilo de barrio, en formato POV.",
+    /* No canta ni compone: es influencer. Sin audio en los lanzamientos, la
+       ficha no dibuja reproductor. */
+    disciplinas: ["Influencer", "Contenido", "Humor", "Moda urbana"],
     schema: "Person",
-    rol: "Influencer y compositor",
+    rol: "Influencer y creador de contenido",
     /* Violeta eléctrico, el que él eligió. Más saturado y corrido al
        púrpura que la lavanda de Kareen, que no se toca; sin `tomaLaMarca`,
        así el magenta de la casa lo separa de ella en el índice. Pasa el AA
        como texto sobre negro. */
     acento: { hex: "#B36CFF", suave: "rgba(179, 108, 255, 0.16)" },
-    /* Una onda de sonido: la canción antes de ser video. Es la primera figura
-       del roster que habla de lo que se escucha y no de lo que se mira. */
-    emblema: { forma: "onda", leyenda: "OKK" },
+    /* El encuadre vertical del teléfono: su obra vive ahí. */
+    emblema: { forma: "reel", leyenda: "OKK" },
     /* Relevado el 27/09/2026. El reel del Día del Padre (20/06/2026) es su
        pieza viral: 234 K me gusta y 268 comentarios, públicos. Sus
        reproducciones no se leen sin sesión: van cuando él pase la cifra
        del panel, no antes. */
     manifiesto: [
-      "Nicolas es primero una presencia: su reel del Día del Padre juntó más de 234 mil me gusta, y casi cinco mil personas lo siguen con apenas seis publicaciones. La gente no está ahí por el volumen de lo que sube, está por quién es.",
-      "Y además escribe canciones. Esa audiencia es la que va a estar esperando cuando salgan.",
-      "Hivrido no viene a fabricarle un catálogo. Viene a darle a lo que compone un lugar donde vivir —una ficha, un contacto profesional, una producción a la altura— para que cada tema que salga encuentre a esa audiencia esperándolo.",
+      "Nicolas es primero una presencia: su reel del Día del Padre juntó más de 234 mil me gusta, y casi cinco mil personas lo siguen. La gente no está ahí por el volumen de lo que sube, está por quién es.",
+      "Lo suyo es el POV de barrio y la ropa como firma: gorra, conjunto deportivo y la calle de fondo. El chiste y el estilo son la misma cosa, y por eso se reconoce en un segundo de scroll.",
+      "Hivrido no viene a cambiarle el tono. Viene a darle un marco profesional —una ficha, un contacto directo, producción a la altura— para que el alcance que ya tiene se convierta en campañas con marcas que hablen su mismo idioma.",
     ],
     ejes: [
       {
-        titulo: "La canción primero",
+        titulo: "El personaje primero",
         texto:
-          "El contenido acompaña a la música, no la reemplaza. Cada pieza en redes es una puerta a algo que se escucha entero.",
+          "No hace falta subir todos los días: hace falta que cada salida sea reconociblemente suya.",
       },
       {
-        titulo: "Poco y con peso",
+        titulo: "La ropa como firma",
         texto:
-          "Seis publicaciones sostienen casi cinco mil seguidores. No hace falta subir todos los días: hace falta que cada salida valga.",
+          "Streetwear, gorra y calle. El estilo no es vestuario de ocasión: es parte de lo que la gente viene a ver.",
       },
       {
-        titulo: "Del autor a la voz",
+        titulo: "La marca adentro del POV",
         texto:
-          "Quien escribe también puede ser la cara. El trabajo es que la canción y la persona se reconozcan como una sola cosa.",
+          "Una marca de ropa, zapatillas o lifestyle entra en la escena con su mismo tono, sin romper el formato.",
       },
     ],
     enlaces: [
@@ -840,11 +841,6 @@ export const ARTISTAS: Artista[] = [
         label: "Seguidores en Instagram",
         fuente: "Perfil @_alejandroo.okk_ · 27/09/2026",
       },
-      {
-        valor: "6",
-        label: "Publicaciones en Instagram",
-        fuente: "Perfil @_alejandroo.okk_ · 27/09/2026",
-      },
     ],
     obra: { eyebrow: "Obra", titulo: "Lo que ya se viralizó" },
     lanzamientos: [
@@ -857,7 +853,18 @@ export const ARTISTAS: Artista[] = [
       },
     ],
     enConstruccion:
-      "Está en producción el primer ciclo con Hivrido: sus primeros temas con producción propia, el material audiovisual que los acompaña y la ficha completa con su discografía.",
+      "Está en producción el primer ciclo con Hivrido: formatos de marca integrada sobre el POV, producción audiovisual propia y un media kit con sus números reales.",
+    ticker: ["Influencer", "POV", "Streetwear", "Creador de contenido", "Humor de barrio"],
+    /* El orden es el del abanico: la foto 1 queda al frente. */
+    galeria: [
+      { img: "/images/artistas/nicolas/foto-5.webp", alt: "Nicolas con gorra negra junto a una amiga, reel POV", href: "https://www.instagram.com/p/DdzsH2ounwA/" },
+      { img: "/images/artistas/nicolas/foto-2.webp", alt: "Nicolas de noche con conjunto deportivo y la cara tapada, apoyado en un auto blanco", href: "https://www.instagram.com/p/DVPtFmaDLp0/" },
+      { img: "/images/artistas/nicolas/foto-3.webp", alt: "Nicolas en la calle con campera deportiva negra y pollera azul", href: "https://www.instagram.com/p/DUB7oERD1N7/" },
+      { img: "/images/artistas/nicolas/foto-1.webp", alt: "Nicolas sentado en un sillón con campera amarilla y pantalón azul", href: "https://www.instagram.com/p/DV788MPjs2T/" },
+      { img: "/images/artistas/nicolas/foto-4.webp", alt: "Nicolas con gorra roja y campera estampada frente a un muro", href: "https://www.instagram.com/p/DJZweSHvkDB/" },
+      { img: "/images/artistas/nicolas/foto-6.webp", alt: "Nicolas con gorra y campera Adidas mirando el celular, reel POV", href: "https://www.instagram.com/p/DdzWZUmglQv/" },
+      { img: "/images/artistas/nicolas/foto-7.webp", alt: "Nicolas junto a su moto en una calle arbolada", href: "https://www.instagram.com/p/DVFipdwjE10/" },
+    ],
   },
   {
     slug: "florencia-martinez",
