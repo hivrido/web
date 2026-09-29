@@ -16,6 +16,7 @@ import PlayerLite from "../PlayerLite";
 import FondoVivo from "../FondoVivo";
 import Franja from "../Franja";
 import Reproductor from "../Reproductor";
+import Cifra from "../Cifra";
 import "../artistas.css";
 import "../reproductor.css";
 
@@ -348,7 +349,7 @@ export default async function FichaArtistaPage({
               <ul className="art-metricas">
                 {a.metricas.map((m) => (
                   <li className="art-metrica" key={m.label}>
-                    <b>{m.valor}</b>
+                    <Cifra valor={m.valor} />
                     <span>{m.label}</span>
                     <small>{m.fuente}</small>
                   </li>

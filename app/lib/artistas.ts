@@ -230,9 +230,17 @@ export const ARTISTAS: Artista[] = [
         href: "https://www.threads.net/@amplax10mg",
       },
     ],
-    /* Lo único que hoy es público y comprobable. Cuando haya datos de
-       reproducciones o de fecha, entran acá con su fuente. */
+    /* Las vistas salen del panel de Instagram, que no es público: la fuente
+       lo dice así, con la fecha en que se tomó. El catálogo de SoundCloud sí
+       se comprueba desde afuera. Sus seguidores de ahí (18) y los números
+       del canal de YouTube no entran: miden una plataforma que el proyecto
+       no trabaja, no su alcance. */
     metricas: [
+      {
+        valor: "5 M",
+        label: "Vistas en Instagram",
+        fuente: "Panel de @amplax10mg · dato del artista · 29/09/2026",
+      },
       {
         valor: "12 K",
         label: "Seguidores en Instagram",
@@ -242,6 +250,11 @@ export const ARTISTAS: Artista[] = [
         valor: "Diario",
         label: "Frecuencia de publicación",
         fuente: "Reels",
+      },
+      {
+        valor: "27",
+        label: "Temas publicados",
+        fuente: "SoundCloud mc-amplax · 29/09/2026",
       },
     ],
     lanzamientos: [
