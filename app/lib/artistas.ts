@@ -408,13 +408,13 @@ export const ARTISTAS: Artista[] = [
     ticker: ["Actriz", "Modelo", "Bailarina", "Streamer", "Tattoo artist"],
     /* La 2 al frente, como la pidió; el resto a los lados en orden. */
     galeria: [
-      { img: "/images/artistas/kareen/post-1.webp", alt: "Kareen Nahirr, selfie frente al espejo con camisa blanca", href: "https://www.instagram.com/p/DZaibwXEZed/" },
-      { img: "/images/artistas/kareen/post-3.webp", alt: "Kareen Nahirr con anteojos de sol en la cabeza y el pecho tatuado, bajo luz celeste", href: "https://www.instagram.com/p/Da0WcS9kRsH/" },
-      { img: "/images/artistas/kareen/post-4.webp", alt: "Kareen Nahirr de cuerpo entero en la vereda, con un bolso azul", href: "https://www.instagram.com/p/DAD3PLPJXWU/" },
-      { img: "/images/artistas/kareen/post-2.webp", alt: "Kareen Nahirr con vestido rojo en un balcón, con la ciudad de noche detrás", href: "https://www.instagram.com/p/DWJNPxcjnuY/" },
-      { img: "/images/artistas/kareen/post-5.webp", alt: "Kareen Nahirr en blanco y negro, con la cara tapada por un pañuelo", href: "https://www.instagram.com/p/Dd4TvUzFJz5/" },
-      { img: "/images/artistas/kareen/post-6.webp", alt: "Kareen Nahirr con anteojos rosados, primer plano", href: "https://www.instagram.com/p/DaYBs0yEQgN/" },
-      { img: "/images/artistas/kareen/post-7.webp", alt: "Kareen Nahirr con anteojos y labios rojos, el brazo tatuado", href: "https://www.instagram.com/p/DW9Y6DkEbVu/" },
+      { img: "/images/artistas/kareen/foto-1.webp", alt: "Kareen Nahirr, selfie frente al espejo con camisa blanca", href: "https://www.instagram.com/p/DZaibwXEZed/" },
+      { img: "/images/artistas/kareen/foto-3.webp", alt: "Kareen Nahirr con anteojos de sol en la cabeza y el pecho tatuado, bajo luz celeste", href: "https://www.instagram.com/p/Da0WcS9kRsH/" },
+      { img: "/images/artistas/kareen/foto-4.webp", alt: "Kareen Nahirr de cuerpo entero en la vereda, con un bolso azul", href: "https://www.instagram.com/p/DAD3PLPJXWU/" },
+      { img: "/images/artistas/kareen/foto-2.webp", alt: "Kareen Nahirr con vestido rojo en un balcón, con la ciudad de noche detrás", href: "https://www.instagram.com/p/DWJNPxcjnuY/" },
+      { img: "/images/artistas/kareen/foto-5.webp", alt: "Kareen Nahirr en blanco y negro, con la cara tapada por un pañuelo", href: "https://www.instagram.com/p/Dd4TvUzFJz5/" },
+      { img: "/images/artistas/kareen/foto-6.webp", alt: "Kareen Nahirr con anteojos rosados, primer plano", href: "https://www.instagram.com/p/DaYBs0yEQgN/" },
+      { img: "/images/artistas/kareen/foto-7.webp", alt: "Kareen Nahirr con anteojos y labios rojos, el brazo tatuado", href: "https://www.instagram.com/p/DW9Y6DkEbVu/" },
     ],
   },
 
