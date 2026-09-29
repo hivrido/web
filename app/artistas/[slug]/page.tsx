@@ -145,6 +145,19 @@ export default async function FichaArtistaPage({
             fondo se quedaría con el acento del artista anterior. */}
         <FondoVivo key={a.slug} />
 
+        {/* La barra de audio va fija abajo desde que carga: el tema queda a
+            un clic en todo el recorrido. Es hija directa de la página para
+            apilarse sobre todas las secciones. */}
+        {pista?.audio && (
+          <Reproductor
+            src={pista.audio}
+            titulo={pista.titulo}
+            artista={a.nombre}
+            credito={pista.con}
+            portada={pista.ytId && `https://i.ytimg.com/vi/${pista.ytId}/mqdefault.jpg`}
+          />
+        )}
+
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="art-hero">
           <div className="art-wrap">
@@ -207,23 +220,6 @@ export default async function FichaArtistaPage({
         </section>
 
         {a.ticker && a.ticker.length > 0 && <Franja palabras={a.ticker} />}
-
-        {/* ── Escuchá ──────────────────────────────────────────────────── */}
-        {pista?.audio && (
-          <section className="art-section art-section--escucha" id="escucha">
-            <div className="art-wrap">
-              <p className="art-eyebrow">Escuchá</p>
-              <h2 className="art-h2">Una dosis, ahora</h2>
-              <Reproductor
-                src={pista.audio}
-                titulo={pista.titulo}
-                artista={a.nombre}
-                credito={pista.con}
-                sello={a.emblema.leyenda}
-              />
-            </div>
-          </section>
-        )}
 
         {/* ── Manifiesto ───────────────────────────────────────────────── */}
         <section className="art-section">
