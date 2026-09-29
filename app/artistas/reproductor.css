@@ -190,6 +190,7 @@ html:has(.art-barra) .wa-btn {
   display: grid;
   gap: 3px;
   min-width: 0;
+  text-align: left;
 }
 
 .art-barra-texto b,
