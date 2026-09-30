@@ -50,7 +50,7 @@ export default function Footer() {
             © 2026 <span>Hivrido</span>. Todos los derechos reservados.
           </div>
           <div className="footer-copy">
-            Desarrollado por <span>Skynet</span>
+            Desarrollado por <span>Lucas Manzano</span>
           </div>
         </div>
       </div>
