@@ -35,6 +35,16 @@ export const metadata: Metadata = {
   title: "Hivrido — Agencia Creativa",
   description:
     "Conectamos marcas con artistas talentosos para crear eventos, colaboraciones y experiencias que inspiran.",
+  /* La V de cristal que venía de fuxxia, en todas las rutas. El .ico queda
+     para los navegadores sin favicon SVG y el PNG para la pantalla de inicio
+     del iPhone. La portada (public/index.html) declara los mismos tres. */
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "48x48" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "Hivrido — Agencia Creativa",
     description:
