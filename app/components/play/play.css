@@ -493,11 +493,22 @@ html:has(.mp-app) body {
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  /* proximity y no mandatory: con mandatory, un deslizamiento corto vuelve
+     a la tarjeta de partida y la fila parece no moverse. */
+  scroll-snap-type: x proximity;
   padding-bottom: 10px;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
 }
+
+.mp-row.dragging { scroll-snap-type: none; cursor: grabbing; }
+.mp-row.dragging .mp-card { pointer-events: none; }
+.mp-row img, .mp-row a { -webkit-user-drag: none; }
 
 .mp-row::-webkit-scrollbar { display: none; }
 

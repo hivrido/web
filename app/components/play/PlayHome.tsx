@@ -133,6 +133,68 @@ function Card({ item, index, wide, onPlay }: {
   );
 }
 
+/**
+ * Fila deslizable. El dedo la mueve solo —es scroll nativo—, pero el mouse no:
+ * arrastrar sobre un overflow no desplaza nada, y encima las tarjetas son links
+ * e imágenes que el navegador intenta arrastrar como archivo. Acá el puntero de
+ * mouse arrastra la fila, y si hubo arrastre el click que sigue no navega.
+ */
+function DragRow({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const drag = useRef({ down: false, moved: false, x: 0, left: 0 });
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse" || e.button !== 0 || !ref.current) return;
+    drag.current = { down: true, moved: false, x: e.clientX, left: ref.current.scrollLeft };
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    const el = ref.current;
+    if (!d.down || !el) return;
+    const dx = e.clientX - d.x;
+    // Unos píxeles de tolerancia: un click con pulso tembloroso sigue siendo click
+    if (!d.moved && Math.abs(dx) < 6) return;
+    if (!d.moved) {
+      d.moved = true;
+      el.setPointerCapture(e.pointerId);
+      el.classList.add("dragging");   // apaga el snap mientras se arrastra
+    }
+    el.scrollLeft = d.left - dx;
+  };
+
+  const end = (e: React.PointerEvent) => {
+    const el = ref.current;
+    if (!drag.current.down || !el) return;
+    drag.current.down = false;
+    if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
+    el.classList.remove("dragging");
+  };
+
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (drag.current.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      drag.current.moved = false;
+    }
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="mp-row"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={end}
+      onPointerCancel={end}
+      onClickCapture={onClickCapture}
+      onDragStart={(e) => e.preventDefault()}
+    >
+      {children}
+    </div>
+  );
+}
+
 function Section({ id, title, items, wide, onPlay }: {
   id?: string;
   title: string;
@@ -145,11 +207,11 @@ function Section({ id, title, items, wide, onPlay }: {
       <div className="mp-section-header">
         <h2 className="mp-section-title">{title}</h2>
       </div>
-      <div className="mp-row">
+      <DragRow>
         {items.map((item, i) => (
           <Card key={item.id} item={item} index={i} wide={wide} onPlay={onPlay} />
         ))}
-      </div>
+      </DragRow>
     </div>
   );
 }
