@@ -156,9 +156,8 @@ export function makePlayTexture(label = 'PLAY') {
   ctx.fillStyle = GOLD;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  // El tracking deja un hueco sobrante al final: medio paso a la derecha lo
-  // compensa, si no la palabra queda descentrada dentro de la pastilla.
-  let px = cx - textW / 2 + track / 2;
+  // textW ya cuenta solo los huecos entre letras: arrancar en su mitad centra
+  let px = cx - textW / 2;
   for (const c of chars) {
     ctx.fillText(c, px, cy + 1);
     px += ctx.measureText(c).width + track;
@@ -368,7 +367,9 @@ export async function makeCardTexture(project) {
 
     const lineH = size * 0.98;          // el line-height de la home
     const textH = lineH * lines.length;
-    const titleY = H * 0.545;           // por debajo del centro: la ficha respira arriba
+    /* Por debajo del centro la ficha respira arriba. Con pastilla —que
+       scene.js monta a -0.17 del alto— el título sube para dejarle aire. */
+    const titleY = H * (project.href ? 0.47 : 0.545);
 
     /* Velo detrás del título. El fondo de la ficha es una foto y su detalle
        —textos, caras, luces— compite con la tipografía: es lo que hace que
@@ -402,9 +403,11 @@ export async function makeCardTexture(project) {
     ctx.shadowBlur = 0;
     ctx.letterSpacing = '0px';
 
-    // Filete de acento centrado al pie del bloque
-    ctx.fillStyle = project.accent;
-    ctx.fillRect(CX - 38, titleY + textH / 2 + 26, 76, 3);
+    // Filete de acento al pie del bloque; con pastilla, ella cierra el bloque
+    if (!project.href) {
+      ctx.fillStyle = project.accent;
+      ctx.fillRect(CX - 38, titleY + textH / 2 + 26, 76, 3);
+    }
   }
 
   /* Pie de la ficha: categoría y año, o el `meta` del proyecto si trae uno
