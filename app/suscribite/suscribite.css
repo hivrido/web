@@ -1,0 +1,458 @@
+/* Página del formulario de casting. Las variables son las de PLAY, de donde
+   salió la sección, acotadas a esta página. */
+.sus-page {
+  --mp-gold:  #f0b429;
+  --mp-text:  #e8e8f0;
+  --mp-muted: #8888aa;
+  --mp-font:  'Inter', 'Rubik', sans-serif;
+  background: #07060d;
+}
+
+/* ── CASTING ──
+   Pantalla completa y una sola cosa que hacer. La atmósfera se compone con
+   capas de color y no con una foto: pesa cero y no compite con la tipografía. */
+.mp-casting {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 48px 96px;
+  overflow: hidden;
+  background: #07060d;
+  isolation: isolate;
+}
+
+/* Dos focos —violeta y dorado— respirando fuera de foco */
+.mp-casting-aura {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  background:
+    radial-gradient(42% 46% at 22% 32%, rgba(124,58,237,.42) 0%, transparent 64%),
+    radial-gradient(38% 42% at 78% 68%, rgba(240,180,41,.20) 0%, transparent 62%),
+    radial-gradient(60% 60% at 50% 120%, rgba(157,95,255,.16) 0%, transparent 70%);
+  animation: mp-casting-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes mp-casting-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.08); }
+}
+
+/* Haz de proyección: la única línea recta de la escena */
+.mp-casting-beam {
+  position: absolute;
+  top: -40%;
+  left: 46%;
+  z-index: -2;
+  width: 46vw;
+  height: 180%;
+  transform: rotate(18deg);
+  background: linear-gradient(to bottom, rgba(240,180,41,.13), transparent 62%);
+  filter: blur(38px);
+  pointer-events: none;
+}
+
+/* Trama de pantalla: va debajo del contenido, nunca encima de la letra */
+.mp-casting-scan {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .5;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.028) 0 1px,
+    transparent 1px 4px
+  );
+  pointer-events: none;
+}
+
+.mp-casting-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  gap: 72px;
+}
+
+/* ── Columna editorial ── */
+.mp-casting-copy > * {
+  opacity: 0;
+  animation: mp-casting-rise .8s cubic-bezier(.22,1,.36,1) forwards;
+}
+.mp-casting-copy > *:nth-child(1) { animation-delay: .05s; }
+.mp-casting-copy > *:nth-child(2) { animation-delay: .14s; }
+.mp-casting-copy > *:nth-child(3) { animation-delay: .23s; }
+.mp-casting-copy > *:nth-child(4) { animation-delay: .32s; }
+
+@keyframes mp-casting-rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mp-casting-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--mp-gold);
+}
+
+.mp-casting-eyebrow-line {
+  width: 46px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--mp-gold), transparent);
+}
+
+.mp-casting-title,
+.mp-casting-title strong {
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-weight: 900;
+  text-transform: uppercase;
+  /* El barrido de color del roster: blanco, lila, violeta, magenta */
+  background: linear-gradient(100deg, #FFFFFF 0%, #C4B5FD 26%, #7C3AED 52%, #FF2E9A 78%, #FFFFFF 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: epicSheen 7s ease-in-out infinite;
+}
+
+.mp-casting-title {
+  margin-top: 22px;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: .92;
+  letter-spacing: -.01em;
+}
+
+/* La serie arranca desfasada, como la segunda línea de los títulos epic */
+.mp-casting-title strong {
+  display: block;
+  margin-top: .12em;
+  animation-delay: -2.4s;
+}
+
+.mp-casting-lead {
+  margin-top: 26px;
+  max-width: 46ch;
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--mp-muted);
+}
+
+.mp-casting-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+  list-style: none;
+}
+
+.mp-casting-points li {
+  padding: 9px 16px;
+  border: 1px solid rgba(240,180,41,.28);
+  border-radius: 999px;
+  background: rgba(240,180,41,.06);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: #e7d5a8;
+}
+
+/* ── Tarjeta del formulario ── */
+.mp-casting-card {
+  position: relative;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.09);
+  background: linear-gradient(165deg, rgba(24,20,38,.92), rgba(10,9,16,.96));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 40px 90px -30px rgba(0,0,0,.9),
+    inset 0 1px 0 rgba(255,255,255,.06);
+  opacity: 0;
+  animation: mp-casting-rise .9s cubic-bezier(.22,1,.36,1) .2s forwards;
+}
+
+/* El ángulo del haz se anima como número, no como color: sin @property el
+   navegador no sabe interpolar un <angle> dentro de un gradiente. Donde no
+   está soportado queda el borde quieto de la tarjeta, que ya es un filo. */
+@property --mp-beam {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes mp-beam-spin { to { --mp-beam: 360deg; } }
+
+/* Filo dorado: un borde de luz, no una caja amarilla. El recorte deja pintado
+   solo el anillo de 1px —la máscara resta el relleno del borde—, así el haz
+   recorre el contorno en vez de teñir la tarjeta entera. */
+.mp-casting-card-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    conic-gradient(from var(--mp-beam),
+      rgba(240,180,41,.14) 0deg,
+      rgba(124,58,237,.32) 120deg,
+      rgba(240,180,41,.16) 210deg,
+      rgba(240,180,41,.9) 300deg,
+      #fff6dd 338deg,
+      rgba(240,180,41,.14) 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: mp-beam-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+.mp-casting-form-head { margin-bottom: 26px; }
+
+.mp-casting-form-kicker {
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--mp-muted);
+}
+
+.mp-casting-form-title {
+  margin-top: 8px;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mp-casting-field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.mp-casting-field > span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--mp-muted);
+}
+
+.mp-casting-field input {
+  width: 100%;
+  padding: 15px 18px;
+  border-radius: 11px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.035);
+  color: var(--mp-text);
+  font-family: var(--mp-font);
+  font-size: 15.5px;
+  transition: border-color .25s, background .25s, box-shadow .25s;
+}
+
+.mp-casting-field input::placeholder { color: rgba(136,136,170,.5); }
+
+.mp-casting-field input:focus {
+  outline: none;
+  border-color: rgba(240,180,41,.55);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 0 0 3px rgba(240,180,41,.12);
+}
+
+.mp-casting-field input[aria-invalid="true"] {
+  border-color: rgba(255,90,120,.55);
+  background: rgba(255,90,120,.05);
+}
+
+.mp-casting-error {
+  display: block;
+  margin-top: 7px;
+  font-size: 12.5px;
+  font-style: normal;
+  color: #ff8098;
+}
+
+/* El botón: dorado macizo con un barrido de luz al pasar el mouse */
+.mp-casting-submit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  width: 100%;
+  margin-top: 26px;
+  padding: 17px 26px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(100deg, #f0b429, #f7d271 46%, #d99a1c);
+  color: #1a1206;
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 13.5px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  box-shadow: 0 0 30px -6px rgba(240,180,41,.6), 0 14px 34px -18px rgba(0,0,0,.9);
+  transition: transform .2s, box-shadow .25s, filter .25s;
+}
+
+/* La misma luz que la tarjeta, girando más rápido: el botón es el final del
+   recorrido y late a su propio ritmo. Blanco y no oro: sobre el relleno
+   dorado, un haz dorado no se vería. */
+.mp-casting-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background:
+    conic-gradient(from var(--mp-beam),
+      transparent 0deg,
+      transparent 190deg,
+      rgba(255,255,255,.75) 300deg,
+      #fff 340deg,
+      transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: mp-beam-spin 2.8s linear infinite;
+  pointer-events: none;
+}
+
+.mp-casting-submit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 32%, rgba(255,255,255,.55) 50%, transparent 68%);
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 130% 0;
+  transition: background-position .85s cubic-bezier(.22,1,.36,1);
+  pointer-events: none;
+}
+
+.mp-casting-submit:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 0 42px -6px rgba(240,180,41,.72), 0 18px 40px -18px rgba(0,0,0,.9);
+}
+
+.mp-casting-submit:hover::after { background-position: -30% 0; }
+.mp-casting-submit:active { transform: translateY(0); }
+
+.mp-casting-fine {
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(136,136,170,.8);
+}
+
+/* ── Estado enviado ── */
+.mp-casting-done { text-align: center; }
+
+.mp-casting-done-mark {
+  width: 58px;
+  height: 58px;
+  margin: 4px auto 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(240,180,41,.5);
+  background: rgba(240,180,41,.1);
+  color: var(--mp-gold);
+  box-shadow: 0 0 34px -8px rgba(240,180,41,.7);
+  animation: mp-casting-pop .5s cubic-bezier(.22,1,.36,1) backwards;
+}
+
+@keyframes mp-casting-pop {
+  from { opacity: 0; transform: scale(.7); }
+  to   { opacity: 1; transform: none; }
+}
+
+.mp-casting-done-title {
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mp-casting-done-text {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--mp-muted);
+}
+
+.mp-casting-ghost {
+  display: block;
+  text-align: center;
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 11px;
+  border: 1px solid rgba(255,255,255,.12);
+  color: var(--mp-muted);
+  font-size: 13px;
+  font-weight: 600;
+  transition: color .25s, border-color .25s;
+}
+
+.mp-casting-ghost:hover { color: var(--mp-text); border-color: rgba(255,255,255,.28); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mp-casting-aura,
+  .mp-casting-card-glow,
+  .mp-casting-submit::before { animation: none; }
+  .mp-casting-copy > *,
+  .mp-casting-card,
+  .mp-casting-done-mark { animation: none; opacity: 1; }
+}
+
+/* ── RESPONSIVE ── */
+@media (prefers-reduced-motion: reduce) {
+  .mp-casting-title, .mp-casting-title strong { animation: none; background-position: 30% 50%; }
+}
+
+@media (max-width: 768px) {
+  /* El casting apila, y todo lo que no sea el título o el formulario se va:
+     en el teléfono cada renglón de arriba empuja al botón de enviar fuera de
+     la pantalla. Queda el titular, que ya dice de qué se trata, y la tarjeta
+     entera a la vista. El párrafo, la cápsula y el rótulo de casting abierto
+     siguen contando la historia completa en el escritorio, que tiene lugar. */
+  .mp-casting { padding: 74px 16px 44px; min-height: auto; }
+  .mp-casting-inner { grid-template-columns: 1fr; gap: 26px; }
+  .mp-casting-eyebrow { display: none; }
+  .mp-casting-title { margin-top: 0; font-size: clamp(2rem, 10vw, 2.6rem); }
+  .mp-casting-lead,
+  .mp-casting-points { display: none; }
+  .mp-casting-beam { display: none; }
+
+  .mp-casting-card { padding: 22px 18px; }
+  .mp-casting-form-head { margin-bottom: 16px; }
+  .mp-casting-form-title { font-size: 22px; }
+  .mp-casting-field { margin-bottom: 12px; }
+  .mp-casting-field > span { margin-bottom: 6px; }
+  .mp-casting-field input { padding: 12px 14px; font-size: 15px; }
+  .mp-casting-submit { margin-top: 18px; padding: 15px 20px; }
+  .mp-casting-fine { margin-top: 12px; font-size: 11.5px; }
+}

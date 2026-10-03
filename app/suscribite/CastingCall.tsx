@@ -1,11 +1,9 @@
 "use client";
 
 /**
- * Puerta de entrada de Hivrido PLAY: el llamado a casting de Cuchillo Paz, antes
- * del slider del catálogo.
+ * El llamado a casting de Cuchillo Paz, con página propia en /suscribite.
  *
- * No hay servidor —la ruta es export estático— así que el formulario no POSTea
- * a ningún lado: compone el mensaje y abre WhatsApp con los datos cargados. El
+ * El formulario no POSTea a ningún lado: compone el mensaje y abre WhatsApp con los datos cargados. El
  * envío lo hace la persona, que es además lo que abre la conversación del lado
  * correcto: nos escribe ella, con su número real, y la respuesta ya tiene a
  * dónde ir.
@@ -78,10 +76,6 @@ export default function CastingCall() {
     setFields(EMPTY);
   };
 
-  const verCatalogo = () => {
-    document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   return (
     <section className="mp-casting" id="casting">
       {/* Atmósfera: dos focos de color, el haz diagonal y la trama de pantalla */}
@@ -131,9 +125,9 @@ export default function CastingCall() {
                 <WhatsAppIcon />
                 Abrir WhatsApp de nuevo
               </a>
-              <button type="button" className="mp-casting-ghost" onClick={verCatalogo}>
+              <a className="mp-casting-ghost" href="/play/">
                 Mientras tanto, mirá el catálogo
-              </button>
+              </a>
             </div>
           ) : (
             <form className="mp-casting-form" onSubmit={onSubmit} noValidate>

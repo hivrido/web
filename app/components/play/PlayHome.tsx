@@ -12,7 +12,6 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
 import LogoAnimated from "../ui/LogoAnimated";
-import CastingCall from "./CastingCall";
 import PlayMenu from "./PlayMenu";
 import { FEATURED, SERIES, PELICULAS, type Title } from "../../lib/catalog";
 import "./play.css";
@@ -375,7 +374,6 @@ export default function PlayHome() {
   return (
     <div className="mp-app">
       <Header />
-      <CastingCall />
       <Hero onPlay={play} paused={modalYtId !== null} />
 
       <main className="mp-main">
