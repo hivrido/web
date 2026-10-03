@@ -1,8 +1,7 @@
 /**
  * Contenido de /casting.
  *
- * Todo el texto, las fechas y los links de la página viven acá: el día del
- * casting hay que poder corregir una hora o un teléfono sin abrir el JSX ni
+ * Todo el texto de la página vive acá: se corrige sin abrir el JSX ni
  * entender React. Si algo se lee en pantalla, se edita en este archivo.
  *
  * Las consignas de las escenas SÍ se publican. Durante un tiempo no lo
@@ -15,55 +14,11 @@
  * qué es, que es lo que hace que no venga.
  */
 
-/* ── Lo que falta definir ─────────────────────────────────────────────────
-   Dos cosas todavía no están cerradas. Quedan como constantes arriba de todo
-   para que se vean apenas se abre el archivo.                              */
-
-/** Formulario de audición por video. Vacío = el bloque cae al WhatsApp. */
-export const AUDICION_VIDEO_URL = "";
+/* ── Lo que falta definir ─────────────────────────────────────────────── */
 
 /** Respuesta a "¿cuándo me avisan?". Cambiala cuando haya fecha real. */
 export const AVISO_RESPUESTA =
-  "Nos comunicamos con las personas seleccionadas en las semanas siguientes al casting, por el teléfono que dejes al acreditarte. Si no te llamamos no significa que no sirvas: cada personaje tiene una edad y un perfil, y muchas veces la búsqueda se reabre.";
-
-/* ── La jornada ─────────────────────────────────────────────────────────── */
-
-export const EVENTO = {
-  serie: "Cuchillo Paz",
-  titulo: "Casting abierto",
-  /* ISO con huso de Buenos Aires: de acá salen el schema.org y el <time>. */
-  inicioISO: "2026-09-19T09:00:00-03:00",
-  finISO: "2026-09-19T15:00:00-03:00",
-  fecha: "Sábado 19 de septiembre",
-  hora: "desde las 9 AM",
-  horaCierre: "15:00",
-  calle: "Naciones Unidas 2390",
-  esquina: "esq. Quiroz",
-  barrio: "Barrio Frino",
-  localidad: "José C. Paz",
-  provincia: "Provincia de Buenos Aires",
-  pais: "AR",
-  codigoPostal: "1665",
-} as const;
-
-export const DIRECCION_COMPLETA = `${EVENTO.calle} ${EVENTO.esquina} — ${EVENTO.barrio}, ${EVENTO.localidad}`;
-
-/** Abre la app de mapas del teléfono, o Google Maps en el navegador. */
-export const MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=" +
-  encodeURIComponent(`${EVENTO.calle}, ${EVENTO.localidad}, Buenos Aires, Argentina`);
-
-/* ── 1 · Hero ───────────────────────────────────────────────────────────── */
-
-export const HERO = {
-  kicker: "Serie audiovisual",
-  /* El <h1> se arma con las dos partes para que la segunda pese más. */
-  tituloArriba: "Casting abierto",
-  tituloAbajo: EVENTO.serie,
-  claim: "No hay que preparar nada.",
-  claimApoyo:
-    "Venís, te anotás y son tres minutos: uno hablando y dos en una escena. Nada más que eso.",
-} as const;
+  "Nos comunicamos con las personas seleccionadas en las semanas siguientes al casting, por el WhatsApp que dejes en el formulario. Si no te llamamos no significa que no sirvas: cada personaje tiene una edad y un perfil, y muchas veces la búsqueda se reabre.";
 
 /* ── El arte ────────────────────────────────────────────────────────── */
 
@@ -93,9 +48,9 @@ export const DATOS_CLAVE: {
 }[] = [
   {
     icono: "fila",
-    titulo: "Por orden de llegada",
+    titulo: "Te avisamos por WhatsApp",
     texto:
-      "No hay turnos ni inscripción previa. Se atiende en el orden en que llega cada persona.",
+      "Con tus datos en el formulario te escribimos con la fecha, el lugar y el personaje que buscamos.",
   },
   {
     icono: "dni",
@@ -244,32 +199,7 @@ export const PREPARACION = {
   ],
 } as const;
 
-/* ── 6 · Cómo llegar ────────────────────────────────────────────────────── */
-
-export const COMO_LLEGAR = {
-  titulo: "Cómo llegar",
-  /**
-   * PENDIENTE: las líneas reales.
-   *
-   * El bloque está armado pero cada vía se muestra solo cuando su `detalle`
-   * tiene texto. Escribilo y aparece sola; vacío, no se publica. Es a
-   * propósito: un "a completar" en la página que la gente abre para orientarse
-   * no orienta a nadie y deja el sitio con cara de borrador. Mientras tanto la
-   * sección se sostiene con la dirección en grande, el botón a Maps y la nota
-   * del WhatsApp, que es lo que de verdad resuelve llegar.
-   *
-   * Ejemplo de cómo se completa:
-   *   { medio: "Colectivo", detalle: "Líneas 740 y 315, bajás en Quiroz." }
-   */
-  transporte: [
-    { medio: "Colectivo", detalle: "" },
-    { medio: "Tren", detalle: "" },
-    { medio: "En auto", detalle: "" },
-  ],
-  nota: "Si te perdés, escribinos por WhatsApp y te guiamos.",
-} as const;
-
-/* ── 7 · Qué llevar ─────────────────────────────────────────────────────── */
+/* ── 6 · Qué llevar ─────────────────────────────────────────────────────── */
 
 export const QUE_LLEVAR = {
   titulo: "Qué llevar",
@@ -281,27 +211,7 @@ export const QUE_LLEVAR = {
   cierre: "Nada más.",
 } as const;
 
-/* ── 8 · Si no podés venir ──────────────────────────────────────────────── */
-
-export const SI_NO_PODES = {
-  titulo: "Si no podés venir",
-  texto:
-    "También se puede audicionar por video. Te mandamos las indicaciones y lo grabás con el celular, desde donde estés.",
-  cta: "Quiero audicionar por video",
-  /* Sin formulario todavía, el fallback es el WhatsApp de producción: es a
-     donde la persona iba a llegar igual, un paso más tarde. */
-  fallbackTexto:
-    "Hola Hivrido! No puedo ir al casting presencial de Cuchillo Paz. Quiero audicionar por video.",
-} as const;
-
-/* ── 9 · Preguntas ──────────────────────────────────────────────────────── */
-
-/** Preguntas atadas al día y al lugar: /suscribite, que no tiene fecha, las omite. */
-export const FAQ_DE_LA_JORNADA = [
-  "¿Puedo ir si no soy de José C. Paz?",
-  "¿Hasta qué hora se recibe gente?",
-  "¿Qué pasa si llego y hay mucha fila?",
-];
+/* ── 7 · Preguntas ──────────────────────────────────────────────────────── */
 
 export const FAQ: { pregunta: string; respuesta: string }[] = [
   {
@@ -325,18 +235,14 @@ export const FAQ: { pregunta: string; respuesta: string }[] = [
       "Pasa todo el tiempo y no descalifica a nadie. Frenamos, tomás agua y arrancamos de nuevo. Casi todo el mundo se traba en los primeros veinte segundos: lo que miramos es lo que pasa después.",
   },
   {
+    pregunta: "¿Puedo anotarme si no soy de Buenos Aires?",
+    respuesta:
+      "Sí. El casting es abierto. La prueba es presencial en Buenos Aires, así que la única condición es poder llegar el día que te citemos.",
+  },
+  {
     pregunta: "¿Cuánto cuesta?",
     respuesta:
       "Nada. Nunca. No cobramos por participar, ni por el casting, ni por cursos, ni por fotos. Si alguien te cobra diciendo que es de la producción, no es de la producción.",
-  },
-  {
-    pregunta: "¿Puedo ir si no soy de José C. Paz?",
-    respuesta:
-      "Sí. El casting es abierto y viene gente de todos lados. La única condición es llegar al lugar el día de la convocatoria.",
-  },
-  {
-    pregunta: "¿Hasta qué hora se recibe gente?",
-    respuesta: `Hasta las ${EVENTO.horaCierre} o hasta completar cupo, lo que pase primero. Cuanto más temprano llegues, menos esperás.`,
   },
   {
     pregunta: "¿Cuándo me avisan?",
@@ -347,51 +253,15 @@ export const FAQ: { pregunta: string; respuesta: string }[] = [
     respuesta:
       "Sí. La jornada se filma y se transmite en vivo, así que al acreditarte vas a firmar una cesión de derechos de imagen. Si sos menor de 18, la firma tu madre, padre o responsable.",
   },
-  {
-    pregunta: "¿Qué pasa si llego y hay mucha fila?",
-    respuesta:
-      "Se atiende por orden de llegada hasta el horario de cierre. Si llegás y la fila es larga, te conviene esperar: la mayoría de las pruebas dura pocos minutos.",
-  },
 ];
-
-/* ── Compartir y contacto ───────────────────────────────────────────────── */
-
-export const URL_PAGINA = "https://hivrido.com/casting/";
-
-export const WHATSAPP_PRODUCCION = "5491156072460";
-
-/** El texto que viaja cuando alguien comparte la página. */
-export const TEXTO_COMPARTIR = [
-  `CASTING ABIERTO — ${EVENTO.serie.toUpperCase()}`,
-  `${EVENTO.fecha}, ${EVENTO.hora}`,
-  `${EVENTO.calle} ${EVENTO.esquina}, ${EVENTO.localidad}`,
-  "",
-  "Gratis, por orden de llegada. No hay que preparar nada.",
-  "",
-  URL_PAGINA,
-].join("\n");
-
-export const CONTACTO = {
-  whatsappTexto:
-    "Hola Hivrido! Tengo una consulta sobre el casting de Cuchillo Paz.",
-  instagram: "https://www.instagram.com/hivrido.productora_ok/",
-  instagramHandle: "@hivrido.productora_ok",
-  /**
-   * PENDIENTE. El sitio todavía no tiene política de privacidad publicada: no
-   * existe /privacidad ni ninguna otra ruta equivalente. Queda vacío a
-   * propósito —el pie omite el link mientras lo esté— porque mandar a un 404
-   * desde el pie de una página que le pide el DNI a la gente es peor que no
-   * ofrecer el link. Poné acá la URL en cuanto exista y el pie la muestra.
-   */
-  privacidadUrl: "",
-} as const;
 
 /* ── Metadata ───────────────────────────────────────────────────────────── */
 
 export const SEO = {
-  title: `Casting abierto ${EVENTO.serie} — ${EVENTO.fecha}, ${EVENTO.localidad}`,
-  description: `Casting abierto y gratuito para la serie ${EVENTO.serie}. ${EVENTO.fecha} ${EVENTO.hora} en ${EVENTO.calle}, ${EVENTO.localidad}. Por orden de llegada, con DNI. No hace falta experiencia ni preparar nada.`,
-  /* El que se ve al pegar el link en WhatsApp. */
+  title: "Casting abierto Cuchillo Paz | Hivrido",
+  description:
+    "Casting abierto y gratuito para la primera temporada de la serie Cuchillo Paz. Dejá tus datos y te escribimos por WhatsApp con la fecha, el lugar y el personaje. No hace falta experiencia.",
+  /* El que se ve al pegar el link en WhatsApp. Sale de scripts/build-casting-assets.mjs. */
   ogImage: "/images/casting/casting-cuchillo-paz.jpg",
-  ogImageAlt: `Casting abierto de la serie ${EVENTO.serie}: ${EVENTO.fecha} desde las 9 AM en ${EVENTO.localidad}`,
+  ogImageAlt: "Casting abierto de la serie Cuchillo Paz: primera temporada, 2026",
 } as const;

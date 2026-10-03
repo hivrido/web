@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * El llamado a casting de Cuchillo Paz, con página propia en /suscribite.
+ * El formulario del casting de Cuchillo Paz, en la cabecera de /casting.
  *
  * El formulario no POSTea a ningún lado: compone el mensaje y abre WhatsApp con los datos cargados. El
  * envío lo hace la persona, que es además lo que abre la conversación del lado

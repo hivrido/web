@@ -54,11 +54,11 @@ const PANEL = 420;
 const TEXTO = {
   arriba: "CASTING ABIERTO",
   serie: "CUCHILLO PAZ",
-  fecha: "SÁBADO 19 DE SEPTIEMBRE · 9 AM",
-  calle: "Naciones Unidas 2390 esq. Quiroz",
-  zona: "Barrio Frino · José C. Paz",
-  claim: "NO HAY QUE PREPARAR NADA.",
-  pie: "GRATIS · POR ORDEN DE LLEGADA · CON DNI",
+  fecha: "PRIMERA TEMPORADA · 2026",
+  calle: "Dejá tus datos en hivrido.com/casting",
+  zona: "Te escribimos por WhatsApp",
+  claim: "NO HACE FALTA EXPERIENCIA.",
+  pie: "GRATIS · SIN BOOK NI FOTOS · BUENOS AIRES",
 };
 
 const esc = (s) =>

@@ -22,18 +22,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      /* Convocatoria con fecha: mientras esté abierta es de lo más buscado
-         del sitio, y después de la jornada baja sola de prioridad. */
+      /* La convocatoria abierta: mientras siga, es de lo más buscado del sitio. */
       url: `${baseUrl}/casting`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/suscribite`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
     },
     {
       url: `${baseUrl}/estudio`,

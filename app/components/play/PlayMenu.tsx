@@ -22,7 +22,7 @@ const ITEMS = [
   { label: "Inicio", href: "#catalogo" },
   { label: "Series", href: "#series" },
   { label: "Películas", href: "#peliculas" },
-  { label: "Casting", href: "/suscribite/" },
+  { label: "Casting", href: "/casting/" },
   { label: "Hivrido", href: "/" },
 ];
 

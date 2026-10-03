@@ -5,8 +5,8 @@
  * móviles, parado en la calle y al sol. Eso manda sobre todo lo demás:
  *
  * - Mobile first. Los breakpoints suben, nunca bajan.
- * - Sin imágenes de fondo. La atmósfera son dos degradados y una trama, que
- *   no cuestan una petición y no compiten con el LCP, que acá es el título.
+ * - Debajo del formulario (formulario.css): estas son las secciones de
+ *   información, sin imágenes de fondo.
  * - Contraste alto y cuerpo grande. `--text-muted` de globals.css queda en
  *   4,3:1 sobre el fondo, por debajo del AA: esta ruta define sus propios
  *   grises, todos por encima de 4,5:1.
@@ -99,238 +99,6 @@ html:has(.cst-page) body {
   border-radius: 4px;
 }
 
-/* ── Cabecera ─────────────────────────────────────────────────────────── */
-
-.cst-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--cst-linea);
-}
-
-.cst-top-logo {
-  display: inline-flex;
-  align-items: center;
-  line-height: 0;
-}
-
-.cst-top-kicker {
-  font-family: var(--font-display);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--cst-tenue);
-}
-
-/* ── 1 · Hero ─────────────────────────────────────────────────────────── */
-
-.cst-hero {
-  position: relative;
-  overflow: hidden;
-  padding: 44px 0 52px;
-  border-bottom: 1px solid var(--cst-linea);
-}
-
-/* Haz diagonal, como la luz de una obra. Estático: no anima nada. */
-.cst-hero-luz {
-  position: absolute;
-  inset: -40% -30% auto -30%;
-  height: 120%;
-  background: linear-gradient(
-    105deg,
-    transparent 38%,
-    rgba(167, 139, 250, 0.10) 50%,
-    transparent 62%
-  );
-  pointer-events: none;
-}
-
-/* Trama de proyección. Dos píxeles de gradiente repetido, cero descargas. */
-.cst-hero-trama {
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.028) 0px,
-    rgba(255, 255, 255, 0.028) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-}
-
-.cst-hero-inner {
-  position: relative;
-}
-
-/* Orbitron avanza cerca de un em por carácter: con 0.24em de separación,
-   "Convocatoria abierta" se parte en dos líneas en un teléfono de 360 px y el
-   punto queda flotando al medio. El ojo se mantiene chico y el aire baja. */
-.cst-hero-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  font-family: var(--font-display);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--violet-light);
-}
-
-.cst-hero-punto {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--violet-light);
-  box-shadow: 0 0 10px rgba(167, 139, 250, 0.9);
-}
-
-.cst-hero-titulo {
-  margin: 0 0 26px;
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 0.95;
-  text-transform: uppercase;
-}
-
-.cst-hero-titulo-1 {
-  display: block;
-  font-size: clamp(1.55rem, 7.6vw, 2.6rem);
-  letter-spacing: 0.08em;
-  color: var(--cst-suave);
-}
-
-/* El nombre de la serie es lo que tiene que quedar. Va en el peso máximo y
-   ocupa el ancho que haga falta. */
-.cst-hero-titulo-2 {
-  display: block;
-  margin-top: 6px;
-  font-size: clamp(2.9rem, 14.5vw, 5.2rem);
-  font-weight: 900;
-  letter-spacing: -0.005em;
-  color: #fff;
-  text-wrap: balance;
-}
-
-.cst-hero-datos {
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-  margin-bottom: 30px;
-  padding-left: 15px;
-  border-left: 2px solid var(--violet);
-}
-
-.cst-hero-datos li {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-  font-size: 16.5px;
-  font-weight: 500;
-  color: var(--cst-texto);
-}
-
-.cst-hero-datos svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: var(--violet-light);
-}
-
-.cst-hero-datos time {
-  font-weight: 600;
-}
-
-.cst-hero-datos em {
-  display: block;
-  font-style: normal;
-  font-size: 14.5px;
-  font-weight: 400;
-  color: var(--cst-suave);
-}
-
-/* El mensaje central. Caja, no párrafo: tiene que leerse desde lejos. */
-.cst-claim {
-  margin: 0 0 12px !important;
-  padding: 18px 18px 18px 20px !important;
-  border-left: 4px solid var(--gold);
-  background: linear-gradient(
-    90deg,
-    rgba(201, 168, 76, 0.13),
-    rgba(201, 168, 76, 0) 85%
-  );
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 7.4vw, 2.3rem);
-  font-weight: 900;
-  line-height: 1.12;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-  color: var(--gold-light) !important;
-}
-
-.cst-claim-apoyo {
-  margin-bottom: 28px !important;
-  font-size: 16px;
-  color: var(--cst-suave) !important;
-}
-
-/* ── Botones ──────────────────────────────────────────────────────────── */
-
-.cst-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  /* 52 px de alto: el mínimo cómodo para un pulgar, con o sin guantes. */
-  min-height: 52px;
-  padding: 14px 24px;
-  border: 1px solid rgba(167, 139, 250, 0.45);
-  border-radius: 12px;
-  background: rgba(124, 58, 237, 0.14);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  text-align: center;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-}
-
-.cst-btn svg {
-  flex-shrink: 0;
-}
-
-.cst-btn:hover {
-  background: rgba(124, 58, 237, 0.24);
-  border-color: var(--violet-light);
-}
-
-.cst-btn:active {
-  transform: scale(0.985);
-}
-
-.cst-btn-mapa {
-  width: 100%;
-}
-
-/* El de acción plena: violeta sólido, para lo que sí queremos que se toque. */
-.cst-btn-pleno {
-  width: 100%;
-  border-color: transparent;
-  background: var(--violet);
-}
-
-.cst-btn-pleno:hover {
-  background: #8b4bf0;
-  border-color: transparent;
-}
-
 /* ── Secciones ────────────────────────────────────────────────────────── */
 
 .cst-seccion {
@@ -357,12 +125,6 @@ html:has(.cst-page) body {
   margin-bottom: 26px !important;
   font-size: 16px;
   color: var(--cst-suave) !important;
-}
-
-.cst-nota {
-  margin-top: 18px !important;
-  font-size: 14.5px;
-  color: var(--cst-tenue) !important;
 }
 
 /* ── El arte ──────────────────────────────────────────────────────────── */
@@ -707,69 +469,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 6 · Cómo llegar ──────────────────────────────────────────────────── */
-
-.cst-direccion {
-  display: block;
-  padding: 22px 18px;
-  border: 1px solid rgba(167, 139, 250, 0.3);
-  border-radius: 16px;
-  background: rgba(124, 58, 237, 0.07);
-  font-style: normal;
-}
-
-.cst-direccion-calle {
-  display: block;
-  margin-bottom: 6px;
-  font-family: var(--font-display);
-  font-size: clamp(1.28rem, 6.2vw, 1.75rem);
-  font-weight: 900;
-  line-height: 1.1;
-  color: #fff;
-}
-
-.cst-direccion-zona {
-  display: block;
-  margin-bottom: 20px;
-  font-size: 15px;
-  color: var(--cst-suave);
-}
-
-.cst-transporte {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-top: 22px;
-  border: 1px solid var(--cst-linea);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-.cst-transporte li {
-  padding: 15px 16px;
-  background: var(--cst-panel);
-}
-
-.cst-transporte li + li {
-  border-top: 1px solid var(--cst-linea);
-}
-
-.cst-transporte-medio {
-  margin: 0 0 3px;
-  font-family: var(--font-display);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--violet-light);
-}
-
-.cst-transporte-detalle {
-  font-size: 15px;
-  color: var(--cst-suave) !important;
-}
-
-/* ── 7 · Qué llevar ───────────────────────────────────────────────────── */
+/* ── 6 · Qué llevar ───────────────────────────────────────────────────── */
 
 /* En fila, una debajo de la otra. Tres columnas sobre 360 px dejan 90 px por
    tarjeta y "PACIENCIA" en Orbitron 900 no entra ni achicándola hasta que
@@ -820,26 +520,7 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 8 · Si no podés venir ────────────────────────────────────────────── */
-
-.cst-video {
-  padding: 24px 20px;
-  border: 1px solid var(--cst-linea);
-  border-radius: 16px;
-  background: linear-gradient(
-    150deg,
-    rgba(124, 58, 237, 0.13),
-    rgba(255, 255, 255, 0.02) 70%
-  );
-}
-
-.cst-video-texto {
-  margin-bottom: 22px !important;
-  font-size: 15.5px;
-  color: var(--cst-suave) !important;
-}
-
-/* ── 9 · Preguntas ────────────────────────────────────────────────────── */
+/* ── 7 · Preguntas ────────────────────────────────────────────────────── */
 
 .cst-faq {
   border: 1px solid var(--cst-linea);
@@ -919,85 +600,6 @@ html:has(.cst-page) body {
   color: var(--cst-suave) !important;
 }
 
-/* ── 10 · Pie ──────────────────────────────────────────────────────────── */
-
-.cst-pie {
-  /* El colchón de abajo deja pasar el flotante de compartir sin taparse con
-     el último link del pie. */
-  padding: 34px 0 calc(104px + env(safe-area-inset-bottom, 0px));
-}
-
-.cst-pie-marca {
-  margin-bottom: 16px !important;
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cst-tenue) !important;
-}
-
-.cst-pie-marca strong {
-  color: var(--cst-texto);
-}
-
-.cst-pie-links {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 20px;
-}
-
-.cst-pie-links a {
-  display: block;
-  padding: 11px 0;
-  font-size: 15px;
-  color: var(--violet-light);
-}
-
-.cst-pie-links a:hover {
-  color: #fff;
-}
-
-.cst-pie-legal {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--cst-tenue) !important;
-}
-
-/* ── Flotante de compartir ────────────────────────────────────────────── */
-
-.cst-compartir {
-  position: fixed;
-  right: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  z-index: 60;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 52px;
-  padding: 0 20px;
-  border-radius: 999px;
-  background: rgb(8, 210, 143);
-  color: #04281c;
-  font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.cst-compartir:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(8, 210, 143, 0.32), 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
-
-.cst-compartir:active {
-  transform: scale(0.97);
-}
-
 /* ── Escritorio ───────────────────────────────────────────────────────── */
 
 @media (min-width: 720px) {
@@ -1005,25 +607,8 @@ html:has(.cst-page) body {
     padding: 0 32px;
   }
 
-  .cst-hero {
-    padding: 72px 0 80px;
-  }
-
   .cst-seccion {
     padding: 70px 0;
-  }
-
-  .cst-hero-datos {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px 32px;
-    align-items: center;
-  }
-
-  .cst-btn-mapa,
-  .cst-btn-pleno {
-    width: auto;
-    min-width: 280px;
   }
 
   /* Con aire de sobra, el afiche se pone al lado del texto en vez de encima. */
@@ -1096,11 +681,6 @@ html:has(.cst-page) body {
   .cst-llevar span {
     text-align: center;
   }
-
-  .cst-pie-links {
-    flex-direction: row;
-    gap: 26px;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -1112,7 +692,7 @@ html:has(.cst-page) body {
 /* ── Movimiento reducido ──────────────────────────────────────────────── */
 
 /* `Reveal` ya se desactiva solo leyendo esta misma consulta; esto cubre lo
-   que anima por CSS: el + del FAQ y los estados de los botones. */
+   que anima por CSS: el + del FAQ. */
 @media (prefers-reduced-motion: reduce) {
   .cst-page *,
   .cst-page *::before,
