@@ -12,7 +12,10 @@
 
 /* Las secciones de /casting van debajo del formulario: sin el alto mínimo
    de página completa que tienen en su ruta. */
-.sus-info { min-height: 0; padding-bottom: 40px; }
+.sus-info { min-height: 0; padding-bottom: 40px; background: transparent; }
+/* La luz fija de /casting se suma a la del formulario y corta en seco donde
+   termina la cabecera: debajo, el fondo continúa liso. */
+.sus-info::before { display: none; }
 
 /* ── CASTING ──
    Pantalla completa y una sola cosa que hacer. La atmósfera se compone con
@@ -139,16 +142,26 @@
     epicSheen 7s ease-in-out infinite;
 }
 
+/* El cuerpo sale del ancho de la columna y no de la pantalla: cada línea
+   entra entera —"Cuchillo Paz" no se parte en dos— en el teléfono y en la
+   media columna del escritorio. */
+.mp-casting-copy { container-type: inline-size; min-width: 0; }
+
 .mp-casting-title {
   margin-top: 22px;
-  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-size: clamp(1.9rem, 8.4cqi, 4.6rem);
   line-height: .92;
   letter-spacing: -.01em;
 }
 
 /* La serie arranca desfasada, como la segunda línea de los títulos epic */
+.mp-casting-title > span,
 .mp-casting-title strong {
   display: block;
+  white-space: nowrap;
+}
+
+.mp-casting-title strong {
   margin-top: .12em;
   animation-delay: -2.4s;
 }
@@ -451,10 +464,12 @@
      la pantalla. Queda el titular, que ya dice de qué se trata, y la tarjeta
      entera a la vista. El párrafo, la cápsula y el rótulo de casting abierto
      siguen contando la historia completa en el escritorio, que tiene lugar. */
-  .mp-casting { padding: 74px 16px 44px; min-height: auto; }
-  .mp-casting-inner { grid-template-columns: 1fr; gap: 26px; }
-  .mp-casting-eyebrow { display: none; }
-  .mp-casting-title { margin-top: 0; font-size: clamp(2rem, 10vw, 2.6rem); }
+  /* El alto del header más aire: el titular no puede quedar pegado al menú */
+  .mp-casting { padding: calc(var(--header-h, 90px) + 34px) 20px 52px; min-height: auto; }
+  .mp-casting-inner { grid-template-columns: 1fr; gap: 30px; }
+  .mp-casting-eyebrow { font-size: 10px; letter-spacing: .3em; }
+  .mp-casting-eyebrow-line { width: 28px; }
+  .mp-casting-title { margin-top: 14px; }
   .mp-casting-lead,
   .mp-casting-points { display: none; }
   .mp-casting-beam { display: none; }
@@ -464,7 +479,8 @@
   .mp-casting-form-title { font-size: 22px; }
   .mp-casting-field { margin-bottom: 12px; }
   .mp-casting-field > span { margin-bottom: 6px; }
-  .mp-casting-field input { padding: 12px 14px; font-size: 15px; }
+  /* 16px: con menos, Safari de iPhone agranda la página al enfocar el campo */
+  .mp-casting-field input { padding: 13px 14px; font-size: 16px; }
   .mp-casting-submit { margin-top: 18px; padding: 15px 20px; }
   .mp-casting-fine { margin-top: 12px; font-size: 11.5px; }
 }

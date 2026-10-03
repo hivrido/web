@@ -91,7 +91,7 @@ export default function CastingCall() {
           </div>
 
           <h1 className="mp-casting-title">
-            Sé parte
+            <span>Sé parte de</span>
             <strong>Cuchillo Paz</strong>
           </h1>
 
