@@ -3,6 +3,8 @@ import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import CastingCall from "./CastingCall";
+import SeccionesCasting from "../casting/SeccionesCasting";
+import "../casting/casting.css";
 import "./suscribite.css";
 
 /**
@@ -33,6 +35,10 @@ export default function SuscribitePage() {
       <Header base="/" logoDelay={300} />
       <main className="sus-page">
         <CastingCall />
+        {/* Lo mismo que cuenta /casting, sin la fecha ni el lugar de la jornada */}
+        <div className="cst-page sus-info">
+          <SeccionesCasting sinEvento />
+        </div>
         <Footer />
       </main>
     </ClientShell>

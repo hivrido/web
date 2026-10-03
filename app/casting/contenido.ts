@@ -296,6 +296,13 @@ export const SI_NO_PODES = {
 
 /* ── 9 · Preguntas ──────────────────────────────────────────────────────── */
 
+/** Preguntas atadas al día y al lugar: /suscribite, que no tiene fecha, las omite. */
+export const FAQ_DE_LA_JORNADA = [
+  "¿Puedo ir si no soy de José C. Paz?",
+  "¿Hasta qué hora se recibe gente?",
+  "¿Qué pasa si llego y hay mucha fila?",
+];
+
 export const FAQ: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: "¿Tengo que tener experiencia?",

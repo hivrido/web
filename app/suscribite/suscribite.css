@@ -6,7 +6,13 @@
   --mp-muted: #8888aa;
   --mp-font:  'Inter', 'Rubik', sans-serif;
   background: #07060d;
+  /* globals.css centra el body entero; el formulario se lee en bloque */
+  text-align: left;
 }
+
+/* Las secciones de /casting van debajo del formulario: sin el alto mínimo
+   de página completa que tienen en su ruta. */
+.sus-info { min-height: 0; padding-bottom: 40px; }
 
 /* ── CASTING ──
    Pantalla completa y una sola cosa que hacer. La atmósfera se compone con
@@ -125,6 +131,12 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: epicSheen 7s ease-in-out infinite;
+}
+
+.mp-casting-copy > .mp-casting-title {
+  animation:
+    mp-casting-rise .8s cubic-bezier(.22,1,.36,1) .14s forwards,
+    epicSheen 7s ease-in-out infinite;
 }
 
 .mp-casting-title {
@@ -430,7 +442,7 @@
 
 /* ── RESPONSIVE ── */
 @media (prefers-reduced-motion: reduce) {
-  .mp-casting-title, .mp-casting-title strong { animation: none; background-position: 30% 50%; }
+  .mp-casting-copy > .mp-casting-title, .mp-casting-title strong { animation: none; opacity: 1; background-position: 30% 50%; }
 }
 
 @media (max-width: 768px) {
