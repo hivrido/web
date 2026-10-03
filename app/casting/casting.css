@@ -164,7 +164,7 @@ html:has(.cst-page) body {
 .cst-datos {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .cst-dato {
@@ -226,7 +226,7 @@ html:has(.cst-page) body {
 .cst-pasos {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .cst-paso {
@@ -298,11 +298,13 @@ html:has(.cst-page) body {
 
 /* Las cuatro negaciones. Es la lista que baja la ansiedad, así que se lee
    como una lista de tildes, no como letra chica. */
-.cst-noes {
+/* Con `.cst-page` delante: `.cst-page ul { margin: 0 }` pesa más que la clase
+   sola y borraba la separación, y los chips quedaban pegados a las tarjetas. */
+.cst-page .cst-noes {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 22px;
+  gap: 10px;
+  margin-top: 30px;
 }
 
 .cst-noes li {
@@ -320,19 +322,56 @@ html:has(.cst-page) body {
 .cst-situaciones {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 /* La tarjeta imita la hoja que se entrega el día del casting: fondo apenas
-   levantado, filete violeta a la izquierda y las frases una debajo de la
-   otra. Nada de iconos ni de adornos: el texto es el objeto. */
+   levantado y las frases una debajo de la otra. Un destello recorre el borde
+   —el mismo haz de los botones del sitio— para marcar que de estas cuatro
+   sale la tuya; cada tarjeta arranca desfasada para que no giren en bloque. */
+@property --cst-haz {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes cst-haz-giro {
+  to { --cst-haz: 360deg; }
+}
+
 .cst-situacion {
-  padding: 20px 18px;
+  position: relative;
+  padding: 22px 20px;
   border: 1px solid var(--cst-linea);
-  border-left: 3px solid rgba(124, 58, 237, 0.55);
-  border-radius: 4px 14px 14px 4px;
+  border-radius: 14px;
   background: var(--cst-panel);
 }
+
+.cst-situacion::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--cst-haz),
+    transparent 0deg,
+    transparent 230deg,
+    rgba(124, 58, 237, 0.7) 300deg,
+    #e9ddff 340deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: cst-haz-giro 5s linear infinite;
+  pointer-events: none;
+}
+
+.cst-situacion:nth-child(2)::before { animation-delay: -1.25s; }
+.cst-situacion:nth-child(3)::before { animation-delay: -2.5s; }
+.cst-situacion:nth-child(4)::before { animation-delay: -3.75s; }
 
 .cst-situacion-nombre {
   display: flex;
@@ -390,7 +429,7 @@ html:has(.cst-page) body {
 /* ── 5 · Cómo prepararte ──────────────────────────────────────────────── */
 
 .cst-preparar {
-  margin-bottom: 30px;
+  margin-bottom: 36px;
 }
 
 /* La prohibición abre la sección y pesa más que el resto: si se lee al
@@ -431,7 +470,7 @@ html:has(.cst-page) body {
 .cst-consejos {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   counter-reset: consejo;
 }
 
@@ -477,7 +516,7 @@ html:has(.cst-page) body {
 .cst-llevar {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .cst-llevar li {
@@ -608,7 +647,13 @@ html:has(.cst-page) body {
   }
 
   .cst-seccion {
-    padding: 70px 0;
+    padding: 76px 0;
+  }
+
+  .cst-datos,
+  .cst-pasos,
+  .cst-situaciones {
+    gap: 20px;
   }
 
   /* Con aire de sobra, el afiche se pone al lado del texto en vez de encima. */
@@ -694,6 +739,12 @@ html:has(.cst-page) body {
 /* `Reveal` ya se desactiva solo leyendo esta misma consulta; esto cubre lo
    que anima por CSS: el + del FAQ. */
 @media (prefers-reduced-motion: reduce) {
+  /* El haz queda quieto, como un acento fijo en el borde */
+  .cst-situacion::before {
+    animation: none;
+    --cst-haz: 120deg;
+  }
+
   .cst-page *,
   .cst-page *::before,
   .cst-page *::after {
