@@ -336,6 +336,42 @@ export const CATALOG: Title[] = [
     },
   },
   {
+    /* Ópera prima de Galliano en el largo. Elenco y duración de IMDb
+       (tt36091082); sinopsis de la prensa del estreno (cinenacional,
+       escribiendocine). IMDb la clasifica como comedia, pero la obra arranca
+       como historia de amor y vira al terror con humor negro. */
+    id: "el-rectangulo-de-angeles",
+    title: "El rectángulo de Ángeles",
+    type: "pelicula",
+    duration: "1h 13m",
+    genre: "Terror · Humor negro",
+    synopsis:
+      "Nina y Rafa son una típica pareja porteña. Una invitación a cenar en un restorán glamoroso puede cambiarles la vida: ahí, salir con vida depende de una sola cosa, el rectángulo de ángeles.",
+    ytId: "-vNXLP9y0cE",
+    badge: "NUEVA",
+    poster: "/images/peliculas/rectangulo.webp",
+    hero: { image: "/images/peliculas/rectangulo.webp", color: "#C8102E" },
+    href: "/play/el-rectangulo-de-angeles",
+    detail: {
+      format: "Largometraje",
+      about:
+        "Nina y Rafa se aman a pesar de sus diferencias y luchan por mantener viva la relación. Rafa milita en un partido de izquierda hasta los fines de semana; Nina trabaja casi todo el día en una fábrica y le reclama más tiempo juntos. Una invitación a cenar en un restorán glamoroso lo cambia todo. Lo que empieza como una historia de amor se vuelve un relato de suspenso y terror, con elementos de gore, policial y humor negro. Filmada íntegramente en Gualeguay, Entre Ríos, se estrenó en el Cine Gaumont y recorrió salas de todo el país.",
+      crew: [
+        { role: "Guion y dirección", name: "Nicolás Galliano" },
+        { role: "Producción", name: "Nicolás Galliano" },
+        { role: "Rodaje", name: "Gualeguay, Entre Ríos" },
+      ],
+      cast: [
+        { name: "Ailín Salas", character: "Nina" },
+        { name: "Nicolás Goldschmidt", character: "Rafa" },
+        { name: "Leticia Brédice", character: "Ana" },
+        { name: "Diego Alonso Gómez", character: "Luis" },
+        { name: "Daniel Pacheco Bautista", character: "Eric" },
+      ],
+      imdb: "tt36091082",
+    },
+  },
+  {
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
