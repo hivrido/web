@@ -372,6 +372,58 @@ export const CATALOG: Title[] = [
     },
   },
   {
+    /* Secuela de Hungry (2020). Elenco de IMDb (tt21102264) con los
+       personajes y el equipo de la descripción del video, que es el corto
+       entero. Premios: los laureles de la portada. Sin sinopsis de trama
+       publicada: va la bajada del afiche. */
+    id: "matanza",
+    title: "Matanza (Hungry 2)",
+    type: "pelicula",
+    duration: "11m",
+    genre: "Terror",
+    synopsis:
+      "Cuando el apetito se vuelve violencia. La segunda entrega de Hungry, escrita y dirigida por Nicolás Galliano.",
+    ytId: "qsDqrhUNEss",
+    ytFull: true,
+    badge: "NUEVA",
+    poster: "/images/peliculas/matanza.webp",
+    hero: { image: "/images/peliculas/matanza.webp", color: "#B8860B" },
+    href: "/play/matanza",
+    detail: {
+      format: "Cortometraje",
+      about:
+        "Cuando el apetito se vuelve violencia. Matanza retoma el universo de Hungry, el corto con el que Nicolás Galliano entró al terror en 2020, con un elenco encabezado por Mariano De La Canal, Ignacio Toselli, Marina Glezer y Nicolás Pauls. Una producción de Insurrectas Producciones.",
+      crew: [
+        { role: "Guion y dirección", name: "Nicolás Galliano" },
+        { role: "Dirección de arte", name: "Nicolás Galliano" },
+        { role: "Producción", name: "Florencia Scorza, Nicolás Ríos" },
+        { role: "Fotografía", name: "Juan F. López, Tomás Musto" },
+        { role: "Asistencia de dirección", name: "Nicolás Ríos" },
+        { role: "Sonido", name: "Martín Galimany" },
+        { role: "Maquillaje y FX", name: "Cynthia Romero, Maru Alegre" },
+        { role: "Vestuario", name: "Kahlu Orellana" },
+        { role: "Música", name: "Muerto en Pogo, Motosierra" },
+        { role: "Productora", name: "Insurrectas Producciones" },
+      ],
+      cast: [
+        { name: "Mariano De La Canal", character: "Daniel, «el Papi»" },
+        { name: "Ignacio Toselli", character: "Rodrigo" },
+        { name: "Marina Glezer", character: "Patri" },
+        { name: "Nicolás Pauls", character: "Oficial Lázaro" },
+        { name: "Xxl Irione", character: "Cristian, el cartero" },
+        { name: "Catalina Vela", character: "Martirio" },
+        { name: "Clara Circovich", character: "Aberración" },
+        { name: "Carmela Mosano Lugrin", character: "Calamidad" },
+      ],
+      awards: [
+        { label: "Muestra nacional", name: "Festival 1000 Gritos", detail: "16.ª edición · 2022" },
+        { label: "Selección oficial", name: "Insólito Fest", detail: "Perú · 2022" },
+        { label: "Selección oficial", name: "Lift-Off First-Time Filmmaker Sessions", detail: "Lift-Off Global Network" },
+      ],
+      imdb: "tt21102264",
+    },
+  },
+  {
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
