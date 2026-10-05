@@ -189,6 +189,21 @@ export const CATALOG: Title[] = [
     hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A" },
   },
   {
+    /* Galliano. Sinopsis del propio autor; sin `year` ni `duration`
+       confirmados. Portada: cuadro del tráiler sin las franjas negras. */
+    id: "3-am",
+    title: "3 A.M.",
+    type: "pelicula",
+    duration: "—",
+    genre: "Terror · Suspenso",
+    synopsis:
+      "Una joven empieza su nuevo empleo en una estación de servicio y, para pagar su derecho de piso, la mandan al turno noche. Una sola advertencia tiene que respetar: no atender el teléfono a las 3 AM.",
+    ytId: "2kaHwNUudbY",
+    badge: "NEW",
+    poster: "/images/peliculas/3am.webp",
+    hero: { image: "/images/peliculas/3am.webp", color: "#3B6BFF" },
+  },
+  {
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
