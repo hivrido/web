@@ -24,8 +24,8 @@ export type Title = {
   id: string;
   title: string;
   type: ContentType;
-  /** Series: "T1 · 2024". Películas: el año solo. */
-  year: string;
+  /** Series: "T1 · 2024". Películas: el año solo. Sin dato confirmado, se omite. */
+  year?: string;
   genre: string;
   synopsis: string;
   /** Vacío mientras no haya puntaje real. */
@@ -174,12 +174,11 @@ export const CATALOG: Title[] = [
   /* ── PELÍCULAS ──────────────────────────────────────────────────────── */
   {
     /* Alianza con Nicolás "Niky" Galliano (Casa Nostra Films). Datos del
-       dossier de prensa; sin `rating` porque no hay puntaje real. Portada y
+       dossier de prensa; sin `year` (el dossier no lo cierra) ni `rating` porque no hay puntaje real. Portada y
        fondo salen del thumbnail del tráiler en YouTube. */
     id: "erase-una-vez-en-virreyes",
     title: "Érase una vez en Virreyes",
     type: "pelicula",
-    year: "2023",
     duration: "89m",
     genre: "Drama social · Antología",
     synopsis:
