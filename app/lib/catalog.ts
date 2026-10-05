@@ -190,7 +190,7 @@ export const CATALOG: Title[] = [
   },
   {
     /* Galliano. Sinopsis del propio autor; sin `year` ni `duration`
-       confirmados. Portada: cuadro del tráiler sin las franjas negras. */
+       confirmados. Portada: título sobre humo azul. */
     id: "3-am",
     title: "3 A.M.",
     type: "pelicula",
@@ -201,7 +201,7 @@ export const CATALOG: Title[] = [
     ytId: "2kaHwNUudbY",
     badge: "NEW",
     poster: "/images/peliculas/3am.webp",
-    hero: { image: "/images/peliculas/3am.webp", color: "#3B6BFF" },
+    hero: { image: "/images/peliculas/3am.webp", color: "#B3121B" },
   },
   {
     id: "chamame",
