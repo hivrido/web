@@ -102,7 +102,7 @@ export default async function TitlePage({ params }: Props) {
             {t.ytId && (
               <a href="#trailer" className="mp-play-btn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
-                Ver tráiler
+                {t.ytFull ? "Ver ahora" : "Ver tráiler"}
               </a>
             )}
             {d.imdb && (
@@ -137,7 +137,7 @@ export default async function TitlePage({ params }: Props) {
           <div className="tp-player">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${t.ytId}?rel=0&modestbranding=1`}
-              title={`Tráiler de ${t.title}`}
+              title={t.ytFull ? t.title : `Tráiler de ${t.title}`}
               loading="lazy"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen

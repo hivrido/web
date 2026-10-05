@@ -56,6 +56,8 @@ export type Title = {
   href?: string;
   /** Trailer en YouTube, si lo hay. */
   ytId?: string;
+  /** El video de `ytId` es la obra completa, no un tráiler. */
+  ytFull?: boolean;
   /** YouTube no deja embeberlo (restricción de edad): se abre allá. */
   ytExternal?: boolean;
   /** Solo películas. */
@@ -288,6 +290,49 @@ export const CATALOG: Title[] = [
         { name: "Solange Verina" },
       ],
       imdb: "tt17516144",
+    },
+  },
+  {
+    /* Guion de Galliano, que además protagoniza; dirige Nicolás Ríos. Créditos
+       de IMDb (tt15863326) completados con la descripción del video. El video
+       es el corto entero, por eso `ytFull`. Sin sinopsis de trama publicada:
+       no se inventa una. */
+    id: "esnob",
+    title: "Esnob",
+    type: "pelicula",
+    duration: "8m",
+    genre: "Terror",
+    synopsis:
+      "Cortometraje de terror inspirado en hechos reales. Con Magui Bravi y Nicolás Galliano, dirigido por Nicolás Ríos.",
+    ytId: "ui2zbEBJDFc",
+    ytFull: true,
+    badge: "NUEVA",
+    poster: "/images/peliculas/esnob.webp",
+    hero: { image: "/images/peliculas/esnob.webp", color: "#B01E2A" },
+    href: "/play/esnob",
+    detail: {
+      format: "Cortometraje",
+      about:
+        "Un cortometraje de terror inspirado en hechos reales, escrito por Nicolás Galliano y dirigido por Nicolás Ríos. Producción de Insurrectas Producciones, protagonizado por Magui Bravi y el propio Galliano.",
+      crew: [
+        { role: "Dirección", name: "Nicolás Ríos" },
+        { role: "Guion", name: "Nicolás Galliano" },
+        { role: "Producción", name: "Nicolás Galliano, Nicolás Ríos, Magui Bravi" },
+        { role: "Fotografía", name: "Juan F. López, Tomás Musto" },
+        { role: "Edición", name: "Gian Blanco" },
+        { role: "Sonido", name: "Antonella Criscione" },
+        { role: "Arte", name: "Héctor Cañas" },
+        { role: "Vestuario", name: "Amida Quintana Gómez" },
+        { role: "Maquillaje y FX", name: "Cynthia Romero" },
+        { role: "Música original", name: "Formas Anónimas" },
+        { role: "Productora", name: "Insurrectas Producciones" },
+      ],
+      cast: [
+        { name: "Magui Bravi", character: "Lucía López" },
+        { name: "Nicolás Galliano", character: "Nahuel Garrido" },
+        { name: "Soledad Borinelli" },
+      ],
+      imdb: "tt15863326",
     },
   },
   {
