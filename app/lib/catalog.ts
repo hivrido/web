@@ -174,8 +174,8 @@ export const CATALOG: Title[] = [
   /* ── PELÍCULAS ──────────────────────────────────────────────────────── */
   {
     /* Alianza con Nicolás "Niky" Galliano (Casa Nostra Films). Datos del
-       dossier de prensa; sin `year` (el dossier no lo cierra) ni `rating` porque no hay puntaje real. Portada y
-       fondo salen del thumbnail del tráiler en YouTube. */
+       dossier de prensa; sin `year` (el dossier no lo cierra) ni `rating`
+       porque no hay puntaje real. La portada 16:9 sirve de tarjeta y de fondo. */
     id: "erase-una-vez-en-virreyes",
     title: "Érase una vez en Virreyes",
     type: "pelicula",
@@ -185,8 +185,8 @@ export const CATALOG: Title[] = [
       "Cinco historias, un mismo barrio. En Virreyes, la violencia no toca la puerta: ya vive adentro. Escrita y dirigida por Nicolás Galliano. +18.",
     ytId: "crEni6LKPWs",
     badge: "NEW",
-    poster: "/images/peliculas/virreyes.jpg",
-    hero: { image: "/images/peliculas/virreyes.jpg", color: "#D1202A" },
+    poster: "/images/peliculas/virreyes.webp",
+    hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A" },
   },
   {
     id: "chamame",
