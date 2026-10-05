@@ -2,21 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import LogoAnimated from "../../components/ui/LogoAnimated";
-import { WITH_DETAIL } from "../../lib/catalog";
+import { WITH_PAGE } from "../../lib/catalog";
 import "../../components/play/play.css";
 import "./title.css";
 
-/* Una página por obra con `detail` en el catálogo. Se generan todas en build
-   y cualquier otro id es 404: no hay fichas que se armen al vuelo. */
+/* La ficha de cada obra del catálogo. Se generan todas en build y cualquier
+   otro id es 404. Muestra lo que la obra tenga: las que no traen `detail`
+   arman la página con la sinopsis, y las provisorias anuncian que llegan. */
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return WITH_DETAIL.map((t) => ({ id: t.id }));
+  return WITH_PAGE.map((t) => ({ id: t.id }));
 }
 
 type Props = { params: Promise<{ id: string }> };
 
-const find = (id: string) => WITH_DETAIL.find((t) => t.id === id);
+const find = (id: string) => WITH_PAGE.find((t) => t.id === id);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = find((await params).id);
@@ -36,6 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: t.type === "serie" ? "video.tv_show" : "video.movie",
     },
     twitter: { card: "summary_large_image" },
+    /* Las provisorias no tienen nada que indexar todavía. */
+    ...(t.isPlaceholder ? { robots: { index: false } } : {}),
   };
 }
 
@@ -43,23 +46,28 @@ const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 export default async function TitlePage({ params }: Props) {
   const t = find((await params).id);
-  if (!t?.detail) notFound();
+  if (!t) notFound();
   const d = t.detail;
+  const kind = t.type === "serie" ? "Serie" : "Película";
+  const format = d?.format ?? (t.type === "serie" && t.seasons ? `Serie · ${t.seasons}` : kind);
+  const about = t.isPlaceholder ? null : d?.about ?? t.synopsis;
+  const crew = d?.crew ?? [];
+  const cast = d?.cast ?? [];
   const accent = t.hero?.color ?? "#7C3AED";
-  const directors = d.crew.filter((c) => /direcci/i.test(c.role)).map((c) => c.name);
+  const directors = crew.filter((c) => /direcci/i.test(c.role)).map((c) => c.name);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": t.type === "serie" ? "TVSeries" : "Movie",
     name: t.title,
-    description: d.about,
+    description: about ?? undefined,
     genre: t.genre,
     inLanguage: "es-AR",
     url: `https://hivrido.com${t.href}/`,
     ...(t.poster ? { image: `https://hivrido.com${t.poster}` } : {}),
     ...(directors.length ? { director: directors.map((name) => ({ "@type": "Person", name })) } : {}),
-    actor: d.cast.map((c) => ({ "@type": "Person", name: c.name })),
-    ...(d.imdb ? { sameAs: `https://www.imdb.com/title/${d.imdb}/` } : {}),
+    ...(cast.length ? { actor: cast.map((c) => ({ "@type": "Person", name: c.name })) } : {}),
+    ...(d?.imdb ? { sameAs: `https://www.imdb.com/title/${d.imdb}/` } : {}),
   };
 
   return (
@@ -79,7 +87,12 @@ export default async function TitlePage({ params }: Props) {
 
       {/* ── HERO ── */}
       <section className="tp-hero">
-        {t.poster && <div className="tp-hero-bg" style={{ backgroundImage: `url('${t.poster}')` }} />}
+        {t.poster ? (
+          <div className="tp-hero-bg" style={{ backgroundImage: `url('${t.poster}')` }} />
+        ) : (
+          /* Sin portada todavía: un fondo de la casa en el color de la obra. */
+          <div className="tp-hero-bg tp-hero-bg-empty" />
+        )}
         <div className="tp-hero-shade" />
         <div className="tp-wrap tp-hero-inner">
           <nav className="tp-crumbs" aria-label="Ruta">
@@ -89,15 +102,19 @@ export default async function TitlePage({ params }: Props) {
               {t.type === "serie" ? "Series" : "Películas"}
             </Link>
           </nav>
-          <p className="tp-kicker">{d.format}</p>
+          <p className="tp-kicker">{format}</p>
           <h1 className="tp-title">{t.title}</h1>
           <div className="tp-meta">
             {t.year && <span>{t.year}</span>}
             {t.duration && t.duration !== "—" && <span>{t.duration}</span>}
             <span>{t.genre}</span>
-            {d.advisory && <span className="tp-rating">+18</span>}
+            {t.rating && <span>★ {t.rating}</span>}
+            {d?.advisory && <span className="tp-rating">+18</span>}
+            {t.badge === "PRONTO" && <span className="tp-rating">Próximamente</span>}
           </div>
-          <p className="tp-lead">{t.synopsis}</p>
+          <p className="tp-lead">
+            {t.isPlaceholder ? `${kind} en preparación. Muy pronto, toda la información acá.` : t.synopsis}
+          </p>
           <div className="tp-actions">
             {t.ytId && (
               <a href="#trailer" className="mp-play-btn">
@@ -105,7 +122,7 @@ export default async function TitlePage({ params }: Props) {
                 {t.ytFull ? "Ver ahora" : "Ver tráiler"}
               </a>
             )}
-            {d.imdb && (
+            {d?.imdb && (
               <a href={`https://www.imdb.com/title/${d.imdb}/`} target="_blank" rel="noopener noreferrer" className="mp-outline-btn">
                 Ver en IMDb
               </a>
@@ -148,32 +165,44 @@ export default async function TitlePage({ params }: Props) {
       )}
 
       {/* ── SINOPSIS + FICHA ── */}
+      {about && (
       <section className="tp-wrap tp-section tp-split">
         <div>
           <h2 className="tp-h2">Sinopsis</h2>
-          <p className="tp-body">{d.about}</p>
-          {d.advisory && (
+          <p className="tp-body">{about}</p>
+          {d?.advisory && (
             <p className="tp-advisory">
               <strong>Advertencia de contenido.</strong> {d.advisory}
             </p>
           )}
         </div>
         <dl className="tp-sheet">
-          {d.crew.map((c) => (
+          {crew.map((c) => (
             <div key={c.role}>
               <dt>{c.role}</dt>
               <dd>{c.name}</dd>
             </div>
           ))}
+          {t.year && (
+            <div>
+              <dt>Año</dt>
+              <dd>{t.year}</dd>
+            </div>
+          )}
+          <div>
+            <dt>Género</dt>
+            <dd>{t.genre}</dd>
+          </div>
           <div>
             <dt>País · Idioma</dt>
             <dd>Argentina · Español</dd>
           </div>
         </dl>
       </section>
+      )}
 
       {/* ── RELATOS ── */}
-      {d.chapters && (
+      {d?.chapters && (
         <section className="tp-wrap tp-section">
           <h2 className="tp-h2">{d.chapters.length} relatos, un mismo barrio</h2>
           <ol className="tp-chapters">
@@ -194,10 +223,11 @@ export default async function TitlePage({ params }: Props) {
       )}
 
       {/* ── ELENCO ── */}
+      {cast.length > 0 && (
       <section className="tp-wrap tp-section">
         <h2 className="tp-h2">Elenco</h2>
         <ul className="tp-cast">
-          {d.cast.map((c) => (
+          {cast.map((c) => (
             <li key={c.name}>
               <span className="tp-initials" aria-hidden="true">
                 {c.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
@@ -208,9 +238,10 @@ export default async function TitlePage({ params }: Props) {
           ))}
         </ul>
       </section>
+      )}
 
       {/* ── PREMIOS ── */}
-      {d.awards && (
+      {d?.awards && (
         <section className="tp-wrap tp-section">
           <h2 className="tp-h2">Premios y festivales</h2>
           {d.awardsNote && <p className="tp-note">{d.awardsNote}</p>}

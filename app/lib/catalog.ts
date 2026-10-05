@@ -19,7 +19,7 @@
 
 export type ContentType = "serie" | "pelicula";
 
-/** Ficha extendida: con esto la obra tiene página propia en /play/<id>. */
+/** Datos extendidos de la ficha: créditos, elenco, relatos, premios. */
 export type Detail = {
   /** Texto largo de la página; la sinopsis corta queda para la tarjeta. */
   about: string;
@@ -52,7 +52,8 @@ export type Title = {
   badge?: string;
   /** Portada propia. Sin esto, la tarjeta usa el degradado de la casa. */
   poster?: string;
-  /** Página propia dentro del sitio, si la tiene. */
+  /** Ficha propia. Por defecto /play/<id>; solo se declara si vive en otra
+      ruta (Okupas, que tiene su página con los episodios). */
   href?: string;
   /** Trailer en YouTube, si lo hay. */
   ytId?: string;
@@ -71,7 +72,7 @@ export type Title = {
   detail?: Detail;
 };
 
-export const CATALOG: Title[] = [
+const TITLES: Title[] = [
   /* ── SERIES ─────────────────────────────────────────────────────────── */
   {
     /* La producción en curso, por eso abre la fila. No lleva `isPlaceholder`:
@@ -212,7 +213,6 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/virreyes.webp",
     hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A" },
-    href: "/play/erase-una-vez-en-virreyes",
     /* Créditos de IMDb (tt36097002) cruzados con el dossier: IMDb trae los
        personajes, el dossier el resto del elenco. Los relatos van con la
        sinopsis corta del dossier, no con el tratamiento, que tiene spoilers. */
@@ -270,7 +270,6 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/3am.webp",
     hero: { image: "/images/peliculas/3am.webp", color: "#B3121B" },
-    href: "/play/3-am",
     /* Elenco de IMDb (tt17516144), que no carga personajes. */
     detail: {
       format: "Cortometraje",
@@ -309,7 +308,6 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/esnob.webp",
     hero: { image: "/images/peliculas/esnob.webp", color: "#B01E2A" },
-    href: "/play/esnob",
     detail: {
       format: "Cortometraje",
       about:
@@ -351,7 +349,6 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/rectangulo.webp",
     hero: { image: "/images/peliculas/rectangulo.webp", color: "#C8102E" },
-    href: "/play/el-rectangulo-de-angeles",
     detail: {
       format: "Largometraje",
       about:
@@ -388,7 +385,6 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/matanza.webp",
     hero: { image: "/images/peliculas/matanza.webp", color: "#B8860B" },
-    href: "/play/matanza",
     detail: {
       format: "Cortometraje",
       about:
@@ -440,7 +436,6 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/mia.webp",
     hero: { image: "/images/peliculas/mia.webp", color: "#E0A818" },
-    href: "/play/mia",
     detail: {
       format: "Cortometraje",
       about:
@@ -506,11 +501,21 @@ export const CATALOG: Title[] = [
   },
 ];
 
+/**
+ * Toda obra tiene ficha y todo lleva a ella: las tarjetas y el slider no
+ * reproducen nada por su cuenta. La ficha es donde está todo —video, sinopsis,
+ * créditos—, así que acá se le asigna su ruta a cada título.
+ */
+export const CATALOG: (Title & { href: string })[] = TITLES.map((t) => ({
+  ...t,
+  href: t.href ?? `/play/${t.id}`,
+}));
+
+/** Títulos cuya ficha es la página genérica /play/<id>. */
+export const WITH_PAGE = CATALOG.filter((t) => t.href === `/play/${t.id}`);
+
 export const SERIES = CATALOG.filter((t) => t.type === "serie");
 export const PELICULAS = CATALOG.filter((t) => t.type === "pelicula");
 
 /** Slider de portada: solo fichas con trailer y arte propio. */
-/** Títulos con página propia en /play/<id>. */
-export const WITH_DETAIL = CATALOG.filter((t) => t.detail);
-
 export const FEATURED = CATALOG.filter((t) => t.hero && t.ytId);

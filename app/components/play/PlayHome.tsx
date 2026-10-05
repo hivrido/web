@@ -13,7 +13,9 @@ import Link from "next/link";
 import NextImage from "next/image";
 import LogoAnimated from "../ui/LogoAnimated";
 import PlayMenu from "./PlayMenu";
-import { FEATURED, SERIES, PELICULAS, type Title } from "../../lib/catalog";
+import { FEATURED, SERIES, PELICULAS, type CATALOG } from "../../lib/catalog";
+
+type CatalogTitle = (typeof CATALOG)[number];
 import "./play.css";
 
 /* Degradados de la casa para las fichas que todavía no tienen portada. Es un
@@ -29,27 +31,15 @@ const CARD_COLORS = [
   "linear-gradient(160deg,#6a1030 0%,#1a0810 100%)",
 ];
 
-function CardWrapper({ href, children }: { href?: string; children: React.ReactNode }) {
-  if (href) {
-    return (
-      <Link href={href} style={{ textDecoration: "none", color: "inherit", display: "contents" }}>
-        {children}
-      </Link>
-    );
-  }
-  return <>{children}</>;
-}
-
 /**
- * Qué hace la tarjeta al tocarla, en orden: si el título tiene página propia
- * navega, si no tiene página pero sí trailer abre el reproductor, y si no
- * tiene ninguna de las dos —las fichas provisorias— no hace nada.
+ * Toda tarjeta lleva a la ficha de su obra, que es donde está el video, la
+ * sinopsis y los créditos. Antes algunas abrían el tráiler en un modal y las
+ * provisorias no hacían nada: ahora el camino es uno solo.
  */
-function Card({ item, index, wide, onPlay }: {
-  item: Title;
+function Card({ item, index, wide }: {
+  item: CatalogTitle;
   index: number;
   wide?: boolean;
-  onPlay: (ytId: string) => void;
 }) {
   const grad = CARD_COLORS[index % CARD_COLORS.length];
   /* Verde para lo que ya se puede ver, dorado para lo que todavía no. El
@@ -62,26 +52,12 @@ function Card({ item, index, wide, onPlay }: {
       : item.badge === "PRONTO"
       ? "soon"
       : "";
-  const plays = !item.href && !!item.ytId;
-
-  const activate = plays ? () => onPlay(item.ytId!) : undefined;
 
   return (
-    <CardWrapper href={item.href}>
+    <Link href={item.href} style={{ textDecoration: "none", color: "inherit", display: "contents" }}>
       <div
         className={`mp-card${wide ? " wide" : ""}`}
-        style={item.href || plays ? { cursor: "pointer" } : {}}
-        onClick={activate}
-        onKeyDown={
-          activate
-            ? (e) => {
-                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); }
-              }
-            : undefined
-        }
-        role={plays ? "button" : undefined}
-        tabIndex={plays ? 0 : undefined}
-        aria-label={plays ? `Ver el trailer de ${item.title}` : undefined}
+        style={{ cursor: "pointer" }}
       >
         <div className="mp-card-thumb" style={{ background: grad, position: "relative" }}>
           {item.poster && (
@@ -129,7 +105,7 @@ function Card({ item, index, wide, onPlay }: {
           </div>
         </div>
       </div>
-    </CardWrapper>
+    </Link>
   );
 }
 
@@ -195,12 +171,11 @@ function DragRow({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Section({ id, title, items, wide, onPlay }: {
+function Section({ id, title, items, wide }: {
   id?: string;
   title: string;
-  items: Title[];
+  items: CatalogTitle[];
   wide?: boolean;
-  onPlay: (ytId: string) => void;
 }) {
   return (
     <div className="mp-section" id={id}>
@@ -209,45 +184,9 @@ function Section({ id, title, items, wide, onPlay }: {
       </div>
       <DragRow>
         {items.map((item, i) => (
-          <Card key={item.id} item={item} index={i} wide={wide} onPlay={onPlay} />
+          <Card key={item.id} item={item} index={i} wide={wide} />
         ))}
       </DragRow>
-    </div>
-  );
-}
-
-/**
- * Reproductor. Vivía dentro del Hero, que era el único que lo abría; ahora lo
- * abren también las tarjetas del catálogo, así que el estado sube a PlayHome y
- * esto queda como pieza suelta.
- */
-function VideoModal({ ytId, onClose }: { ytId: string; onClose: () => void }) {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [onClose]);
-
-  return (
-    <div className="mp-video-modal" onClick={onClose}>
-      <button className="mp-video-modal-close" onClick={onClose} aria-label="Cerrar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
-      </button>
-      <div className="mp-video-modal-inner" onClick={(e) => e.stopPropagation()}>
-        <div className="mp-video-modal-mask" />
-        <iframe
-          key={ytId}
-          src={`https://www.youtube.com/embed/${ytId}?autoplay=1&controls=1&rel=0&modestbranding=1`}
-          allow="autoplay; fullscreen"
-          allowFullScreen
-          className="mp-video-modal-iframe"
-          title="Trailer"
-        />
-      </div>
     </div>
   );
 }
@@ -282,7 +221,7 @@ function Header() {
 }
 
 /* ── HERO ── */
-function Hero({ onPlay, paused }: { onPlay: (ytId: string) => void; paused: boolean }) {
+function Hero() {
   const [current, setCurrent] = useState(0);
   /* Qué fondos ya se pueden pintar. Arranca solo con el primero: los slides
      inactivos se ocultan con `visibility`, que no evita la descarga, así que
@@ -336,13 +275,6 @@ function Hero({ onPlay, paused }: { onPlay: (ytId: string) => void; paused: bool
     return () => window.removeEventListener("load", preloadNext);
   }, [current]);
 
-  /* Mientras el reproductor está abierto el carrusel se queda quieto: si no,
-     al cerrarlo el fondo cambió solo y no se entiende por qué. */
-  useEffect(() => {
-    if (paused) stopTimer();
-    else startTimer();
-  }, [paused, startTimer, stopTimer]);
-
   const go = (i: number) => { show(i); startTimer(); };
   const prev = () => go((current - 1 + FEATURED.length) % FEATURED.length);
   const next = () => go((current + 1) % FEATURED.length);
@@ -395,26 +327,15 @@ function Hero({ onPlay, paused }: { onPlay: (ytId: string) => void; paused: bool
             </span>
           </div>
           <div className="mp-hero-actions">
-            <button
-              className="mp-play-btn"
-              onClick={() => {
-                if (!f.ytId) return;
-                /* Con restricción de edad el reproductor embebido solo muestra
-                   el aviso de YouTube: se abre el video allá. */
-                if (f.ytExternal) window.open(`https://www.youtube.com/watch?v=${f.ytId}`, "_blank", "noopener");
-                else onPlay(f.ytId);
-              }}
-              style={!f.ytId ? { opacity: 0.5, cursor: "not-allowed" } : {}}
-            >
+            {/* Los dos llevan a la ficha: "Ver Ahora" directo al video. */}
+            <Link href={f.ytId ? `${f.href}#trailer` : f.href} className="mp-play-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
               Ver Ahora
-            </button>
-            {f.href && (
-              <Link href={f.href} className="mp-outline-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" /></svg>
-                Más Info
-              </Link>
-            )}
+            </Link>
+            <Link href={f.href} className="mp-outline-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" /></svg>
+              Más Info
+            </Link>
           </div>
         </div>
 
@@ -435,19 +356,13 @@ function Hero({ onPlay, paused }: { onPlay: (ytId: string) => void; paused: bool
 }
 
 export default function PlayHome() {
-  /* El reproductor lo abren el slider y las tarjetas con trailer, así que el
-     estado vive acá arriba, que es donde los dos se ven. */
-  const [modalYtId, setModalYtId] = useState<string | null>(null);
-  const play = useCallback((ytId: string) => setModalYtId(ytId), []);
-  const closeModal = useCallback(() => setModalYtId(null), []);
-
   return (
     <div className="mp-app">
       <Header />
-      <Hero onPlay={play} paused={modalYtId !== null} />
+      <Hero />
 
       <main className="mp-main">
-        <Section id="series" title="Series" items={SERIES} wide onPlay={play} />
+        <Section id="series" title="Series" items={SERIES} wide />
 
         <div className="mp-banner">
           <div className="mp-banner-bg" style={{ background: "linear-gradient(135deg,#2d1060,#0d0820)" }} />
@@ -461,7 +376,7 @@ export default function PlayHome() {
           </div>
         </div>
 
-        <Section id="peliculas" title="Películas" items={PELICULAS} wide onPlay={play} />
+        <Section id="peliculas" title="Películas" items={PELICULAS} wide />
       </main>
 
       <footer className="mp-footer">
@@ -472,7 +387,6 @@ export default function PlayHome() {
         </div>
       </footer>
 
-      {modalYtId && <VideoModal ytId={modalYtId} onClose={closeModal} />}
     </div>
   );
 }

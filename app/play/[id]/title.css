@@ -25,6 +25,12 @@
   transform: scale(1.04);
   animation: tp-settle 1.6s var(--mp-ease) both;
 }
+.tp-hero-bg-empty {
+  background:
+    radial-gradient(ellipse 60% 70% at 75% 35%, color-mix(in srgb, var(--tp-accent) 35%, transparent), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 20% 80%, color-mix(in srgb, var(--tp-accent) 18%, transparent), transparent 70%),
+    var(--mp-bg);
+}
 .tp-hero-shade {
   position: absolute; inset: 0; z-index: -1;
   background:
