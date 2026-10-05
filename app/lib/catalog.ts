@@ -34,8 +34,6 @@ export type Detail = {
   awards?: { label: string; name: string; detail: string }[];
   /** Nota que acompaña a los premios, si se refieren a una parte de la obra. */
   awardsNote?: string;
-  /** Id de IMDb (tt…), fuente de los créditos. */
-  imdb?: string;
 };
 
 export type Title = {
@@ -253,7 +251,6 @@ const TITLES: Title[] = [
         { label: "Selección oficial", name: "Lift-Off Filmmaker Sessions", detail: "2024" },
         { label: "Selección oficial", name: "La Voz de la Infancia", detail: "Ciclo de cortometrajes · 2025" },
       ],
-      imdb: "tt36097002",
     },
   },
   {
@@ -288,7 +285,6 @@ const TITLES: Title[] = [
         { name: "Pato Sloomant" },
         { name: "Solange Verina" },
       ],
-      imdb: "tt17516144",
     },
   },
   {
@@ -330,7 +326,6 @@ const TITLES: Title[] = [
         { name: "Nicolás Galliano", character: "Nahuel Garrido" },
         { name: "Soledad Borinelli" },
       ],
-      imdb: "tt15863326",
     },
   },
   {
@@ -365,7 +360,6 @@ const TITLES: Title[] = [
         { name: "Diego Alonso Gómez", character: "Luis" },
         { name: "Daniel Pacheco Bautista", character: "Eric" },
       ],
-      imdb: "tt36091082",
     },
   },
   {
@@ -416,7 +410,6 @@ const TITLES: Title[] = [
         { label: "Selección oficial", name: "Insólito Fest", detail: "Perú · 2022" },
         { label: "Selección oficial", name: "Lift-Off First-Time Filmmaker Sessions", detail: "Lift-Off Global Network" },
       ],
-      imdb: "tt21102264",
     },
   },
   {
@@ -460,7 +453,6 @@ const TITLES: Title[] = [
       awards: [
         { label: "Selección oficial", name: "Festival de Cine Independiente Argentino", detail: "Argentina" },
       ],
-      imdb: "tt17515854",
     },
   },
   {

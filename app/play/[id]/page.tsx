@@ -67,7 +67,6 @@ export default async function TitlePage({ params }: Props) {
     ...(t.poster ? { image: `https://hivrido.com${t.poster}` } : {}),
     ...(directors.length ? { director: directors.map((name) => ({ "@type": "Person", name })) } : {}),
     ...(cast.length ? { actor: cast.map((c) => ({ "@type": "Person", name: c.name })) } : {}),
-    ...(d?.imdb ? { sameAs: `https://www.imdb.com/title/${d.imdb}/` } : {}),
   };
 
   return (
@@ -120,11 +119,6 @@ export default async function TitlePage({ params }: Props) {
               <a href="#trailer" className="mp-play-btn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
                 {t.ytFull ? "Ver ahora" : "Ver tráiler"}
-              </a>
-            )}
-            {d?.imdb && (
-              <a href={`https://www.imdb.com/title/${d.imdb}/`} target="_blank" rel="noopener noreferrer" className="mp-outline-btn">
-                Ver en IMDb
               </a>
             )}
           </div>
