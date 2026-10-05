@@ -397,7 +397,13 @@ function Hero({ onPlay, paused }: { onPlay: (ytId: string) => void; paused: bool
           <div className="mp-hero-actions">
             <button
               className="mp-play-btn"
-              onClick={() => f.ytId && onPlay(f.ytId)}
+              onClick={() => {
+                if (!f.ytId) return;
+                /* Con restricción de edad el reproductor embebido solo muestra
+                   el aviso de YouTube: se abre el video allá. */
+                if (f.ytExternal) window.open(`https://www.youtube.com/watch?v=${f.ytId}`, "_blank", "noopener");
+                else onPlay(f.ytId);
+              }}
               style={!f.ytId ? { opacity: 0.5, cursor: "not-allowed" } : {}}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>

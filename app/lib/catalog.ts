@@ -19,6 +19,25 @@
 
 export type ContentType = "serie" | "pelicula";
 
+/** Ficha extendida: con esto la obra tiene página propia en /play/<id>. */
+export type Detail = {
+  /** Texto largo de la página; la sinopsis corta queda para la tarjeta. */
+  about: string;
+  /** Rótulo del formato: "Largometraje", "Cortometraje"… */
+  format: string;
+  /** Advertencia de contenido, si la obra la pide. */
+  advisory?: string;
+  crew: { role: string; name: string }[];
+  cast: { name: string; character?: string }[];
+  /** Antologías: los relatos que la componen, sin spoilers. */
+  chapters?: { title: string; theme: string; text: string }[];
+  awards?: { label: string; name: string; detail: string }[];
+  /** Nota que acompaña a los premios, si se refieren a una parte de la obra. */
+  awardsNote?: string;
+  /** Id de IMDb (tt…), fuente de los créditos. */
+  imdb?: string;
+};
+
 export type Title = {
   /** Slug estable: identifica la ficha y sirve de key en las listas. */
   id: string;
@@ -37,6 +56,8 @@ export type Title = {
   href?: string;
   /** Trailer en YouTube, si lo hay. */
   ytId?: string;
+  /** YouTube no deja embeberlo (restricción de edad): se abre allá. */
+  ytExternal?: boolean;
   /** Solo películas. */
   duration?: string;
   /** Solo series. */
@@ -45,6 +66,7 @@ export type Title = {
   hero?: { image: string; color: string };
   /** Datos provisorios, pendientes de completar. */
   isPlaceholder?: boolean;
+  detail?: Detail;
 };
 
 export const CATALOG: Title[] = [
@@ -184,9 +206,53 @@ export const CATALOG: Title[] = [
     synopsis:
       "Cinco historias, un mismo barrio. En Virreyes, la violencia no toca la puerta: ya vive adentro. Escrita y dirigida por Nicolás Galliano. +18.",
     ytId: "crEni6LKPWs",
+    ytExternal: true,
     badge: "NUEVA",
     poster: "/images/peliculas/virreyes.webp",
     hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A" },
+    href: "/play/erase-una-vez-en-virreyes",
+    /* Créditos de IMDb (tt36097002) cruzados con el dossier: IMDb trae los
+       personajes, el dossier el resto del elenco. Los relatos van con la
+       sinopsis corta del dossier, no con el tratamiento, que tiene spoilers. */
+    detail: {
+      format: "Largometraje · Antología en cinco relatos",
+      about:
+        "Frente a cámara, un periodista relata los hechos que sacuden a Virreyes, una localidad humilde de la zona norte del Gran Buenos Aires. Su voz enhebra cinco historias independientes: un joven desesperado por sacar a su madre de la pobreza, una adolescente que carga con su casa y con el acoso escolar, una ex pareja atrapada en lo que quedó de un amor tóxico, una mujer acomodada que desprecia el barrio al que acaba de mudarse y dos amigos frente a un crimen que ya no tiene vuelta atrás.",
+      advisory:
+        "Violencia explícita, violencia sexual, suicidio y consumo de drogas. Solo para mayores de 18 años.",
+      crew: [
+        { role: "Guion y dirección", name: "Nicolás Galliano" },
+        { role: "Producción", name: "Nicolás Galliano" },
+        { role: "Fotografía", name: "Vince Ruberto" },
+        { role: "Productora", name: "Casa Nostra Films" },
+      ],
+      cast: [
+        { name: "Gregorio Barrios", character: "Cristian" },
+        { name: "Sol Borinelli" },
+        { name: "Tomás De Raco" },
+        { name: "Lugo Angel", character: "Momia" },
+        { name: "José Triana" },
+      ],
+      chapters: [
+        { title: "Bailando con el diablo", theme: "Capitalismo", text: "Cristian, 19 años y sin trabajo, acepta la iniciación de una banda del barrio a cambio de dinero fácil." },
+        { title: "Lolita revancha", theme: "Bullying", text: "Lolita sostiene su casa sola mientras dos compañeras convierten la escuela en su infierno." },
+        { title: "Andrómeda", theme: "Relaciones tóxicas", text: "Ana empieza de nuevo. Matías no puede soltar." },
+        { title: "Chimba", theme: "Discriminación", text: "Una pareja recién llegada, un jardinero bajo sospecha y un asalto comandado por alguien a quien nadie conoce." },
+        { title: "Colapso", theme: "Violencia de género", text: "Esteban le pide ayuda a su mejor amigo después de una noche que terminó en lo peor." },
+      ],
+      awardsNote:
+        "Recorrido de Bailando con el diablo, el primer relato, filmado como pieza piloto.",
+      awards: [
+        { label: "Mejor guion original", name: "Festival RENUAC", detail: "2.ª edición" },
+        { label: "Mejor dirección", name: "Festival RENUAC", detail: "2.ª edición" },
+        { label: "Award winner", name: "Festival RENUAC", detail: "2.ª edición" },
+        { label: "Selección oficial", name: "Festival RENUAC Chile", detail: "2024" },
+        { label: "Selección oficial", name: "Premios Masho", detail: "Cartago, Costa Rica · 2025" },
+        { label: "Selección oficial", name: "Lift-Off Filmmaker Sessions", detail: "2024" },
+        { label: "Selección oficial", name: "La Voz de la Infancia", detail: "Ciclo de cortometrajes · 2025" },
+      ],
+      imdb: "tt36097002",
+    },
   },
   {
     /* Galliano. Sinopsis del propio autor; sin `year` ni `duration`
@@ -202,6 +268,27 @@ export const CATALOG: Title[] = [
     badge: "NUEVA",
     poster: "/images/peliculas/3am.webp",
     hero: { image: "/images/peliculas/3am.webp", color: "#B3121B" },
+    href: "/play/3-am",
+    /* Elenco de IMDb (tt17516144), que no carga personajes. */
+    detail: {
+      format: "Cortometraje",
+      about:
+        "Una joven empieza su nuevo empleo en una estación de servicio y, para pagar su derecho de piso, la mandan a trabajar en el turno noche. Le dan una sola advertencia, y tiene que respetarla: no atender el teléfono a las 3 AM.",
+      crew: [
+        { role: "Guion y dirección", name: "Nicolás Galliano" },
+        { role: "Arte", name: "Héctor Cañas" },
+      ],
+      cast: [
+        { name: "Diego Alonso Gómez" },
+        { name: "Fabio Di Tomaso" },
+        { name: "Micol Estévez" },
+        { name: "Esteban Prol" },
+        { name: "Gonzalo Quintana" },
+        { name: "Pato Sloomant" },
+        { name: "Solange Verina" },
+      ],
+      imdb: "tt17516144",
+    },
   },
   {
     id: "chamame",
@@ -245,4 +332,7 @@ export const SERIES = CATALOG.filter((t) => t.type === "serie");
 export const PELICULAS = CATALOG.filter((t) => t.type === "pelicula");
 
 /** Slider de portada: solo fichas con trailer y arte propio. */
+/** Títulos con página propia en /play/<id>. */
+export const WITH_DETAIL = CATALOG.filter((t) => t.detail);
+
 export const FEATURED = CATALOG.filter((t) => t.hero && t.ytId);

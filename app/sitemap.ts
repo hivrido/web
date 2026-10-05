@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { ARTISTAS } from "./lib/artistas";
+import { WITH_DETAIL } from "./lib/catalog";
 
 export const dynamic = "force-static";
 
@@ -83,6 +84,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/artistas/${a.slug}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...WITH_DETAIL.map((t) => ({
+      url: `${baseUrl}${t.href}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
     {
