@@ -57,7 +57,7 @@ function Card({ item, index, wide, onPlay }: {
      pidiera: "PRONTO" es el primer caso que lo necesita, y la distinción
      importa —una ficha que no reproduce tiene que avisarlo desde la tapa. */
   const badgeClass =
-    item.badge === "NEW" || item.badge === "SERIE"
+    item.badge === "NUEVA" || item.badge === "SERIE"
       ? "new"
       : item.badge === "PRONTO"
       ? "soon"

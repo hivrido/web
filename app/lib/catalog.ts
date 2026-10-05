@@ -184,7 +184,7 @@ export const CATALOG: Title[] = [
     synopsis:
       "Cinco historias, un mismo barrio. En Virreyes, la violencia no toca la puerta: ya vive adentro. Escrita y dirigida por Nicolás Galliano. +18.",
     ytId: "crEni6LKPWs",
-    badge: "NEW",
+    badge: "NUEVA",
     poster: "/images/peliculas/virreyes.webp",
     hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A" },
   },
@@ -199,7 +199,7 @@ export const CATALOG: Title[] = [
     synopsis:
       "Una joven empieza su nuevo empleo en una estación de servicio y, para pagar su derecho de piso, la mandan al turno noche. Una sola advertencia tiene que respetar: no atender el teléfono a las 3 AM.",
     ytId: "2kaHwNUudbY",
-    badge: "NEW",
+    badge: "NUEVA",
     poster: "/images/peliculas/3am.webp",
     hero: { image: "/images/peliculas/3am.webp", color: "#B3121B" },
   },
@@ -236,7 +236,7 @@ export const CATALOG: Title[] = [
     duration: "—",
     genre: "Drama",
     synopsis: "Sinopsis provisoria. Pendiente de completar con el material definitivo.",
-    badge: "NEW",
+    badge: "NUEVA",
     isPlaceholder: true,
   },
 ];
