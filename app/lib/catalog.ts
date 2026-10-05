@@ -173,6 +173,23 @@ export const CATALOG: Title[] = [
 
   /* ── PELÍCULAS ──────────────────────────────────────────────────────── */
   {
+    /* Alianza con Nicolás "Niky" Galliano (Casa Nostra Films). Datos del
+       dossier de prensa; sin `rating` porque no hay puntaje real. Portada y
+       fondo salen del thumbnail del tráiler en YouTube. */
+    id: "erase-una-vez-en-virreyes",
+    title: "Érase una vez en Virreyes",
+    type: "pelicula",
+    year: "2023",
+    duration: "89m",
+    genre: "Drama social · Antología",
+    synopsis:
+      "Cinco historias, un mismo barrio. En Virreyes, la violencia no toca la puerta: ya vive adentro. Escrita y dirigida por Nicolás Galliano. +18.",
+    ytId: "crEni6LKPWs",
+    badge: "NEW",
+    poster: "/images/peliculas/virreyes.jpg",
+    hero: { image: "/images/peliculas/virreyes.jpg", color: "#D1202A" },
+  },
+  {
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
