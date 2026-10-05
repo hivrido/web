@@ -424,6 +424,51 @@ export const CATALOG: Title[] = [
     },
   },
   {
+    /* Homenaje a Pulp Fiction —el video se titula "Mia (Pulp Fiction 2)"—.
+       Elenco y personajes de IMDb (tt17515854), equipo de la descripción del
+       video, que es el corto entero. Sin sinopsis de trama publicada: va la
+       bajada del afiche. */
+    id: "mia",
+    title: "Mia",
+    type: "pelicula",
+    duration: "11m",
+    genre: "Policial",
+    synopsis:
+      "Una mujer. Un pasado. Más de un secreto. Un homenaje a Pulp Fiction escrito y dirigido por Nicolás Galliano.",
+    ytId: "WthK3XKvDIQ",
+    ytFull: true,
+    badge: "NUEVA",
+    poster: "/images/peliculas/mia.webp",
+    hero: { image: "/images/peliculas/mia.webp", color: "#E0A818" },
+    href: "/play/mia",
+    detail: {
+      format: "Cortometraje",
+      about:
+        "Una mujer. Un pasado. Más de un secreto. Nicolás Galliano lleva a Buenos Aires a Mia, el personaje de Pulp Fiction, en un policial con Malena Luchetti, Micol Estévez y la participación de Pablo Alarcón. Con música de Loquero. Una producción de Insurrectas Producciones.",
+      crew: [
+        { role: "Guion y dirección", name: "Nicolás Galliano" },
+        { role: "Fotografía y cámara", name: "Flope Velozo" },
+        { role: "Dirección de arte", name: "Canarius Beta" },
+        { role: "Arte", name: "Héctor Cañas" },
+        { role: "Sonido", name: "Luciérnaga Sonido" },
+        { role: "Montaje", name: "Mile Szapiro" },
+        { role: "Asistencia de dirección", name: "Santiago F. Grassi" },
+        { role: "Maquillaje", name: "Lourdes Vázquez" },
+        { role: "Música", name: "Loquero" },
+        { role: "Productora", name: "Insurrectas Producciones" },
+      ],
+      cast: [
+        { name: "Malena Luchetti", character: "Mia" },
+        { name: "Micol Estévez", character: "Roma" },
+        { name: "Pablo Alarcón", character: "Marcelo" },
+      ],
+      awards: [
+        { label: "Selección oficial", name: "Festival de Cine Independiente Argentino", detail: "Argentina" },
+      ],
+      imdb: "tt17515854",
+    },
+  },
+  {
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
