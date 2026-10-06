@@ -158,6 +158,29 @@ export default async function TitlePage({ params }: Props) {
         </section>
       )}
 
+      {/* ── MÁS VIDEOS ── */}
+      {d?.videos && (
+        <section className="tp-wrap tp-section">
+          <h2 className="tp-h2">Más videos</h2>
+          <ul className="tp-videos">
+            {d.videos.map((v) => (
+              <li key={v.ytId}>
+                <div className="tp-player tp-player-sm">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${v.ytId}?rel=0&modestbranding=1`}
+                    title={`${v.label} de ${t.title}`}
+                    loading="lazy"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <span className="tp-video-label">{v.label}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* ── SINOPSIS + FICHA ── */}
       {about && (
       <section className="tp-wrap tp-section tp-split">

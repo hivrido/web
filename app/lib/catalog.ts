@@ -32,6 +32,8 @@ export type Detail = {
   /** Antologías: los relatos que la componen, sin spoilers. */
   chapters?: { title: string; theme: string; text: string }[];
   awards?: { label: string; name: string; detail: string }[];
+  /** Videos además del principal (`ytId`): teasers, adelantos, extras. */
+  videos?: { ytId: string; label: string }[];
   /** Nota que acompaña a los premios, si se refieren a una parte de la obra. */
   awardsNote?: string;
 };
@@ -410,6 +412,7 @@ const TITLES: Title[] = [
         { label: "Selección oficial", name: "Insólito Fest", detail: "Perú · 2022" },
         { label: "Selección oficial", name: "Lift-Off First-Time Filmmaker Sessions", detail: "Lift-Off Global Network" },
       ],
+      videos: [{ ytId: "QKOy2yrY65U", label: "Teaser" }],
     },
   },
   {
