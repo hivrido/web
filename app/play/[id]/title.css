@@ -70,6 +70,69 @@
 .tp-lead { font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); max-width: 58ch; margin-bottom: 30px; }
 .tp-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
+/* Llamado de la ficha (Cuchillo Paz → casting). Lleva el mismo haz que
+   recorre el borde de las situaciones del casting, y al pasar el puntero
+   late: dos golpes cortos y un respiro, como un pulso. */
+@property --tp-haz {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes tp-haz-giro { to { --tp-haz: 360deg; } }
+@keyframes tp-latido {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.07); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.05); }
+  70% { transform: scale(1); }
+}
+.tp-cta {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 12px;
+  margin-top: 14px;
+  padding: 18px 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(124,58,237,.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  color: #fff;
+  box-shadow: 0 12px 40px -14px rgba(124,58,237,.7);
+  transition: background .4s var(--mp-ease), box-shadow .4s var(--mp-ease);
+}
+.tp-cta::before {
+  content: "";
+  position: absolute; inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--tp-haz),
+    transparent 0deg,
+    transparent 230deg,
+    rgba(124, 58, 237, 0.7) 300deg,
+    #e9ddff 340deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: tp-haz-giro 4s linear infinite;
+  pointer-events: none;
+}
+.tp-cta svg { transition: transform .4s var(--mp-ease); }
+.tp-cta:hover,
+.tp-cta:focus-visible {
+  background: rgba(124,58,237,.3);
+  box-shadow: 0 16px 56px -12px rgba(124,58,237,.95);
+  animation: tp-latido 1.2s ease-in-out infinite;
+}
+.tp-cta:hover svg { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) {
+  .tp-cta::before, .tp-cta:hover { animation: none; }
+}
+
 /* ── SECCIONES ── */
 .tp-section { padding-top: 72px; }
 .tp-h2 {

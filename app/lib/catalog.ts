@@ -71,6 +71,8 @@ export type Title = {
   seasons?: string;
   /** Fondo del slider destacado. */
   hero?: { image: string; color: string };
+  /** Llamado propio de la ficha, debajo de la sinopsis (p. ej. el casting). */
+  cta?: { label: string; href: string };
   /** Datos provisorios, pendientes de completar. */
   isPlaceholder?: boolean;
   detail?: Detail;
@@ -98,6 +100,8 @@ const TITLES: Title[] = [
        16:9, así que al recortarlo se perdía la mitad del título. La genera
        scripts/build-casting-assets.mjs desde el mismo máster. */
     poster: "/images/series/cuchillo-paz.webp",
+    /* La serie se está armando con el casting abierto: la ficha lleva ahí. */
+    cta: { label: "Sumate al casting", href: "/casting" },
   },
   {
     id: "el-docke",

@@ -116,6 +116,12 @@ export default async function TitlePage({ params }: Props) {
             {t.isPlaceholder ? `${kind} en preparación. Muy pronto, toda la información acá.` : t.synopsis}
           </p>
           <div className="tp-actions">
+            {t.cta && (
+              <Link href={t.cta.href} className="tp-cta">
+                <span>{t.cta.label}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </Link>
+            )}
             {t.ytId && (
               <a href="#trailer" className="mp-play-btn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
