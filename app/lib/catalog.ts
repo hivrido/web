@@ -33,7 +33,7 @@ export type Detail = {
   chapters?: { title: string; theme: string; text: string }[];
   awards?: { label: string; name: string; detail: string }[];
   /** Videos además del principal (`ytId`): teasers, adelantos, extras. */
-  videos?: { ytId: string; label: string }[];
+  videos?: { ytId: string; label: string; zoom?: number }[];
   /** Nota que acompaña a los premios, si se refieren a una parte de la obra. */
   awardsNote?: string;
 };
@@ -57,6 +57,10 @@ export type Title = {
   href?: string;
   /** Trailer en YouTube, si lo hay. */
   ytId?: string;
+  /** Ampliación del video para recortar sus franjas negras (1 = sin recorte).
+      Se mide sobre la miniatura de YouTube: es la proporción entre el cuadro
+      16:9 y la imagen útil. */
+  ytZoom?: number;
   /** El video de `ytId` es la obra completa, no un tráiler. */
   ytFull?: boolean;
   /** YouTube no deja embeberlo (restricción de edad): se abre allá. */
@@ -266,6 +270,7 @@ const TITLES: Title[] = [
     synopsis:
       "Una joven empieza su nuevo empleo en una estación de servicio y, para pagar su derecho de piso, la mandan al turno noche. Una sola advertencia tiene que respetar: no atender el teléfono a las 3 AM.",
     ytId: "2kaHwNUudbY",
+    ytZoom: 1.25,
     badge: "NUEVA",
     poster: "/images/peliculas/3am.webp",
     hero: { image: "/images/peliculas/3am.webp", color: "#B3121B" },
@@ -302,6 +307,7 @@ const TITLES: Title[] = [
     synopsis:
       "Cortometraje de terror inspirado en hechos reales. Con Magui Bravi y Nicolás Galliano, dirigido por Nicolás Ríos.",
     ytId: "ui2zbEBJDFc",
+    ytZoom: 1.25,
     ytFull: true,
     badge: "NUEVA",
     poster: "/images/peliculas/esnob.webp",
@@ -343,6 +349,7 @@ const TITLES: Title[] = [
     synopsis:
       "Nina y Rafa son una típica pareja porteña. Una invitación a cenar en un restorán glamoroso puede cambiarles la vida: ahí, salir con vida depende de una sola cosa, el rectángulo de ángeles.",
     ytId: "-vNXLP9y0cE",
+    ytZoom: 1.34,
     badge: "NUEVA",
     poster: "/images/peliculas/rectangulo.webp",
     hero: { image: "/images/peliculas/rectangulo.webp", color: "#C8102E" },
@@ -377,6 +384,7 @@ const TITLES: Title[] = [
     synopsis:
       "Cuando el apetito se vuelve violencia. La segunda entrega de Hungry, escrita y dirigida por Nicolás Galliano.",
     ytId: "qsDqrhUNEss",
+    ytZoom: 1.25,
     ytFull: true,
     badge: "NUEVA",
     poster: "/images/peliculas/matanza.webp",
@@ -471,6 +479,7 @@ const TITLES: Title[] = [
     synopsis:
       "Algunos secretos no deberían ser descubiertos. Un cortometraje de terror dirigido por Nicolás Galliano.",
     ytId: "jlgGNrOl3yA",
+    ytZoom: 1.25,
     badge: "NUEVA",
     poster: "/images/peliculas/armario-de-dani.webp",
     hero: { image: "/images/peliculas/armario-de-dani.webp", color: "#D0141E" },

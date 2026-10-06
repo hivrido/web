@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import LogoAnimated from "../components/ui/LogoAnimated";
+import CinePlayer from "../components/play/CinePlayer";
 import "../components/play/play.css";
 
 export default OkupasPageLegacy;
@@ -25,6 +26,8 @@ const EPISODES = [
 
 function OkupasPageLegacy() {
   const [activeEp, setActiveEp] = useState(0); // index in EPISODES
+  /* El primer episodio espera al play; elegir uno de la lista ya es pedirlo. */
+  const [picked, setPicked] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -34,7 +37,6 @@ function OkupasPageLegacy() {
   }, []);
 
   const current = EPISODES[activeEp];
-  const embedSrc = `https://www.youtube.com/embed/${current.ytId}?autoplay=1&rel=0&modestbranding=1&fs=1`;
 
   return (
     <div className="mp-app" style={{ background: "#0a0a0e", minHeight: "100vh" }}>
@@ -120,14 +122,15 @@ function OkupasPageLegacy() {
                     </div>
                   </div>
                 ) : (
-                  <iframe
-                    key={activeEp}
-                    src={embedSrc}
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
-                    title={`Okupas - ${current.title}`}
-                  />
+                  <div style={{ position: "absolute", inset: 0 }}>
+                    <CinePlayer
+                      key={current.ytId}
+                      ytId={current.ytId}
+                      title={`Okupas - ${current.title}`}
+                      poster={`/images/okupas/capitulo${current.ep}.jpg`}
+                      autoStart={picked}
+                    />
+                  </div>
                 )}
               </div>
 
@@ -180,7 +183,7 @@ function OkupasPageLegacy() {
                 {EPISODES.map((ep, i) => (
                   <button
                     key={ep.ep}
-                    onClick={() => setActiveEp(i)}
+                    onClick={() => { setActiveEp(i); setPicked(true); }}
                     style={{
                       width: "100%", display: "flex", alignItems: "center", gap: "14px",
                       padding: "14px 20px", border: "none",

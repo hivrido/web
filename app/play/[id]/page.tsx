@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import LogoAnimated from "../../components/ui/LogoAnimated";
+import CinePlayer from "../../components/play/CinePlayer";
 import { WITH_PAGE } from "../../lib/catalog";
 import "../../components/play/play.css";
 import "./title.css";
@@ -146,12 +147,12 @@ export default async function TitlePage({ params }: Props) {
             </a>
           ) : (
           <div className="tp-player">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${t.ytId}?rel=0&modestbranding=1`}
-              title={t.ytFull ? t.title : `Tráiler de ${t.title}`}
-              loading="lazy"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
+            <CinePlayer
+              ytId={t.ytId}
+              title={t.title}
+              poster={t.poster}
+              zoom={t.ytZoom}
+              label={t.ytFull ? "Ver ahora" : "Ver tráiler"}
             />
           </div>
           )}
@@ -166,13 +167,7 @@ export default async function TitlePage({ params }: Props) {
             {d.videos.map((v) => (
               <li key={v.ytId}>
                 <div className="tp-player tp-player-sm">
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${v.ytId}?rel=0&modestbranding=1`}
-                    title={`${v.label} de ${t.title}`}
-                    loading="lazy"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <CinePlayer ytId={v.ytId} title={`${v.label} de ${t.title}`} zoom={v.zoom} />
                 </div>
                 <span className="tp-video-label">{v.label}</span>
               </li>

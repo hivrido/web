@@ -759,3 +759,113 @@ html:has(.mp-app) body {
 
 
 }
+
+/* ── CINE PLAYER ──
+   Reproductor propio (CinePlayer.tsx): YouTube pone la imagen y nada más. */
+.cp {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+}
+.cp.is-fs { aspect-ratio: auto; width: 100vw; height: 100vh; }
+.cp-frame {
+  position: absolute; inset: 0;
+  transform-origin: center;
+  pointer-events: none;
+}
+.cp-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cp-shield {
+  position: absolute; inset: 0; z-index: 1;
+  background: transparent; border: 0; cursor: pointer;
+}
+
+.cp-cover {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  background-size: cover; background-position: center;
+  animation: cp-fade .5s var(--mp-ease) both;
+}
+.cp-cover::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.15), rgba(0,0,0,.55));
+  transition: background .4s var(--mp-ease);
+}
+.cp-cover.is-dim::before { background: rgba(6,6,10,.62); }
+.cp-cover:hover::before { background: radial-gradient(ellipse at center, rgba(0,0,0,.05), rgba(0,0,0,.45)); }
+.cp-cover.is-dim:hover::before { background: rgba(6,6,10,.5); }
+
+.cp-big-play {
+  position: relative;
+  width: 76px; height: 76px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,.8);
+  cursor: pointer;
+  transition: transform .35s var(--mp-ease), background .35s var(--mp-ease), border-color .35s var(--mp-ease);
+}
+.cp-big-play svg { margin-left: 3px; }
+.cp-cover:hover .cp-big-play { transform: scale(1.08); background: var(--tp-accent, var(--mp-violet)); border-color: transparent; }
+.cp-label {
+  position: relative;
+  font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+}
+.cp-spinner {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.25); border-top-color: #fff;
+  animation: cp-spin .8s linear infinite;
+}
+
+.cp-bar {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+  display: flex; align-items: center; gap: 12px;
+  padding: 28px 18px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,.8), transparent);
+  opacity: 1;
+  transition: opacity .35s var(--mp-ease);
+}
+/* Mientras reproduce, la barra se esconde y vuelve al pasar el mouse. En
+   pantallas táctiles no hay hover: queda visible. */
+@media (hover: hover) {
+  .cp.is-playing .cp-bar { opacity: 0; }
+  .cp.is-playing:hover .cp-bar,
+  .cp.is-playing:focus-within .cp-bar { opacity: 1; }
+}
+.cp-btn {
+  flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: 8px;
+  display: grid; place-items: center;
+  color: #fff; background: transparent; border: 0; cursor: pointer;
+  transition: background .2s;
+}
+.cp-btn:hover { background: rgba(255,255,255,.12); }
+.cp-time { flex-shrink: 0; font-size: 12px; font-variant-numeric: tabular-nums; color: rgba(255,255,255,.75); }
+.cp-seek {
+  flex: 1; min-width: 0; height: 4px;
+  appearance: none; -webkit-appearance: none;
+  border-radius: 4px; cursor: pointer;
+  background: linear-gradient(to right, var(--tp-accent, var(--mp-violet)) var(--cp-pct, 0%), rgba(255,255,255,.25) var(--cp-pct, 0%));
+}
+.cp-seek::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,.15);
+}
+.cp-seek::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: #fff; }
+
+@keyframes cp-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cp-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .cp-big-play { width: 60px; height: 60px; }
+  .cp-bar { gap: 6px; padding: 22px 8px 8px; }
+  .cp-time:last-of-type { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cp-cover { animation: none; }
+}
