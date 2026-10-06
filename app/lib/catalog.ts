@@ -456,6 +456,43 @@ const TITLES: Title[] = [
     },
   },
   {
+    /* Dirige Galliano sobre guion de Maxi Velloso; la produce Lara Torres, que
+       además actúa (IMDb la lista invertida, "Torres Lara"). Elenco y equipo de
+       IMDb y de la descripción del teaser. Sin sinopsis de trama publicada: va
+       la bajada del afiche, y el laurel de Sitges sale del afiche también. */
+    id: "el-armario-de-dani",
+    title: "El armario de Dani",
+    type: "pelicula",
+    duration: "—",
+    genre: "Terror",
+    synopsis:
+      "Algunos secretos no deberían ser descubiertos. Un cortometraje de terror dirigido por Nicolás Galliano.",
+    ytId: "jlgGNrOl3yA",
+    badge: "NUEVA",
+    poster: "/images/peliculas/armario-de-dani.webp",
+    hero: { image: "/images/peliculas/armario-de-dani.webp", color: "#D0141E" },
+    detail: {
+      format: "Cortometraje",
+      about:
+        "Algunos secretos no deberían ser descubiertos. Un cortometraje de terror escrito por Maxi Velloso y dirigido por Nicolás Galliano, producido por Lara Torres, con Luciano Cazaux como Dani.",
+      crew: [
+        { role: "Dirección", name: "Nicolás Galliano" },
+        { role: "Guion", name: "Maxi Velloso" },
+        { role: "Producción", name: "Lara Torres" },
+        { role: "Fotografía", name: "Leo Belletti" },
+        { role: "Productora", name: "Insurrectas Producciones" },
+      ],
+      cast: [
+        { name: "Luciano Cazaux", character: "Dani" },
+        { name: "Lara Torres", character: "Helena" },
+        { name: "Camilo Villate", character: "Dani adolescente" },
+      ],
+      awards: [
+        { label: "Sección oficial", name: "Sitges · Brigadoon", detail: "2022" },
+      ],
+    },
+  },
+  {
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
