@@ -139,7 +139,7 @@ export default function Expediente() {
         </motion.div>
 
         <AnimatePresence>
-          {seleccion && <Ficha key={`${seleccion.tipo}-${seleccion.id}`} seleccion={seleccion} onCerrar={cerrar} onElegir={setSeleccion} />}
+          {seleccion && <Ficha key="ficha" seleccion={seleccion} onCerrar={cerrar} onElegir={setSeleccion} />}
         </AnimatePresence>
       </div>
     </section>

@@ -383,7 +383,7 @@ body:has(.ad-root) {
   position: relative;
   padding: 96px 0 110px;
   background-color: var(--ad-pared);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='72'%3E%3Cpath d='M0 1H120M0 37H120M60 1V37M1 37V72' fill='none' stroke='%23786040' stroke-opacity='.09' stroke-width='2'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='72'%3E%3Cpath d='M0 1H120M0 37H120M60 1V37M1 37V72' fill='none' stroke='%236a2ac0' stroke-opacity='.09' stroke-width='2'/%3E%3C/svg%3E");
 }
 .ad-ayuda {
   margin-top: 10px;
@@ -416,20 +416,24 @@ body:has(.ad-root) {
   transform-origin: 50% 60%;
 }
 
+/* El tablero, en la paleta de ella: fieltro violeta con un marco violeta
+   hondo y un filete dorado, en lugar del corcho marrón. */
 .ad-corcho {
   position: absolute;
   inset: 0;
   border-radius: calc(var(--u) * 10);
-  background-color: #b98a5c;
+  background-color: #4b1f96;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .2 0 0 0 0 .08 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 30% 20%, rgba(255, 220, 170, 0.35), transparent 60%),
-    radial-gradient(ellipse at 80% 90%, rgba(60, 30, 10, 0.25), transparent 60%);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .06 0 0 0 0 .32 0 0 0 .42 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 30% 15%, rgba(255, 201, 74, 0.22), transparent 60%),
+    radial-gradient(ellipse at 85% 95%, rgba(139, 212, 80, 0.14), transparent 55%),
+    linear-gradient(160deg, #5a27b0, #3b1683);
   box-shadow:
-    0 0 0 calc(var(--u) * 18) #6e4524,
-    0 0 0 calc(var(--u) * 21) #4f2f16,
-    inset 0 0 calc(var(--u) * 60) rgba(60, 30, 10, 0.45),
-    0 calc(var(--u) * 50) calc(var(--u) * 90) calc(var(--u) * -10) rgba(60, 30, 10, 0.45);
+    0 0 0 calc(var(--u) * 3) rgba(255, 201, 74, 0.75),
+    0 0 0 calc(var(--u) * 18) var(--ad-violeta-hondo),
+    0 0 0 calc(var(--u) * 21) #1b0f33,
+    inset 0 0 calc(var(--u) * 70) rgba(18, 8, 42, 0.55),
+    0 calc(var(--u) * 50) calc(var(--u) * 90) calc(var(--u) * -10) rgba(26, 10, 60, 0.5);
 }
 
 .ad-mapa-hoja {
@@ -448,7 +452,7 @@ body:has(.ad-root) {
     linear-gradient(rgba(31, 155, 160, 0.06) 1px, transparent 1px) 0 0 / calc(var(--u) * 40) calc(var(--u) * 40),
     linear-gradient(90deg, rgba(31, 155, 160, 0.06) 1px, transparent 1px) 0 0 / calc(var(--u) * 40) calc(var(--u) * 40),
     #fbf6ea;
-  box-shadow: 0 calc(var(--u) * 14) calc(var(--u) * 30) rgba(40, 20, 0, 0.35);
+  box-shadow: 0 calc(var(--u) * 14) calc(var(--u) * 30) rgba(26, 10, 60, 0.35);
   rotate: -0.6deg;
 }
 .ad-mapa-zona {
@@ -476,40 +480,46 @@ body:has(.ad-root) {
 .ad-region {
   cursor: pointer;
   outline: none;
-  transition: filter 0.3s;
 }
 .ad-depto {
   fill: var(--c);
   fill-opacity: 0;
-  stroke: #3b2a1a;
-  stroke-width: 1.2;
+  stroke: rgba(36, 22, 63, 0.7);
+  stroke-width: 1.1;
   stroke-linejoin: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   transition: fill-opacity 0.35s ease;
 }
 .is-visible .ad-depto {
-  fill-opacity: 0.22;
+  fill-opacity: 0.5;
   stroke-dashoffset: 0;
   transition: fill-opacity 0.35s ease, stroke-dashoffset 1.8s cubic-bezier(0.65, 0, 0.35, 1);
   transition-delay: 0s, calc(0.2s + var(--i) * 0.12s);
 }
-.is-visible .ad-region.is-sobre .ad-depto {
-  fill-opacity: 0.55;
+/* La región resaltada se levanta del papel: una copia encima, más
+   saturada, con su sombra proyectada abajo a la derecha. */
+.ad-region-alzada {
+  pointer-events: none;
+  translate: -3px -9px;
+  filter: drop-shadow(5px 12px 7px rgba(26, 10, 60, 0.45));
+  animation: ad-alzar 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.is-visible .ad-region.is-activa .ad-depto {
-  fill-opacity: 0.78;
-}
-.ad-region.is-activa,
-.ad-region.is-sobre {
-  filter: drop-shadow(0 0 10px var(--c));
+.ad-region-alzada path {
+  fill: var(--c);
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
 }
 .ad-region:focus-visible .ad-depto {
   stroke: var(--ad-tinta);
   stroke-width: 3;
 }
 .ad-mapa-rotulos text {
-  fill: rgba(36, 22, 63, 0.45);
+  fill: rgba(36, 22, 63, 0.78);
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 3px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -548,14 +558,14 @@ body:has(.ad-root) {
   transform-origin: 50% calc(var(--u) * 12);
   transition: rotate 0.45s cubic-bezier(0.22, 1, 0.36, 1), translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.45s, opacity 0.35s, filter 0.35s;
-  box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 22) rgba(40, 20, 0, 0.38);
+  box-shadow: 0 calc(var(--u) * 10) calc(var(--u) * 22) rgba(26, 10, 60, 0.38);
 }
 .ad-pieza:hover,
 .ad-pieza:focus-visible,
 .ad-pieza.is-activa {
   rotate: 0deg;
   translate: 0 0 calc(var(--u) * 46);
-  box-shadow: 0 calc(var(--u) * 26) calc(var(--u) * 40) rgba(40, 20, 0, 0.42);
+  box-shadow: 0 calc(var(--u) * 26) calc(var(--u) * 40) rgba(26, 10, 60, 0.42);
 }
 .ad-pieza.is-activa {
   outline: calc(var(--u) * 4) solid var(--ad-oro);
@@ -750,14 +760,14 @@ body:has(.ad-root) {
 }
 .ad-hilo {
   fill: none;
-  stroke: #c81e1e;
+  stroke: var(--ad-naranja);
   stroke-width: 2.6;
   stroke-linecap: round;
   transition: stroke 0.3s, stroke-width 0.3s;
 }
 .ad-hilo-sombra {
   fill: none;
-  stroke: #2a1405;
+  stroke: #12082a;
   stroke-width: 2.6;
   opacity: 0;
   transition: opacity 0.6s 1.6s;
@@ -768,30 +778,46 @@ body:has(.ad-root) {
 .ad-hilos g {
   transition: opacity 0.35s;
 }
+/* En reposo los hilos bajan un poco para que el mapa se lea; al elegir
+   algo, los suyos se encienden en dorado. */
+.ad-hilos g {
+  opacity: 0.72;
+}
+.ad-hilos g.is-on {
+  opacity: 1;
+}
 .ad-hilos g.is-on .ad-hilo {
-  stroke: #ff2b2b;
+  stroke: var(--ad-oro);
   stroke-width: 4.2;
-  filter: drop-shadow(0 0 4px rgba(255, 90, 90, 0.85));
+  filter: drop-shadow(0 0 5px rgba(255, 201, 74, 0.9));
 }
 .ad-hilos g.is-off {
   opacity: 0.16;
 }
 
-/* La ficha: carpeta manila al costado de la pizarra. */
+/* La ficha: una carpeta que se abre en el centro de la pantalla. */
+.ad-ficha-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(18, 8, 42, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
 .ad-ficha {
-  position: absolute;
-  top: 28px;
-  right: clamp(28px, 4vw, 60px);
-  z-index: 20;
-  width: min(370px, 42%);
-  max-height: calc(100% - 56px);
+  position: relative;
+  width: min(460px, 100%);
+  max-height: min(86svh, 780px);
   overflow: auto;
   padding: 26px 24px 24px;
   border-radius: 4px 16px 16px 16px;
   border-top: 6px solid var(--c, var(--ad-violeta));
   background: linear-gradient(180deg, #fbf1dc, #f4e3c0);
   color: var(--ad-tinta);
-  box-shadow: 0 30px 60px -20px rgba(40, 20, 0, 0.55), 0 0 0 1px rgba(110, 69, 36, 0.15);
+  box-shadow: 0 40px 80px -24px rgba(18, 8, 42, 0.7), 0 0 0 1px rgba(106, 42, 192, 0.15);
   overscroll-behavior: contain;
 }
 .ad-ficha-solapa {
@@ -838,7 +864,7 @@ body:has(.ad-root) {
   margin-bottom: 16px;
   border: 8px solid #fff;
   object-fit: cover;
-  box-shadow: 0 10px 24px -10px rgba(40, 20, 0, 0.5);
+  box-shadow: 0 10px 24px -10px rgba(26, 10, 60, 0.5);
   rotate: -1.2deg;
 }
 .ad-ficha h3 {
@@ -942,13 +968,6 @@ body:has(.ad-root) {
   }
   .ad-mapa-rotulos {
     display: none;
-  }
-  .ad-ficha {
-    position: fixed;
-    inset: auto 8px 8px;
-    width: auto;
-    max-height: 72svh;
-    z-index: 60;
   }
 }
 
@@ -1599,6 +1618,9 @@ body:has(.ad-root) {
 @keyframes ad-corriente {
   from { stroke-dashoffset: 1460; }
   to { stroke-dashoffset: 0; }
+}
+@keyframes ad-alzar {
+  from { translate: 0 0; filter: drop-shadow(0 0 0 rgba(26, 10, 60, 0)); }
 }
 @keyframes ad-latido {
   0%, 100% { transform: scale(1); }

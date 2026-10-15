@@ -22,7 +22,7 @@ function Chinche({ p, chica, fill }: { p: [number, number]; chica?: boolean; fil
   );
 }
 
-/* Los hilos rojos y sus chinches, en una capa por formato: la de escritorio
+/* Los hilos y sus chinches, en una capa por formato: la de escritorio
    y la de celular tienen otro tablero y otras distancias. Solo se ve la que
    corresponde (lo decide el CSS), así el servidor y el cliente pintan igual. */
 export default function Hilos({ formato, visible, encendido }: Props) {
@@ -39,9 +39,9 @@ export default function Hilos({ formato, visible, encendido }: Props) {
         {/* Un id por formato: un degradado dentro de un SVG con display:none no
             se pinta, aunque otro SVG lo referencie. */}
         <radialGradient id={`ad-chinche-${formato}`} cx="0.35" cy="0.35" r="0.75">
-          <stop offset="0" stopColor="#FF6B6B" />
-          <stop offset="0.55" stopColor="#D42A2A" />
-          <stop offset="1" stopColor="#7A0E12" />
+          <stop offset="0" stopColor="#C6F08A" />
+          <stop offset="0.55" stopColor="#3E8E2F" />
+          <stop offset="1" stopColor="#1B4D1E" />
         </radialGradient>
       </defs>
       {lista.map((hilo, i) => {
