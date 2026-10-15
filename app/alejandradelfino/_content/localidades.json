@@ -1,0 +1,12 @@
+{
+  "_fuente": "Coordenadas aproximadas del casco urbano (lon, lat, WGS84). Se proyectan con el mismo mapa en _scripts/build-map.mjs.",
+  "lagopuelo": { "nombre": "Lago Puelo", "lonlat": [-71.6, -42.07] },
+  "elhoyo": { "nombre": "El Hoyo", "lonlat": [-71.5, -42.07] },
+  "elmaiten": { "nombre": "El Maitén", "lonlat": [-71.17, -42.05] },
+  "epuyen": { "nombre": "Epuyén", "lonlat": [-71.37, -42.23] },
+  "cholila": { "nombre": "Cholila", "lonlat": [-71.43, -42.51] },
+  "piedraparada": { "nombre": "Piedra Parada", "lonlat": [-70.11, -42.65] },
+  "madryn": { "nombre": "Puerto Madryn", "lonlat": [-65.04, -42.77] },
+  "rawson": { "nombre": "Rawson", "lonlat": [-65.1, -43.3] },
+  "comodoro": { "nombre": "Comodoro Rivadavia", "lonlat": [-67.5, -45.86] }
+}

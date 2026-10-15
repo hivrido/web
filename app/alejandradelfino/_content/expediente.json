@@ -1,0 +1,198 @@
+{
+  "_nota": "La pizarra mide 1600×1000 en escritorio (d) y 1000×1920 en celular (m). Cada pieza va como [x, y, ancho, giro]; null la oculta en ese formato. 'mapa' es el rectángulo donde se apoya el mapa. Los hilos unen piezas por id o localidades con '@' (ver localidades.json).",
+  "tablero": {
+    "d": [1600, 1000],
+    "m": [1000, 1920]
+  },
+  "mapa": {
+    "d": [360, 215, 880],
+    "m": [10, 640, 980]
+  },
+  "piezas": [
+    {
+      "id": "ad",
+      "tipo": "credencial",
+      "titulo": "Alejandra Delfino",
+      "texto": "Más de treinta años de función pública. En 2018, subsecretaria de Coordinación y Relaciones Institucionales del Ministerio de Infraestructura de Chubut.",
+      "d": [760, 26, 250, 1.5],
+      "m": [30, 40, 300, -2]
+    },
+    {
+      "id": "elmaiten",
+      "tipo": "informe",
+      "titulo": "El Maitén · 2018",
+      "localidad": "elmaiten",
+      "region": "cordillera",
+      "texto": "15 obras en simultáneo con el Bono Provincial: el gimnasio, el camping, aulas de capacitación y un galpón de 16 × 30 m para acondicionar arándanos en origen.",
+      "d": [500, 34, 230, -2.5],
+      "m": [355, 44, 300, 2]
+    },
+    {
+      "id": "piedraparada",
+      "tipo": "foto",
+      "titulo": "Piedra Parada",
+      "localidad": "piedraparada",
+      "region": "cordillera",
+      "foto": "/alejandradelfino/piedra-parada.webp",
+      "texto": "Un gigante de roca en el valle del río Chubut, cerca de Gualjaina.",
+      "d": [1045, 28, 210, -3],
+      "m": [680, 36, 290, -3]
+    },
+    {
+      "id": "lagopuelo",
+      "tipo": "foto",
+      "titulo": "Lago Puelo",
+      "localidad": "lagopuelo",
+      "region": "cordillera",
+      "foto": "/alejandradelfino/lago-puelo.webp",
+      "texto": "Comarca Andina: turismo, fruta fina y bosque.",
+      "d": [40, 40, 210, -4],
+      "m": [20, 350, 300, 3]
+    },
+    {
+      "id": "elhoyo",
+      "tipo": "foto",
+      "titulo": "El Hoyo",
+      "localidad": "elhoyo",
+      "region": "cordillera",
+      "foto": "/alejandradelfino/el-hoyo.webp",
+      "texto": "Sede de la Fiesta Nacional de la Fruta Fina.",
+      "d": [272, 26, 200, 3],
+      "m": [350, 360, 290, -2]
+    },
+    {
+      "id": "epuyen",
+      "tipo": "foto",
+      "titulo": "Epuyén",
+      "localidad": "epuyen",
+      "region": "cordillera",
+      "foto": "/alejandradelfino/epuyen.webp",
+      "texto": "Lago, bosque y producción de la Comarca Andina.",
+      "d": [30, 300, 210, 2],
+      "m": [672, 350, 300, 2.5]
+    },
+    {
+      "id": "cholila",
+      "tipo": "foto",
+      "titulo": "Cholila · 2018",
+      "localidad": "cholila",
+      "region": "cordillera",
+      "foto": "/alejandradelfino/cholila.webp",
+      "texto": "Obras del Bono Provincial con más del 80% de avance: plazas, miradores, el camping de Villa Lago Rivadavia, garitas y servicios para 40 lotes.",
+      "d": [50, 566, 220, -3],
+      "m": [20, 1300, 300, -3]
+    },
+    {
+      "id": "madryn",
+      "tipo": "foto",
+      "titulo": "Puerto Madryn",
+      "localidad": "madryn",
+      "region": "costa",
+      "foto": "/alejandradelfino/puerto-madryn.webp",
+      "texto": "Puerta de Península Valdés: turismo, pesca e industria.",
+      "d": [1320, 44, 230, 4],
+      "m": [350, 1310, 300, 2]
+    },
+    {
+      "id": "rawson",
+      "tipo": "foto",
+      "titulo": "Rawson",
+      "localidad": "rawson",
+      "region": "virch",
+      "foto": "/alejandradelfino/rawson.webp",
+      "texto": "La capital provincial y su puerto pesquero.",
+      "d": [1350, 316, 210, -2],
+      "m": [680, 1300, 300, -2]
+    },
+    {
+      "id": "eolico",
+      "tipo": "foto",
+      "titulo": "Viento patagónico",
+      "region": "virch",
+      "foto": "/alejandradelfino/eolico.webp",
+      "texto": "El recurso que a Chubut le sobra, y la base del eje Energía.",
+      "d": [1330, 596, 220, 3],
+      "m": [350, 1610, 300, -3]
+    },
+    {
+      "id": "pozos",
+      "tipo": "foto",
+      "titulo": "Comodoro Rivadavia",
+      "localidad": "comodoro",
+      "region": "golfo",
+      "foto": "/alejandradelfino/pozos.webp",
+      "texto": "Golfo San Jorge: el petróleo que mueve a la provincia desde 1907.",
+      "d": [1060, 776, 200, -2],
+      "m": [20, 1606, 300, 2]
+    },
+    {
+      "id": "n1",
+      "tipo": "nota",
+      "color": "amarillo",
+      "titulo": "#1 Energía",
+      "texto": "Mercado eléctrico abierto + más viento",
+      "eje": "energia",
+      "d": [1290, 840, 150, -3],
+      "m": [690, 1620, 280, 3]
+    },
+    {
+      "id": "n2",
+      "tipo": "nota",
+      "color": "verde",
+      "titulo": "#2 Producción en origen",
+      "texto": "Trabajo para los jóvenes del interior",
+      "eje": "origen",
+      "d": [64, 830, 170, -5],
+      "m": null
+    },
+    {
+      "id": "n3",
+      "tipo": "nota",
+      "color": "rosa",
+      "titulo": "#3 Reglas claras",
+      "texto": "Confianza para el vecino y el inversor",
+      "eje": "reglas",
+      "d": [292, 846, 160, 4],
+      "m": null
+    },
+    {
+      "id": "n4",
+      "tipo": "nota",
+      "color": "celeste",
+      "titulo": "#4 Chubut del futuro",
+      "texto": "Data centers con energía eólica",
+      "eje": "futuro",
+      "d": [1446, 830, 140, 5],
+      "m": null
+    },
+    {
+      "id": "recorte",
+      "tipo": "recorte",
+      "titulo": "Chubut tiene con qué",
+      "texto": "De la cordillera al mar: energía, producción y gente con ganas.",
+      "d": [570, 836, 300, -1.5],
+      "m": null
+    }
+  ],
+  "hilos": [
+    ["lagopuelo", "@lagopuelo"],
+    ["elhoyo", "@elhoyo"],
+    ["elmaiten", "@elmaiten"],
+    ["epuyen", "@epuyen"],
+    ["cholila", "@cholila"],
+    ["piedraparada", "@piedraparada"],
+    ["madryn", "@madryn"],
+    ["rawson", "@rawson"],
+    ["eolico", "@rawson"],
+    ["pozos", "@comodoro"],
+    ["ad", "elmaiten"],
+    ["ad", "cholila"],
+    ["ad", "n3"],
+    ["n2", "elmaiten"],
+    ["n1", "pozos"],
+    ["n1", "eolico"],
+    ["n4", "eolico"],
+    ["recorte", "ad"]
+  ],
+  "gestion": ["cholila", "elmaiten"]
+}

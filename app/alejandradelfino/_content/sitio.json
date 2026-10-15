@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "titulo": "Alejandra Delfino — Chubut tiene con qué",
+    "descripcion": "Energía, producción en origen y reglas claras para toda la provincia. De la cordillera al mar, Chubut tiene con qué.",
+    "instagram": "https://www.instagram.com/alejandra.delfino/"
+  },
+  "nav": [
+    { "label": "Expediente", "href": "#expediente" },
+    { "label": "Quién es", "href": "#quien-es" },
+    { "label": "Gestión", "href": "#gestion" },
+    { "label": "Propuestas", "href": "#propuestas" }
+  ],
+  "hero": {
+    "kicker": "Alejandra Delfino",
+    "frase": "Chubut tiene con qué",
+    "destacado": "con qué",
+    "bajada": "Energía, trabajo y futuro para cada rincón de la provincia. De la cordillera al mar.",
+    "cta": "Sumate",
+    "ctaSecundario": "Abrí el expediente"
+  },
+  "expediente": {
+    "kicker": "Expediente Chubut",
+    "titulo": "Seguí el hilo",
+    "bajada": "Cada hilo une un lugar con lo que produce y con lo que ya hicimos ahí. Tocá una zona del mapa o una foto para abrir su ficha.",
+    "ayuda": "Con teclado: Tab recorre las zonas y las fotos, Enter abre la ficha y Esc la cierra."
+  },
+  "sumate": {
+    "titulo": "Sumate",
+    "bajada": "Chubut se arma entre todos. Dejanos tus datos y te contamos cómo podés ayudar en tu localidad.",
+    "campos": {
+      "nombre": "Nombre y apellido",
+      "localidad": "Localidad",
+      "whatsapp": "WhatsApp",
+      "ayuda": "¿Cómo querés ayudar?"
+    },
+    "ayudas": ["Difundir en redes", "Recorrer mi barrio", "Fiscalizar", "Aportar ideas"],
+    "localidades": [
+      "Comodoro Rivadavia", "Trelew", "Puerto Madryn", "Rawson", "Esquel", "Rada Tilly", "Sarmiento", "Trevelin",
+      "Gaiman", "Dolavon", "28 de Julio", "Playa Unión", "Lago Puelo", "El Hoyo", "Epuyén", "El Maitén", "Cholila",
+      "Corcovado", "Tecka", "Gualjaina", "Gobernador Costa", "José de San Martín", "Río Mayo", "Alto Río Senguer",
+      "Río Pico", "Camarones", "Puerto Pirámides", "Paso de Indios", "Los Altares", "Las Plumas", "Gastre", "Telsen"
+    ],
+    "consentimiento": "Acepto que el equipo de Alejandra Delfino use estos datos solo para contactarme por esta campaña. No se ceden a terceros, y puedo pedir verlos, corregirlos o borrarlos cuando quiera (Ley 25.326).",
+    "enviar": "Quiero sumarme",
+    "gracias": "¡Gracias! Ya sos parte. Te escribimos pronto por WhatsApp.",
+    "error": "No pudimos guardar tus datos. Probá de nuevo en un rato."
+  },
+  "footer": {
+    "firma": "Los sueños se cumplen",
+    "aviso": "Vista previa. Muy pronto en alejandradelfino.com.ar"
+  }
+}

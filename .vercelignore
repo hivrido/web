@@ -32,3 +32,8 @@
 /.claude
 /skills-lock.json
 .env*
+
+# Material crudo de Alejandra Delfino: PDFs de campaña (uno de 189 MB), fotos
+# originales y el espejo de la referencia. Lo que el sitio sirve ya está
+# procesado en /public/alejandradelfino.
+/public/aledelfino

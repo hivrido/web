@@ -1,0 +1,59 @@
+{
+  "_nota": "Cada región agrupa departamentos del IGN (los nombres tienen que coincidir con mapa.generado.json). 'propuesta' queda en borrador hasta que ella la apruebe.",
+  "regiones": [
+    {
+      "id": "cordillera",
+      "nombre": "Cordillera y Comarca Andina",
+      "color": "#3E8E2F",
+      "departamentos": ["Cushamen", "Futaleufú", "Languiñeo"],
+      "produce": ["Turismo", "Fruta fina", "Producción forestal", "Energía hidroeléctrica"],
+      "identidad": "Lagos, bosques andinos y el Parque Nacional Los Alerces, Patrimonio de la Humanidad.",
+      "propuesta": "[BORRADOR] Prevención de incendios: una red de cisternas estratégicas y bases operativas para brigadistas, para que el fuego no vuelva a llevarse el bosque."
+    },
+    {
+      "id": "meseta",
+      "nombre": "Meseta",
+      "color": "#C98A2B",
+      "departamentos": ["Gastre", "Telsen", "Mártires", "Paso de Indios"],
+      "produce": ["Ganadería ovina", "Lana", "Turismo de naturaleza"],
+      "identidad": "El corazón de la provincia: distancias largas, pueblos chicos y una cultura de trabajo que nació con la lana.",
+      "propuesta": "[BORRADOR] Terminar con el aislamiento: conexión aérea con los valles y perforaciones de agua profunda para la producción ovina."
+    },
+    {
+      "id": "virch",
+      "nombre": "Valle Inferior del Río Chubut",
+      "color": "#7B2FD0",
+      "departamentos": ["Rawson", "Gaiman"],
+      "produce": ["Agricultura bajo riego", "Pesca", "Energía eólica", "Servicios"],
+      "identidad": "La capital provincial y los pueblos que fundaron los colonos galeses llegados en 1865.",
+      "propuesta": "[BORRADOR] Escuelas climatizadas y conectadas para que las clases empiecen a tiempo, y un transporte interurbano que no se coma el sueldo."
+    },
+    {
+      "id": "costa",
+      "nombre": "Costa y Península Valdés",
+      "color": "#1F9BA0",
+      "departamentos": ["Biedma", "Florentino Ameghino"],
+      "produce": ["Turismo", "Pesca", "Industria del aluminio", "Energía eólica"],
+      "identidad": "Península Valdés, Patrimonio Natural de la Humanidad: la ballena franca austral vuelve cada invierno.",
+      "propuesta": "[BORRADOR] Puertos más eficientes para el comercio exterior y convenios con los municipios para vivienda y agua."
+    },
+    {
+      "id": "golfo",
+      "nombre": "Golfo San Jorge",
+      "color": "#E0641A",
+      "departamentos": ["Escalante", "Sarmiento"],
+      "produce": ["Petróleo y gas", "Energía eólica", "Servicios", "Agricultura del valle de Sarmiento"],
+      "identidad": "En Comodoro Rivadavia se descubrió el petróleo argentino, en 1907.",
+      "propuesta": "[BORRADOR] Un plan de ordenamiento urbano definitivo: regularizar lotes y asegurar el suelo antes de llevar los servicios, como reclama el cerro Hermitte."
+    },
+    {
+      "id": "sur",
+      "nombre": "Sur",
+      "color": "#D9475C",
+      "departamentos": ["Río Senguer", "Tehuelches"],
+      "produce": ["Ganadería", "Petróleo", "Turismo de lagos y montaña"],
+      "identidad": "Estepa, cordillera y los lagos Fontana y La Plata: el sur profundo de la provincia.",
+      "propuesta": "[BORRADOR] Qué proponemos acá: a definir con ella."
+    }
+  ]
+}

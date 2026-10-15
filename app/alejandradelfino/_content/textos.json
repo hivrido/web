@@ -1,0 +1,97 @@
+{
+  "quien": {
+    "kicker": "Quién es",
+    "titulo": "Alejandra Delfino",
+    "registral": "Ruth Alejandra Delfino",
+    "parrafos": [
+      "Más de treinta años de función pública en municipios, en la Nación y en la Provincia, siempre del lado de la gestión y del territorio.",
+      "Empezó a principios de los noventa en Merlo, Morón y General San Martín. Desde 2003 trabajó en la Administración Pública Nacional, en equipos de la Presidencia y de la Jefatura de Gabinete de Ministros.",
+      "En 2010 asumió la presidencia nacional del Frente de Organizaciones Peronistas y lo llevó de Tucumán a Buenos Aires, Catamarca, Corrientes, Santiago del Estero, Córdoba y Chubut.",
+      "En 2018 juró como subsecretaria de Coordinación y Relaciones Institucionales del Ministerio de Infraestructura de Chubut y recorrió la provincia siguiendo, obra por obra, lo que se hacía con el Bono Provincial.",
+      "Estudió Abogacía y se formó en Psicología Social y en Mediación Comunitaria."
+    ],
+    "hitos": [
+      { "anio": "1990", "texto": "Primeros cargos públicos en Merlo, Morón y General San Martín" },
+      { "anio": "2003", "texto": "Administración Pública Nacional: Presidencia y Jefatura de Gabinete" },
+      { "anio": "2010", "texto": "Presidenta nacional del Frente de Organizaciones Peronistas" },
+      { "anio": "2018", "texto": "Subsecretaria de Coordinación y Relaciones Institucionales, Ministerio de Infraestructura de Chubut" },
+      { "anio": "Después", "texto": "Autoridad de la Casa del Chubut en Buenos Aires" },
+      { "anio": "2023", "texto": "Precandidata a gobernadora de Chubut" }
+    ],
+    "foto": "[CONFIRMAR] Foto oficial de Alejandra"
+  },
+  "gestion": {
+    "kicker": "Gestión",
+    "titulo": "Lo que ya hicimos en territorio",
+    "bajada": "Recorridas y seguimiento de las obras del Bono Provincial en el interior, y la puesta en valor del patrimonio junto a las cooperativas de trabajo.",
+    "fotoNota": "Fuentes: El Chubut, Noticias del Corredor y El Diario, 2018. [CONFIRMAR] Fotos de archivo de las recorridas",
+    "casos": [
+      {
+        "id": "cholila",
+        "lugar": "Cholila",
+        "anio": "2018",
+        "cifra": "80%",
+        "cifraLabel": "de avance en la recorrida",
+        "foto": "/alejandradelfino/cholila.webp",
+        "obras": [
+          "Dos plazas y cuatro miradores turísticos",
+          "Camping de Villa Lago Rivadavia, con proveeduría, sanitarios y fogones",
+          "Servicios para 40 lotes",
+          "Cuatro garitas de colectivo",
+          "SUM para el jardín maternal, cementerio y gimnasio municipal"
+        ]
+      },
+      {
+        "id": "elmaiten",
+        "lugar": "El Maitén",
+        "anio": "2018",
+        "cifra": "15",
+        "cifraLabel": "obras en simultáneo",
+        "foto": null,
+        "obras": [
+          "Galpón de 16 × 30 m para clasificar y acondicionar arándanos en origen",
+          "Ampliación del gimnasio municipal",
+          "Sanitarios del Club Hípico y del camping municipal",
+          "Refacción del edificio de la Municipalidad",
+          "Aulas para cursos de capacitación a distancia"
+        ]
+      },
+      {
+        "id": "patrimonio",
+        "lugar": "Patrimonio",
+        "anio": "2018",
+        "cifra": "7",
+        "cifraLabel": "cooperativas de trabajo",
+        "foto": null,
+        "obras": ["Centro Cultural Provincial", "Museo del Hombre y el Mar, Puerto Madryn", "Museo de Ex Combatientes, Rawson", "Museo de la Familia Perón, Camarones"]
+      }
+    ]
+  },
+  "propuestas": {
+    "kicker": "Propuestas",
+    "titulo": "Cuatro ejes para el Chubut que viene",
+    "estado": "BORRADOR",
+    "ejes": [
+      {
+        "id": "energia",
+        "titulo": "Energía",
+        "texto": "Mercado eléctrico abierto, cooperativas profesionalizadas y más energía eólica."
+      },
+      {
+        "id": "origen",
+        "titulo": "Producción en origen",
+        "texto": "Que el interior genere trabajo para sus jóvenes, sin tener que irse."
+      },
+      {
+        "id": "reglas",
+        "titulo": "Reglas claras",
+        "texto": "Leyes estables que den confianza al vecino y al inversor."
+      },
+      {
+        "id": "futuro",
+        "titulo": "Chubut del futuro",
+        "texto": "Turismo, conectividad y data centers con energía eólica."
+      }
+    ]
+  }
+}
