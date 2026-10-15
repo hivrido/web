@@ -94,9 +94,6 @@ export function Gestion() {
           </Reveal>
         ))}
       </div>
-      <p className="ad-nota-pie">
-        <Texto>{g.fotoNota}</Texto>
-      </p>
     </section>
   );
 }
