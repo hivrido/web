@@ -1,7 +1,7 @@
 {
   "meta": {
     "titulo": "Alejandra Delfino — Chubut tiene con qué",
-    "descripcion": "Energía, producción en origen y reglas claras para toda la provincia. De la cordillera al mar, Chubut tiene con qué.",
+    "descripcion": "De la cordillera al mar, Chubut tiene con qué. Que Argentina vuelva a ser el granero del mundo: esta vez, energético.",
     "instagram": "https://www.instagram.com/alejandra.delfino/"
   },
   "nav": [
@@ -23,6 +23,14 @@
     "titulo": "Seguí el hilo",
     "bajada": "Cada hilo une un lugar con lo que produce y con lo que ya hicimos ahí. Tocá una zona del mapa o una foto para abrir su ficha.",
     "ayuda": "Con teclado: Tab recorre las zonas y las fotos, Enter abre la ficha y Esc la cierra."
+  },
+  "manifiesto": {
+    "kicker": "La visión",
+    "antes": "Argentina fue el granero del mundo.",
+    "lineas": ["Vuelve a serlo.", "Esta vez,"],
+    "destacado": "energético.",
+    "bajada": "El viento de la meseta, el gas y el petróleo del golfo, el agua de la cordillera. La energía que el país necesita ya está acá: Chubut tiene con qué ponerla en marcha.",
+    "firma": "Los sueños se cumplen"
   },
   "sumate": {
     "titulo": "Sumate",

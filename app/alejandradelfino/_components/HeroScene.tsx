@@ -34,7 +34,7 @@ function surcos() {
   });
 }
 
-function Molino({ x, y, h, dur, girar }: (typeof MOLINOS)[number] & { girar: boolean }) {
+export function Molino({ x, y, h, dur, girar }: (typeof MOLINOS)[number] & { girar: boolean }) {
   const hub = y - h;
   const largo = h * 0.46;
   return (
