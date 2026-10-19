@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import LogoAnimated from "../../components/ui/LogoAnimated";
 import CinePlayer from "../../components/play/CinePlayer";
-import { WITH_PAGE } from "../../lib/catalog";
+import PlayHeader from "../../components/play/PlayHeader";
+import PlayFooter from "../../components/play/PlayFooter";
+import ListButton from "../../components/play/ListButton";
+import PosterCard from "../../components/play/PosterCard";
+import Row from "../../components/play/Row";
+import { playFonts } from "../../components/play/fonts";
+import { WITH_PAGE, directorsOf, relatedTo } from "../../lib/catalog";
 import "../../components/play/play.css";
 import "./title.css";
 
@@ -54,8 +59,9 @@ export default async function TitlePage({ params }: Props) {
   const about = t.isPlaceholder ? null : d?.about ?? t.synopsis;
   const crew = d?.crew ?? [];
   const cast = d?.cast ?? [];
-  const accent = t.hero?.color ?? "#7C3AED";
-  const directors = crew.filter((c) => /direcci/i.test(c.role)).map((c) => c.name);
+  const accent = t.hero?.color ?? "#FF9F2E";
+  const directors = directorsOf(t);
+  const related = relatedTo(t);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -71,22 +77,13 @@ export default async function TitlePage({ params }: Props) {
   };
 
   return (
-    <div className="mp-app tp" style={{ "--tp-accent": accent } as React.CSSProperties}>
+    <div className={`mp-app hp tp ${playFonts}`} style={{ "--tp-accent": accent } as React.CSSProperties}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <header className="mp-header">
-        <Link href="/play/" className="mp-logo">
-          <LogoAnimated height={26} delay={300} />
-          <span className="mp-logo-badge">PLAY</span>
-        </Link>
-        <Link href="/play/" className="tp-back">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-          Volver
-        </Link>
-      </header>
+      <PlayHeader />
 
       {/* ── HERO ── */}
-      <section className="tp-hero">
+      <section className={`tp-hero${t.hero?.titled ? " is-titled" : ""}`}>
         {t.poster ? (
           <div className="tp-hero-bg" style={{ backgroundImage: `url('${t.poster}')` }} />
         ) : (
@@ -108,9 +105,8 @@ export default async function TitlePage({ params }: Props) {
             {t.year && <span>{t.year}</span>}
             {t.duration && t.duration !== "—" && <span>{t.duration}</span>}
             <span>{t.genre}</span>
-            {t.rating && <span>★ {t.rating}</span>}
-            {d?.advisory && <span className="tp-rating">+18</span>}
-            {t.badge === "PRONTO" && <span className="tp-rating">Próximamente</span>}
+            {d?.advisory && <span className="hp-badge">+18</span>}
+            {(t.badge === "PRONTO" || t.isPlaceholder) && <span className="hp-badge is-accent">Próximamente</span>}
           </div>
           <p className="tp-lead">
             {t.isPlaceholder ? `${kind} en preparación. Muy pronto, toda la información acá.` : t.synopsis}
@@ -123,11 +119,12 @@ export default async function TitlePage({ params }: Props) {
               </Link>
             )}
             {t.ytId && (
-              <a href="#trailer" className="mp-play-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+              <a href="#trailer" className="hp-btn is-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
                 {t.ytFull ? "Ver ahora" : "Ver tráiler"}
               </a>
             )}
+            <ListButton id={t.id} />
           </div>
         </div>
       </section>
@@ -159,6 +156,7 @@ export default async function TitlePage({ params }: Props) {
               poster={t.poster}
               zoom={t.ytZoom}
               label={t.ytFull ? "Ver ahora" : "Ver tráiler"}
+              trackId={t.id}
             />
           </div>
           )}
@@ -275,12 +273,18 @@ export default async function TitlePage({ params }: Props) {
         </section>
       )}
 
-      <footer className="mp-footer">
-        <span>© 2026 Hivrido PLAY. Todos los derechos reservados.</span>
-        <div className="mp-footer-links">
-          <Link href="/play/">← Volver a Hivrido PLAY</Link>
+      {/* ── MÁS PARA VER ── */}
+      {related.length > 0 && (
+        <div className="tp-section tp-more">
+          <Row title="Más para ver">
+            {related.map((r) => (
+              <PosterCard key={r.id} item={r} />
+            ))}
+          </Row>
         </div>
-      </footer>
+      )}
+
+      <PlayFooter />
     </div>
   );
 }

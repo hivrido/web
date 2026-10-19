@@ -17,9 +17,10 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getProgress, saveProgress } from "./library";
 
 /* Tipos mínimos de la API de YouTube que se usan acá. */
-type YTPlayer = {
+export type YTPlayer = {
   playVideo(): void;
   pauseVideo(): void;
   seekTo(s: number, allowSeekAhead: boolean): void;
@@ -53,7 +54,7 @@ declare global {
 
 /* La API se carga una sola vez por página, aunque haya varios reproductores. */
 let apiPromise: Promise<YTNamespace> | null = null;
-function loadYouTubeApi(): Promise<YTNamespace> {
+export function loadYouTubeApi(): Promise<YTNamespace> {
   if (window.YT?.Player) return Promise.resolve(window.YT);
   if (!apiPromise) {
     apiPromise = new Promise((resolve) => {
@@ -87,6 +88,7 @@ export default function CinePlayer({
   zoom = 1,
   label,
   autoStart = false,
+  trackId,
 }: {
   ytId: string;
   title: string;
@@ -98,6 +100,9 @@ export default function CinePlayer({
   label?: string;
   /** Arranca solo al montarse (Okupas, al cambiar de episodio). */
   autoStart?: boolean;
+  /** Obra a la que pertenece: si se pasa, se recuerda por dónde iba para
+      "Seguir viendo" y se retoma desde ahí. */
+  trackId?: string;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const mountRef = useRef<HTMLDivElement>(null);
@@ -137,8 +142,13 @@ export default function CinePlayer({
       },
       events: {
         onReady: () => {
-          setDuration(playerRef.current?.getDuration() ?? 0);
-          playerRef.current?.playVideo();
+          const p = playerRef.current;
+          const dur = p?.getDuration() ?? 0;
+          setDuration(dur);
+          /* Retoma donde quedó, salvo que falte tan poco que no valga la pena. */
+          const saved = trackId ? getProgress(trackId) : undefined;
+          if (p && saved && saved.pos > 10 && saved.pos < dur - 15) p.seekTo(saved.pos, true);
+          p?.playVideo();
         },
         onStateChange: (e) => {
           if (e.data === 1) {
@@ -149,7 +159,7 @@ export default function CinePlayer({
         },
       },
     });
-  }, [ytId]);
+  }, [ytId, trackId]);
 
   /* Un reproductor por video: quien cambia de video (Okupas) remonta el
      componente con otra `key`, y acá solo se arranca y se libera. */
@@ -170,6 +180,19 @@ export default function CinePlayer({
     const t = setInterval(() => setTime(playerRef.current?.getCurrentTime() ?? 0), 250);
     return () => clearInterval(t);
   }, [phase]);
+
+  /* Progreso para "Seguir viendo": cada tanto mientras corre, y al pausar o
+     terminar. Terminado cuenta como visto entero y sale de la fila. */
+  useEffect(() => {
+    const p = playerRef.current;
+    if (!trackId || !p) return;
+    const save = () => saveProgress(trackId, p.getCurrentTime(), p.getDuration());
+    if (phase === "paused") save();
+    if (phase === "ended") saveProgress(trackId, p.getDuration(), p.getDuration());
+    if (phase !== "playing") return;
+    const t = setInterval(save, 5000);
+    return () => clearInterval(t);
+  }, [phase, trackId]);
 
   useEffect(() => {
     const onFs = () => setFullscreen(document.fullscreenElement === boxRef.current);

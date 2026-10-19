@@ -10,57 +10,36 @@
  * hay nada que importar: alcanza con usar los mismos nombres, y cualquier
  * cambio de identidad llega a los dos menús a la vez.
  *
- * En escritorio no se monta nada visible: las secciones se leen sueltas en la
- * barra. play.css decide eso, no este archivo.
+ * Lo abre "Más", en la barra inferior: el header de PLAY ya no lleva botón de
+ * menú en el teléfono. En escritorio no se muestra: play.css decide eso.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ScrambleLink from "../ui/ScrambleLink";
 
 /* Las secciones de la plataforma, más la salida al sitio institucional. */
 const ITEMS = [
-  { label: "Inicio", href: "#catalogo" },
-  { label: "Series", href: "#series" },
-  { label: "Películas", href: "#peliculas" },
+  { label: "Inicio", href: "/play/" },
+  { label: "Series", href: "/play/#series" },
+  { label: "Películas", href: "/play/#peliculas" },
+  { label: "Próximamente", href: "/play/#proximamente" },
   { label: "Casting", href: "/casting/" },
   { label: "Hivrido", href: "/" },
 ];
 
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
-export default function PlayMenu() {
-  const [open, setOpen] = useState(false);
-  const close = () => setOpen(false);
-
+export default function PlayMenu({ open, onClose: close }: { open: boolean; onClose: () => void }) {
   /* Escape cierra, como en los paneles del anillo. */
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, close]);
 
   return (
     <>
-      <div
-        className={`nav-btn-wrap mp-menu-btn${open ? " open" : ""}`}
-        onClick={() => setOpen((v) => !v)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen((v) => !v); }
-        }}
-        role="button"
-        tabIndex={0}
-        aria-label="Menú"
-        aria-expanded={open}
-      >
-        <span className="nav-btn-text">{open ? "Cerrar" : "Menu"}</span>
-        <div className="nav-btn-lines">
-          <span />
-          <span />
-          <span />
-        </div>
-      </div>
-
       <div className={`nav-overlay-bg${open ? " open" : ""}`} onClick={close} />
 
       <nav className={`nav-drawer${open ? " open" : ""}`} aria-label="Navegación">

@@ -5,6 +5,7 @@ import Image from "next/image";
 import LogoAnimated from "../components/ui/LogoAnimated";
 import CinePlayer from "../components/play/CinePlayer";
 import "../components/play/play.css";
+import { playFonts } from "../components/play/fonts";
 
 export default OkupasPageLegacy;
 
@@ -39,7 +40,7 @@ function OkupasPageLegacy() {
   const current = EPISODES[activeEp];
 
   return (
-    <div className="mp-app" style={{ background: "#0a0a0e", minHeight: "100vh" }}>
+    <div className={`mp-app ${playFonts}`} style={{ background: "#0a0a0e", minHeight: "100vh" }}>
 
       {/* Header */}
       <header

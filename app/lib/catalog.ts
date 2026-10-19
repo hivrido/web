@@ -69,8 +69,9 @@ export type Title = {
   duration?: string;
   /** Solo series. */
   seasons?: string;
-  /** Fondo del slider destacado. */
-  hero?: { image: string; color: string };
+  /** Fondo del slider destacado. `titled`: el arte ya trae el título pintado
+      (los afiches), así que la portada no lo repite encima en texto. */
+  hero?: { image: string; color: string; titled?: boolean };
   /** Llamado propio de la ficha, debajo de la sinopsis (p. ej. el casting). */
   cta?: { label: string; href: string };
   /** Datos provisorios, pendientes de completar. */
@@ -220,7 +221,7 @@ const TITLES: Title[] = [
     ytExternal: true,
     badge: "NUEVA",
     poster: "/images/peliculas/virreyes.webp",
-    hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A" },
+    hero: { image: "/images/peliculas/virreyes.webp", color: "#D1202A", titled: true },
     /* Créditos de IMDb (tt36097002) cruzados con el dossier: IMDb trae los
        personajes, el dossier el resto del elenco. Los relatos van con la
        sinopsis corta del dossier, no con el tratamiento, que tiene spoilers. */
@@ -277,7 +278,7 @@ const TITLES: Title[] = [
     ytZoom: 1.25,
     badge: "NUEVA",
     poster: "/images/peliculas/3am.webp",
-    hero: { image: "/images/peliculas/3am.webp", color: "#B3121B" },
+    hero: { image: "/images/peliculas/3am.webp", color: "#B3121B", titled: true },
     /* Elenco de IMDb (tt17516144), que no carga personajes. */
     detail: {
       format: "Cortometraje",
@@ -315,7 +316,7 @@ const TITLES: Title[] = [
     ytFull: true,
     badge: "NUEVA",
     poster: "/images/peliculas/esnob.webp",
-    hero: { image: "/images/peliculas/esnob.webp", color: "#B01E2A" },
+    hero: { image: "/images/peliculas/esnob.webp", color: "#B01E2A", titled: true },
     detail: {
       format: "Cortometraje",
       about:
@@ -356,7 +357,7 @@ const TITLES: Title[] = [
     ytZoom: 1.34,
     badge: "NUEVA",
     poster: "/images/peliculas/rectangulo-v2.webp",
-    hero: { image: "/images/peliculas/rectangulo-v2.webp", color: "#C8102E" },
+    hero: { image: "/images/peliculas/rectangulo-v2.webp", color: "#C8102E", titled: true },
     detail: {
       format: "Largometraje",
       about:
@@ -392,7 +393,7 @@ const TITLES: Title[] = [
     ytFull: true,
     badge: "NUEVA",
     poster: "/images/peliculas/matanza.webp",
-    hero: { image: "/images/peliculas/matanza.webp", color: "#B8860B" },
+    hero: { image: "/images/peliculas/matanza.webp", color: "#B8860B", titled: true },
     detail: {
       format: "Cortometraje",
       about:
@@ -443,7 +444,7 @@ const TITLES: Title[] = [
     ytFull: true,
     badge: "NUEVA",
     poster: "/images/peliculas/mia.webp",
-    hero: { image: "/images/peliculas/mia.webp", color: "#E0A818" },
+    hero: { image: "/images/peliculas/mia.webp", color: "#E0A818", titled: true },
     detail: {
       format: "Cortometraje",
       about:
@@ -486,7 +487,7 @@ const TITLES: Title[] = [
     ytZoom: 1.25,
     badge: "NUEVA",
     poster: "/images/peliculas/armario-de-dani.webp",
-    hero: { image: "/images/peliculas/armario-de-dani.webp", color: "#D0141E" },
+    hero: { image: "/images/peliculas/armario-de-dani.webp", color: "#D0141E", titled: true },
     detail: {
       format: "Cortometraje",
       about:
@@ -559,8 +560,82 @@ export const CATALOG: (Title & { href: string })[] = TITLES.map((t) => ({
 /** Títulos cuya ficha es la página genérica /play/<id>. */
 export const WITH_PAGE = CATALOG.filter((t) => t.href === `/play/${t.id}`);
 
-export const SERIES = CATALOG.filter((t) => t.type === "serie");
-export const PELICULAS = CATALOG.filter((t) => t.type === "pelicula");
+export type Entry = (typeof CATALOG)[number];
 
-/** Slider de portada: solo fichas con trailer y arte propio. */
-export const FEATURED = CATALOG.filter((t) => t.hero && t.ytId);
+const pick = (ids: string[]) =>
+  ids.map((id) => CATALOG.find((t) => t.id === id)).filter((t): t is Entry => !!t);
+
+/** Lo que se puede mirar hoy. Lo provisorio y lo que todavía no se estrena
+    va a Próximamente: en una fila de afiches, una ficha sin obra es un hueco. */
+const READY = CATALOG.filter((t) => !t.isPlaceholder && t.badge !== "PRONTO");
+
+export const SERIES = READY.filter((t) => t.type === "serie");
+export const PELICULAS = READY.filter((t) => t.type === "pelicula");
+export const UPCOMING = CATALOG.filter((t) => t.isPlaceholder || t.badge === "PRONTO");
+
+/** Slider de portada, en este orden: el primero es lo que ve quien llega.
+    Solo entran fichas con fondo propio y video. Chamamé queda afuera porque
+    su fondo lleva un bloque de texto impreso. */
+export const FEATURED = pick([
+  "el-rectangulo-de-angeles",
+  "erase-una-vez-en-virreyes",
+  "el-docke",
+  "3-am",
+  "matanza",
+]).filter((t) => t.hero && t.ytId);
+
+/** Curaduría de la casa, numerada. No es un ranking: no hay datos de
+    reproducciones, así que el orden es una elección y se presenta como tal. */
+export const SELECTION = pick([
+  "erase-una-vez-en-virreyes",
+  "okupas",
+  "el-rectangulo-de-angeles",
+  "el-docke",
+  "esnob",
+  "chamame",
+]);
+
+/** El estreno que ocupa el bloque editorial de la portada. */
+export const EDITORIAL = pick(["erase-una-vez-en-virreyes"])[0];
+
+/** Quién dirige, según los créditos. */
+export const directorsOf = (t: Title) =>
+  (t.detail?.crew ?? []).filter((c) => /direcci/i.test(c.role)).map((c) => c.name);
+
+/** Cortes del catálogo: los usan las filas temáticas, las tarjetas de género y
+    el buscador. Todos salen de datos cargados, ninguno de etiquetas a mano. */
+export const FACETS: { id: string; label: string; match: (t: Title) => boolean }[] = [
+  { id: "terror", label: "Terror", match: (t) => /terror/i.test(t.genre) },
+  { id: "drama", label: "Drama", match: (t) => /drama/i.test(t.genre) },
+  { id: "tension", label: "Thriller y policial", match: (t) => /thriller|policial|suspenso/i.test(t.genre) },
+  { id: "cortos", label: "Cortometrajes", match: (t) => /corto/i.test(t.detail?.format ?? "") },
+  { id: "largos", label: "Largometrajes", match: (t) => /largo/i.test(t.detail?.format ?? "") },
+  { id: "series", label: "Series", match: (t) => t.type === "serie" },
+];
+
+const facet = (id: string) => FACETS.find((f) => f.id === id)!.match;
+
+/** Filas temáticas de la portada, después de Series y Películas. */
+export const SHELVES = [
+  { id: "terror", title: "Terror, en tu mano", items: READY.filter(facet("terror")) },
+  {
+    id: "galliano",
+    title: "Universo Galliano",
+    items: READY.filter((t) => directorsOf(t).some((n) => /Galliano/.test(n))),
+  },
+  { id: "drama", title: "Drama sin filtro", items: READY.filter(facet("drama")) },
+];
+
+/** Para seguir en la ficha: lo que más géneros comparte, primero los del mismo tipo. */
+export function relatedTo(t: Entry, max = 10) {
+  const genres = (g: string) => g.toLowerCase().split("·").map((s) => s.trim());
+  const own = genres(t.genre);
+  return READY.filter((o) => o.id !== t.id)
+    .map((o) => ({
+      o,
+      score: genres(o.genre).filter((g) => own.includes(g)).length * 2 + (o.type === t.type ? 1 : 0),
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, max)
+    .map((x) => x.o);
+}
