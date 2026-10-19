@@ -23,7 +23,7 @@ export default function PlayFooter() {
         </div>
         <div>
           <span className="hp-footer-label">Redes</span>
-          <a href="https://www.instagram.com/hivrido.productora_ok/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.instagram.com/hivrido.product.x1_ok/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
         </div>
       </nav>

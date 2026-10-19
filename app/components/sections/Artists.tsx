@@ -14,7 +14,7 @@ const ARTISTS = [
        Ariel Manzano. Acá había un `@lucasmanzano` que no es él —es una cuenta
        privada de otra persona—, así que la ficha del equipo estaba mandando
        gente al Instagram de un desconocido. */
-    instagram: "https://www.instagram.com/hivrido.productora_ok/",
+    instagram: "https://www.instagram.com/hivrido.product.x1_ok/",
   },
 ];
 

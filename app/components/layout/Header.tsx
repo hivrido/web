@@ -54,10 +54,10 @@ export default function Header({ base = "", logoDelay }: { base?: string; logoDe
         <div className="header-right">
           <div className="header-social">
             {/* El de la marca, el mismo que la portada institucional y que el
-                casting. La cuenta se mudó a @hivrido.productora_ok: los tres
+                casting. La cuenta se mudó a @hivrido.product.x1_ok: todos los
                 lugares apuntan al mismo lado o el sitio manda a la gente a un
                 perfil que ya no se usa. */}
-            <a href="https://www.instagram.com/hivrido.productora_ok/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <a href="https://www.instagram.com/hivrido.product.x1_ok/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                 <circle cx="12" cy="12" r="4.5"/>
