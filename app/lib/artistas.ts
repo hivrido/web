@@ -1552,8 +1552,8 @@ export const ARTISTAS: Artista[] = [
 
   {
     slug: "zurdosound",
-    /* Así firma en Instagram y YouTube. El nombre civil no figura en ningún
-       perfil público: no va hasta que lo pase él. */
+    /* Así firma en Instagram y YouTube. El nombre civil —Alan Ezequiel
+       Mendoza— lo pasó el artista el 19/10/2026 y va en el manifiesto. */
     nombre: "Zurdosound",
     alias: "@zurdosound",
     tagline: "Rap de Tortuguitas, escrito antes de ser dicho.",
@@ -1570,7 +1570,7 @@ export const ARTISTAS: Artista[] = [
        Livre Fiesta (14/05), Punto Norte (06/07) y Ruida Vol. 7 (22/09), sus
        fechas en vivo. */
     manifiesto: [
-      "Zurdosound rapea desde Tortuguitas, en José C. Paz. Viene de las batallas de escritas, donde la barra se trabaja en papel antes de decirse en voz alta, y ese oficio se nota: cada tema tiene algo para decir.",
+      "Zurdosound es Alan Ezequiel Mendoza, y rapea desde Tortuguitas, en José C. Paz. Viene de las batallas de escritas, donde la barra se trabaja en papel antes de decirse en voz alta, y ese oficio se nota: cada tema tiene algo para decir.",
       "Su primer corte, Partiendo Coxis, salió en junio de 2026 junto a JBESTIA, un artista de Necochea al que conoció en una de esas batallas: dos barrios, dos historias y las mismas ganas de hacer música de verdad. Es la apertura de un EP que va a salir entre este año y el que viene.",
       "Mientras tanto, prueba los temas donde se prueba el rap: arriba del escenario. Livre Fiesta, Punto Norte en Derqui, Ruida Vol. 7. Hivrido se suma para darle a ese recorrido dirección visual y una casa donde mostrarlo.",
     ],
