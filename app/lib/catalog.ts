@@ -355,8 +355,8 @@ const TITLES: Title[] = [
     ytId: "-vNXLP9y0cE",
     ytZoom: 1.34,
     badge: "NUEVA",
-    poster: "/images/peliculas/rectangulo-final.webp",
-    hero: { image: "/images/peliculas/rectangulo-final.webp", color: "#C8102E" },
+    poster: "/images/peliculas/rectangulo-v2.webp",
+    hero: { image: "/images/peliculas/rectangulo-v2.webp", color: "#C8102E" },
     detail: {
       format: "Largometraje",
       about:
