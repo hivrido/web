@@ -937,6 +937,72 @@ html:has(.art-page) body {
     bottom: 40px;
     font-size: 22px;
   }
+
+  /* ── Tocadiscos ─────────────────────────────────────────────────────
+     La bandeja del hip hop: el disco con sus surcos y la etiqueta, el
+     brazo apoyado y el fader de pitch. El brillo del vinilo gira a 33 rpm
+     (un ángulo registrado que anima el cónico); los surcos, la etiqueta y
+     el borde son degradados radiales sobre el mismo fondo. El brazo va en
+     ::before para quedar por encima del disco. */
+  .art-emblema--tocadiscos {
+    width: 300px;
+    height: 240px;
+    margin-top: 50px;
+    border: 1px solid var(--art-acento);
+    border-radius: 18px;
+    background:
+      /* Pivote del brazo. */
+      radial-gradient(circle at 258px 44px, var(--art-acento) 0 4px, transparent 5px 10px, var(--art-acento) 10px 11.5px, transparent 12.5px),
+      /* Fader de pitch: el riel y la perilla. */
+      linear-gradient(var(--art-acento), var(--art-acento)) 266px 112px / 2px 92px no-repeat,
+      linear-gradient(var(--art-acento), var(--art-acento)) 259px 166px / 16px 6px no-repeat,
+      /* Etiqueta con el eje. */
+      radial-gradient(circle at 118px 120px, #0b0a0d 0 3px, var(--art-acento) 3.5px 26px, transparent 27px),
+      /* Borde del disco; afuera, la base. */
+      radial-gradient(circle at 118px 120px, transparent 0 94px, var(--art-acento) 94px 95.5px, #100e12 96.5px),
+      /* Brillo que gira. */
+      conic-gradient(from var(--art-giro) at 118px 120px, transparent 0deg, rgba(255, 255, 255, 0.16) 18deg, transparent 46deg, transparent 180deg, rgba(255, 255, 255, 0.11) 198deg, transparent 226deg),
+      /* Surcos. */
+      repeating-radial-gradient(circle at 118px 120px, transparent 0 3px, color-mix(in srgb, var(--art-acento) 24%, transparent) 3px 3.7px),
+      #08070a;
+    box-shadow: 0 0 70px -14px var(--art-acento-suave);
+    animation: art-flotar 7s ease-in-out infinite, art-girar 1.8s linear infinite;
+  }
+
+  /* El brazo: sale del pivote y baja en diagonal hasta los surcos, con la
+     cápsula al final. */
+  .art-emblema--tocadiscos::before {
+    content: "";
+    position: absolute;
+    left: 253px;
+    top: 44px;
+    width: 10px;
+    height: 134px;
+    transform-origin: 50% 0;
+    transform: rotate(37deg);
+    background:
+      linear-gradient(90deg, transparent 3.5px, var(--art-acento) 3.5px 6.5px, transparent 6.5px) top / 100% calc(100% - 14px) no-repeat,
+      linear-gradient(var(--art-acento), var(--art-acento)) bottom / 100% 14px no-repeat;
+    border-radius: 2px;
+  }
+
+  .art-emblema--tocadiscos::after {
+    left: 20px;
+    right: auto;
+    bottom: 12px;
+    font-size: 12px;
+    text-align: left;
+  }
+}
+
+@property --art-giro {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes art-girar {
+  to { --art-giro: 360deg; }
 }
 
 @keyframes art-rec {

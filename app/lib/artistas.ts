@@ -113,7 +113,7 @@ export type Artista = {
    * dos fichas sin fotos se vean iguales.
    */
   emblema: {
-    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena" | "parlante" | "partitura";
+    forma: "capsula" | "reel" | "junta" | "camara" | "stream" | "onda" | "claqueta" | "antena" | "parlante" | "partitura" | "tocadiscos";
     leyenda: string;
   };
   /**
@@ -1556,28 +1556,29 @@ export const ARTISTAS: Artista[] = [
        Mendoza— lo pasó el artista el 19/10/2026 y va en el manifiesto. */
     nombre: "Zurdosound",
     alias: "@zurdosound",
-    tagline: "Rap de Tortuguitas, escrito antes de ser dicho.",
-    disciplinas: ["Rap", "Hip hop", "Composición", "Vivo"],
+    tagline: "Hip hop de Tortuguitas, del beat al micrófono.",
+    disciplinas: ["Producción musical", "Rap", "Hip hop", "Vivo"],
     schema: "Person",
-    rol: "Rapero y compositor",
-    /* Arena: el color del papel de las escritas. Cálido y apagado, lejos del
-       dorado de Jairito y del rosa de Flavia. Pasa el AA como texto sobre negro. */
+    rol: "Productor musical y artista",
+    /* Arena: el tono de una tapa de vinilo gastada. Cálido y apagado, lejos
+       del dorado de Jairito y del rosa de Flavia. Pasa el AA sobre negro. */
     acento: { hex: "#E9D3A6", suave: "rgba(233, 211, 166, 0.14)" },
-    /* La partitura: viene de las batallas de escritas, la barra en papel. */
-    emblema: { forma: "partitura", leyenda: "ZURDO" },
+    /* El tocadiscos: produce y rapea, y el hip hop nace en la bandeja. */
+    emblema: { forma: "tocadiscos", leyenda: "ZURDO" },
     /* Relevado el 19/10/2026 de sus posts: el de Partiendo Coxis (26/06)
-       cuenta de dónde es, cómo conoció a JBESTIA y el EP en camino; los de
+       cuenta de dónde es, con quién lo hizo y el EP en camino; los de
        Livre Fiesta (14/05), Punto Norte (06/07) y Ruida Vol. 7 (22/09), sus
-       fechas en vivo. */
+       fechas en vivo. Productor y artista, según él mismo: no viene de las
+       batallas de escritas, aunque el post de Partiendo Coxis las nombre. */
     manifiesto: [
-      "Zurdosound es Alan Ezequiel Mendoza, y rapea desde Tortuguitas, en José C. Paz. Viene de las batallas de escritas, donde la barra se trabaja en papel antes de decirse en voz alta, y ese oficio se nota: cada tema tiene algo para decir.",
-      "Su primer corte, Partiendo Coxis, salió en junio de 2026 junto a JBESTIA, un artista de Necochea al que conoció en una de esas batallas: dos barrios, dos historias y las mismas ganas de hacer música de verdad. Es la apertura de un EP que va a salir entre este año y el que viene.",
+      "Zurdosound es Alan Ezequiel Mendoza: productor musical y artista de Tortuguitas, en José C. Paz. Arma el beat y lo rapea, así que cada tema sale entero de la misma cabeza, de la base a la última barra.",
+      "Su primer corte, Partiendo Coxis, salió en junio de 2026 junto a JBESTIA, artista de Necochea: dos barrios, dos historias y las mismas ganas de hacer música de verdad. Es la apertura de un EP que va a salir entre este año y el que viene.",
       "Mientras tanto, prueba los temas donde se prueba el rap: arriba del escenario. Livre Fiesta, Punto Norte en Derqui, Ruida Vol. 7. Hivrido se suma para darle a ese recorrido dirección visual y una casa donde mostrarlo.",
     ],
     ejes: [
       {
-        titulo: "Escrita antes que dicha",
-        texto: "Viene de las batallas de escritas: la letra se piensa en papel y se defiende en vivo.",
+        titulo: "Del beat a la barra",
+        texto: "Produce y rapea: la base y la letra se piensan juntas, no se encargan por separado.",
       },
       {
         titulo: "Dos barrios en un tema",
@@ -1639,7 +1640,7 @@ export const ARTISTAS: Artista[] = [
     destacado: "partiendo-coxis",
     enConstruccion:
       "Está en producción su EP, que sale entre 2026 y 2027: cada tema se suma a esta ficha cuando se lanza, con dirección visual de Hivrido.",
-    ticker: ["Partiendo Coxis", "Zurdo", "No Me Venden", "Tortuguitas", "José C. Paz", "Escritas", "Rap", "JBESTIA", "EP en camino"],
+    ticker: ["Partiendo Coxis", "Zurdo", "No Me Venden", "Tortuguitas", "José C. Paz", "Beats", "Rap", "JBESTIA", "EP en camino"],
     /* Partiendo Coxis al frente, en el medio de la lista. Las miniaturas son
        las de Instagram, limpias del ícono de play que trae cada reel. */
     galeria: [
