@@ -1,8 +1,13 @@
 /* ── Hivrido PLAY ──────────────────────────────────────────────────────────
    Identidad: cine de autor cruzado con cultura digital. Base casi negra con
-   grano fílmico, un solo acento —el violeta de Hivrido— usado solo en
-   llamados, estados activos y foco. Los botones de reproducir llevan una luz
-   que recorre el borde (`.hp-haz`). La
+   grano fílmico y dos acentos con roles fijos, para que se combinen sin
+   competir:
+   - violeta: todo lo que reproduce (llamados de play, episodio activo, barra
+     del video), estados activos y foco;
+   - ámbar: lo editorial y lo secundario (píldora PLAY, botones de contorno,
+     rótulos de género, premios, "Próximamente", barras del hero).
+   Los botones de reproducir llevan una luz que recorre el borde (`.hp-haz`):
+   estela violeta con chispa ámbar. La
    metadata va en mono; la profundidad sale de degradados y desenfoque, no de
    sombras. El afiche es el diseño: la interfaz se corre del medio.
 
@@ -24,6 +29,8 @@
      rótulos y estados activos usan este. */
   --hp-accent-text: #a78bfa;
   --hp-accent-ink: #ffffff;
+  --hp-gold: #ffaa3b;
+  --hp-gold-ink: #1a0f00;
   --hp-danger: #ff4d4f;
 
   --hp-display: var(--font-hp-display), "Space Grotesk", system-ui, sans-serif;
@@ -116,7 +123,7 @@ html:has(.mp-app) body {
   border-radius: inherit;
   padding: 1.5px;
   background: conic-gradient(from var(--hp-haz), transparent 0deg, transparent 220deg,
-    rgba(167, 139, 250, 0.7) 300deg, #ffffff 344deg, transparent 360deg);
+    rgba(139, 92, 246, 0.75) 280deg, #ffaa3b 326deg, #fff4dc 346deg, transparent 360deg);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -161,13 +168,13 @@ html:has(.mp-app) body {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--hp-accent-text);
+  color: var(--hp-gold);
 }
 .hp-kicker-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--hp-accent);
-  box-shadow: 0 0 12px var(--hp-accent);
+  background: var(--hp-gold);
+  box-shadow: 0 0 12px var(--hp-gold);
 }
 
 .hp-meta {
@@ -208,6 +215,11 @@ html:has(.mp-app) body {
   background: var(--hp-accent);
   border-color: transparent;
 }
+.hp-badge.is-gold {
+  color: var(--hp-gold-ink);
+  background: var(--hp-gold);
+  border-color: transparent;
+}
 
 .hp-kbd {
   display: inline-grid;
@@ -241,14 +253,14 @@ html:has(.mp-app) body {
 .hp-btn.is-primary { background: var(--hp-accent); color: var(--hp-accent-ink); }
 .hp-btn.is-primary:hover { background: var(--hp-accent-2); }
 .hp-btn.is-ghost {
-  color: var(--hp-text);
-  border: 1px solid var(--hp-border-strong);
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--hp-gold);
+  border: 1px solid color-mix(in srgb, var(--hp-gold) 42%, transparent);
+  background: rgba(255, 170, 59, 0.04);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-.hp-btn.is-ghost:hover { border-color: rgba(255, 255, 255, 0.36); background: rgba(255, 255, 255, 0.09); }
-.hp-btn.is-ghost[aria-pressed="true"] { border-color: color-mix(in srgb, var(--hp-accent) 60%, transparent); color: var(--hp-accent-text); }
+.hp-btn.is-ghost:hover { border-color: var(--hp-gold); background: rgba(255, 170, 59, 0.1); box-shadow: 0 0 22px -6px rgba(255, 170, 59, 0.45); }
+.hp-btn.is-ghost[aria-pressed="true"] { border-color: var(--hp-gold); background: rgba(255, 170, 59, 0.14); }
 .hp-btn.is-sm { height: 36px; padding: 0 14px; font-size: 13px; gap: 7px; }
 
 .hp-icon-btn {
@@ -264,10 +276,11 @@ html:has(.mp-app) body {
   -webkit-backdrop-filter: blur(8px);
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s var(--hp-ease);
 }
-.hp-icon-btn:hover { border-color: rgba(255, 255, 255, 0.4); transform: scale(1.06); }
-.hp-icon-btn.is-primary { background: var(--hp-accent); color: var(--hp-accent-ink); border-color: transparent; }
+.hp-icon-btn:hover { border-color: color-mix(in srgb, var(--hp-gold) 70%, transparent); color: var(--hp-gold); transform: scale(1.06); }
+.hp-icon-btn.is-primary,
+.hp-icon-btn.is-primary:hover { background: var(--hp-accent); color: var(--hp-accent-ink); border-color: transparent; }
 .hp-icon-btn.is-primary svg { margin-left: 2px; }
-.hp-icon-btn[aria-pressed="true"] { color: var(--hp-accent-text); border-color: color-mix(in srgb, var(--hp-accent) 60%, transparent); }
+.hp-icon-btn[aria-pressed="true"] { color: var(--hp-gold); border-color: color-mix(in srgb, var(--hp-gold) 60%, transparent); }
 .hp-icon-btn.is-lg { width: 48px; height: 48px; }
 
 .hp-chip {
@@ -311,8 +324,9 @@ html:has(.mp-app) body {
 .hp-logo-pill {
   padding: 3px 8px 2px;
   border-radius: 999px;
-  background: var(--hp-accent);
-  color: var(--hp-accent-ink);
+  background: var(--hp-gold);
+  color: var(--hp-gold-ink);
+  box-shadow: 0 0 16px -2px rgba(255, 170, 59, 0.55);
   font-family: var(--hp-mono);
   font-size: 10px;
   font-weight: 500;
@@ -425,8 +439,8 @@ html:has(.mp-app) body {
 .mp-logo-badge {
   padding: 3px 8px 2px;
   border-radius: 999px;
-  background: var(--hp-accent);
-  color: var(--hp-accent-ink);
+  background: var(--hp-gold);
+  color: var(--hp-gold-ink);
   font-family: var(--hp-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
@@ -579,7 +593,8 @@ html:has(.mp-app) body {
 .hp-hero-tick-bar i {
   position: absolute;
   inset: 0;
-  background: var(--hp-accent);
+  background: var(--hp-gold);
+  box-shadow: 0 0 8px rgba(255, 170, 59, 0.6);
   transform-origin: left;
   animation: hp-fill linear both;
 }
@@ -774,7 +789,7 @@ html:has(.mp-app) body {
   user-select: none;
   transition: -webkit-text-stroke-color 0.4s var(--hp-ease);
 }
-.hp-card.has-rank:hover .hp-rank { -webkit-text-stroke-color: var(--hp-accent-text); }
+.hp-card.has-rank:hover .hp-rank { -webkit-text-stroke-color: var(--hp-gold); }
 .hp-card.has-rank .hp-card-frame { z-index: 1; }
 
 /* ── EDITORIAL ──────────────────────────────────────────────────────────── */
@@ -820,7 +835,7 @@ html:has(.mp-app) body {
   font-size: 13px;
   font-weight: 500;
 }
-.hp-editorial-awards span { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hp-accent-text); }
+.hp-editorial-awards span { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hp-gold); }
 .hp-editorial .hp-hero-actions { margin-top: 8px; }
 
 /* ── PRÓXIMAMENTE ───────────────────────────────────────────────────────── */
@@ -841,7 +856,7 @@ html:has(.mp-app) body {
   box-shadow: 0 0 0 1px var(--hp-border);
   transition: box-shadow 0.4s var(--hp-ease);
 }
-.hp-soon-media:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-accent) 40%, transparent); }
+.hp-soon-media:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
 .hp-soon-media:hover .hp-card-img { transform: scale(1.04); }
 .hp-soon-body { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .hp-soon-title { font-size: 18px; letter-spacing: -0.015em; margin-bottom: 4px; }
@@ -865,12 +880,12 @@ html:has(.mp-app) body {
   border-radius: var(--hp-r);
   overflow: hidden;
   background:
-    radial-gradient(90% 120% at 100% 100%, color-mix(in srgb, var(--hp-accent) 10%, transparent), transparent 60%),
+    radial-gradient(90% 120% at 100% 100%, color-mix(in srgb, var(--hp-gold) 9%, transparent), transparent 60%),
     var(--hp-surface);
   box-shadow: 0 0 0 1px var(--hp-border);
   transition: box-shadow 0.35s var(--hp-ease);
 }
-.hp-genre:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-accent) 45%, transparent); }
+.hp-genre:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
 .hp-genre-label { position: relative; z-index: 1; font-family: var(--hp-display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
 .hp-genre .hp-meta { position: relative; z-index: 1; }
 .hp-genre-stack { position: absolute; right: 18px; bottom: -18px; width: 150px; height: 100px; }
@@ -911,7 +926,7 @@ html:has(.mp-app) body {
   padding-bottom: 18px;
   border-bottom: 1px solid var(--hp-border-strong);
 }
-.hp-search-icon { flex-shrink: 0; color: var(--hp-accent-text); }
+.hp-search-icon { flex-shrink: 0; color: var(--hp-gold); }
 .hp-search-input {
   flex: 1;
   min-width: 0;
@@ -946,11 +961,11 @@ html:has(.mp-app) body {
   border-top: 1px solid var(--hp-border);
 }
 .hp-footer-mark { font-family: var(--hp-display); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-.hp-footer-mark b { color: var(--hp-accent-text); font-weight: 700; }
+.hp-footer-mark b { color: var(--hp-gold); font-weight: 700; }
 .hp-footer-brand p { margin-top: 8px; font-size: 14px; color: var(--hp-muted); max-width: 32ch; }
 .hp-footer-cols { display: flex; gap: clamp(32px, 5vw, 72px); }
 .hp-footer-cols div { display: flex; flex-direction: column; gap: 10px; }
-.hp-footer-label { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hp-accent-text); margin-bottom: 4px; }
+.hp-footer-label { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hp-gold); margin-bottom: 4px; }
 .hp-footer-cols a { font-family: var(--hp-mono); font-size: 12px; color: var(--hp-muted); transition: color 0.2s; }
 .hp-footer-cols a:hover { color: var(--hp-text); }
 .hp-footer-legal {
@@ -978,7 +993,7 @@ html:has(.mp-app) body {
   color: var(--hp-muted);
 }
 .mp-footer-links { display: flex; gap: 20px; }
-.mp-footer-links a:hover { color: var(--hp-accent-text); }
+.mp-footer-links a:hover { color: var(--hp-gold); }
 
 /* ── TELÉFONO ───────────────────────────────────────────────────────────── */
 

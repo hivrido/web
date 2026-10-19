@@ -24,19 +24,19 @@ export function metaOf(t: Entry) {
 }
 
 /**
- * Un solo sistema de etiquetas: todas neutras salvo NUEVO, que lleva el
- * acento. "SERIE" ya no se pinta: lo dice la fila y lo dice la metadata.
+ * Un solo sistema de etiquetas: neutras salvo NUEVO (violeta) y PRONTO
+ * (ámbar). "SERIE" ya no se pinta: lo dice la fila y lo dice la metadata.
  */
 export function Badges({ item, hideNew }: { item: Entry; hideNew?: boolean }) {
-  const list: { label: string; accent?: boolean }[] = [];
-  if (item.badge === "NUEVA" && !item.isPlaceholder && !hideNew) list.push({ label: "Nuevo", accent: true });
-  if (item.badge === "PRONTO" || item.isPlaceholder) list.push({ label: "Pronto" });
+  const list: { label: string; tone?: "accent" | "gold" }[] = [];
+  if (item.badge === "NUEVA" && !item.isPlaceholder && !hideNew) list.push({ label: "Nuevo", tone: "accent" });
+  if (item.badge === "PRONTO" || item.isPlaceholder) list.push({ label: "Pronto", tone: "gold" });
   if (item.detail?.advisory) list.push({ label: "+18" });
   if (!list.length) return null;
   return (
     <span className="hp-badges">
       {list.map((b) => (
-        <span key={b.label} className={`hp-badge${b.accent ? " is-accent" : ""}`}>{b.label}</span>
+        <span key={b.label} className={`hp-badge${b.tone ? ` is-${b.tone}` : ""}`}>{b.label}</span>
       ))}
     </span>
   );

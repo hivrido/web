@@ -119,7 +119,7 @@ function ComingSoon() {
               ) : (
                 <span className="hp-card-fallback is-lg" aria-hidden="true">{t.title}</span>
               )}
-              <span className="hp-badges"><span className="hp-badge is-accent">Próximamente</span></span>
+              <span className="hp-badges"><span className="hp-badge is-gold">Próximamente</span></span>
             </Link>
             <div className="hp-soon-body">
               <div>

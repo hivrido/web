@@ -141,7 +141,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
           <div className="tv-player" id="trailer">
             {!video ? (
               <div className="tv-player-empty" style={t.poster ? { backgroundImage: `url('${t.poster}')` } : undefined}>
-                <span className="hp-badge is-accent">{upcoming ? "Próximamente" : kind}</span>
+                <span className={`hp-badge ${upcoming ? "is-gold" : "is-accent"}`}>{upcoming ? "Próximamente" : kind}</span>
               </div>
             ) : video.external ? (
               /* Con restricción de edad YouTube no deja embeberlo: el iframe
