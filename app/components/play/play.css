@@ -1,7 +1,8 @@
 /* ── Hivrido PLAY ──────────────────────────────────────────────────────────
    Identidad: cine de autor cruzado con cultura digital. Base casi negra con
-   grano fílmico, un solo acento —ámbar "luz de sodio", el de los faroles del
-   conurbano de noche— usado solo en llamados, estados activos y foco. La
+   grano fílmico, un solo acento —el violeta de Hivrido— usado solo en
+   llamados, estados activos y foco. Los botones de reproducir llevan una luz
+   que recorre el borde (`.hp-haz`). La
    metadata va en mono; la profundidad sale de degradados y desenfoque, no de
    sombras. El afiche es el diseño: la interfaz se corre del medio.
 
@@ -16,9 +17,13 @@
   --hp-border-strong: rgba(255, 255, 255, 0.16);
   --hp-text: #f5f5f7;
   --hp-muted: #8a8a93;
-  --hp-accent: #ff9f2e;
-  --hp-accent-2: #ffc46b;
-  --hp-accent-ink: #160c00;
+  --hp-accent: #7c3aed;
+  /* Fondo del llamado al pasar el puntero. */
+  --hp-accent-2: #8b5cf6;
+  /* El violeta pleno no alcanza contraste como texto chico sobre negro:
+     rótulos y estados activos usan este. */
+  --hp-accent-text: #a78bfa;
+  --hp-accent-ink: #ffffff;
   --hp-danger: #ff4d4f;
 
   --hp-display: var(--font-hp-display), "Space Grotesk", system-ui, sans-serif;
@@ -56,7 +61,7 @@ html:has(.mp-app) body {
   overflow-y: auto;
   height: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 159, 46, 0.35) transparent;
+  scrollbar-color: rgba(124, 58, 237, 0.45) transparent;
 }
 
 /* Con especificidad cero: el cajón del menú trae sus propios rellenos desde
@@ -86,6 +91,42 @@ html:has(.mp-app) body {
 }
 
 .mp-app ::selection { background: var(--hp-accent); color: var(--hp-accent-ink); }
+
+/* ── LUZ DE BORDE ──
+   Un haz que recorre el contorno de los botones de reproducir: un degradado
+   cónico que gira, recortado a un aro de 1.5 px. Va en el pseudo-elemento
+   para no pelear con los transform del botón. */
+@property --hp-haz {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes hp-haz-giro { to { --hp-haz: 360deg; } }
+.hp-haz,
+.hp-btn.is-primary,
+.hp-icon-btn.is-primary { position: relative; isolation: isolate; }
+.hp-haz::before,
+.hp-btn.is-primary::before,
+.hp-icon-btn.is-primary::before,
+.cp-big-play::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--hp-haz), transparent 0deg, transparent 220deg,
+    rgba(167, 139, 250, 0.7) 300deg, #ffffff 344deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: hp-haz-giro 3.2s linear infinite;
+  pointer-events: none;
+}
+.hp-btn.is-primary,
+.hp-icon-btn.is-primary { box-shadow: 0 10px 34px -12px rgba(124, 58, 237, 0.9); }
+.hp-btn.is-primary:hover { box-shadow: 0 14px 44px -10px rgba(139, 92, 246, 1); }
 .mp-app :focus-visible { outline: 2px solid var(--hp-accent); outline-offset: 3px; border-radius: 4px; }
 
 /* Grano fílmico: una sola textura estática sobre todo, imágenes incluidas.
@@ -120,7 +161,7 @@ html:has(.mp-app) body {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--hp-accent);
+  color: var(--hp-accent-text);
 }
 .hp-kicker-dot {
   width: 6px; height: 6px;
@@ -207,7 +248,7 @@ html:has(.mp-app) body {
   -webkit-backdrop-filter: blur(10px);
 }
 .hp-btn.is-ghost:hover { border-color: rgba(255, 255, 255, 0.36); background: rgba(255, 255, 255, 0.09); }
-.hp-btn.is-ghost[aria-pressed="true"] { border-color: color-mix(in srgb, var(--hp-accent) 60%, transparent); color: var(--hp-accent); }
+.hp-btn.is-ghost[aria-pressed="true"] { border-color: color-mix(in srgb, var(--hp-accent) 60%, transparent); color: var(--hp-accent-text); }
 .hp-btn.is-sm { height: 36px; padding: 0 14px; font-size: 13px; gap: 7px; }
 
 .hp-icon-btn {
@@ -226,7 +267,7 @@ html:has(.mp-app) body {
 .hp-icon-btn:hover { border-color: rgba(255, 255, 255, 0.4); transform: scale(1.06); }
 .hp-icon-btn.is-primary { background: var(--hp-accent); color: var(--hp-accent-ink); border-color: transparent; }
 .hp-icon-btn.is-primary svg { margin-left: 2px; }
-.hp-icon-btn[aria-pressed="true"] { color: var(--hp-accent); border-color: color-mix(in srgb, var(--hp-accent) 60%, transparent); }
+.hp-icon-btn[aria-pressed="true"] { color: var(--hp-accent-text); border-color: color-mix(in srgb, var(--hp-accent) 60%, transparent); }
 .hp-icon-btn.is-lg { width: 48px; height: 48px; }
 
 .hp-chip {
@@ -490,7 +531,7 @@ html:has(.mp-app) body {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  white-space: pre;
+  white-space: pre-wrap;
   color: rgba(245, 245, 247, 0.72);
   margin-bottom: 14px;
 }
@@ -733,7 +774,7 @@ html:has(.mp-app) body {
   user-select: none;
   transition: -webkit-text-stroke-color 0.4s var(--hp-ease);
 }
-.hp-card.has-rank:hover .hp-rank { -webkit-text-stroke-color: var(--hp-accent); }
+.hp-card.has-rank:hover .hp-rank { -webkit-text-stroke-color: var(--hp-accent-text); }
 .hp-card.has-rank .hp-card-frame { z-index: 1; }
 
 /* ── EDITORIAL ──────────────────────────────────────────────────────────── */
@@ -779,7 +820,7 @@ html:has(.mp-app) body {
   font-size: 13px;
   font-weight: 500;
 }
-.hp-editorial-awards span { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hp-accent); }
+.hp-editorial-awards span { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hp-accent-text); }
 .hp-editorial .hp-hero-actions { margin-top: 8px; }
 
 /* ── PRÓXIMAMENTE ───────────────────────────────────────────────────────── */
@@ -870,7 +911,7 @@ html:has(.mp-app) body {
   padding-bottom: 18px;
   border-bottom: 1px solid var(--hp-border-strong);
 }
-.hp-search-icon { flex-shrink: 0; color: var(--hp-accent); }
+.hp-search-icon { flex-shrink: 0; color: var(--hp-accent-text); }
 .hp-search-input {
   flex: 1;
   min-width: 0;
@@ -905,11 +946,11 @@ html:has(.mp-app) body {
   border-top: 1px solid var(--hp-border);
 }
 .hp-footer-mark { font-family: var(--hp-display); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-.hp-footer-mark b { color: var(--hp-accent); font-weight: 700; }
+.hp-footer-mark b { color: var(--hp-accent-text); font-weight: 700; }
 .hp-footer-brand p { margin-top: 8px; font-size: 14px; color: var(--hp-muted); max-width: 32ch; }
 .hp-footer-cols { display: flex; gap: clamp(32px, 5vw, 72px); }
 .hp-footer-cols div { display: flex; flex-direction: column; gap: 10px; }
-.hp-footer-label { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hp-accent); margin-bottom: 4px; }
+.hp-footer-label { font-family: var(--hp-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hp-accent-text); margin-bottom: 4px; }
 .hp-footer-cols a { font-family: var(--hp-mono); font-size: 12px; color: var(--hp-muted); transition: color 0.2s; }
 .hp-footer-cols a:hover { color: var(--hp-text); }
 .hp-footer-legal {
@@ -937,7 +978,7 @@ html:has(.mp-app) body {
   color: var(--hp-muted);
 }
 .mp-footer-links { display: flex; gap: 20px; }
-.mp-footer-links a:hover { color: var(--hp-accent); }
+.mp-footer-links a:hover { color: var(--hp-accent-text); }
 
 /* ── TELÉFONO ───────────────────────────────────────────────────────────── */
 
@@ -977,7 +1018,7 @@ html:has(.mp-app) body {
     text-transform: uppercase;
     color: var(--hp-muted);
   }
-  .hp-tabbar .is-active { color: var(--hp-accent); }
+  .hp-tabbar .is-active { color: var(--hp-accent-text); }
   .mp-app .mp-drawer-close { top: 20px; }
 
   /* El hero se parte: el afiche entero arriba, sin recortarle el título, y el
@@ -1011,6 +1052,7 @@ html:has(.mp-app) body {
   .mp-app .nav-drawer.open .mp-drawer-close,
   .mp-app .mp-drawer-close::before { animation: none; }
   .hp-hero-tick-bar i { animation: none; transform: scaleX(1); }
+  .hp-haz::before, .hp-btn.is-primary::before, .hp-icon-btn.is-primary::before, .cp-big-play::before { animation: none; }
 }
 
 /* ── REPRODUCTOR ──
@@ -1053,6 +1095,7 @@ html:has(.mp-app) body {
 
 .cp-big-play {
   position: relative;
+  isolation: isolate;
   width: 76px; height: 76px;
   border-radius: 50%;
   display: grid;

@@ -147,6 +147,22 @@ const TITLES: Title[] = [
     badge: "SERIE",
     poster: "/images/okupas/okupas-home.webp",
     href: "/okupas",
+    /* Los episodios viven en app/okupas/page.tsx, que es su ficha. */
+    detail: {
+      format: "Serie · 11 episodios + especial",
+      about:
+        "Ricardo dejó la facultad y no sabe qué hacer con su vida. Su prima le pide que cuide una casa familiar recién desalojada en el centro de Buenos Aires, y él termina compartiéndola con el Pollo, Walter y el Chiqui. Lo que empieza como un favor se vuelve un viaje sin retorno por los márgenes de la ciudad. Creada y dirigida por Bruno Stagnaro para Canal 7, es considerada un hito de la televisión argentina: retrató con crudeza la realidad social de fines de los noventa.",
+      crew: [
+        { role: "Creación y dirección", name: "Bruno Stagnaro" },
+        { role: "Emisión", name: "Canal 7" },
+      ],
+      cast: [
+        { name: "Rodrigo de la Serna", character: "El Pollo" },
+        { name: "Diego Alonso", character: "Ricardo" },
+        { name: "Ariel Staltari", character: "Walter" },
+        { name: "Franco Tirri", character: "Chiqui" },
+      ],
+    },
   },
   {
     id: "el-monarco",

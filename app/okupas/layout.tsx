@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-/* La página es un componente cliente, así que su metadata vive acá. Antes la
-   heredaba de app/movie/layout.tsx —que hablaba del casting, no de la serie—
+/* La metadata de la serie vive acá desde que la página era un componente
+   cliente. Antes la heredaba de app/movie/layout.tsx —que hablaba del casting, no de la serie—
    y con la mudanza de la ruta ese layout dejó de existir. */
 export const metadata: Metadata = {
   title: "Okupas — Serie completa en Hivrido PLAY",

@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import CinePlayer from "../../components/play/CinePlayer";
 import PlayHeader from "../../components/play/PlayHeader";
 import PlayFooter from "../../components/play/PlayFooter";
-import ListButton from "../../components/play/ListButton";
-import PosterCard from "../../components/play/PosterCard";
-import Row from "../../components/play/Row";
+import TitleView from "../../components/play/TitleView";
 import { playFonts } from "../../components/play/fonts";
 import { WITH_PAGE, directorsOf, relatedTo } from "../../lib/catalog";
 import "../../components/play/play.css";
@@ -48,20 +44,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
-
 export default async function TitlePage({ params }: Props) {
   const t = find((await params).id);
   if (!t) notFound();
   const d = t.detail;
-  const kind = t.type === "serie" ? "Serie" : "Película";
-  const format = d?.format ?? (t.type === "serie" && t.seasons ? `Serie · ${t.seasons}` : kind);
   const about = t.isPlaceholder ? null : d?.about ?? t.synopsis;
-  const crew = d?.crew ?? [];
   const cast = d?.cast ?? [];
-  const accent = t.hero?.color ?? "#FF9F2E";
   const directors = directorsOf(t);
-  const related = relatedTo(t);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -77,213 +66,12 @@ export default async function TitlePage({ params }: Props) {
   };
 
   return (
-    <div className={`mp-app hp tp ${playFonts}`} style={{ "--tp-accent": accent } as React.CSSProperties}>
+    <div className={`mp-app hp tv ${playFonts}`} style={{ "--tp-accent": t.hero?.color ?? "#7C3AED" } as React.CSSProperties}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-
       <PlayHeader />
-
-      {/* ── HERO ── */}
-      <section className={`tp-hero${t.hero?.titled ? " is-titled" : ""}`}>
-        {t.poster ? (
-          <div className="tp-hero-bg" style={{ backgroundImage: `url('${t.poster}')` }} />
-        ) : (
-          /* Sin portada todavía: un fondo de la casa en el color de la obra. */
-          <div className="tp-hero-bg tp-hero-bg-empty" />
-        )}
-        <div className="tp-hero-shade" />
-        <div className="tp-wrap tp-hero-inner">
-          <nav className="tp-crumbs" aria-label="Ruta">
-            <Link href="/play/">Inicio</Link>
-            <span>›</span>
-            <Link href={t.type === "serie" ? "/play/#series" : "/play/#peliculas"}>
-              {t.type === "serie" ? "Series" : "Películas"}
-            </Link>
-          </nav>
-          <p className="tp-kicker">{format}</p>
-          <h1 className="tp-title">{t.title}</h1>
-          <div className="tp-meta">
-            {t.year && <span>{t.year}</span>}
-            {t.duration && t.duration !== "—" && <span>{t.duration}</span>}
-            <span>{t.genre}</span>
-            {d?.advisory && <span className="hp-badge">+18</span>}
-            {(t.badge === "PRONTO" || t.isPlaceholder) && <span className="hp-badge is-accent">Próximamente</span>}
-          </div>
-          <p className="tp-lead">
-            {t.isPlaceholder ? `${kind} en preparación. Muy pronto, toda la información acá.` : t.synopsis}
-          </p>
-          <div className="tp-actions">
-            {t.cta && (
-              <Link href={t.cta.href} className="tp-cta">
-                <span>{t.cta.label}</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-              </Link>
-            )}
-            {t.ytId && (
-              <a href="#trailer" className="hp-btn is-primary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                {t.ytFull ? "Ver ahora" : "Ver tráiler"}
-              </a>
-            )}
-            <ListButton id={t.id} />
-          </div>
-        </div>
-      </section>
-
-      {/* ── TRÁILER ── */}
-      {t.ytId && (
-        <section id="trailer" className="tp-wrap tp-section">
-          {t.ytExternal ? (
-            /* Con restricción de edad YouTube no deja embeberlo: el iframe
-               solo mostraría su aviso. Se muestra la portada y se abre allá. */
-            <a
-              href={`https://www.youtube.com/watch?v=${t.ytId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="tp-player tp-player-ext"
-              style={t.poster ? { backgroundImage: `url('${t.poster}')` } : undefined}
-            >
-              <span className="tp-player-cta">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
-                Ver el tráiler en YouTube
-              </span>
-              <span className="tp-player-hint">Contenido +18: YouTube pide verificar la edad</span>
-            </a>
-          ) : (
-          <div className="tp-player">
-            <CinePlayer
-              ytId={t.ytId}
-              title={t.title}
-              poster={t.poster}
-              zoom={t.ytZoom}
-              label={t.ytFull ? "Ver ahora" : "Ver tráiler"}
-              trackId={t.id}
-            />
-          </div>
-          )}
-        </section>
-      )}
-
-      {/* ── MÁS VIDEOS ── */}
-      {d?.videos && (
-        <section className="tp-wrap tp-section">
-          <h2 className="tp-h2">Más videos</h2>
-          <ul className="tp-videos">
-            {d.videos.map((v) => (
-              <li key={v.ytId}>
-                <div className="tp-player tp-player-sm">
-                  <CinePlayer ytId={v.ytId} title={`${v.label} de ${t.title}`} zoom={v.zoom} />
-                </div>
-                <span className="tp-video-label">{v.label}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* ── SINOPSIS + FICHA ── */}
-      {about && (
-      <section className="tp-wrap tp-section tp-split">
-        <div>
-          <h2 className="tp-h2">Sinopsis</h2>
-          <p className="tp-body">{about}</p>
-          {d?.advisory && (
-            <p className="tp-advisory">
-              <strong>Advertencia de contenido.</strong> {d.advisory}
-            </p>
-          )}
-        </div>
-        <dl className="tp-sheet">
-          {crew.map((c) => (
-            <div key={c.role}>
-              <dt>{c.role}</dt>
-              <dd>{c.name}</dd>
-            </div>
-          ))}
-          {t.year && (
-            <div>
-              <dt>Año</dt>
-              <dd>{t.year}</dd>
-            </div>
-          )}
-          <div>
-            <dt>Género</dt>
-            <dd>{t.genre}</dd>
-          </div>
-          <div>
-            <dt>País · Idioma</dt>
-            <dd>Argentina · Español</dd>
-          </div>
-        </dl>
-      </section>
-      )}
-
-      {/* ── RELATOS ── */}
-      {d?.chapters && (
-        <section className="tp-wrap tp-section">
-          <h2 className="tp-h2">{d.chapters.length} relatos, un mismo barrio</h2>
-          <ol className="tp-chapters">
-            {d.chapters.map((c, i) => (
-              <li key={c.title}>
-                <span className="tp-roman">{ROMAN[i]}</span>
-                <div>
-                  <div className="tp-chapter-head">
-                    <h3>{c.title}</h3>
-                    <span>{c.theme}</span>
-                  </div>
-                  <p>{c.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-
-      {/* ── ELENCO ── */}
-      {cast.length > 0 && (
-      <section className="tp-wrap tp-section">
-        <h2 className="tp-h2">Elenco</h2>
-        <ul className="tp-cast">
-          {cast.map((c) => (
-            <li key={c.name}>
-              <span className="tp-initials" aria-hidden="true">
-                {c.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
-              </span>
-              <span className="tp-cast-name">{c.name}</span>
-              {c.character && <span className="tp-cast-role">{c.character}</span>}
-            </li>
-          ))}
-        </ul>
-      </section>
-      )}
-
-      {/* ── PREMIOS ── */}
-      {d?.awards && (
-        <section className="tp-wrap tp-section">
-          <h2 className="tp-h2">Premios y festivales</h2>
-          {d.awardsNote && <p className="tp-note">{d.awardsNote}</p>}
-          <ul className="tp-awards">
-            {d.awards.map((a, i) => (
-              <li key={i}>
-                <span className="tp-award-label">{a.label}</span>
-                <span className="tp-award-name">{a.name}</span>
-                <span className="tp-award-detail">{a.detail}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* ── MÁS PARA VER ── */}
-      {related.length > 0 && (
-        <div className="tp-section tp-more">
-          <Row title="Más para ver">
-            {related.map((r) => (
-              <PosterCard key={r.id} item={r} />
-            ))}
-          </Row>
-        </div>
-      )}
-
+      <main>
+        <TitleView t={t} related={relatedTo(t)} />
+      </main>
       <PlayFooter />
     </div>
   );
