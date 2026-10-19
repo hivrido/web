@@ -2,6 +2,11 @@
 
 import { useState } from "react";
 
+/* Portada de reemplazo cuando el video no tiene la de máxima resolución. */
+function bajarPortada(img: HTMLImageElement, ytId: string) {
+  if (img.naturalWidth > 0 && img.naturalWidth <= 120) img.src = `https://i.ytimg.com/vi/${ytId}/sddefault.jpg`;
+}
+
 /**
  * Reproductor de YouTube con fachada.
  *
@@ -50,6 +55,13 @@ export default function PlayerLite({
             `remotePatterns` en next.config para no ganar nada. */}
         <img
           src={`https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg`}
+          /* No todo video tiene portada en máxima resolución: cuando falta,
+             YouTube responde un gris de 120 px en lugar de un error. Se
+             detecta por el tamaño y se baja a la estándar, que existe siempre.
+             El ref cubre la imagen que ya cargó antes de hidratar, cuando el
+             onLoad llega tarde. */
+          ref={(img) => { if (img?.complete) bajarPortada(img, ytId); }}
+          onLoad={(e) => bajarPortada(e.currentTarget, ytId)}
           alt=""
           loading="lazy"
           decoding="async"

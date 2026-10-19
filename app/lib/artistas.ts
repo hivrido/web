@@ -1549,6 +1549,107 @@ export const ARTISTAS: Artista[] = [
       "Está en producción su ficha completa: los proyectos que produce y los que dirige junto a Hivrido.",
     universo: ["fasterdakill"],
   },
+
+  {
+    slug: "zurdosound",
+    /* Así firma en Instagram y YouTube. El nombre civil no figura en ningún
+       perfil público: no va hasta que lo pase él. */
+    nombre: "Zurdosound",
+    alias: "@zurdosound",
+    tagline: "Rap de Tortuguitas, escrito antes de ser dicho.",
+    disciplinas: ["Rap", "Hip hop", "Composición", "Vivo"],
+    schema: "Person",
+    rol: "Rapero y compositor",
+    /* Arena: el color del papel de las escritas. Cálido y apagado, lejos del
+       dorado de Jairito y del rosa de Flavia. Pasa el AA como texto sobre negro. */
+    acento: { hex: "#E9D3A6", suave: "rgba(233, 211, 166, 0.14)" },
+    /* La partitura: viene de las batallas de escritas, la barra en papel. */
+    emblema: { forma: "partitura", leyenda: "ZURDO" },
+    /* Relevado el 19/10/2026 de sus posts: el de Partiendo Coxis (26/06)
+       cuenta de dónde es, cómo conoció a JBESTIA y el EP en camino; los de
+       Livre Fiesta (14/05), Punto Norte (06/07) y Ruida Vol. 7 (22/09), sus
+       fechas en vivo. */
+    manifiesto: [
+      "Zurdosound rapea desde Tortuguitas, en José C. Paz. Viene de las batallas de escritas, donde la barra se trabaja en papel antes de decirse en voz alta, y ese oficio se nota: cada tema tiene algo para decir.",
+      "Su primer corte, Partiendo Coxis, salió en junio de 2026 junto a JBESTIA, un artista de Necochea al que conoció en una de esas batallas: dos barrios, dos historias y las mismas ganas de hacer música de verdad. Es la apertura de un EP que va a salir entre este año y el que viene.",
+      "Mientras tanto, prueba los temas donde se prueba el rap: arriba del escenario. Livre Fiesta, Punto Norte en Derqui, Ruida Vol. 7. Hivrido se suma para darle a ese recorrido dirección visual y una casa donde mostrarlo.",
+    ],
+    ejes: [
+      {
+        titulo: "Escrita antes que dicha",
+        texto: "Viene de las batallas de escritas: la letra se piensa en papel y se defiende en vivo.",
+      },
+      {
+        titulo: "Dos barrios en un tema",
+        texto: "Tortuguitas y Necochea en el mismo corte. Su música se arma en la conexión con otros artistas, no en el aislamiento.",
+      },
+      {
+        titulo: "El vivo como laboratorio",
+        texto: "Los temas del EP se prueban primero frente al público. Lo que sobrevive al escenario es lo que sale.",
+      },
+    ],
+    enlaces: [
+      {
+        tipo: "instagram",
+        handle: "zurdosound",
+        href: "https://www.instagram.com/zurdosound/",
+      },
+      {
+        tipo: "youtube",
+        handle: "ZURDOSOUND",
+        href: "https://www.youtube.com/@ZURDOSOUND",
+      },
+    ],
+    metricas: [
+      {
+        valor: "1.426",
+        label: "Seguidores en Instagram",
+        fuente: "Perfil @zurdosound · 19/10/2026",
+      },
+      {
+        valor: "20",
+        label: "Publicaciones",
+        fuente: "Perfil @zurdosound · 19/10/2026",
+      },
+      {
+        valor: "3",
+        label: "Fechas en vivo en 2026",
+        fuente: "Livre Fiesta, Punto Norte y Ruida Vol. 7 · Instagram",
+      },
+    ],
+    obra: { eyebrow: "Obra", titulo: "Lo que suena" },
+    /* Partiendo Coxis: video oficial en su canal, publicado el 26/06/2026.
+       Zurdo es el master que pasó el artista; sin fecha confirmada. */
+    lanzamientos: [
+      {
+        id: "partiendo-coxis",
+        titulo: "Partiendo Coxis",
+        tipo: "videoclip",
+        year: "2026",
+        con: "JBESTIA",
+        ytId: "9gfOzsrV9Qc",
+      },
+      {
+        id: "zurdo",
+        titulo: "Zurdo",
+        tipo: "single",
+        audio: "/mp3/zurdo.mp3",
+      },
+    ],
+    destacado: "partiendo-coxis",
+    enConstruccion:
+      "Está en producción su EP, que sale entre 2026 y 2027: cada tema se suma a esta ficha cuando se lanza, con dirección visual de Hivrido.",
+    ticker: ["Partiendo Coxis", "Zurdo", "No Me Venden", "Tortuguitas", "José C. Paz", "Escritas", "Rap", "JBESTIA", "EP en camino"],
+    /* Partiendo Coxis al frente, en el medio de la lista. Las miniaturas son
+       las de Instagram, limpias del ícono de play que trae cada reel. */
+    galeria: [
+      { img: "/images/artistas/zurdo/post-4.webp", alt: "Zurdosound rapeando con micrófono y cadena dorada en Ruida Vol. 7, bajo luz violeta", href: "https://www.instagram.com/p/DdmRJFNqXFe/" },
+      { img: "/images/artistas/zurdo/post-1.webp", alt: "Zurdosound en vivo en Punto Norte, Derqui, con su nombre sobre la imagen", href: "https://www.instagram.com/p/DaeJuUhKahb/" },
+      { img: "/images/artistas/zurdo/post-2.webp", alt: "Placa de Partiendo Coxis, de Zurdosound y JBESTIA", href: "https://www.instagram.com/p/DaD7oeIq0kk/" },
+      { img: "/images/artistas/zurdo/post-3.webp", alt: "Zurdosound cantando No Me Venden en Livre Fiesta, con el DJ detrás", href: "https://www.instagram.com/p/DYVv42UKi7M/" },
+      { img: "/images/artistas/zurdo/post-5.webp", alt: "Meme de Zurdosound sobre la inteligencia artificial y Gorillaz en 2001", href: "https://www.instagram.com/p/Ddwzh9QqK9b/" },
+    ],
+  },
 ];
 
 /**

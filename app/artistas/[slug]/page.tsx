@@ -169,7 +169,12 @@ export default async function FichaArtistaPage({
                   <Link href="/artistas">Roster Hivrido</Link> · {a.alias}
                 </p>
 
-                <h1 className="art-hero-nombre">
+                <h1
+                  className="art-hero-nombre"
+                  /* La palabra más larga fija el techo del tamaño: un nombre
+                     de una sola palabra larga no tiene dónde partirse. */
+                  style={{ "--letras": Math.max(...principal.split(/\s+/).map((w) => w.length)) } as React.CSSProperties}
+                >
                   {principal}
                   {dosis.length > 0 && (
                     <span className="art-hero-dosis">{dosis.join(" ")}</span>

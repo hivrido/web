@@ -343,6 +343,8 @@ html:has(.art-page) body {
   display: grid;
   gap: clamp(38px, 7vw, 64px);
 }
+/* La columna del nombre es la referencia del tamaño del título. */
+.art-hero-grid > :first-child { container-type: inline-size; min-width: 0; }
 
 /* La columna del emblema solo existe en desktop: en un teléfono le robaría
    la pantalla al nombre, que es lo que tiene que leerse primero. */
@@ -381,6 +383,9 @@ html:has(.art-page) body {
   font-family: var(--font-display);
   /* Escala de afiche: es la pieza principal de una página sin fotos. */
   font-size: clamp(2.9rem, 13vw, 7.4rem);
+  /* Que la palabra más larga entre en su columna (cada letra de la display
+     en mayúscula mide cerca de 0,82 em). */
+  font-size: min(clamp(2.9rem, 13vw, 7.4rem), calc(100cqi / (var(--letras, 6) * 0.82)));
   font-weight: 900;
   line-height: 0.88;
   letter-spacing: -0.045em;
