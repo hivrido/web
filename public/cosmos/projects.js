@@ -98,28 +98,8 @@ export const PROJECTS = [
     image: '/images/bg/21.jpg',
   },
   {
-    id: 'animacion',
-    index: '04',
-    title: 'CINE & VIDEO',
-    /* La ficha dice otra cosa que el HUD */
-    cardTitle: ['Cine'],
-    /* Reemplaza al ornamento de índice sobre el título de la ficha */
-    kicker: 'Producción Audiovisual',
-    category: 'Cine & Video',
-    /* Pie de la ficha, en lugar de `categoría · año` */
-    meta: 'De la idea a la pantalla',
-    year: '2025',
-    /* Sin `client`: es un servicio propio, no una pieza para alguien */
-    body: 'Producción cinematográfica, videoclips y contenido para marcas. Desarrollamos proyectos desde la idea hasta la pantalla, cuidando cada etapa: desarrollo, guion, rodaje y postproducción. Apostamos a narrativas que trascienden y construyen universos propios.',
-    tags: ['Cine', 'Videoclips', 'Dirección', 'Post'],
-    /* Destino del botón del panel: la landing audiovisual */
-    link: { label: 'Ir a Cine & Video', href: '/cine-video/' },
-    accent: '#7C3AED',
-    image: '/images/bg/animacion-poster.jpg',
-  },
-  {
     id: 'oraculo',
-    index: '05',
+    index: '04',
     title: 'BRANDING',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Marcas'],
@@ -143,7 +123,7 @@ export const PROJECTS = [
   },
   {
     id: 'ritual',
-    index: '06',
+    index: '05',
     title: 'EQUIPO',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Equipo'],
@@ -163,7 +143,7 @@ export const PROJECTS = [
   },
   {
     id: 'puny',
-    index: '07',
+    index: '06',
     title: 'PUBLICIDAD',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Ads'],
@@ -188,7 +168,7 @@ export const PROJECTS = [
   },
   {
     id: 'docke',
-    index: '08',
+    index: '07',
     title: 'AGENTES',
     /* La ficha dice otra cosa que el HUD */
     cardTitle: ['Colmena'],

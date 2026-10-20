@@ -21,7 +21,6 @@ const NAV_ITEMS = [
   { label: "Artistas",     href: "/artistas" },
   { label: "Hivrido PLAY", href: "/play" },
   { label: "Grow Digital", href: "/diseno-web" },
-  { label: "Cine & Video", href: "/cine-video" },
   { label: "Branding",     href: "/branding" },
   { label: "Equipo",       href: "/equipo" },
   { label: "Publicidad",   href: "/publicidad" },
