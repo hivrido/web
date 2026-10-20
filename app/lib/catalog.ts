@@ -76,6 +76,10 @@ export type Title = {
   cta?: { label: string; href: string };
   /** Datos provisorios, pendientes de completar. */
   isPlaceholder?: boolean;
+  /** Fuera de la plataforma: no entra en el catálogo, así que no aparece en
+      filas, buscador ni sitemap y su ficha da 404. Los datos se conservan
+      para poder volver a publicarla quitando esta línea. */
+  oculto?: boolean;
   detail?: Detail;
 };
 
@@ -108,6 +112,7 @@ const TITLES: Title[] = [
     id: "el-docke",
     title: "El Docke",
     type: "serie",
+    oculto: true,
     year: "T1 · 2024",
     seasons: "1 temporada",
     genre: "Drama · Thriller",
@@ -123,6 +128,7 @@ const TITLES: Title[] = [
     id: "session-one",
     title: "Session One",
     type: "serie",
+    oculto: true,
     year: "T1 · 2024",
     seasons: "1 temporada",
     genre: "Thriller · Drama",
@@ -529,6 +535,7 @@ const TITLES: Title[] = [
     id: "chamame",
     title: "Chamamé",
     type: "pelicula",
+    oculto: true,
     year: "2024",
     duration: "58m",
     genre: "Neo Western · Acción · Drama",
@@ -568,7 +575,7 @@ const TITLES: Title[] = [
  * reproducen nada por su cuenta. La ficha es donde está todo —video, sinopsis,
  * créditos—, así que acá se le asigna su ruta a cada título.
  */
-export const CATALOG: (Title & { href: string })[] = TITLES.map((t) => ({
+export const CATALOG: (Title & { href: string })[] = TITLES.filter((t) => !t.oculto).map((t) => ({
   ...t,
   href: t.href ?? `/play/${t.id}`,
 }));
@@ -590,12 +597,11 @@ export const PELICULAS = READY.filter((t) => t.type === "pelicula");
 export const UPCOMING = CATALOG.filter((t) => t.isPlaceholder || t.badge === "PRONTO");
 
 /** Slider de portada, en este orden: el primero es lo que ve quien llega.
-    Solo entran fichas con fondo propio y video. Chamamé queda afuera porque
-    su fondo lleva un bloque de texto impreso. */
+    Solo entran fichas con fondo propio y video. */
 export const FEATURED = pick([
   "el-rectangulo-de-angeles",
   "erase-una-vez-en-virreyes",
-  "el-docke",
+  "mia",
   "3-am",
   "matanza",
 ]).filter((t) => t.hero && t.ytId);
@@ -606,9 +612,9 @@ export const SELECTION = pick([
   "erase-una-vez-en-virreyes",
   "okupas",
   "el-rectangulo-de-angeles",
-  "el-docke",
+  "3-am",
   "esnob",
-  "chamame",
+  "matanza",
 ]);
 
 /** El estreno que ocupa el bloque editorial de la portada. */

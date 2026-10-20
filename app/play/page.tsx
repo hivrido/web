@@ -10,7 +10,7 @@ import { CATALOG, FEATURED } from "../lib/catalog";
 export const metadata: Metadata = {
   title: "Hivrido PLAY — Series y películas argentinas independientes",
   description:
-    "Mirá series y películas independientes de habla hispana en Hivrido PLAY: El Docke, Okupas, Session One, Chamamé y los estrenos que se ven primero acá.",
+    "Mirá series y películas independientes de habla hispana en Hivrido PLAY: Okupas, Érase una vez en Virreyes, El rectángulo de Ángeles y los estrenos que se ven primero acá.",
   alternates: { canonical: "/play" },
   openGraph: {
     title: "Hivrido PLAY — Series y películas argentinas",
