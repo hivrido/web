@@ -57,20 +57,8 @@ export const PROJECTS: Project[] = [
     // ajena ilustrando nuestra identidad. Va el fondo procedural del acento.
   },
   {
-    id: "sintesis",
-    index: "04",
-    title: "CINE & VIDEO",
-    category: "Cine & Video",
-    year: "2025",
-    client: "HIVRIDO",
-    body: "Producción cinematográfica, videoclips y contenido para marcas. Desarrollamos proyectos desde la idea hasta la pantalla, cuidando cada etapa: desarrollo, guion, rodaje y postproducción.",
-    tags: ["Cine", "Videoclips", "Dirección", "Post"],
-    accent: "#7C3AED",
-    image: "/images/bg/animacion-poster.jpg",
-  },
-  {
     id: "ritual",
-    index: "05",
+    index: "04",
     title: "EQUIPO",
     category: "Equipo",
     year: "2025",
@@ -82,7 +70,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "monolito",
-    index: "06",
+    index: "05",
     title: "HIVRIDO PLAY",
     category: "Contenidos",
     year: "2026",
@@ -94,7 +82,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "puny",
-    index: "07",
+    index: "06",
     title: "PUBLICIDAD",
     category: "Publicidad",
     year: "2026",

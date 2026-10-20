@@ -572,6 +572,9 @@ la request llegue a la app.
   se compartió públicamente. Apunta directo a su lugar actual para no encadenar
   dos saltos.
 - **`/movie/okupas` → `/okupas` (301).** Misma razón.
+- **`/cine-video` → `/` (301).** La sección Cine & Video se dio de baja
+  (tarjeta del anillo, menú, página y tarjeta de `/orbital`), pero su URL
+  estuvo en el sitemap: un link viejo vuelve a la portada en lugar de un 404.
 
 Van declaradas en las dos formas, con barra final y sin ella: el `source` se
 compara literal, y `trailingSlash: true` hace que la que circuló sea la de la

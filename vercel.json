@@ -12,7 +12,9 @@
     { "source": "/casting/cuchillo-paz", "destination": "/casting/", "permanent": true },
     { "source": "/casting/cuchillo-paz/", "destination": "/casting/", "permanent": true },
     { "source": "/suscribite", "destination": "/casting/", "permanent": true },
-    { "source": "/suscribite/", "destination": "/casting/", "permanent": true }
+    { "source": "/suscribite/", "destination": "/casting/", "permanent": true },
+    { "source": "/cine-video", "destination": "/", "permanent": true },
+    { "source": "/cine-video/", "destination": "/", "permanent": true }
   ],
   "headers": [
     {
