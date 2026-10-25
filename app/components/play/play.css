@@ -111,9 +111,11 @@ html:has(.mp-app) body {
 @keyframes hp-haz-giro { to { --hp-haz: 360deg; } }
 .hp-haz,
 .hp-btn.is-primary,
-.hp-icon-btn.is-primary { position: relative; isolation: isolate; }
+.hp-icon-btn.is-primary,
+.hp-soon.has-poster .hp-btn { position: relative; isolation: isolate; }
 .hp-haz::before,
 .hp-btn.is-primary::before,
+.hp-soon.has-poster .hp-btn::before,
 .hp-icon-btn.is-primary::before,
 .cp-big-play::before {
   content: "";
@@ -753,7 +755,8 @@ html:has(.mp-app) body {
    la separa del resto de la fila. */
 .hp-card-frame { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 0%; }
 .hp-card-frame::before,
-.hp-card-frame::after {
+.hp-card-frame::after,
+.hp-soon.has-poster .hp-soon-media::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -762,7 +765,8 @@ html:has(.mp-app) body {
   pointer-events: none;
   transition: opacity 0.4s var(--hp-ease);
 }
-.hp-card-frame::before {
+.hp-card-frame::before,
+.hp-soon.has-poster .hp-soon-media::before {
   z-index: 4;
   padding: 2px;
   background: conic-gradient(from var(--hp-haz), transparent 0deg, transparent 200deg,
@@ -896,6 +900,12 @@ html:has(.mp-app) body {
 }
 .hp-soon-media:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
 .hp-soon-media:hover .hp-card-img { transform: scale(1.04); }
+/* Con afiche, la obra se enciende entera: el haz recorre el afiche y el botón
+   Avisame a la vez, para que se lea como una sola invitación. */
+.hp-soon.has-poster .hp-btn::before { opacity: 0; animation-play-state: paused; transition: opacity 0.4s var(--hp-ease); }
+.hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media::before { opacity: 1; animation: hp-haz-giro 2.6s linear infinite; }
+.hp-soon.has-poster:is(:hover, :focus-within) .hp-btn::before { opacity: 1; animation-play-state: running; }
+.hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media { box-shadow: 0 0 46px -14px rgba(255, 170, 59, 0.45), 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
 .hp-soon-body { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .hp-soon-title { font-size: 18px; margin-bottom: 4px; }
 
@@ -1105,8 +1115,10 @@ html:has(.mp-app) body {
   .mp-app .nav-drawer.open .mp-drawer-close,
   .mp-app .mp-drawer-close::before { animation: none; }
   .hp-hero-tick-bar i { animation: none; transform: scaleX(1); }
-  .hp-haz::before, .hp-btn.is-primary::before, .hp-icon-btn.is-primary::before, .cp-big-play::before { animation: none; }
-  .mp-app .hp-card:is(:hover, :focus-within) .hp-card-frame::before { animation: none; }
+  .hp-haz::before, .hp-btn.is-primary::before, .hp-icon-btn.is-primary::before, .cp-big-play::before,
+  .hp-soon.has-poster .hp-btn::before { animation: none; }
+  .mp-app .hp-card:is(:hover, :focus-within) .hp-card-frame::before,
+  .mp-app .hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media::before { animation: none; }
 }
 
 /* ── REPRODUCTOR ──

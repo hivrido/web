@@ -112,7 +112,7 @@ function ComingSoon() {
       </header>
       <div className="hp-soon-grid">
         {UPCOMING.map((t) => (
-          <article key={t.id} className="hp-soon">
+          <article key={t.id} className={`hp-soon${t.poster ? " has-poster" : ""}`}>
             <Link href={t.href} className="hp-soon-media" aria-label={t.title}>
               {t.poster ? (
                 <NextImage src={t.poster} alt="" fill sizes="(max-width: 768px) 90vw, 420px" className="hp-card-img" />
