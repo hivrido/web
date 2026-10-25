@@ -50,6 +50,28 @@ export function ListIcon({ saved }: { saved: boolean }) {
   );
 }
 
+/* Inclinación 3D hacia el puntero. Solo con mouse: en táctil no hay hover
+   que la sostenga, y con movimiento reducido la tarjeta no se mueve. Escribe
+   variables CSS directo en el estilo para no re-renderizar en cada píxel. */
+const TILT = 7;
+
+function tilt(e: React.PointerEvent<HTMLDivElement>) {
+  if (e.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width;
+  const y = (e.clientY - r.top) / r.height;
+  el.style.setProperty("--ry", `${(x - 0.5) * TILT * 2}deg`);
+  el.style.setProperty("--rx", `${(0.5 - y) * TILT}deg`);
+  el.style.setProperty("--mx", `${x * 100}%`);
+  el.style.setProperty("--my", `${y * 100}%`);
+}
+
+function untilt(e: React.PointerEvent<HTMLDivElement>) {
+  const s = e.currentTarget.style;
+  ["--rx", "--ry", "--mx", "--my"].forEach((p) => s.removeProperty(p));
+}
+
 export default function PosterCard({
   item,
   rank,
@@ -70,7 +92,7 @@ export default function PosterCard({
   return (
     <article className={`hp-card${rank ? " has-rank" : ""}`}>
       {rank && <span className="hp-rank" aria-hidden="true">{rank}</span>}
-      <div className="hp-card-frame">
+      <div className="hp-card-frame" onPointerMove={tilt} onPointerLeave={untilt}>
         <Link href={item.href} className="hp-card-link" draggable={false} aria-label={item.title}>
           {item.poster ? (
             <NextImage

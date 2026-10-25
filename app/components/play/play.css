@@ -747,12 +747,50 @@ html:has(.mp-app) body {
   text-overflow: ellipsis;
 }
 
+/* Tarjeta elegida: se inclina hacia el puntero (--rx/--ry los pone
+   PosterCard), un reflejo la sigue (--mx/--my) y el haz de los botones de
+   reproducir recorre su contorno. Las demás quedan planas: la luz es lo que
+   la separa del resto de la fila. */
+.hp-card-frame { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 0%; }
+.hp-card-frame::before,
+.hp-card-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--hp-ease);
+}
+.hp-card-frame::before {
+  z-index: 4;
+  padding: 2px;
+  background: conic-gradient(from var(--hp-haz), transparent 0deg, transparent 200deg,
+    rgba(139, 92, 246, 0.8) 270deg, #ffaa3b 322deg, #fff4dc 344deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.hp-card-frame::after {
+  z-index: 1;
+  background: radial-gradient(60% 80% at var(--mx) var(--my), rgba(255, 244, 220, 0.16), transparent 70%);
+  mix-blend-mode: screen;
+}
+
 @media (hover: hover) {
   .hp-card:hover .hp-card-frame,
   .hp-card:focus-within .hp-card-frame {
-    transform: scale(1.05);
-    box-shadow: 0 28px 60px -24px rgba(0, 0, 0, 0.95), 0 0 0 1px color-mix(in srgb, var(--hp-accent) 40%, transparent);
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) scale(1.06);
+    transition: transform 0.25s var(--hp-ease), box-shadow 0.45s var(--hp-ease);
+    box-shadow:
+      0 34px 70px -26px rgba(0, 0, 0, 0.95),
+      0 0 46px -14px rgba(139, 92, 246, 0.55),
+      0 0 0 1px color-mix(in srgb, var(--hp-accent) 40%, transparent);
   }
+  .hp-card:hover .hp-card-frame::before,
+  .hp-card:focus-within .hp-card-frame::before { opacity: 1; animation: hp-haz-giro 2.6s linear infinite; }
+  .hp-card:hover .hp-card-frame::after { opacity: 1; }
   .hp-card:hover .hp-card-img { transform: scale(1.04); }
   .hp-card:hover .hp-card-hover,
   .hp-card:focus-within .hp-card-hover { opacity: 1; transform: none; }
@@ -1068,6 +1106,7 @@ html:has(.mp-app) body {
   .mp-app .mp-drawer-close::before { animation: none; }
   .hp-hero-tick-bar i { animation: none; transform: scaleX(1); }
   .hp-haz::before, .hp-btn.is-primary::before, .hp-icon-btn.is-primary::before, .cp-big-play::before { animation: none; }
+  .mp-app .hp-card:is(:hover, :focus-within) .hp-card-frame::before { animation: none; }
 }
 
 /* ── REPRODUCTOR ──
