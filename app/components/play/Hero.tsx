@@ -20,6 +20,7 @@ import { useMyList } from "./library";
 
 const SLIDE_MS = 8000;
 const PREVIEW_MS = 24000;
+const REVEAL_MS = 3500;
 
 const hasPreview = (t: Entry) => !!t.ytId && !t.ytExternal;
 
@@ -41,6 +42,7 @@ function HeroVideo({ ytId, zoom = 1 }: { ytId: string; zoom?: number }) {
   useEffect(() => {
     let player: YTPlayer | null = null;
     let dead = false;
+    let reveal: ReturnType<typeof setTimeout> | undefined;
     const box = mount.current;
     loadYouTubeApi().then((YT) => {
       if (dead || !box) return;
@@ -57,19 +59,29 @@ function HeroVideo({ ytId, zoom = 1 }: { ytId: string; zoom?: number }) {
         },
         events: {
           onReady: () => { player?.mute(); player?.playVideo(); },
-          onStateChange: (e) => setOn(e.data === 1),
+          /* YouTube muestra sus propios controles los primeros segundos de
+             reproducción, aunque se le pidan apagados. El video aparece
+             recién cuando ya los escondió; hasta entonces queda el afiche. */
+          onStateChange: (e) => {
+            clearTimeout(reveal);
+            if (e.data === 1) reveal = setTimeout(() => setOn(true), REVEAL_MS);
+            else setOn(false);
+          },
         },
       });
     });
     return () => {
       dead = true;
+      clearTimeout(reveal);
       player?.destroy();
       box?.replaceChildren();
     };
   }, [ytId]);
 
   return (
-    <div className={`hp-hero-video${on ? " is-on" : ""}`} aria-hidden="true">
+    /* inert además de aria-hidden: el iframe de YouTube es enfocable y, sin
+       esto, el tabulador se metía en un video que nadie puede ver ni usar. */
+    <div className={`hp-hero-video${on ? " is-on" : ""}`} aria-hidden="true" inert>
       <div ref={mount} className="hp-hero-video-frame" style={{ "--z": zoom } as React.CSSProperties} />
     </div>
   );
