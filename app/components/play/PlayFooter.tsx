@@ -31,7 +31,7 @@ export default function PlayFooter() {
           <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
         </div>
       </nav>
-      <p className="hp-footer-legal">© 2026 Hivrido PLAY · Buenos Aires</p>
+      <p className="hp-footer-legal">© 2026 Hivrido PLAY</p>
     </footer>
   );
 }
