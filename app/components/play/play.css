@@ -33,8 +33,8 @@
   --hp-gold-ink: #1a0f00;
   --hp-danger: #ff4d4f;
 
-  --hp-display: var(--font-hp-display), "Space Grotesk", system-ui, sans-serif;
-  --hp-sans: var(--font-hp-sans), "Geist", system-ui, sans-serif;
+  --hp-display: var(--font-hp-display), "Anton", Impact, sans-serif;
+  --hp-sans: var(--font-hp-sans), "Inter", system-ui, sans-serif;
   --hp-mono: var(--font-hp-mono), "Geist Mono", ui-monospace, monospace;
 
   --hp-r: 6px;
@@ -85,7 +85,7 @@ html:has(.mp-app) body {
 :where(.mp-app) p { padding-bottom: 0; font-size: inherit; line-height: inherit; color: inherit; }
 :where(.mp-app) img { display: block; max-width: 100%; }
 :where(.mp-app) :is(ul, ol) { list-style: none; }
-:where(.mp-app) :is(h1, h2, h3) { font-family: var(--hp-display); font-weight: 700; }
+:where(.mp-app) :is(h1, h2, h3) { font-family: var(--hp-display); font-weight: 400; letter-spacing: 0.01em; text-transform: uppercase; }
 
 .mp-app {
   position: relative;
@@ -531,7 +531,7 @@ html:has(.mp-app) body {
 .hp-hero-title {
   font-size: clamp(44px, 6.2vw, 96px);
   line-height: 0.92;
-  letter-spacing: -0.035em;
+  letter-spacing: 0.005em;
   color: #fff;
   text-wrap: balance;
   margin-bottom: 20px;
@@ -618,7 +618,7 @@ html:has(.mp-app) body {
   padding: 0 var(--hp-gutter);
   margin-bottom: 16px;
 }
-.hp-shelf-title { font-size: clamp(20px, 1.8vw, 26px); letter-spacing: -0.02em; color: var(--hp-text); }
+.hp-shelf-title { font-size: clamp(20px, 1.8vw, 26px); color: var(--hp-text); }
 .hp-shelf-note {
   padding-left: 14px;
   border-left: 1px solid var(--hp-border-strong);
@@ -706,9 +706,9 @@ html:has(.mp-app) body {
   padding: 16px;
   font-family: var(--hp-display);
   font-size: clamp(20px, 1.7vw, 26px);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   color: rgba(245, 245, 247, 0.92);
   background:
@@ -734,7 +734,7 @@ html:has(.mp-app) body {
   pointer-events: none;
 }
 .hp-card-actions { display: flex; gap: 8px; margin-bottom: 8px; pointer-events: auto; }
-.hp-card-title { font-size: 16px; letter-spacing: -0.01em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-card-title { font-size: 16px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .hp-card-caption {
   display: none;
@@ -781,9 +781,9 @@ html:has(.mp-app) body {
   margin-right: -0.14em;
   font-family: var(--hp-display);
   font-size: clamp(120px, 11.5vw, 200px);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 0.74;
-  letter-spacing: -0.07em;
+  letter-spacing: -0.01em;
   color: transparent;
   -webkit-text-stroke: 2px rgba(245, 245, 247, 0.26);
   user-select: none;
@@ -821,7 +821,7 @@ html:has(.mp-app) body {
   gap: 16px;
   padding: clamp(28px, 4vw, 56px);
 }
-.hp-editorial-title { font-size: clamp(32px, 3.4vw, 54px); line-height: 0.95; letter-spacing: -0.035em; text-wrap: balance; }
+.hp-editorial-title { font-size: clamp(32px, 3.4vw, 54px); line-height: 0.95; text-wrap: balance; }
 .hp-editorial-by { font-family: var(--hp-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hp-muted); }
 .hp-editorial-text { font-size: 15px; line-height: 1.65; color: rgba(245, 245, 247, 0.75); max-width: 46ch; }
 .hp-editorial-awards { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -859,7 +859,7 @@ html:has(.mp-app) body {
 .hp-soon-media:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
 .hp-soon-media:hover .hp-card-img { transform: scale(1.04); }
 .hp-soon-body { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
-.hp-soon-title { font-size: 18px; letter-spacing: -0.015em; margin-bottom: 4px; }
+.hp-soon-title { font-size: 18px; margin-bottom: 4px; }
 
 /* ── GÉNEROS ────────────────────────────────────────────────────────────── */
 
@@ -886,7 +886,7 @@ html:has(.mp-app) body {
   transition: box-shadow 0.35s var(--hp-ease);
 }
 .hp-genre:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
-.hp-genre-label { position: relative; z-index: 1; font-family: var(--hp-display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.hp-genre-label { position: relative; z-index: 1; font-family: var(--hp-display); font-size: 22px; font-weight: 400; letter-spacing: 0.01em; text-transform: uppercase; }
 .hp-genre .hp-meta { position: relative; z-index: 1; }
 .hp-genre-stack { position: absolute; right: 18px; bottom: -18px; width: 150px; height: 100px; }
 .hp-genre-poster {
@@ -934,10 +934,10 @@ html:has(.mp-app) body {
   outline: 0;
   background: transparent;
   color: var(--hp-text);
-  font-family: var(--hp-display);
+  font-family: var(--hp-sans);
   font-size: clamp(24px, 3.4vw, 44px);
-  font-weight: 500;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 .hp-search-input::placeholder { color: rgba(245, 245, 247, 0.28); }
 .hp-search-input::-webkit-search-cancel-button { display: none; }
@@ -960,8 +960,8 @@ html:has(.mp-app) body {
   padding: 56px var(--hp-gutter) 40px;
   border-top: 1px solid var(--hp-border);
 }
-.hp-footer-mark { font-family: var(--hp-display); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-.hp-footer-mark b { color: var(--hp-gold); font-weight: 700; }
+.hp-footer-mark { font-family: var(--hp-display); font-size: 20px; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; }
+.hp-footer-mark b { color: var(--hp-gold); font-weight: 400; }
 .hp-footer-brand p { margin-top: 8px; font-size: 14px; color: var(--hp-muted); max-width: 32ch; }
 .hp-footer-cols { display: flex; gap: clamp(32px, 5vw, 72px); }
 .hp-footer-cols div { display: flex; flex-direction: column; gap: 10px; }
