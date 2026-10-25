@@ -58,18 +58,24 @@
   --mp-font: var(--hp-sans);
 }
 
-/* Reset de lo que globals.css impone al resto del sitio. */
+/* Reset de lo que globals.css impone al resto del sitio.
+   El desborde lateral se corta con clip y no con hidden: con hidden en html
+   y en body —más el overflowX en línea que el layout raíz le pone a body—,
+   body pasa a ser un contenedor de scroll que nunca scrollea, y todo sticky
+   de adentro queda anclado a él. El reproductor de la ficha no acompañaba
+   el scroll y dejaba media pantalla vacía. clip corta igual sin crear ese
+   contenedor; el !important es para ganarle al estilo en línea. */
 html:has(.mp-app),
 html:has(.mp-app) body {
   background: #0a0a0b;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: clip !important;
   height: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(124, 58, 237, 0.45) transparent;
 }
+html:has(.mp-app) body { overflow-y: visible; }
 
 /* Con especificidad cero: el cajón del menú trae sus propios rellenos desde
    globals.css y este reset no tiene que ganarles. */
@@ -771,7 +777,10 @@ html:has(.mp-app) body {
   transition: opacity 0.3s var(--hp-ease), transform 0.3s var(--hp-ease);
   pointer-events: none;
 }
-.hp-card-actions { display: flex; gap: 8px; margin-bottom: 8px; pointer-events: auto; }
+/* Solo los botones toman el puntero: la fila ocupa el ancho de la tarjeta y,
+   si la tomara entera, un click junto a los botones no abriría la ficha. */
+.hp-card-actions { display: flex; gap: 8px; margin-bottom: 8px; }
+.hp-card-actions > * { pointer-events: auto; }
 .hp-card-title { font-size: 16px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .hp-card-caption {
