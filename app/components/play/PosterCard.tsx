@@ -52,10 +52,14 @@ export function ListIcon({ saved }: { saved: boolean }) {
 
 /* Inclinación 3D hacia el puntero. Solo con mouse: en táctil no hay hover
    que la sostenga, y con movimiento reducido la tarjeta no se mueve. Escribe
-   variables CSS directo en el estilo para no re-renderizar en cada píxel:
-   --rx/--ry giran la placa, --tx/--ty (de -1 a 1) corren su canto. */
+   variables CSS directo en el estilo para no re-renderizar en cada píxel. */
 const TILT = 8;
-const VARS = ["--rx", "--ry", "--mx", "--my", "--tx", "--ty"];
+const VARS = ["--rx", "--ry", "--mx", "--my"];
+
+/** El color de la obra para el borde de su ficha, como en el anillo. */
+export function accentOf(t: Entry) {
+  return t.hero?.color ? ({ "--card-accent": t.hero.color } as React.CSSProperties) : undefined;
+}
 
 export function tilt(e: React.PointerEvent<HTMLElement>) {
   if (e.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -67,8 +71,6 @@ export function tilt(e: React.PointerEvent<HTMLElement>) {
   el.style.setProperty("--rx", `${(0.5 - y) * TILT}deg`);
   el.style.setProperty("--mx", `${x * 100}%`);
   el.style.setProperty("--my", `${y * 100}%`);
-  el.style.setProperty("--tx", `${(x - 0.5) * 2}`);
-  el.style.setProperty("--ty", `${(y - 0.5) * 2}`);
 }
 
 export function untilt(e: React.PointerEvent<HTMLElement>) {
@@ -96,7 +98,7 @@ export default function PosterCard({
   return (
     <article className={`hp-card${rank ? " has-rank" : ""}`}>
       {rank && <span className="hp-rank" aria-hidden="true">{rank}</span>}
-      <div className="hp-card-frame" onPointerMove={tilt} onPointerLeave={untilt}>
+      <div className="hp-card-frame" style={accentOf(item)} onPointerMove={tilt} onPointerLeave={untilt}>
         <Link href={item.href} className="hp-card-link" draggable={false} aria-label={item.title}>
           {item.poster ? (
             <NextImage

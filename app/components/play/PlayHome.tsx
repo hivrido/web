@@ -25,7 +25,7 @@ import {
 import Hero from "./Hero";
 import PlayHeader from "./PlayHeader";
 import PlayFooter from "./PlayFooter";
-import PosterCard, { metaOf, tilt, untilt } from "./PosterCard";
+import PosterCard, { accentOf, metaOf, tilt, untilt } from "./PosterCard";
 import Row from "./Row";
 import { openSearch } from "./SearchOverlay";
 import { useHistory, useMyList } from "./library";
@@ -113,7 +113,7 @@ function ComingSoon() {
       <div className="hp-soon-grid">
         {UPCOMING.map((t) => (
           <article key={t.id} className={`hp-soon${t.poster ? " has-poster" : ""}`}>
-            <Link href={t.href} className="hp-soon-media" aria-label={t.title} onPointerMove={t.poster ? tilt : undefined} onPointerLeave={t.poster ? untilt : undefined}>
+            <Link href={t.href} className="hp-soon-media" aria-label={t.title} style={accentOf(t)} onPointerMove={t.poster ? tilt : undefined} onPointerLeave={t.poster ? untilt : undefined}>
               {t.poster ? (
                 <NextImage src={t.poster} alt="" fill sizes="(max-width: 768px) 90vw, 420px" className="hp-card-img" />
               ) : (
