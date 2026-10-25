@@ -22,7 +22,7 @@ export default function ScrambleLink({ label, href, delay, onClick, index }: {
   label: string;
   href: string;
   delay: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   index: number;
 }) {
   const labelRef = useRef<HTMLSpanElement>(null);

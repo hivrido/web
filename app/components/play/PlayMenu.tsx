@@ -16,6 +16,7 @@
 
 import { useEffect } from "react";
 import ScrambleLink from "../ui/ScrambleLink";
+import { jumpTo } from "./jump";
 
 /* Las secciones de la plataforma, más la salida al sitio institucional. */
 const ITEMS = [
@@ -64,7 +65,7 @@ export default function PlayMenu({ open, onClose: close }: { open: boolean; onCl
                 href={item.href}
                 index={i}
                 delay={open ? `${i * 0.05 + 0.1}s` : "0s"}
-                onClick={close}
+                onClick={(e) => { close(); jumpTo(e, item.href); }}
               />
             </li>
           ))}

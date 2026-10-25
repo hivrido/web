@@ -612,7 +612,7 @@ html:has(.mp-app) body {
   padding: 28px 0 96px;
 }
 
-.hp-shelf { position: relative; }
+.hp-shelf { position: relative; scroll-margin-top: calc(var(--hp-header-h) + 20px); }
 .hp-shelf-head {
   display: flex;
   align-items: baseline;

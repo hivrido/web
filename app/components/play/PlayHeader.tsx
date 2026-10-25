@@ -11,6 +11,7 @@ import Link from "next/link";
 import LogoAnimated from "../ui/LogoAnimated";
 import PlayMenu from "./PlayMenu";
 import SearchOverlay, { openSearch } from "./SearchOverlay";
+import { jumpTo } from "./jump";
 
 const LINKS = [
   { label: "Inicio", hash: "" },
@@ -69,14 +70,14 @@ export default function PlayHeader({ home = false }: { home?: boolean }) {
   return (
     <>
       <header className={`hp-header${scrolled ? " is-scrolled" : ""}`}>
-        <Link href="/play/" className="hp-logo" aria-label="Hivrido PLAY, inicio">
+        <Link href="/play/" onClick={(e) => jumpTo(e, "/play/")} className="hp-logo" aria-label="Hivrido PLAY, inicio">
           <LogoAnimated height={22} delay={300} />
           <span className="hp-logo-pill">Play</span>
         </Link>
 
         <nav className="hp-nav" aria-label="Secciones">
           {LINKS.map((l) => (
-            <Link key={l.label} href={href(l.hash)} className={isActive(l.hash) ? "is-active" : undefined} aria-current={isActive(l.hash) ? "true" : undefined}>
+            <Link key={l.label} href={href(l.hash)} onClick={(e) => jumpTo(e, href(l.hash))} className={isActive(l.hash) ? "is-active" : undefined} aria-current={isActive(l.hash) ? "true" : undefined}>
               {l.label}
             </Link>
           ))}
@@ -91,7 +92,7 @@ export default function PlayHeader({ home = false }: { home?: boolean }) {
 
       <nav className="hp-tabbar" aria-label="Secciones">
         {LINKS.slice(0, 3).map((l) => (
-          <Link key={l.label} href={href(l.hash)} className={isActive(l.hash) ? "is-active" : undefined}>
+          <Link key={l.label} href={href(l.hash)} onClick={(e) => jumpTo(e, href(l.hash))} className={isActive(l.hash) ? "is-active" : undefined}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true">{ICONS[l.hash]}</svg>
             <span>{l.label}</span>
           </Link>
