@@ -960,8 +960,8 @@ html:has(.mp-app) body {
   padding: 56px var(--hp-gutter) 40px;
   border-top: 1px solid var(--hp-border);
 }
-.hp-footer-mark { font-family: var(--hp-display); font-size: 20px; font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; }
-.hp-footer-mark b { color: var(--hp-gold); font-weight: 400; }
+.hp-footer-mark { gap: 14px; width: fit-content; }
+.hp-footer-mark .hp-logo-pill { padding: 5px 12px 4px; font-size: 12px; }
 .hp-footer-brand p { margin-top: 8px; font-size: 14px; color: var(--hp-muted); max-width: 32ch; }
 .hp-footer-cols { display: flex; gap: clamp(32px, 5vw, 72px); }
 .hp-footer-cols div { display: flex; flex-direction: column; gap: 10px; }

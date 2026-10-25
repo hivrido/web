@@ -1,11 +1,15 @@
 import Link from "next/link";
+import LogoAnimated from "../ui/LogoAnimated";
 
 /** Pie de PLAY, el mismo en la portada y en las fichas. */
 export default function PlayFooter() {
   return (
     <footer className="hp-footer">
       <div className="hp-footer-brand">
-        <span className="hp-footer-mark">Hivrido <b>Play</b></span>
+        <Link href="/play/" className="hp-logo hp-footer-mark" aria-label="Hivrido PLAY, inicio">
+          <LogoAnimated height={26} startOnView />
+          <span className="hp-logo-pill">Play</span>
+        </Link>
         <p>Cine y series independientes, hechos en Argentina.</p>
       </div>
       <nav className="hp-footer-cols" aria-label="Pie de página">
