@@ -998,13 +998,41 @@ html:has(.mp-app) body {
   padding: 20px;
   border-radius: var(--hp-r);
   overflow: hidden;
+  isolation: isolate;
+  /* Se despega del fondo con la paleta de la casa: violeta que entra desde
+     la esquina del título, una brasa dorada detrás de los afiches y un
+     rayado fino en diagonal, como de pantalla. */
   background:
-    radial-gradient(90% 120% at 100% 100%, color-mix(in srgb, var(--hp-gold) 9%, transparent), transparent 60%),
-    var(--hp-surface);
-  box-shadow: 0 0 0 1px var(--hp-border);
-  transition: box-shadow 0.35s var(--hp-ease);
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 9px),
+    radial-gradient(120% 140% at 0% 0%, rgba(124, 58, 237, 0.42), transparent 55%),
+    radial-gradient(80% 120% at 100% 100%, rgba(255, 170, 59, 0.18), transparent 60%),
+    linear-gradient(160deg, #1e1533 0%, #140f1f 55%, #0f0d15 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 0 0 1px rgba(139, 92, 246, 0.26),
+    0 18px 40px -24px rgba(0, 0, 0, 0.9);
+  transition: transform 0.4s var(--hp-ease), box-shadow 0.4s var(--hp-ease);
 }
-.hp-genre:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
+/* Al pasar, el violeta se enciende desde arriba: va en una capa aparte
+   porque un degradado no se interpola. */
+.hp-genre::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(139, 92, 246, 0.35), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s var(--hp-ease);
+}
+.hp-genre:hover { transform: translateY(-3px); }
+.hp-genre:hover,
+.hp-genre:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 0 1px rgba(167, 139, 250, 0.6),
+    0 22px 50px -22px rgba(124, 58, 237, 0.65);
+}
+.hp-genre:hover::before { opacity: 1; }
 .hp-genre-label { position: relative; z-index: 1; font-family: var(--hp-display); font-size: 22px; font-weight: 400; letter-spacing: 0.01em; text-transform: uppercase; }
 .hp-genre .hp-meta { position: relative; z-index: 1; }
 .hp-genre-stack { position: absolute; right: 18px; bottom: -18px; width: 150px; height: 100px; }
