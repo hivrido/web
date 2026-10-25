@@ -23,7 +23,11 @@ const LINKS = [
 const href = (hash: string) => (hash ? `/play/#${hash}` : "/play/");
 
 /* Qué sección se está mirando, para marcarla en la barra. Solo tiene sentido
-   en la portada: en una ficha no hay secciones de la barra en pantalla. */
+   en la portada: en una ficha no hay secciones de la barra en pantalla.
+   Manda la última sección cuyo comienzo ya pasó el 40% de la pantalla, y no
+   una franja de observación: una fila corta —Series con una sola obra—
+   podía cruzar la franja sin tocarla y la barra seguía marcando Inicio. Al
+   fondo de la página gana la última, aunque su comienzo no llegue tan arriba. */
 function useActiveSection(enabled: boolean) {
   const [active, setActive] = useState("");
   useEffect(() => {
@@ -31,17 +35,23 @@ function useActiveSection(enabled: boolean) {
     const els = LINKS.map((l) => (l.hash ? document.getElementById(l.hash) : null)).filter(
       (el): el is HTMLElement => !!el,
     );
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) setActive(e.target.id);
-          else if (e.target.id === els[0]?.id && e.boundingClientRect.top > 0) setActive("");
-        }
-      },
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 2;
+      const line = innerHeight * 0.4;
+      const current = atEnd ? els[els.length - 1] : els.filter((el) => el.getBoundingClientRect().top <= line).pop();
+      setActive(current?.id ?? "");
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      removeEventListener("scroll", onScroll);
+      removeEventListener("resize", onScroll);
+    };
   }, [enabled]);
   return active;
 }
