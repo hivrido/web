@@ -753,7 +753,26 @@ html:has(.mp-app) body {
    PosterCard), un reflejo la sigue (--mx/--my) y el haz de los botones de
    reproducir recorre su contorno. Las demás quedan planas: la luz es lo que
    la separa del resto de la fila. */
-.hp-card-frame { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 0%; }
+/* Relieve: la ficha es una placa con espesor. El canto son sombras sólidas
+   apiladas que se corren al lado contrario del puntero —el lado que sube
+   muestra su borde—, y un filo de luz marca la arista de arriba. Se declara
+   en cada ficha porque --tx/--ty se resuelven donde está la regla. */
+.hp-card-frame,
+.hp-soon.has-poster .hp-soon-media {
+  --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 0%;
+  --tx: 0; --ty: -0.6;
+  --edge-near: color-mix(in srgb, var(--hp-gold) 34%, #120c06);
+  --edge-far: #0b0805;
+  --slab:
+    inset 0 1px 0 rgba(255, 244, 220, 0.45),
+    inset 1px 0 0 rgba(255, 244, 220, 0.12),
+    calc(var(--tx) * -1.5px) calc(var(--ty) * -1.5px) 0 var(--edge-near),
+    calc(var(--tx) * -3px) calc(var(--ty) * -3px) 0 var(--edge-near),
+    calc(var(--tx) * -4.5px) calc(var(--ty) * -4.5px) 0 color-mix(in srgb, var(--edge-near) 60%, var(--edge-far)),
+    calc(var(--tx) * -6px) calc(var(--ty) * -6px) 0 color-mix(in srgb, var(--edge-near) 30%, var(--edge-far)),
+    calc(var(--tx) * -7.5px) calc(var(--ty) * -7.5px) 0 var(--edge-far),
+    calc(var(--tx) * -14px) calc(var(--ty) * -14px + 26px) 50px -18px rgba(0, 0, 0, 0.95);
+}
 .hp-card-frame::before,
 .hp-card-frame::after,
 .hp-soon.has-poster .hp-soon-media::before {
@@ -786,11 +805,8 @@ html:has(.mp-app) body {
   .hp-card:hover .hp-card-frame,
   .hp-card:focus-within .hp-card-frame {
     transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) scale(1.06);
-    transition: transform 0.25s var(--hp-ease), box-shadow 0.45s var(--hp-ease);
-    box-shadow:
-      0 34px 70px -26px rgba(0, 0, 0, 0.95),
-      0 0 46px -14px rgba(139, 92, 246, 0.55),
-      0 0 0 1px color-mix(in srgb, var(--hp-accent) 40%, transparent);
+    transition: transform 0.25s var(--hp-ease), box-shadow 0.25s var(--hp-ease);
+    box-shadow: var(--slab), 0 0 46px -14px rgba(139, 92, 246, 0.5);
   }
   .hp-card:hover .hp-card-frame::before,
   .hp-card:focus-within .hp-card-frame::before { opacity: 1; animation: hp-haz-giro 2.6s linear infinite; }
@@ -896,7 +912,7 @@ html:has(.mp-app) body {
   overflow: hidden;
   background: var(--hp-surface-2);
   box-shadow: 0 0 0 1px var(--hp-border);
-  transition: box-shadow 0.4s var(--hp-ease);
+  transition: transform 0.45s var(--hp-ease), box-shadow 0.4s var(--hp-ease);
 }
 .hp-soon-media:hover { box-shadow: 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
 .hp-soon-media:hover .hp-card-img { transform: scale(1.04); }
@@ -905,7 +921,11 @@ html:has(.mp-app) body {
 .hp-soon.has-poster .hp-btn::before { opacity: 0; animation-play-state: paused; transition: opacity 0.4s var(--hp-ease); }
 .hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media::before { opacity: 1; animation: hp-haz-giro 2.6s linear infinite; }
 .hp-soon.has-poster:is(:hover, :focus-within) .hp-btn::before { opacity: 1; animation-play-state: running; }
-.hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media { box-shadow: 0 0 46px -14px rgba(255, 170, 59, 0.45), 0 0 0 1px color-mix(in srgb, var(--hp-gold) 45%, transparent); }
+.hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media {
+  transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)) scale(1.03);
+  transition: transform 0.25s var(--hp-ease), box-shadow 0.25s var(--hp-ease);
+  box-shadow: var(--slab), 0 0 46px -14px rgba(255, 170, 59, 0.45);
+}
 .hp-soon-body { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .hp-soon-title { font-size: 18px; margin-bottom: 4px; }
 

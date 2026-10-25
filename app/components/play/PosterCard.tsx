@@ -52,10 +52,12 @@ export function ListIcon({ saved }: { saved: boolean }) {
 
 /* Inclinación 3D hacia el puntero. Solo con mouse: en táctil no hay hover
    que la sostenga, y con movimiento reducido la tarjeta no se mueve. Escribe
-   variables CSS directo en el estilo para no re-renderizar en cada píxel. */
-const TILT = 7;
+   variables CSS directo en el estilo para no re-renderizar en cada píxel:
+   --rx/--ry giran la placa, --tx/--ty (de -1 a 1) corren su canto. */
+const TILT = 8;
+const VARS = ["--rx", "--ry", "--mx", "--my", "--tx", "--ty"];
 
-function tilt(e: React.PointerEvent<HTMLDivElement>) {
+export function tilt(e: React.PointerEvent<HTMLElement>) {
   if (e.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const el = e.currentTarget;
   const r = el.getBoundingClientRect();
@@ -65,11 +67,13 @@ function tilt(e: React.PointerEvent<HTMLDivElement>) {
   el.style.setProperty("--rx", `${(0.5 - y) * TILT}deg`);
   el.style.setProperty("--mx", `${x * 100}%`);
   el.style.setProperty("--my", `${y * 100}%`);
+  el.style.setProperty("--tx", `${(x - 0.5) * 2}`);
+  el.style.setProperty("--ty", `${(y - 0.5) * 2}`);
 }
 
-function untilt(e: React.PointerEvent<HTMLDivElement>) {
+export function untilt(e: React.PointerEvent<HTMLElement>) {
   const s = e.currentTarget.style;
-  ["--rx", "--ry", "--mx", "--my"].forEach((p) => s.removeProperty(p));
+  VARS.forEach((p) => s.removeProperty(p));
 }
 
 export default function PosterCard({
