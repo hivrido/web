@@ -173,11 +173,34 @@ function Genres() {
   );
 }
 
+/* Cinta bajo el hero: lo que hay en PLAY, dicho de corrido. El juego se
+   repite dos veces para llenar pantallas anchas, y la pista entera va
+   duplicada para que el corrimiento de -50% reinicie sin salto. */
+const TICKER = ["Series", "Películas", "Artistas", "Contenidos exclusivos", "Eventos"];
+
+function Ticker() {
+  const run = [...TICKER, ...TICKER];
+  return (
+    <div className="hp-ticker">
+      <div className="hp-ticker-track">
+        {[0, 1].map((copy) => (
+          <ul key={copy} aria-hidden={copy === 1 || undefined} aria-label={copy === 0 ? "En PLAY" : undefined}>
+            {run.map((label, i) => (
+              <li key={i} aria-hidden={i >= TICKER.length || undefined}>{label}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function PlayHome() {
   return (
     <div className={`mp-app hp ${playFonts}`}>
       <PlayHeader home />
       <Hero />
+      <Ticker />
 
       <main className="hp-main">
         <Row title="Selección Hivrido" note="Curaduría">

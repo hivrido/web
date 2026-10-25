@@ -682,6 +682,42 @@ html:has(.mp-app) body {
   .hp-shelf-body.can-next:hover .is-next { opacity: 1; pointer-events: auto; transform: translateY(-50%) scale(1); }
 }
 
+/* ── CINTA ── Títulos de cartel en gris, rombos violeta que alternan con
+   dorado. Corre lento y se frena bajo el puntero. */
+.hp-ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--hp-border);
+  background: #111113;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.hp-ticker-track { display: flex; width: max-content; animation: hp-ticker 48s linear infinite; }
+.hp-ticker:hover .hp-ticker-track { animation-play-state: paused; }
+.hp-ticker ul { display: flex; flex-shrink: 0; }
+.hp-ticker li {
+  display: flex;
+  align-items: center;
+  padding: 14px 0;
+  font-family: var(--hp-display);
+  font-size: clamp(20px, 2.2vw, 32px);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(245, 245, 247, 0.62);
+  transition: color 0.3s;
+}
+.hp-ticker li:hover { color: #fff; }
+.hp-ticker li::after {
+  content: "";
+  width: 9px; height: 9px;
+  margin-inline: clamp(22px, 2.4vw, 38px);
+  transform: rotate(45deg);
+  background: var(--hp-accent);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+}
+.hp-ticker li:nth-child(even)::after { background: var(--hp-gold); box-shadow: 0 0 12px rgba(255, 170, 59, 0.7); }
+@keyframes hp-ticker { to { transform: translateX(-50%); } }
+
 /* ── TARJETAS ───────────────────────────────────────────────────────────── */
 
 .hp-card { position: relative; flex: 0 0 auto; width: var(--hp-card-w); scroll-snap-align: start; }
@@ -1152,6 +1188,7 @@ html:has(.mp-app) body {
   .hp-hero-tick-bar i { animation: none; transform: scaleX(1); }
   .hp-haz::before, .hp-btn.is-primary::before, .hp-icon-btn.is-primary::before, .cp-big-play::before,
   .hp-soon.has-poster .hp-btn::before { animation: none; }
+  .hp-ticker-track { animation: none; }
   .mp-app .hp-card:is(:hover, :focus-within) .hp-card-frame::before,
   .mp-app .hp-soon.has-poster:is(:hover, :focus-within) .hp-soon-media::before { animation: none; }
 }
