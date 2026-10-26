@@ -612,11 +612,9 @@ build las marca `○ (Static)`—, así que en la práctica se sirven estáticas
   Next (`app/play/page.tsx`, servidor, con la metadata y el schema.org) que
   monta `app/components/play/PlayHome.tsx` (cliente).
 
-`/origen/` sigue el mismo patrón que la portada: es `public/origen/index.html`,
-HTML autónomo (CSS, JS y logo incrustados) servido por un rewrite de
-`next.config.ts`. Es la landing de ORIGEN, sello y campamento para artistas;
-no usa el layout ni los componentes del sitio. Una carpeta `app/origen/`
-taparía el rewrite.
+`/origen/` es ORIGEN, el campamento para artistas de Hivrido: página de Next
+(`app/origen/`) con la identidad de la casa. El texto vive en `contenido.ts` y
+las consultas salen por WhatsApp con el mensaje armado según el rol.
 
 Ojo con la primera: si alguna vez se crea `app/page.tsx`, gana sobre el rewrite
 —el filesystem se resuelve antes— y tapa el anillo sin avisar.

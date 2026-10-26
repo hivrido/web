@@ -30,6 +30,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      /* ORIGEN, el campamento para artistas: convocatoria en armado. */
+      url: `${baseUrl}/origen`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/estudio`,
       lastModified: new Date(),
       changeFrequency: "monthly",

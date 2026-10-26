@@ -22,12 +22,7 @@ const nextConfig: NextConfig = {
      Al salir del export el sitio pasa a modo servidor —que es lo que habilita
      los route handlers de /api/cesion, imposibles en un export— y el rewrite
      vale en los dos lados. */
-  rewrites: async () => [
-    { source: "/", destination: "/index.html" },
-    /* /origen/ es la landing de ORIGEN (sello y campamento para artistas):
-       HTML autónomo en public/origen/, fuera del layout de Next. */
-    { source: "/origen/", destination: "/origen/index.html" },
-  ],
+  rewrites: async () => [{ source: "/", destination: "/index.html" }],
 };
 
 export default nextConfig;
