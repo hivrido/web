@@ -534,10 +534,17 @@ El sitio vive en **Git + Vercel**. No se sube nada a mano.
 
 - **Repo**: `https://github.com/hivrido/web.git` (`origin`), rama de producción `main`.
 - **Flujo normal**: `npm run build` para verificar → commit → `git push origin main`. Vercel toma el push y publica.
-- **Deploy manual**: `npx vercel --prod` desde la raíz. A diferencia del push,
-  el CLI empaqueta el directorio tal como está: lo que no debe viajar lo filtra
-  `.vercelignore`. Sin eso el upload se va a medio giga y muere contra el
-  límite de 100 MB por archivo.
+- **Deploy manual**: siempre desde una copia limpia de `HEAD`, nunca desde la
+  raíz. El CLI empaqueta el directorio tal como está, y en la raíz viven
+  masters, fotos de artistas sin publicar y material de referencia que el repo
+  no versiona: subirían y quedarían servidos por URL. `.vercelignore` filtra lo
+  conocido, pero cada archivo suelto nuevo se le escapa. La copia sube
+  exactamente lo commiteado, igual que el push (Git Bash):
+
+  ```bash
+  D=$(mktemp -d) && git archive HEAD | tar -x -C "$D" && cp -r .vercel "$D/" \
+    && (cd "$D" && npx vercel deploy --prod --yes); rm -rf "$D"
+  ```
 
 Antes de commitear, siempre correr el build: falla en cosas que `dev` no
 muestra, y un push roto es un deploy roto.
@@ -571,7 +578,7 @@ la request llegue a la app.
 - **`/movie` → `/play/` (301).** La plataforma vivió en `/movie` y ese link
   se compartió públicamente. Apunta directo a su lugar actual para no encadenar
   dos saltos.
-- **`/movie/okupas` → `/okupas` (301).** Misma razón.
+- **`/movie/okupas` → `/okupas/` (301).** Misma razón.
 - **`/cine-video` → `/` (301).** La sección Cine & Video se dio de baja
   (tarjeta del anillo, menú, página y tarjeta de `/orbital`), pero su URL
   estuvo en el sitemap: un link viejo vuelve a la portada en lugar de un 404.
@@ -579,6 +586,21 @@ la request llegue a la app.
 Van declaradas en las dos formas, con barra final y sin ella: el `source` se
 compara literal, y `trailingSlash: true` hace que la que circuló sea la de la
 barra.
+
+#### Reglas de proyecto: un solo salto
+
+`trailingSlash: true` hace que Vercel mande `/movie` a `/movie/` antes de leer
+`vercel.json`, así que una URL vieja sin barra daba dos saltos. Para que llegue
+en uno, cada redirect tiene su espejo como regla de proyecto
+(`npx vercel routes ls`), que corre en el CDN antes que las rutas del deploy y
+matchea con y sin barra (`^/movie/?$`). Viven fuera del repo: si acá cambia un
+destino, allá también (`vercel routes update` + `vercel routes publish`).
+`vercel.json` sigue siendo la fuente versionada y la red: si las reglas se
+borran, todo llega igual, con un salto más.
+
+Ojo desde Git Bash: convierte `/play/` en `C:/Program Files/Git/play/` y la
+regla publica un 404. `vercel routes` se corre desde PowerShell o con
+`MSYS_NO_PATHCONV=1`.
 
 ### Caché (`vercel.json`)
 
