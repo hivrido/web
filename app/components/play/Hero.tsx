@@ -176,7 +176,7 @@ export default function Hero() {
         </p>
         {/* Si el afiche ya trae el título pintado, el texto no lo repite:
             queda para lectores de pantalla y buscadores. */}
-        <h1 className={titled ? "hp-sr" : "hp-hero-title"}>{f.title}</h1>
+        <h2 className={titled ? "hp-sr" : "hp-hero-title"}>{f.title}</h2>
         <p className="hp-hero-meta">
           {meta.join("  ·  ")}
           <Badges item={f} hideNew />

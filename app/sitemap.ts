@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://hivrido.com";
 
-  return [
+  const entries: MetadataRoute.Sitemap = [
     {
       /* La raíz es Hivrido PLAY: cambia con cada estreno. */
       url: baseUrl,
@@ -106,4 +106,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
   ];
+
+  /* Con `trailingSlash: true` la URL sin barra es un redirect: el sitemap
+     tiene que declarar la canónica, la que termina en barra. */
+  return entries.map((e) => ({ ...e, url: e.url.replace(/\/?$/, "/") }));
 }

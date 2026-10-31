@@ -1,29 +1,51 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import PlayHome from "./components/play/PlayHome";
 import { CATALOG, FEATURED } from "./lib/catalog";
 
 /* La portada del dominio es la plataforma. El anillo institucional vive en
    /web (public/web/index.html, servido por el rewrite de next.config.ts).
 
-   El openGraph va completo —no solo el título— porque si no hereda el del
-   layout raíz, que habla de la agencia. */
+   La imagen es 1200x630 —la proporción 1,91:1 que piden Facebook, Instagram y
+   LinkedIn— con el título al centro, para que sobreviva al recorte cuadrado
+   de WhatsApp, y pesa menos de 300 KB, que es donde varios clientes se rinden
+   y no la bajan. Las demás redes leen estas mismas etiquetas de Open Graph. */
+const SITE_URL = "https://hivrido.com";
+const TITLE = "Hivrido PLAY — Series y películas argentinas independientes";
+const SHARE_DESCRIPTION =
+  "Series y películas independientes de habla hispana, con estrenos que se ven primero acá.";
+
+export const viewport: Viewport = { themeColor: "#0a0a0b" };
+
 export const metadata: Metadata = {
-  title: "Hivrido PLAY — Series y películas argentinas independientes",
+  title: TITLE,
   description:
-    "Mirá series y películas independientes de habla hispana en Hivrido PLAY: Okupas, Érase una vez en Virreyes, El rectángulo de Ángeles y los estrenos que se ven primero acá.",
+    "Mirá series y películas argentinas independientes en Hivrido PLAY: Okupas, Érase una vez en Virreyes, El rectángulo de Ángeles y estrenos que se ven primero acá.",
+  applicationName: "Hivrido PLAY",
+  category: "entertainment",
   alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
-    title: "Hivrido PLAY — Series y películas argentinas",
-    description:
-      "Nuestra plataforma de contenidos: series y películas propias de habla hispana, con estrenos que se ven primero acá.",
-    url: "https://hivrido.com/",
+    title: TITLE,
+    description: SHARE_DESCRIPTION,
+    url: `${SITE_URL}/`,
     siteName: "Hivrido PLAY",
     images: [
       {
-        url: "/images/bg/hivrido-chrome.jpg",
+        url: "/images/share/hivrido-play.jpg",
+        type: "image/jpeg",
         width: 1200,
-        height: 670,
-        alt: "Hivrido PLAY",
+        height: 630,
+        alt: "Hivrido PLAY: series y películas argentinas independientes",
       },
     ],
     locale: "es_AR",
@@ -33,40 +55,62 @@ export const metadata: Metadata = {
 };
 
 /**
- * Schema.org del catálogo. Cada ficha emite el tipo que le corresponde de
- * verdad —TVSeries para las series, Movie para las películas—, que es lo que
- * decide cómo la muestra Google. Las fichas provisorias entran igual: el
- * título y el tipo ya son datos reales, y lo que falta simplemente no se
- * declara en lugar de declararse mal.
+ * Schema.org de la portada. Organization y WebSite son lo que Google usa para
+ * el nombre del sitio y el panel de marca; el catálogo emite el tipo que le
+ * corresponde de verdad a cada ficha —TVSeries o Movie—.
+ *
+ * Quedan afuera las fichas provisorias, que son noindex, y los puntajes: el
+ * `rating` del catálogo es una nota de la casa, y declararla como
+ * AggregateRating sería atribuirla a votos que no existen, algo que Google
+ * sanciona como datos estructurados engañosos.
  */
-function catalogJsonLd() {
+function homeJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: "Catálogo de Hivrido PLAY",
-    itemListElement: CATALOG.map((t, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      item: {
-        "@type": t.type === "serie" ? "TVSeries" : "Movie",
-        name: t.title,
-        description: t.isPlaceholder ? undefined : t.synopsis,
-        genre: t.genre,
-        inLanguage: "es-AR",
-        ...(t.href ? { url: `https://hivrido.com${t.href}/` } : {}),
-        ...(t.type === "serie" ? { numberOfSeasons: 1 } : {}),
-        ...(t.rating
-          ? {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: t.rating,
-                bestRating: "10",
-                ratingCount: 1,
-              },
-            }
-          : {}),
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Hivrido",
+        alternateName: "Hivrido PLAY",
+        url: `${SITE_URL}/`,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/images/logo/hivrido-logo-512.png`,
+          width: 512,
+          height: 512,
+        },
+        email: "hola@hivrido.com",
+        sameAs: ["https://www.instagram.com/hivrido.product.x1_ok/"],
       },
-    })),
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: "Hivrido PLAY",
+        alternateName: "Hivrido",
+        url: `${SITE_URL}/`,
+        inLanguage: "es-AR",
+        publisher: { "@id": `${SITE_URL}/#organization` },
+      },
+      {
+        "@type": "ItemList",
+        name: "Catálogo de Hivrido PLAY",
+        itemListElement: CATALOG.filter((t) => !t.isPlaceholder).map((t, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": t.type === "serie" ? "TVSeries" : "Movie",
+            name: t.title,
+            description: t.synopsis,
+            genre: t.genre,
+            inLanguage: "es-AR",
+            ...(t.href ? { url: `${SITE_URL}${t.href}/` } : {}),
+            ...(t.poster ? { image: `${SITE_URL}${t.poster}` } : {}),
+            ...(t.type === "serie" ? { numberOfSeasons: 1 } : {}),
+          },
+        })),
+      },
+    ],
   };
 }
 
@@ -86,7 +130,7 @@ export default function Page() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd()) }}
       />
       <PlayHome />
     </>

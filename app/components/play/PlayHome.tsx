@@ -199,6 +199,9 @@ export default function PlayHome() {
   return (
     <div className={`mp-app hp ${playFonts}`}>
       <PlayHeader home />
+      {/* El título del slider cambia solo: el h1 tiene que decir de qué es la
+          página, no qué obra estaba en pantalla cuando pasó Google. */}
+      <h1 className="hp-sr">Hivrido PLAY: series y películas argentinas independientes</h1>
       <Hero />
       <Ticker />
 
