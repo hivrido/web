@@ -572,16 +572,18 @@ función; hoy el sitio corre con servidor y las dos opciones andarían, pero se
 quedan juntas en un solo lugar que además se aplica en el borde, antes de que
 la request llegue a la app.
 
-- **`/web` → `/` (301).** La institucional volvió a ser la portada del
-  dominio después de pasar por `/web`, y esa URL llegó al sitemap y a links
-  compartidos: tiene que seguir llegando a destino.
-- **`/movie` → `/play/` (301).** La plataforma vivió en `/movie` y ese link
-  se compartió públicamente. Apunta directo a su lugar actual para no encadenar
+- **`/play` → `/` (301).** Hivrido PLAY pasó a ser la portada del dominio y la
+  institucional se mudó a `/web/`. Las fichas siguen en `/play/<id>`: solo se
+  movió la portada de la plataforma, y sus anclas (`/play/#series`) llegan
+  igual porque el navegador conserva el fragmento.
+- **`/movie` → `/` (301).** La plataforma vivió en `/movie` y ese link se
+  compartió públicamente. Apunta directo a su lugar actual para no encadenar
   dos saltos.
 - **`/movie/okupas` → `/okupas/` (301).** Misma razón.
-- **`/cine-video` → `/` (301).** La sección Cine & Video se dio de baja
+- **`/cine-video` → `/web/` (301).** La sección Cine & Video se dio de baja
   (tarjeta del anillo, menú, página y tarjeta de `/orbital`), pero su URL
-  estuvo en el sitemap: un link viejo vuelve a la portada en lugar de un 404.
+  estuvo en el sitemap: un link viejo vuelve a la institucional en lugar de un
+  404.
 
 Van declaradas en las dos formas, con barra final y sin ella: el `source` se
 compara literal, y `trailingSlash: true` hace que la que circuló sea la de la
@@ -598,7 +600,7 @@ destino, allá también (`vercel routes update` + `vercel routes publish`).
 `vercel.json` sigue siendo la fuente versionada y la red: si las reglas se
 borran, todo llega igual, con un salto más.
 
-Ojo desde Git Bash: convierte `/play/` en `C:/Program Files/Git/play/` y la
+Ojo desde Git Bash: convierte `/web/` en `C:/Program Files/Git/web/` y la
 regla publica un 404. `vercel routes` se corre desde PowerShell o con
 `MSYS_NO_PATHCONV=1`.
 
@@ -611,7 +613,7 @@ de cada regla vive acá:
 - **`/fonts`, `/images`, `/video`, `/mp3`, `/pdf` — un año, inmutable.** Se servían
   con `must-revalidate`: una ida y vuelta por archivo en cada visita repetida solo
   para escuchar "no cambió". Si alguna cambia, cambia su nombre.
-- **`/cosmos` — una hora con revalidación.** Los módulos de la portada no llevan
+- **`/cosmos` — una hora con revalidación.** Los módulos del anillo no llevan
   hash en el nombre, así que `immutable` los dejaría clavados tras un deploy. Con
   una hora, el visitante que vuelve en el día no los baja de nuevo y un cambio se
   propaga solo.
@@ -625,21 +627,23 @@ build las marca `○ (Static)`—, así que en la práctica se sirven estáticas
 
 ### Las dos portadas
 
-- **`/` — la institucional**, el anillo 3D. **No es una página de Next**:
-  es `public/index.html`, HTML escrito a mano con el CSS incrustado por
-  `prebuild` y el motor en `public/cosmos/`. Como no hay `app/page.tsx` que
-  responda `/`, la sirve el rewrite `/` → `/index.html` de `next.config.ts`.
-  Es la puerta del dominio: si ese rewrite se rompe, se cae la portada.
-- **`/play/` — Hivrido PLAY**, la plataforma de contenidos. Es una página de
-  Next (`app/play/page.tsx`, servidor, con la metadata y el schema.org) que
-  monta `app/components/play/PlayHome.tsx` (cliente).
+- **`/` — Hivrido PLAY**, la plataforma de contenidos. Es una página de Next
+  (`app/page.tsx`, servidor, con la metadata y el schema.org) que monta
+  `app/components/play/PlayHome.tsx` (cliente). Las fichas viven en
+  `/play/<id>`.
+- **`/web/` — la institucional**, el anillo 3D. **No es una página de Next**:
+  es `public/web/index.html`, HTML escrito a mano con el CSS incrustado por
+  `prebuild` y el motor en `public/cosmos/`. Next no resuelve el index de una
+  carpeta de `public/`, así que la sirve el rewrite `/web` →
+  `/web/index.html` de `next.config.ts`: si ese rewrite se rompe, se cae la
+  institucional.
 
 `/origen/` es ORIGEN, el campamento para artistas de Hivrido: página de Next
 (`app/origen/`) con la identidad de la casa. El texto vive en `contenido.ts` y
 las consultas salen por WhatsApp con el mensaje armado según el rol.
 
-Ojo con la primera: si alguna vez se crea `app/page.tsx`, gana sobre el rewrite
-—el filesystem se resuelve antes— y tapa el anillo sin avisar.
+Ojo con la segunda: si alguna vez se crea `app/web/page.tsx`, gana sobre el
+rewrite —el filesystem se resuelve antes— y tapa el anillo sin avisar.
 
 El catálogo de PLAY sale entero de `app/lib/catalog.ts`, que es la fuente
 única: `type` (`"serie" | "pelicula"`) decide en qué fila entra cada ficha y

@@ -10,6 +10,7 @@
  */
 
 import { useState } from "react";
+import Link from "next/link";
 
 const WHATSAPP = "5491156072460";
 
@@ -125,9 +126,9 @@ export default function CastingCall() {
                 <WhatsAppIcon />
                 Abrir WhatsApp de nuevo
               </a>
-              <a className="mp-casting-ghost" href="/play/">
+              <Link className="mp-casting-ghost" href="/">
                 Mientras tanto, mirá el catálogo
-              </a>
+              </Link>
             </div>
           ) : (
             <form className="mp-casting-form" onSubmit={onSubmit} noValidate>

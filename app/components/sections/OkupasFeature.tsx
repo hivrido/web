@@ -82,7 +82,7 @@ export default function OkupasFeature() {
           </div>
 
           <Link
-            href="/play/"
+            href="/"
             style={{
               fontSize: "12px", fontWeight: 600, letterSpacing: ".05em",
               color: "rgba(255,255,255,.55)", textDecoration: "none",

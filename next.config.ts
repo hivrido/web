@@ -14,15 +14,16 @@ const nextConfig: NextConfig = {
        bloqueaban el primer pintado ~450 ms en 4G. */
     inlineCss: true,
   },
-  /* La portada del dominio es public/index.html, no una página de Next: no hay
-     app/page.tsx que responda "/". El rewrite la sirve desde el archivo.
+  /* El anillo institucional es public/web/index.html, no una página de Next:
+     Next no resuelve el index de una carpeta de public/, y sin una página que
+     responda "/web" el rewrite lo sirve desde el archivo.
 
      Antes vivía solo en desarrollo porque `output: "export"` no admite
-     rewrites y en producción el export copiaba el archivo a out/index.html.
+     rewrites y en producción el export copiaba el archivo a out/.
      Al salir del export el sitio pasa a modo servidor —que es lo que habilita
      los route handlers de /api/cesion, imposibles en un export— y el rewrite
      vale en los dos lados. */
-  rewrites: async () => [{ source: "/", destination: "/index.html" }],
+  rewrites: async () => [{ source: "/web", destination: "/web/index.html" }],
 };
 
 export default nextConfig;

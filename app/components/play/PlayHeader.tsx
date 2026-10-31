@@ -20,7 +20,7 @@ const LINKS = [
   { label: "Próximamente", hash: "proximamente" },
 ];
 
-const href = (hash: string) => (hash ? `/play/#${hash}` : "/play/");
+const href = (hash: string) => (hash ? `/#${hash}` : "/");
 
 /* Qué sección se está mirando, para marcarla en la barra. Solo tiene sentido
    en la portada: en una ficha no hay secciones de la barra en pantalla.
@@ -80,7 +80,7 @@ export default function PlayHeader({ home = false }: { home?: boolean }) {
   return (
     <>
       <header className={`hp-header${scrolled ? " is-scrolled" : ""}`}>
-        <Link href="/play/" onClick={(e) => jumpTo(e, "/play/")} className="hp-logo" aria-label="Hivrido PLAY, inicio">
+        <Link href="/" onClick={(e) => jumpTo(e, "/")} className="hp-logo" aria-label="Hivrido PLAY, inicio">
           <LogoAnimated height={22} delay={300} />
           <span className="hp-logo-pill">Play</span>
         </Link>

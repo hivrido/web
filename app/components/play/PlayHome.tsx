@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Portada de Hivrido PLAY, en /play. Es adonde llegan los links de los
+ * Portada de Hivrido PLAY, la raíz del dominio. Es adonde llegan los links de los
  * estrenos, así que el arranque manda sobre cualquier otra consideración.
  *
  * Las fichas salen todas de app/lib/catalog.ts. Acá no se declara contenido:

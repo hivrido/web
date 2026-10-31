@@ -20,12 +20,12 @@ import { jumpTo } from "./jump";
 
 /* Las secciones de la plataforma, más la salida al sitio institucional. */
 const ITEMS = [
-  { label: "Inicio", href: "/play/" },
-  { label: "Series", href: "/play/#series" },
-  { label: "Películas", href: "/play/#peliculas" },
-  { label: "Próximamente", href: "/play/#proximamente" },
+  { label: "Inicio", href: "/" },
+  { label: "Series", href: "/#series" },
+  { label: "Películas", href: "/#peliculas" },
+  { label: "Próximamente", href: "/#proximamente" },
   { label: "Casting", href: "/casting/" },
-  { label: "Hivrido", href: "/" },
+  { label: "Hivrido", href: "/web/" },
 ];
 
 const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";

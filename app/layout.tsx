@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     "Conectamos marcas con artistas talentosos para crear eventos, colaboraciones y experiencias que inspiran.",
   /* El ícono de fuxxia —el trazo magenta con dos nodos—, en todas las rutas. El .ico queda
      para los navegadores sin favicon SVG y el PNG para la pantalla de inicio
-     del iPhone. La portada (public/index.html) declara los mismos tres. */
+     del iPhone. El anillo (public/web/index.html) declara los mismos tres. */
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

@@ -1,20 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/web", "destination": "/", "permanent": true },
-    { "source": "/web/", "destination": "/", "permanent": true },
+    { "source": "/play", "destination": "/", "permanent": true },
+    { "source": "/play/", "destination": "/", "permanent": true },
     { "source": "/movie/okupas", "destination": "/okupas/", "permanent": true },
     { "source": "/movie/okupas/", "destination": "/okupas/", "permanent": true },
-    { "source": "/movie", "destination": "/play/", "permanent": true },
-    { "source": "/movie/", "destination": "/play/", "permanent": true },
+    { "source": "/movie", "destination": "/", "permanent": true },
+    { "source": "/movie/", "destination": "/", "permanent": true },
     { "source": "/firma", "destination": "/cesion/", "permanent": true },
     { "source": "/firma/", "destination": "/cesion/", "permanent": true },
     { "source": "/casting/cuchillo-paz", "destination": "/casting/", "permanent": true },
     { "source": "/casting/cuchillo-paz/", "destination": "/casting/", "permanent": true },
     { "source": "/suscribite", "destination": "/casting/", "permanent": true },
     { "source": "/suscribite/", "destination": "/casting/", "permanent": true },
-    { "source": "/cine-video", "destination": "/", "permanent": true },
-    { "source": "/cine-video/", "destination": "/", "permanent": true }
+    { "source": "/cine-video", "destination": "/web/", "permanent": true },
+    { "source": "/cine-video/", "destination": "/web/", "permanent": true }
   ],
   "headers": [
     {

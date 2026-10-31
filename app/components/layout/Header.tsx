@@ -14,12 +14,12 @@ import ScrambleLink from "../ui/ScrambleLink";
 
    Si acá y allá el orden se separa, el menú deja de ser el mapa del sitio y
    pasa a ser una lista de links: lo mismo dos veces en dos ordenes distintos.
-   Esta lista está duplicada a mano en el drawer de `public/index.html`, que no
+   Esta lista está duplicada a mano en el drawer de `public/web/index.html`, que no
    comparte código con este componente; las dos se mueven juntas. */
 const NAV_ITEMS = [
-  { label: "Home",         href: "/" },
+  { label: "Home",         href: "/web" },
   { label: "Artistas",     href: "/artistas" },
-  { label: "Hivrido PLAY", href: "/play" },
+  { label: "Hivrido PLAY", href: "/" },
   { label: "Grow Digital", href: "/diseno-web" },
   { label: "Branding",     href: "/branding" },
   { label: "Equipo",       href: "/equipo" },
@@ -43,7 +43,7 @@ export default function Header({ base = "", logoDelay }: { base?: string; logoDe
     <>
       <header className="main-header">
         {/* El logo siempre vuelve a la raíz, que es el anillo */}
-        <a href="/" className="logo-holder" onClick={close}>
+        <a href="/web/" className="logo-holder" onClick={close}>
           {/* El logo arranca invisible y se dibuja al vencer el retardo. El
               valor por defecto espera al preloader de la home; en una página
               que no lo tiene hay que acortarlo o el header se ve vacío. */}

@@ -9,17 +9,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      /* La raíz es el anillo institucional. */
+      /* La raíz es Hivrido PLAY: cambia con cada estreno. */
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
       priority: 1,
     },
     {
-      /* Hivrido PLAY: cambia con cada estreno. */
-      url: `${baseUrl}/play`,
+      /* El anillo institucional. */
+      url: `${baseUrl}/web`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: "monthly",
       priority: 0.9,
     },
     {
