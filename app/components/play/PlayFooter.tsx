@@ -10,7 +10,7 @@ export default function PlayFooter() {
           <LogoAnimated height={26} startOnView />
           <span className="hp-logo-pill">Play</span>
         </Link>
-        <p>Cine y series independientes, hechos en Argentina.</p>
+        <p>Cine y series hechos en Argentina.</p>
       </div>
       <nav className="hp-footer-cols" aria-label="Pie de página">
         <div>

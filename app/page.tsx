@@ -10,16 +10,16 @@ import { CATALOG, FEATURED } from "./lib/catalog";
    de WhatsApp, y pesa menos de 300 KB, que es donde varios clientes se rinden
    y no la bajan. Las demás redes leen estas mismas etiquetas de Open Graph. */
 const SITE_URL = "https://hivrido.com";
-const TITLE = "Hivrido PLAY — Series y películas argentinas independientes";
+const TITLE = "Hivrido PLAY — Series y películas argentinas";
 const SHARE_DESCRIPTION =
-  "Series y películas independientes de habla hispana, con estrenos que se ven primero acá.";
+  "Series y películas de habla hispana, con estrenos que se ven primero acá.";
 
 export const viewport: Viewport = { themeColor: "#0a0a0b" };
 
 export const metadata: Metadata = {
   title: TITLE,
   description:
-    "Mirá series y películas argentinas independientes en Hivrido PLAY: Okupas, Érase una vez en Virreyes, El rectángulo de Ángeles y estrenos que se ven primero acá.",
+    "Mirá series y películas argentinas en Hivrido PLAY: Okupas, Érase una vez en Virreyes, El rectángulo de Ángeles y estrenos que se ven primero acá.",
   applicationName: "Hivrido PLAY",
   category: "entertainment",
   alternates: { canonical: "/" },
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
     siteName: "Hivrido PLAY",
     images: [
       {
-        url: "/images/share/hivrido-play.jpg",
+        url: "/images/share/hivrido-play-portada.jpg",
         type: "image/jpeg",
         width: 1200,
         height: 630,
-        alt: "Hivrido PLAY: series y películas argentinas independientes",
+        alt: "Hivrido PLAY: series y películas argentinas",
       },
     ],
     locale: "es_AR",
