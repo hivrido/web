@@ -44,8 +44,9 @@ function HeroVideo({ ytId, zoom = 1 }: { ytId: string; zoom?: number }) {
     let dead = false;
     let reveal: ReturnType<typeof setTimeout> | undefined;
     const box = mount.current;
-    loadYouTubeApi().then((YT) => {
-      if (dead || !box) return;
+    /* Si la API no carga, queda el afiche: el tráiler de fondo es un extra. */
+    loadYouTubeApi().catch(() => null).then((YT) => {
+      if (dead || !box || !YT) return;
       const el = document.createElement("div");
       box.replaceChildren(el);
       player = new YT.Player(el, {

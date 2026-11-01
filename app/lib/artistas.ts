@@ -1210,7 +1210,6 @@ export const ARTISTAS: Artista[] = [
         tipo: "videoclip",
         year: "2024",
         con: "Cotto Rng, Lalito Aimar, Rossani, Nicky Hg, Panky",
-        ytId: "UE_PIEIB87g",
         dato: "501 K vistas",
       },
       {
