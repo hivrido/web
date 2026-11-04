@@ -3,7 +3,7 @@ import Header from "./_components/Header";
 import Hero from "./_components/Hero";
 import Expediente from "./_components/expediente/Expediente";
 import Manifiesto from "./_components/Manifiesto";
-import { Franja, Gestion, Pie, Propuestas, QuienEs, Sumate } from "./_components/Secciones";
+import { Contacto, Franja, Gestion, Pie, Propuestas, QuienEs } from "./_components/Secciones";
 
 export default function AlejandraDelfinoPage() {
   return (
@@ -18,7 +18,7 @@ export default function AlejandraDelfinoPage() {
         <Manifiesto />
         <Franja />
         <Propuestas />
-        <Sumate />
+        <Contacto />
       </main>
       <Pie />
     </Movimiento>

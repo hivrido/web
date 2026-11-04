@@ -36,8 +36,8 @@ export default function Header() {
           </a>
         ))}
       </nav>
-      <a href="#sumate" className="ad-btn ad-btn-primario ad-btn-chico">
-        {sitio.hero.cta}
+      <a href={sitio.contacto.href} className="ad-btn ad-btn-primario ad-btn-chico">
+        {sitio.contacto.label}
       </a>
     </header>
   );

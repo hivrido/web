@@ -1671,3 +1671,9 @@ body:has(.ad-root) {
     transform: translateX(calc(-50% + 50vw));
   }
 }
+
+/* ── Quién es: sin foto oficial ───────────────────────────────────────── */
+.ad-quien-monograma {
+  width: min(62%, 240px);
+  font-size: clamp(4rem, 9vw, 6.4rem);
+}

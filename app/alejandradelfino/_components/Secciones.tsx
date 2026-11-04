@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 import Texto from "./Texto";
 import FormSumate from "./FormSumate";
 import { ICONOS } from "./Iconos";
-import { Corazon } from "./Marca";
+import { Corazon, Monograma } from "./Marca";
 import { marca, sitio, textos } from "../_lib/contenido";
 import { LANZAMIENTO, ruta } from "../_config/site";
 
@@ -18,8 +18,9 @@ export function QuienEs() {
     <section id="quien-es" className="ad-seccion ad-quien" aria-labelledby="ad-quien-titulo">
       <Reveal className="ad-quien-foto">
         <div className="ad-polaroid-grande">
+          {/* Sin foto oficial con permiso, el monograma ocupa su lugar. */}
           <div className="ad-foto-pendiente">
-            <Texto>{q.foto}</Texto>
+            <Monograma className="ad-quien-monograma" />
           </div>
           <span className="ad-pie">Alejandra · Chubut</span>
         </div>
@@ -125,10 +126,10 @@ export function Propuestas() {
   );
 }
 
-export function Sumate() {
+export function Contacto() {
   const s = sitio.sumate;
   return (
-    <section id="sumate" className="ad-sumate" aria-labelledby="ad-sumate-titulo">
+    <section id="contacto" className="ad-sumate" aria-labelledby="ad-sumate-titulo">
       <Reveal className="ad-sumate-caja">
         <Corazon grande />
         <h2 id="ad-sumate-titulo">{s.titulo}</h2>

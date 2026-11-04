@@ -84,11 +84,11 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 1.3, ease: EASE }}
         >
-          <a href="#sumate" className="ad-btn ad-btn-primario">
-            {cta}
+          <a href={cta.href} className="ad-btn ad-btn-primario">
+            {cta.label}
           </a>
-          <a href="#expediente" className="ad-btn ad-btn-vidrio">
-            {ctaSecundario}
+          <a href={ctaSecundario.href} className="ad-btn ad-btn-vidrio">
+            {ctaSecundario.label}
           </a>
         </motion.div>
       </motion.div>
