@@ -31,26 +31,33 @@
     "destacado": "energético.",
     "bajada": "El viento y los minerales de la meseta, el gas y el petróleo del golfo, el agua de la cordillera, la pesca de nuestro mar. La energía que el país necesita ya está acá: Chubut tiene con qué ponerla en marcha."
   },
-  "sumate": {
+  "formulario": {
     "titulo": "Contacto",
     "bajada": "¿Querés escribirle a Alejandra? Dejanos tu consulta y te respondemos.",
     "campos": {
-      "nombre": "Nombre y apellido",
+      "nombre": "Nombre",
       "localidad": "Localidad",
-      "whatsapp": "WhatsApp",
-      "ayuda": "¿Cómo querés ayudar?"
+      "contacto": "Email o WhatsApp",
+      "mensaje": "Mensaje"
     },
-    "ayudas": ["Difundir en redes", "Recorrer mi barrio", "Fiscalizar", "Aportar ideas"],
     "localidades": [
       "Comodoro Rivadavia", "Trelew", "Puerto Madryn", "Rawson", "Esquel", "Rada Tilly", "Sarmiento", "Trevelin",
       "Gaiman", "Dolavon", "28 de Julio", "Playa Unión", "Lago Puelo", "El Hoyo", "Epuyén", "El Maitén", "Cholila",
       "Corcovado", "Tecka", "Gualjaina", "Gobernador Costa", "José de San Martín", "Río Mayo", "Alto Río Senguer",
       "Río Pico", "Camarones", "Puerto Pirámides", "Paso de Indios", "Los Altares", "Las Plumas", "Gastre", "Telsen"
     ],
-    "consentimiento": "Acepto que el equipo de Alejandra Delfino use estos datos solo para contactarme por esta campaña. No se ceden a terceros, y puedo pedir verlos, corregirlos o borrarlos cuando quiera (Ley 25.326).",
+    "privacidad": [
+      "Responsable de la base de datos: {responsable}. Usamos estos datos con una única finalidad: responder tu consulta. No se ceden a terceros ni se usan para otra cosa.",
+      "Podés pedir en cualquier momento el acceso, la rectificación o la supresión de tus datos escribiendo a ese mismo contacto (Ley 25.326). El acceso es gratuito a intervalos no inferiores a seis meses, salvo interés legítimo (art. 14, inc. 3).",
+      "La Agencia de Acceso a la Información Pública (AAIP), órgano de control de la Ley 25.326, atiende las denuncias y reclamos de quienes resulten afectados en sus derechos por incumplimiento de las normas de protección de datos personales."
+    ],
+    "acepto": "Leí la información sobre mis datos y acepto que se usen para responder esta consulta.",
     "enviar": "Enviar",
     "gracias": "¡Gracias! Recibimos tu consulta y te respondemos pronto.",
-    "error": "No pudimos guardar tus datos. Probá de nuevo en un rato."
+    "error": "No pudimos enviar tu consulta. Probá de nuevo en un rato.",
+    "sinEnvio": "El formulario de contacto se habilita muy pronto. Mientras tanto, escribinos por Instagram.",
+    "sinEnvioDev": "Envío desactivado: falta definir el endpoint y el responsable de la base (ver _docs/formulario.md). Nada se guarda.",
+    "instagram": "Escribinos a @alejandra.delfino"
   },
   "footer": {
     "aviso": "Vista previa. Muy pronto en alejandradelfino.com.ar"

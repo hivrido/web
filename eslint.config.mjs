@@ -16,6 +16,9 @@ const eslintConfig = defineConfig([
     // y en una sola línea. Lintarlo son 980 quejas sobre código que nadie edita,
     // y entre ellas se pierden las del código que sí se escribe a mano.
     "public/cosmos/ring*.js",
+    // Material retirado del sitio de Alejandra Delfino (formulario Sumate,
+    // textos viejos): se guarda como referencia, no se compila ni se sirve.
+    "app/alejandradelfino/_archivo/**",
   ]),
 ]);
 

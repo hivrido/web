@@ -1462,11 +1462,8 @@ body:has(.ad-root) {
 .ad-campo-ancho {
   grid-column: 1 / -1;
 }
-.ad-campo legend {
-  margin-bottom: 10px;
-  padding: 0;
-}
-.ad-campo input {
+.ad-campo input,
+.ad-campo textarea {
   width: 100%;
   padding: 14px 16px;
   border: 1.5px solid rgba(255, 255, 255, 0.28);
@@ -1478,48 +1475,44 @@ body:has(.ad-root) {
   font-weight: 600;
   transition: border-color 0.2s, background 0.2s;
 }
-.ad-campo input::placeholder {
+.ad-campo input::placeholder,
+.ad-campo textarea::placeholder {
   color: rgba(255, 255, 255, 0.45);
 }
-.ad-campo input:focus {
+.ad-campo input:focus,
+.ad-campo textarea:focus {
   border-color: var(--ad-oro);
   background: rgba(255, 255, 255, 0.16);
   outline: none;
 }
-.ad-opciones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.ad-campo textarea {
+  min-height: 120px;
+  resize: vertical;
 }
-.ad-opcion {
-  position: relative;
+
+/* Información sobre datos personales: completa pero en segundo plano. */
+.ad-privacidad {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.55;
+  opacity: 0.88;
+  text-align: left;
 }
-.ad-opcion input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+
+/* Sin formulario habilitado: el contacto va por Instagram. */
+.ad-sin-envio {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
-.ad-opcion span {
-  display: inline-block;
-  padding: 10px 18px;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.ad-opcion:hover span {
-  transform: translateY(-1px);
-}
-.ad-opcion input:checked + span {
-  border-color: var(--ad-oro);
-  background: var(--ad-oro);
-  color: var(--ad-tinta);
-}
-.ad-opcion input:focus-visible + span {
-  outline: 3px solid var(--ad-oro);
-  outline-offset: 3px;
-}
+
 .ad-consiente {
   display: grid;
   grid-template-columns: auto 1fr;

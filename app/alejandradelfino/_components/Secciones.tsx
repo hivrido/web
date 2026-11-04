@@ -1,6 +1,6 @@
 import Reveal from "./Reveal";
 import Sello from "./Sello";
-import FormSumate from "./FormSumate";
+import FormContacto from "./FormContacto";
 import { ICONOS } from "./Iconos";
 import { Corazon, Monograma } from "./Marca";
 import { gestion, marca, perfil, propuestas, sello, sitio, trayectoria } from "../_lib/contenido";
@@ -137,14 +137,14 @@ export function Propuestas() {
 }
 
 export function Contacto() {
-  const s = sitio.sumate;
+  const s = sitio.formulario;
   return (
     <section id="contacto" className="ad-sumate" aria-labelledby="ad-sumate-titulo">
       <Reveal className="ad-sumate-caja">
         <Corazon grande />
         <h2 id="ad-sumate-titulo">{s.titulo}</h2>
         <p className="ad-sumate-bajada">{s.bajada}</p>
-        <FormSumate />
+        <FormContacto />
       </Reveal>
     </section>
   );

@@ -1,0 +1,24 @@
+{
+  "_nota": "Textos del formulario Sumate, desactivado el 04/11/2026: inscribirse a un espacio político es un dato sensible (Ley 25.326, arts. 2 y 7). No reactivar sin revisión de un abogado. Ver _docs/formulario.md.",
+  "sumate": {
+    "titulo": "Contacto",
+    "bajada": "¿Querés escribirle a Alejandra? Dejanos tu consulta y te respondemos.",
+    "campos": {
+      "nombre": "Nombre y apellido",
+      "localidad": "Localidad",
+      "whatsapp": "WhatsApp",
+      "ayuda": "¿Cómo querés ayudar?"
+    },
+    "ayudas": ["Difundir en redes", "Recorrer mi barrio", "Fiscalizar", "Aportar ideas"],
+    "localidades": [
+      "Comodoro Rivadavia", "Trelew", "Puerto Madryn", "Rawson", "Esquel", "Rada Tilly", "Sarmiento", "Trevelin",
+      "Gaiman", "Dolavon", "28 de Julio", "Playa Unión", "Lago Puelo", "El Hoyo", "Epuyén", "El Maitén", "Cholila",
+      "Corcovado", "Tecka", "Gualjaina", "Gobernador Costa", "José de San Martín", "Río Mayo", "Alto Río Senguer",
+      "Río Pico", "Camarones", "Puerto Pirámides", "Paso de Indios", "Los Altares", "Las Plumas", "Gastre", "Telsen"
+    ],
+    "consentimiento": "Acepto que el equipo de Alejandra Delfino use estos datos solo para contactarme por esta campaña. No se ceden a terceros, y puedo pedir verlos, corregirlos o borrarlos cuando quiera (Ley 25.326).",
+    "enviar": "Enviar",
+    "gracias": "¡Gracias! Recibimos tu consulta y te respondemos pronto.",
+    "error": "No pudimos guardar tus datos. Probá de nuevo en un rato."
+  }
+}
