@@ -11,6 +11,7 @@ import regionesJson from "../_content/regiones.json";
 import expedienteJson from "../_content/expediente.json";
 import mapaJson from "../_content/mapa.generado.json";
 import marcaJson from "../_content/marca.json";
+import imagenesJson from "../_content/imagenes.json";
 import { PRODUCCION } from "../_config/site";
 
 /* ── Publicación ──────────────────────────────────────────────────────── */
@@ -131,6 +132,32 @@ export const expediente: Expediente = {
 };
 
 export const mapa = mapaJson as unknown as Mapa;
+
+/* ── Imágenes ─────────────────────────────────────────────────────────── */
+
+export type Imagen = {
+  lugar: string | null;
+  anio: number | null;
+  autor: string | null;
+  licencia: string | null;
+  origen: string;
+} & Revisable;
+
+const imagenes = imagenesJson.imagenes as Record<string, Imagen>;
+
+/** Registro de una imagen, con su nota de qué falta para publicarla. */
+export function imagen(archivo: string): Imagen & Revisable {
+  const i = imagenes[archivo];
+  if (!i) return { lugar: null, anio: null, autor: null, licencia: null, origen: "", pendiente: true, nota: "Sin registro en imagenes.json" };
+  return { ...i, fuente: i.licencia, nota: i.nota ?? i.origen };
+}
+
+/** El archivo, si la foto puede mostrarse: con licencia o permiso en
+    producción; en desarrollo, siempre. Si no, null y va la ilustración. */
+export function fotoPublicable(archivo?: string | null): string | null {
+  if (!archivo) return null;
+  return publicable(imagen(archivo)) ? archivo : null;
+}
 
 /** Departamento → región, para pintar el mapa. */
 export const regionDeDepartamento: Record<string, string> = Object.fromEntries(

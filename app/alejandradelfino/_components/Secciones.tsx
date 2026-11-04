@@ -3,7 +3,7 @@ import Sello from "./Sello";
 import FormContacto from "./FormContacto";
 import { ICONOS } from "./Iconos";
 import { Corazon, Monograma } from "./Marca";
-import { gestion, marca, perfil, propuestas, sello, sitio, trayectoria } from "../_lib/contenido";
+import { fotoPublicable, gestion, marca, perfil, propuestas, sello, sitio, trayectoria } from "../_lib/contenido";
 import { LANZAMIENTO, ruta } from "../_config/site";
 
 /* La franja de colores que separa secciones, como las guardas de la
@@ -74,9 +74,9 @@ export function Gestion() {
         {g.casos.map((c, i) => (
           <Reveal as="article" key={c.id} delay={0.12 * i} className={`ad-caso ad-caso-${c.id}`}>
             <div className="ad-caso-media">
-              {c.foto ? (
+              {fotoPublicable(c.foto) ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={ruta(c.foto)} alt={`${c.lugar}, Chubut`} loading="lazy" width={560} height={420} />
+                <img src={ruta(c.foto!)} alt={`${c.lugar}, Chubut`} loading="lazy" width={560} height={420} />
               ) : (
                 <div className="ad-caso-ilustracion" aria-hidden="true">
                   <span>{c.lugar}</span>

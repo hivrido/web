@@ -1668,3 +1668,20 @@ body:has(.ad-root) {
   width: min(62%, 240px);
   font-size: clamp(4rem, 9vw, 6.4rem);
 }
+
+/* ── Fotos sin licencia ───────────────────────────────────────────────── */
+/* En producción, el paisaje ilustrado ocupa el lugar de la foto con el mismo
+   formato; en desarrollo la foto se ve con su sello PENDIENTE en la esquina. */
+.ad-paisaje {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+/* La pieza ya es absoluta: sirve de referencia para el sello. */
+.ad-foto > .ad-marca {
+  position: absolute;
+  top: calc(var(--u) * 16);
+  right: calc(var(--u) * 14);
+  font-size: calc(var(--u) * 11);
+}

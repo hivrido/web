@@ -2,7 +2,9 @@
 
 import { motion } from "framer-motion";
 import { Monograma } from "../Marca";
-import { marca, type Pieza as TPieza } from "../../_lib/contenido";
+import Paisaje from "../Paisaje";
+import Sello from "../Sello";
+import { fotoPublicable, imagen, marca, regionPorId, type Pieza as TPieza } from "../../_lib/contenido";
 import { LANZAMIENTO, ruta } from "../../_config/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -27,14 +29,21 @@ function vars(p: TPieza) {
 
 function Contenido({ pieza }: { pieza: TPieza }) {
   switch (pieza.tipo) {
-    case "foto":
+    case "foto": {
+      const foto = fotoPublicable(pieza.foto);
       return (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={pieza.foto} alt="" loading="lazy" decoding="async" width={560} height={420} />
+          {foto ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={ruta(foto)} alt="" loading="lazy" decoding="async" width={560} height={420} />
+          ) : (
+            <Paisaje color={pieza.region ? regionPorId[pieza.region]?.color : undefined} />
+          )}
+          {foto && <Sello de={imagen(foto)} />}
           <span className="ad-pie">{pieza.titulo}</span>
         </>
       );
+    }
     case "credencial":
       return (
         <>

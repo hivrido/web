@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Sello from "../Sello";
-import { expediente, regionPorId } from "../../_lib/contenido";
+import { expediente, fotoPublicable, regionPorId } from "../../_lib/contenido";
+import { ruta } from "../../_config/site";
 
 export type Seleccion = { tipo: "region" | "pieza"; id: string };
 
@@ -35,6 +36,7 @@ export default function Ficha({ seleccion, onCerrar, onElegir }: Props) {
 
   const pieza = seleccion.tipo === "pieza" ? expediente.piezas.find((p) => p.id === seleccion.id) : undefined;
   const region = regionPorId[seleccion.tipo === "region" ? seleccion.id : (pieza?.region ?? "")];
+  const foto = fotoPublicable(pieza?.foto);
   const esGestion = !!pieza && expediente.gestion.includes(pieza.id);
 
   const raiz = typeof document === "undefined" ? null : document.querySelector(".ad-root");
@@ -73,9 +75,9 @@ export default function Ficha({ seleccion, onCerrar, onElegir }: Props) {
             </svg>
           </button>
 
-          {pieza?.foto && (
+          {foto && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img className="ad-ficha-foto" src={pieza.foto} alt={pieza.titulo} width={560} height={420} />
+            <img className="ad-ficha-foto" src={ruta(foto)} alt={pieza?.titulo} width={560} height={420} />
           )}
 
           <h3 id="ad-ficha-titulo" ref={titulo} tabIndex={-1}>

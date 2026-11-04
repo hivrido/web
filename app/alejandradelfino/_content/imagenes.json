@@ -1,0 +1,106 @@
+{
+  "_nota": "Registro de cada imagen de public/alejandradelfino/. Una foto se publica solo con 'licencia' (o permiso escrito) y sin 'pendiente'. Si no, en producción su lugar lo ocupa una ilustración. Fotos con menores: solo con consentimiento escrito; si no, se recortan o se descartan. Nada generado con IA presentado como real.",
+  "imagenes": {
+    "cholila.webp": {
+      "lugar": "Cholila",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (cholila.jfif), sin autor identificado.",
+      "pendiente": true
+    },
+    "cholila-wide.webp": {
+      "lugar": "Cholila",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Recorte panorámico de la anterior. No se usa en el sitio.",
+      "pendiente": true
+    },
+    "el-hoyo.webp": {
+      "lugar": "El Hoyo",
+      "anio": null,
+      "autor": "Dirección de Turismo de El Hoyo (según el nombre del archivo original)",
+      "licencia": null,
+      "origen": "Descargada de la web (Dir-Turismo-EL-Hoyo-C-Mir-45-1024x569.jpg). Pedir permiso al municipio.",
+      "pendiente": true
+    },
+    "epuyen.webp": {
+      "lugar": "Epuyén",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (epuyen.jpg), sin autor identificado.",
+      "pendiente": true
+    },
+    "eolico.webp": {
+      "lugar": "Chubut (parque eólico sin identificar)",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (eolico.jpg), sin autor identificado. Confirmar además que sea un parque de Chubut.",
+      "pendiente": true
+    },
+    "lago-puelo.webp": {
+      "lugar": "Lago Puelo",
+      "anio": null,
+      "autor": "Administración de Parques Nacionales (según el nombre del archivo original)",
+      "licencia": null,
+      "origen": "Descargada de la web ('LAGO PUELO 2 - FOTO PARQUES NACI'). Confirmar la licencia de uso de APN.",
+      "pendiente": true
+    },
+    "piedra-parada.webp": {
+      "lugar": "Piedra Parada, Gualjaina",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (piedra-parada-gualjaina1-web.jpg), sin autor identificado.",
+      "pendiente": true
+    },
+    "pozos.webp": {
+      "lugar": "Comodoro Rivadavia",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (pozos-petroleros-chubut.jfif), sin autor identificado.",
+      "pendiente": true
+    },
+    "puerto-madryn.webp": {
+      "lugar": "Puerto Madryn",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (Puerto-Madryn.jpg), sin autor identificado.",
+      "pendiente": true
+    },
+    "rawson.webp": {
+      "lugar": "Rawson",
+      "anio": null,
+      "autor": null,
+      "licencia": null,
+      "origen": "Descargada de la web (puerto-rauson.jfif), sin autor identificado.",
+      "pendiente": true
+    },
+    "tulipanes.svg": {
+      "lugar": null,
+      "anio": 2026,
+      "autor": "Equipo del sitio",
+      "licencia": "Propia: dibujo vectorial hecho para el sitio",
+      "origen": "Fondo del expediente."
+    },
+    "icono.svg": {
+      "lugar": null,
+      "anio": 2026,
+      "autor": "Equipo del sitio",
+      "licencia": "Propia: iniciales tipográficas",
+      "origen": "Ícono del sitio hasta el lanzamiento."
+    },
+    "logo-ad-mark.webp": {
+      "lugar": null,
+      "anio": null,
+      "autor": "Equipo de Alejandra Delfino",
+      "licencia": "Propia",
+      "origen": "Logo AD con el lema. Bloqueado hasta el lanzamiento (LANZAMIENTO en _config/site.ts)."
+    }
+  }
+}
