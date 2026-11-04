@@ -1,7 +1,7 @@
 {
   "meta": {
-    "titulo": "Alejandra Delfino — Chubut tiene con qué",
-    "descripcion": "De la cordillera al mar, Chubut tiene con qué. Que Argentina vuelva a ser el granero del mundo: esta vez, energético.",
+    "titulo": "Alejandra Delfino — Chubut",
+    "descripcion": "Alejandra Delfino, dirigente política de Chubut: su trayectoria en la gestión pública, las obras que coordinó en el interior y su mirada sobre la provincia.",
     "instagram": "https://www.instagram.com/alejandra.delfino/"
   },
   "nav": [
@@ -21,7 +21,7 @@
   "expediente": {
     "kicker": "Expediente Chubut",
     "titulo": "Seguí el hilo",
-    "bajada": "Cada hilo une un lugar con lo que produce y con lo que ya hicimos ahí. Tocá una zona del mapa o una foto para abrir su ficha.",
+    "bajada": "Cada hilo une un lugar con lo que produce y con lo que se hizo ahí. Tocá una zona del mapa o una foto para abrir su ficha.",
     "ayuda": "Con teclado: Tab recorre las zonas y las fotos, Enter abre la ficha y Esc la cierra."
   },
   "manifiesto": {

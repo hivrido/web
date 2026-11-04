@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Nunito } from "next/font/google";
-import { marca, sitio } from "./_lib/contenido";
+import { marca, perfil, sitio } from "./_lib/contenido";
 import { LANZAMIENTO, ruta } from "./_config/site";
 import "./delfino.css";
 
@@ -52,7 +52,7 @@ const persona = {
   "@type": "Person",
   name: "Alejandra Delfino",
   alternateName: "Ruth Alejandra Delfino",
-  description: "Dirigente política y empresaria del sector energético de Chubut.",
+  description: perfil.bio,
   homeLocation: { "@type": "Place", name: "Chubut, Argentina" },
   sameAs: [instagram],
 };

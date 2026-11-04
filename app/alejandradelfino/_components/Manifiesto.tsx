@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Molino } from "./HeroScene";
 import { Corazon } from "./Marca";
@@ -45,16 +46,18 @@ export default function Manifiesto() {
           {lineas.map((palabras, n) => (
             <span key={n} className="ad-manif-linea">
               {palabras.map((p, j) => (
-                <motion.span
-                  key={j}
-                  className={`ad-manif-palabra ${n === lineas.length - 1 ? "ad-manif-oro" : ""}`}
-                  variants={{
-                    apagada: { opacity: 0.12, y: "0.2em" },
-                    encendida: { opacity: 1, y: 0, transition: { duration: 0.9, delay: 0.15 + (inicio[n] + j) * 0.16, ease: EASE } },
-                  }}
-                >
-                  {p}
-                </motion.span>
+                <Fragment key={j}>
+                  {j > 0 && " "}
+                  <motion.span
+                    className={`ad-manif-palabra ${n === lineas.length - 1 ? "ad-manif-oro" : ""}`}
+                    variants={{
+                      apagada: { opacity: 0.12, y: "0.2em" },
+                      encendida: { opacity: 1, y: 0, transition: { duration: 0.9, delay: 0.15 + (inicio[n] + j) * 0.16, ease: EASE } },
+                    }}
+                  >
+                    {p}
+                  </motion.span>
+                </Fragment>
               ))}
             </span>
           ))}

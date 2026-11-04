@@ -1,0 +1,55 @@
+{
+  "_nota": "Obras que ella coordinó como subsecretaria. Cada caso cita las páginas del DOC que lo respaldan; 'estado: borrador' no se publica en producción. No se nombra el instrumento de financiamiento.",
+  "kicker": "Gestión",
+  "titulo": "Obras que coordinó en territorio",
+  "bajada": "Como subsecretaria de Coordinación y Relaciones Institucionales recorrió el interior junto a los intendentes, siguiendo el avance de cada obra.",
+  "fuenteBajada": "DOC p. 9–10",
+  "casos": [
+    {
+      "id": "cholila",
+      "lugar": "Cholila",
+      "anio": null,
+      "cifra": "+80%",
+      "cifraLabel": "de avance en la mayoría de las obras al momento de la recorrida oficial",
+      "foto": "cholila.webp",
+      "obras": [
+        "Dos plazas y cuatro miradores turísticos",
+        "Camping de Villa Lago Rivadavia, con proveeduría, sanitarios y fogones",
+        "Servicios para 40 lotes",
+        "Cuatro garitas de colectivo",
+        "Inicio del SUM del jardín maternal y mejoras en el cementerio y el gimnasio municipal"
+      ],
+      "fuente": "DOC p. 18–20 (recorrida con el intendente Silvio Boudargham; nota de Noticias del Corredor)",
+      "nota": "El año de la recorrida queda sin publicar: el DOC no lo dice y la jura fue el 12/11/2018, así que podría ser 2019."
+    },
+    {
+      "id": "elmaiten",
+      "lugar": "El Maitén",
+      "anio": null,
+      "cifra": "15",
+      "cifraLabel": "obras en ejecución durante la recorrida",
+      "foto": null,
+      "obras": [
+        "Galpón de 16 × 30 m para clasificar y acondicionar arándanos en origen",
+        "Ampliación del gimnasio municipal",
+        "Sanitarios del Club Hípico y del camping municipal",
+        "Refacción del edificio de la Municipalidad",
+        "Aulas para cursos de capacitación a distancia"
+      ],
+      "fuente": "DOC p. 21–23 (recorrida con el intendente Oscar Currilén; nota de El Chubut)",
+      "nota": "Mismo caso que Cholila con el año: la recorrida menciona inauguraciones 'en octubre', posteriores a la jura de noviembre de 2018."
+    },
+    {
+      "id": "patrimonio",
+      "lugar": "Patrimonio",
+      "anio": null,
+      "cifra": "7",
+      "cifraLabel": "cooperativas de trabajo",
+      "foto": null,
+      "obras": ["Centro Cultural Provincial", "Museo del Hombre y el Mar, Puerto Madryn", "Museo de Ex Combatientes, Rawson", "Museo de la Familia Perón, Camarones"],
+      "fuente": "DOC p. 15–17 (Acta Acuerdo; nota de El Diario)",
+      "estado": "borrador",
+      "nota": "Oculto: las cooperativas son un tema sensible hoy en Chubut. Decidir con ella si se publica y cómo."
+    }
+  ]
+}

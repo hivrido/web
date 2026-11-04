@@ -330,7 +330,6 @@ body:has(.ad-root) {
 }
 .ad-palabra {
   display: inline-block;
-  margin-right: 0.2em;
 }
 .ad-destacado {
   position: relative;
@@ -1264,7 +1263,6 @@ body:has(.ad-root) {
 }
 .ad-manif-palabra {
   display: inline-block;
-  margin: 0 0.12em;
 }
 .ad-manif-oro {
   padding-bottom: 0.08em;

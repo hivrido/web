@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import Texto from "../Texto";
-import { expediente, regionPorId, textos } from "../../_lib/contenido";
+import Sello from "../Sello";
+import { expediente, regionPorId } from "../../_lib/contenido";
 
 export type Seleccion = { tipo: "region" | "pieza"; id: string };
 
@@ -13,8 +13,6 @@ type Props = {
   onCerrar: () => void;
   onElegir: (s: Seleccion) => void;
 };
-
-const ejes = Object.fromEntries(textos.propuestas.ejes.map((e) => [e.id, e]));
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -37,7 +35,6 @@ export default function Ficha({ seleccion, onCerrar, onElegir }: Props) {
 
   const pieza = seleccion.tipo === "pieza" ? expediente.piezas.find((p) => p.id === seleccion.id) : undefined;
   const region = regionPorId[seleccion.tipo === "region" ? seleccion.id : (pieza?.region ?? "")];
-  const eje = pieza?.eje ? ejes[pieza.eje] : undefined;
   const esGestion = !!pieza && expediente.gestion.includes(pieza.id);
 
   const raiz = typeof document === "undefined" ? null : document.querySelector(".ad-root");
@@ -85,10 +82,10 @@ export default function Ficha({ seleccion, onCerrar, onElegir }: Props) {
             {pieza ? pieza.titulo : region?.nombre}
           </h3>
 
-          {esGestion && <p className="ad-ficha-badge">Gestión documentada · 2018</p>}
-          {eje && <p className="ad-ficha-badge is-borrador">Eje de propuesta · {textos.propuestas.estado}</p>}
+          {esGestion && <p className="ad-ficha-badge">Gestión documentada</p>}
+          {pieza && <Sello de={pieza} exigeFuente={false} />}
 
-          {pieza && <p className="ad-ficha-texto">{eje ? eje.texto : pieza.texto}</p>}
+          {pieza && <p className="ad-ficha-texto">{pieza.texto}</p>}
 
           {region && seleccion.tipo === "region" && (
             <>
@@ -101,10 +98,15 @@ export default function Ficha({ seleccion, onCerrar, onElegir }: Props) {
               </ul>
               <h4>Identidad</h4>
               <p className="ad-ficha-texto">{region.identidad}</p>
-              <h4>Qué proponemos acá</h4>
-              <p className="ad-ficha-texto">
-                <Texto>{region.propuesta}</Texto>
-              </p>
+              {region.propuesta && (
+                <>
+                  <h4>Qué proponemos acá</h4>
+                  <p className="ad-ficha-texto">
+                    <Sello de={region.propuesta} exigeFuente={false} />
+                    {region.propuesta.texto}
+                  </p>
+                </>
+              )}
             </>
           )}
 

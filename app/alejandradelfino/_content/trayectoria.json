@@ -1,0 +1,49 @@
+{
+  "_nota": "Línea de tiempo de 'Quién es'. Sin fuente o con 'pendiente: true', el hito no se publica en producción.",
+  "hitos": [
+    {
+      "anio": "1990",
+      "cargo": "Primeros cargos públicos",
+      "organismo": "Municipios de Merlo, Morón y General San Martín",
+      "fuente": "DOC p. 4"
+    },
+    {
+      "anio": "2003",
+      "cargo": "Administración Pública Nacional",
+      "organismo": "Presidencia y Jefatura de Gabinete de Ministros",
+      "fuente": "DOC p. 6"
+    },
+    {
+      "anio": "2010",
+      "cargo": "Presidenta nacional",
+      "organismo": "Frente de Organizaciones Peronistas",
+      "fuente": "DOC p. 7",
+      "pendiente": true,
+      "nota": "Confirmar el nombre exacto: ¿Frente o Federación?"
+    },
+    {
+      "anio": "2018",
+      "cargo": "Subsecretaria de Coordinación y Relaciones Institucionales",
+      "organismo": "Ministerio de Infraestructura de Chubut",
+      "fuente": "DOC p. 9 y 13–14: juró el 12/11/2018 ante el ministro Raúl Chicala (El Diario)",
+      "decreto": null,
+      "nota": "Falta el número de decreto de designación para agregarlo a la fuente."
+    },
+    {
+      "anio": null,
+      "cargo": "Autoridad de la Casa del Chubut en Buenos Aires",
+      "organismo": null,
+      "fuente": "DOC p. 24 (sin fechas)",
+      "pendiente": true,
+      "nota": "Completar los años de inicio y de renuncia."
+    },
+    {
+      "anio": "2023",
+      "cargo": "Precandidata a gobernadora de Chubut",
+      "organismo": null,
+      "fuente": "DOC p. 25 (autodeclarado)",
+      "pendiente": true,
+      "nota": "Falta una fuente externa: nota de prensa o presentación ante la junta electoral."
+    }
+  ]
+}

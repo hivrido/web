@@ -1,0 +1,32 @@
+{
+  "_nota": "Ninguna propuesta se publica hasta que Alejandra la apruebe por escrito: entonces su 'estado' pasa a 'aprobada'. Tono de propuesta, no de denuncia; nada sobre la ley de minería ni sobre derogaciones.",
+  "kicker": "Propuestas",
+  "titulo": "Cuatro ejes para el Chubut que viene",
+  "enElaboracion": "Propuestas en elaboración: pronto.",
+  "ejes": [
+    {
+      "id": "energia",
+      "titulo": "Energía",
+      "texto": "Un servicio eléctrico eficiente y con reglas claras, y más energía eólica.",
+      "estado": "borrador"
+    },
+    {
+      "id": "origen",
+      "titulo": "Producción en origen",
+      "texto": "Que el interior genere trabajo para sus jóvenes, sin tener que irse.",
+      "estado": "borrador"
+    },
+    {
+      "id": "reglas",
+      "titulo": "Reglas claras",
+      "texto": "Leyes estables que den confianza al vecino y al inversor.",
+      "estado": "borrador"
+    },
+    {
+      "id": "futuro",
+      "titulo": "Chubut del futuro",
+      "texto": "Turismo, conectividad y data centers con energía eólica.",
+      "estado": "borrador"
+    }
+  ]
+}

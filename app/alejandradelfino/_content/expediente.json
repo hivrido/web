@@ -13,17 +13,19 @@
       "id": "ad",
       "tipo": "credencial",
       "titulo": "Alejandra Delfino",
-      "texto": "Más de treinta años de función pública. En 2018, subsecretaria de Coordinación y Relaciones Institucionales del Ministerio de Infraestructura de Chubut.",
+      "texto": "Dirigente política de Chubut. En noviembre de 2018 juró como subsecretaria de Coordinación y Relaciones Institucionales del Ministerio de Infraestructura de la provincia.",
+      "fuente": "DOC p. 9 y 13–14",
       "d": [760, 26, 250, 1.5],
       "m": [30, 40, 300, -2]
     },
     {
       "id": "elmaiten",
       "tipo": "informe",
-      "titulo": "El Maitén · 2018",
+      "titulo": "El Maitén",
       "localidad": "elmaiten",
       "region": "cordillera",
-      "texto": "15 obras en simultáneo con el Bono Provincial: el gimnasio, el camping, aulas de capacitación y un galpón de 16 × 30 m para acondicionar arándanos en origen.",
+      "texto": "15 obras en ejecución durante la recorrida: el gimnasio, el camping, aulas de capacitación y un galpón de 16 × 30 m para acondicionar arándanos en origen.",
+      "fuente": "DOC p. 21–22",
       "d": [500, 34, 230, -2.5],
       "m": [355, 44, 300, 2]
     },
@@ -57,6 +59,7 @@
       "region": "cordillera",
       "foto": "/alejandradelfino/el-hoyo.webp",
       "texto": "Sede de la Fiesta Nacional de la Fruta Fina.",
+      "fuente": "Municipalidad de El Hoyo (dato público)",
       "d": [272, 26, 200, 3],
       "m": [350, 360, 290, -2]
     },
@@ -74,11 +77,12 @@
     {
       "id": "cholila",
       "tipo": "foto",
-      "titulo": "Cholila · 2018",
+      "titulo": "Cholila",
       "localidad": "cholila",
       "region": "cordillera",
       "foto": "/alejandradelfino/cholila.webp",
-      "texto": "Obras del Bono Provincial con más del 80% de avance: plazas, miradores, el camping de Villa Lago Rivadavia, garitas y servicios para 40 lotes.",
+      "texto": "En la recorrida oficial, la mayoría de las obras superaba el 80% de avance: plazas, miradores, el camping de Villa Lago Rivadavia, garitas y servicios para 40 lotes.",
+      "fuente": "DOC p. 18–19",
       "d": [50, 566, 220, -3],
       "m": [20, 1300, 300, -3]
     },
@@ -110,7 +114,7 @@
       "titulo": "Viento patagónico",
       "region": "virch",
       "foto": "/alejandradelfino/eolico.webp",
-      "texto": "El recurso que a Chubut le sobra, y la base del eje Energía.",
+      "texto": "El recurso que a Chubut le sobra.",
       "d": [1330, 596, 220, 3],
       "m": [350, 1610, 300, -3]
     },
@@ -122,6 +126,7 @@
       "region": "golfo",
       "foto": "/alejandradelfino/pozos.webp",
       "texto": "Golfo San Jorge: el petróleo que mueve a la provincia desde 1907.",
+      "fuente": "Descubrimiento del petróleo en Comodoro Rivadavia, 13/12/1907 (dato histórico público)",
       "d": [1060, 776, 200, -2],
       "m": [20, 1606, 300, 2]
     },
@@ -132,6 +137,7 @@
       "titulo": "#1 Energía",
       "texto": "Mercado eléctrico abierto + más viento",
       "eje": "energia",
+      "estado": "borrador",
       "d": [1290, 840, 150, -3],
       "m": [690, 1620, 280, 3]
     },
@@ -142,6 +148,7 @@
       "titulo": "#2 Producción en origen",
       "texto": "Trabajo para los jóvenes del interior",
       "eje": "origen",
+      "estado": "borrador",
       "d": [64, 830, 170, -5],
       "m": null
     },
@@ -152,6 +159,7 @@
       "titulo": "#3 Reglas claras",
       "texto": "Confianza para el vecino y el inversor",
       "eje": "reglas",
+      "estado": "borrador",
       "d": [292, 846, 160, 4],
       "m": null
     },
@@ -162,6 +170,7 @@
       "titulo": "#4 Chubut del futuro",
       "texto": "Data centers con energía eólica",
       "eje": "futuro",
+      "estado": "borrador",
       "d": [1446, 830, 140, 5],
       "m": null
     },

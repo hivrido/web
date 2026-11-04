@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { motion, useTransform } from "framer-motion";
 import HeroScene, { useProgresoHero } from "./HeroScene";
 import { Corazon } from "./Marca";
@@ -36,17 +36,21 @@ export default function Hero() {
         </motion.p>
 
         <h1 id="ad-hero-titulo" className="ad-hero-titulo">
+          {/* Cada palabra entra por separado, pero entre ellas va un espacio
+              real: sin él, lectores de pantalla y buscadores leen
+              "Chubuttiene". */}
           {palabras.map((p, i) => (
-            <motion.span
-              key={p + i}
-              className="ad-palabra"
-              initial={{ opacity: 0, y: "0.6em", rotate: 2 }}
-              animate={{ opacity: 1, y: 0, rotate: 0 }}
-              transition={{ duration: 0.9, delay: 0.45 + i * 0.12, ease: EASE }}
-            >
-              {p}
-            </motion.span>
-          ))}{" "}
+            <Fragment key={p + i}>
+              <motion.span
+                className="ad-palabra"
+                initial={{ opacity: 0, y: "0.6em", rotate: 2 }}
+                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{ duration: 0.9, delay: 0.45 + i * 0.12, ease: EASE }}
+              >
+                {p}
+              </motion.span>{" "}
+            </Fragment>
+          ))}
           <motion.span
             className="ad-palabra ad-destacado"
             initial={{ opacity: 0, y: "0.6em", rotate: -2 }}

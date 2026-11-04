@@ -1,0 +1,35 @@
+{
+  "_nota": "Todo dato lleva 'fuente'. Con 'pendiente: true' no se publica en producción (en desarrollo se ve con sello). DOC = 'Documento de gestión (Ruth Alejandra Delfino)', PDF de 26 páginas, en el material crudo del sitio.",
+  "kicker": "Quién es",
+  "titulo": "Alejandra Delfino",
+  "registral": "Ruth Alejandra Delfino",
+  "bio": "Dirigente política de Chubut, con trayectoria en la gestión pública municipal, nacional y provincial.",
+  "foto": null,
+  "parrafos": [
+    {
+      "texto": "Más de 25 años de trayectoria en gestión pública: en municipios, en la Nación y en la Provincia.",
+      "fuente": "DOC p. 3 y 26",
+      "pendiente": true,
+      "nota": "El DOC dice 'más de tres décadas'. La revisión del 04/11/2026 pide '25 años' hasta que ella confirme la cifra."
+    },
+    {
+      "texto": "Empezó a principios de los noventa en Merlo, Morón y General San Martín. Desde 2003 trabajó en la Administración Pública Nacional, en equipos de la Presidencia y de la Jefatura de Gabinete de Ministros.",
+      "fuente": "DOC p. 4 (municipios, desde 1990) y p. 6 (Nación, desde 2003)"
+    },
+    {
+      "texto": "En 2010 asumió la presidencia nacional del Frente de Organizaciones Peronistas y lo llevó de Tucumán a Buenos Aires, Catamarca, Corrientes, Santiago del Estero, Córdoba y Chubut.",
+      "fuente": "DOC p. 7",
+      "pendiente": true,
+      "nota": "Confirmar con ella el nombre exacto: el DOC dice 'Frente' (p. 2, 3 y 7), otros documentos dicen 'Federación'."
+    },
+    {
+      "texto": "En noviembre de 2018 juró como subsecretaria de Coordinación y Relaciones Institucionales del Ministerio de Infraestructura, Planeamiento y Servicios Públicos de Chubut, y recorrió el interior siguiendo, obra por obra, lo que se construía en cada localidad.",
+      "fuente": "DOC p. 9 (jura del 12/11/2018) y p. 13–14 (acta, nota de El Diario)"
+    },
+    {
+      "texto": "Cursa la carrera de Abogacía y se formó en Psicología Social y en Mediación Comunitaria.",
+      "fuente": "CV (Abogacía en curso); DOC p. 5",
+      "nota": "Si ya se recibió, cambiar a 'Es abogada' con la fuente del título."
+    }
+  ]
+}
