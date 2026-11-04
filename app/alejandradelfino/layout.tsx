@@ -61,6 +61,24 @@ export default function DelfinoLayout({ children }: { children: React.ReactNode 
   return (
     <div className={`ad-root ${nunito.variable} ${caveat.variable}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(persona) }} />
+      {/* Sin JavaScript las animaciones no arrancan y el contenido queda
+          invisible: en su lugar, un resumen estático. Tapa también el aviso
+          genérico de hivrido del layout raíz. */}
+      <noscript>
+        <style>{".hv-noscript{display:none!important}"}</style>
+        <div className="ad-noscript">
+          <p className="ad-noscript-nombre">Alejandra Delfino</p>
+          <p>{perfil.bio}</p>
+          <p>
+            Contacto:{" "}
+            <a href={instagram} rel="noopener noreferrer">
+              @alejandra.delfino
+            </a>
+          </p>
+          <p className="ad-noscript-aviso">{sitio.footer.sinJs}</p>
+          <p className="ad-noscript-aviso">{sitio.footer.aviso}</p>
+        </div>
+      </noscript>
       {children}
     </div>
   );

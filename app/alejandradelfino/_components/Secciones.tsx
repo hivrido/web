@@ -164,6 +164,7 @@ export function Pie() {
         <p className="ad-pie-nombre">Alejandra Delfino</p>
       )}
       <p className="ad-pie-aviso">{f.aviso}</p>
+      <p className="ad-pie-fuente">{f.mapa}</p>
       <a href={sitio.meta.instagram} target="_blank" rel="noopener noreferrer" className="ad-pie-ig">
         @alejandra.delfino
       </a>

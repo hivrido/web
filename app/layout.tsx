@@ -77,7 +77,7 @@ export default function RootLayout({
         {children}
         <noscript>
           <style>{`#main{display:block!important;opacity:1!important}`}</style>
-          <div style={{
+          <div className="hv-noscript" style={{
             position: "fixed", inset: 0, background: "#0a0a0a",
             color: "#f0f0f0", display: "flex", alignItems: "center",
             justifyContent: "center", flexDirection: "column", gap: "16px",

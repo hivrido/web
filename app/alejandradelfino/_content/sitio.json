@@ -60,6 +60,8 @@
     "instagram": "Escribinos a @alejandra.delfino"
   },
   "footer": {
-    "aviso": "Vista previa. Muy pronto en alejandradelfino.com.ar"
+    "aviso": "Vista previa · Pronto en alejandradelfino.com.ar",
+    "mapa": "Mapa: Instituto Geográfico Nacional (IGN)",
+    "sinJs": "Para ver el expediente y el mapa interactivo, activá JavaScript."
   }
 }
