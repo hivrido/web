@@ -6,6 +6,7 @@ import textosJson from "../_content/textos.json";
 import regionesJson from "../_content/regiones.json";
 import expedienteJson from "../_content/expediente.json";
 import mapaJson from "../_content/mapa.generado.json";
+import marcaJson from "../_content/marca.json";
 
 export type Region = {
   id: string;
@@ -51,6 +52,8 @@ export type Mapa = {
 };
 
 export const sitio = sitioJson;
+/** Logo y lema: solo se leen detrás de LANZAMIENTO. */
+export const marca = marcaJson;
 export const textos = textosJson;
 export const regiones = regionesJson.regiones as Region[];
 export const expediente = expedienteJson as unknown as Expediente;

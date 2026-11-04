@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Caveat, Nunito } from "next/font/google";
-import { sitio } from "./_lib/contenido";
+import { marca, sitio } from "./_lib/contenido";
+import { LANZAMIENTO, ruta } from "./_config/site";
 import "./delfino.css";
 
 /* Sitio de Alejandra Delfino, alojado en hivrido mientras se habilita
@@ -32,13 +33,14 @@ export const metadata: Metadata = {
      compite con alejandradelfino.com.ar por las mismas búsquedas. */
   robots: { index: false, follow: false },
   alternates: { canonical: "/alejandradelfino" },
-  icons: { icon: "/alejandradelfino/logo-ad-mark.webp" },
+  /* El ícono con el logo AD espera al lanzamiento; hasta entonces, iniciales
+     simples. La imagen para compartir la genera opengraph-image.tsx. */
+  icons: { icon: LANZAMIENTO ? ruta(marca.logo) : ruta("icono.svg") },
   openGraph: {
     title: titulo,
     description: descripcion,
-    url: "/alejandradelfino/",
+    url: ruta("/"),
     siteName: "Alejandra Delfino",
-    images: [{ url: "/alejandradelfino/logo-ad-mark.webp", width: 420, height: 317, alt: "Alejandra Delfino — Los sueños se cumplen" }],
     locale: "es_AR",
     type: "profile",
   },

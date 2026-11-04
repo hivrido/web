@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useTransform } from "framer-motion";
 import HeroScene, { useProgresoHero } from "./HeroScene";
+import { Corazon } from "./Marca";
 import { sitio } from "../_lib/contenido";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -30,7 +31,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
         >
-          <span className="ad-corazon" aria-hidden="true" />
+          <Corazon />
           {kicker}
         </motion.p>
 

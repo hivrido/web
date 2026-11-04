@@ -29,8 +29,7 @@
     "antes": "Argentina fue el granero del mundo.",
     "lineas": ["Vuelve a serlo.", "Esta vez,"],
     "destacado": "energético.",
-    "bajada": "El viento y los minerales de la meseta, el gas y el petróleo del golfo, el agua de la cordillera, la pesca de nuestro mar. La energía que el país necesita ya está acá: Chubut tiene con qué ponerla en marcha.",
-    "firma": "Los sueños se cumplen"
+    "bajada": "El viento y los minerales de la meseta, el gas y el petróleo del golfo, el agua de la cordillera, la pesca de nuestro mar. La energía que el país necesita ya está acá: Chubut tiene con qué ponerla en marcha."
   },
   "sumate": {
     "titulo": "Sumate",
@@ -54,7 +53,6 @@
     "error": "No pudimos guardar tus datos. Probá de nuevo en un rato."
   },
   "footer": {
-    "firma": "Los sueños se cumplen",
     "aviso": "Vista previa. Muy pronto en alejandradelfino.com.ar"
   }
 }

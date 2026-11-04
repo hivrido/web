@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Pieza as TPieza } from "../../_lib/contenido";
+import { Monograma } from "../Marca";
+import { marca, type Pieza as TPieza } from "../../_lib/contenido";
+import { LANZAMIENTO, ruta } from "../../_config/site";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -38,15 +40,19 @@ function Contenido({ pieza }: { pieza: TPieza }) {
         <>
           <span className="ad-cred-cabeza">Ficha Nº 001 · Chubut</span>
           <span className="ad-cred-cuerpo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/alejandradelfino/logo-ad-mark.webp" alt="" width={420} height={317} />
+            {LANZAMIENTO ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={ruta(marca.logo)} alt="" width={420} height={317} />
+            ) : (
+              <Monograma className="ad-cred-monograma" />
+            )}
             <span>
               <strong>{pieza.titulo}</strong>
               <em>Dirigente política</em>
-              <em>Sector energético</em>
+              <em>Chubut</em>
             </span>
           </span>
-          <span className="ad-cred-firma">Los sueños se cumplen</span>
+          {LANZAMIENTO && <span className="ad-cred-firma">{marca.firma}</span>}
         </>
       );
     case "informe":

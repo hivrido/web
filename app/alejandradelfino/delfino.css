@@ -253,9 +253,14 @@ body:has(.ad-root) {
   }
 }
 @media (max-width: 480px) {
-  .ad-logo span {
+  .ad-logo:not(.is-nombre) span {
     display: none;
   }
+}
+/* Sin logo hasta el lanzamiento: el nombre es la marca del header. */
+.ad-logo.is-nombre {
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  letter-spacing: -0.01em;
 }
 
 /* ── Hero ─────────────────────────────────────────────────────────────── */
@@ -632,6 +637,22 @@ body:has(.ad-root) {
   width: 100%;
   height: auto;
   border-radius: calc(var(--u) * 6);
+}
+/* Monograma neutro: iniciales en tipografía, sin el diseño del logo AD. */
+.ad-monograma {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #8a4fd8, var(--ad-violeta) 55%, var(--ad-violeta-hondo));
+  color: var(--ad-crema);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  box-shadow: inset 0 0 0 calc(var(--u, 1px) * 3) rgba(255, 247, 236, 0.35);
+}
+.ad-cred-monograma {
+  font-size: calc(var(--u) * 40 * var(--fs));
 }
 .ad-cred-cuerpo strong {
   display: block;
@@ -1581,6 +1602,13 @@ body:has(.ad-root) {
   width: 140px;
   height: auto;
   border-radius: 16px;
+}
+.ad-pie-nombre {
+  color: #fff;
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.01em;
 }
 .ad-firma {
   color: var(--ad-verde-claro);

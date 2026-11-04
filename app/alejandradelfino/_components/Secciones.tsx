@@ -2,7 +2,9 @@ import Reveal from "./Reveal";
 import Texto from "./Texto";
 import FormSumate from "./FormSumate";
 import { ICONOS } from "./Iconos";
-import { sitio, textos } from "../_lib/contenido";
+import { Corazon } from "./Marca";
+import { marca, sitio, textos } from "../_lib/contenido";
+import { LANZAMIENTO, ruta } from "../_config/site";
 
 /* La franja de colores que separa secciones, como las guardas de la
    referencia: un color por región, en diagonal. */
@@ -128,7 +130,7 @@ export function Sumate() {
   return (
     <section id="sumate" className="ad-sumate" aria-labelledby="ad-sumate-titulo">
       <Reveal className="ad-sumate-caja">
-        <span className="ad-corazon ad-corazon-grande" aria-hidden="true" />
+        <Corazon grande />
         <h2 id="ad-sumate-titulo">{s.titulo}</h2>
         <p className="ad-sumate-bajada">{s.bajada}</p>
         <FormSumate />
@@ -141,9 +143,15 @@ export function Pie() {
   const f = sitio.footer;
   return (
     <footer className="ad-pie-sitio">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/alejandradelfino/logo-ad-mark.webp" alt="Alejandra Delfino" width={140} height={106} loading="lazy" />
-      <p className="ad-firma">{f.firma}</p>
+      {LANZAMIENTO ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={ruta(marca.logo)} alt="Alejandra Delfino" width={140} height={106} loading="lazy" />
+          <p className="ad-firma">{marca.firma}</p>
+        </>
+      ) : (
+        <p className="ad-pie-nombre">Alejandra Delfino</p>
+      )}
       <p className="ad-pie-aviso">{f.aviso}</p>
       <a href={sitio.meta.instagram} target="_blank" rel="noopener noreferrer" className="ad-pie-ig">
         @alejandra.delfino

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Corazon } from "./Marca";
 import { sitio } from "../_lib/contenido";
 
 type Estado = "listo" | "enviando" | "ok" | "error";
@@ -51,7 +52,7 @@ export default function FormSumate() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: EASE }}
         >
-          <span className="ad-corazon" aria-hidden="true" />
+          <Corazon />
           {s.gracias}
         </motion.p>
       ) : (

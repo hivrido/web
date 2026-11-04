@@ -2,11 +2,14 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Molino } from "./HeroScene";
-import { sitio } from "../_lib/contenido";
+import { Corazon } from "./Marca";
+import { marca, sitio } from "../_lib/contenido";
+import { LANZAMIENTO } from "../_config/site";
 
 /* La visión, de noche: al entrar en pantalla la frase se enciende palabra por
    palabra, como un pueblo que va prendiendo las luces, y abajo el horizonte de
-   molinos manda la energía por la línea. Firma con el otro lema de ella. */
+   molinos manda la energía por la línea. Después del lanzamiento firma con el
+   lema de ella. */
 
 const MOLINOS = [
   { x: 120, y: 300, h: 150, dur: 6.2 },
@@ -67,16 +70,18 @@ export default function Manifiesto() {
           {m.bajada}
         </motion.p>
 
-        <motion.p
-          className="ad-manif-firma"
-          initial={{ opacity: 0, scale: 0.92, rotate: -4 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: -3 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1, delay: 1.3, ease: EASE }}
-        >
-          <span className="ad-corazon" aria-hidden="true" />
-          {m.firma}
-        </motion.p>
+        {LANZAMIENTO && (
+          <motion.p
+            className="ad-manif-firma"
+            initial={{ opacity: 0, scale: 0.92, rotate: -4 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: -3 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 1, delay: 1.3, ease: EASE }}
+          >
+            <Corazon />
+            {marca.firma}
+          </motion.p>
+        )}
       </div>
 
       <svg className="ad-manif-horizonte" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">

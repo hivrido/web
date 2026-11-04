@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { sitio } from "../_lib/contenido";
+import { marca, sitio } from "../_lib/contenido";
+import { LANZAMIENTO, ruta } from "../_config/site";
 
 /* Transparente sobre el cielo del hero; al bajar, toma el fondo cálido para
    que el texto siga leyéndose sobre la pizarra y las secciones claras. */
@@ -17,9 +18,15 @@ export default function Header() {
 
   return (
     <header className={`ad-header ${solido ? "is-solido" : ""}`}>
-      <a href="#inicio" className="ad-logo" aria-label="Alejandra Delfino — volver al inicio">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/alejandradelfino/logo-ad-mark.webp" alt="" width={56} height={42} />
+      <a
+        href="#inicio"
+        className={`ad-logo ${LANZAMIENTO ? "" : "is-nombre"}`}
+        aria-label="Alejandra Delfino — volver al inicio"
+      >
+        {LANZAMIENTO && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={ruta(marca.logo)} alt="" width={56} height={42} />
+        )}
         <span>Alejandra Delfino</span>
       </a>
       <nav aria-label="Secciones" className="ad-nav">
