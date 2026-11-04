@@ -7,12 +7,21 @@
    ───────────────────────────────────────────────────────────────────────── */
 
 .ad-root {
+  /* Paleta oficial (revisión 04/11/2026). Nombre oficial → token:
+       --violeta → --ad-violeta · --violeta-profundo → --ad-violeta-hondo
+       --dorado → --ad-dorado · --crema → --ad-crema · --verde → --ad-verde
+     Las equivalencias Pantone son aproximadas: confirmar con guía física
+     antes de imprimir. Contraste de cada par en _docs/contraste.md. */
   --ad-violeta: #6a2ac0;
   --ad-violeta-hondo: #2a1159;
   --ad-verde: #3e8e2f;
   --ad-verde-claro: #8bd450;
-  --ad-oro: #ffc94a;
+  --ad-dorado: #e6a92b;
+  --ad-oro: var(--ad-dorado);
   --ad-naranja: #ea7105;
+  /* El naranja no llega a 4.5:1 en texto chico ni a 3:1 sobre los fondos
+     pastel de gestión: para texto va esta versión más oscura. */
+  --ad-naranja-texto: #b4530a;
   --ad-turquesa: #1f9ba0;
   --ad-crema: #fff7ec;
   --ad-tinta: #24163f;
@@ -35,6 +44,21 @@ body:has(.ad-root) {
   background: #fff7ec;
 }
 
+/* El CSS global fija html a 100% de alto con overflow-x: hidden, y el body
+   también lo trae (inline, desde el layout raíz): así el que scrollea es el
+   body y no la ventana. En el resto de hivrido Lenis lo neutraliza; acá no hay
+   Lenis, y sin esto window.scrollY queda en 0: el header nunca se vuelve
+   sólido y no avanzan los efectos atados al scroll (parallax del hero,
+   pizarra que se endereza). "clip" recorta igual sin crear contenedor de
+   scroll. */
+html:has(.ad-root) {
+  height: auto;
+  overflow-x: clip;
+}
+body:has(.ad-root) {
+  overflow-x: clip !important;
+}
+
 .ad-root p {
   font-size: inherit;
   line-height: inherit;
@@ -48,9 +72,18 @@ body:has(.ad-root) {
   scroll-margin-top: 72px;
 }
 
+/* Anillo de foco violeta sobre fondos claros y dorado sobre los oscuros: el
+   dorado sobre crema no llega al 3:1. */
 .ad-root :focus-visible {
-  outline: 3px solid var(--ad-oro);
+  outline: 3px solid var(--ad-violeta);
   outline-offset: 3px;
+}
+.ad-hero :focus-visible,
+.ad-manifiesto :focus-visible,
+.ad-contacto :focus-visible,
+.ad-pie-sitio :focus-visible,
+.ad-header:not(.is-solido) :focus-visible {
+  outline-color: var(--ad-dorado);
 }
 
 /* ── Piezas comunes ───────────────────────────────────────────────────── */
@@ -104,15 +137,15 @@ body:has(.ad-root) {
   transform: translateY(0) scale(0.98);
 }
 .ad-btn-primario {
-  background: linear-gradient(135deg, #f7931e, #e0641a);
-  color: #fff;
-  box-shadow: 0 10px 28px -8px rgba(224, 100, 26, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: linear-gradient(135deg, #efbb4a, var(--ad-dorado));
+  color: var(--ad-violeta-hondo);
+  box-shadow: 0 10px 28px -8px rgba(198, 140, 26, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 .ad-btn-primario:hover {
-  box-shadow: 0 16px 34px -8px rgba(224, 100, 26, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: 0 16px 34px -8px rgba(198, 140, 26, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 .ad-btn-vidrio {
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1.5px solid var(--ad-crema);
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   backdrop-filter: blur(8px);
@@ -330,11 +363,23 @@ body:has(.ad-root) {
 }
 .ad-palabra {
   display: inline-block;
+  animation: ad-palabra-entra 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--retraso, 0s);
+}
+@keyframes ad-palabra-entra {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em) rotate(var(--giro, 2deg));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .ad-destacado {
   position: relative;
   margin-right: 0;
-  color: var(--ad-oro);
+  color: var(--ad-dorado);
   white-space: nowrap;
 }
 .ad-subrayado {
@@ -343,7 +388,7 @@ body:has(.ad-root) {
   bottom: -0.14em;
   width: 100%;
   height: 0.24em;
-  color: var(--ad-verde-claro);
+  color: var(--ad-verde);
   overflow: visible;
 }
 .ad-hero-bajada {
@@ -391,7 +436,7 @@ body:has(.ad-root) {
      paisaje. Arriba y abajo se funden con la pared para no cortar. */
   background-image:
     linear-gradient(180deg, var(--ad-pared), transparent 7%, transparent 93%, var(--ad-pared)),
-    url("/alejandradelfino/tulipanes.svg");
+    var(--ad-tulipanes);
   background-size: auto, 220px 200px;
 }
 .ad-ayuda {
@@ -536,7 +581,8 @@ body:has(.ad-root) {
   text-transform: uppercase;
   pointer-events: none;
 }
-.ad-gestion-marcas path {
+.ad-gestion-marcas path,
+.ad-gestion-marcas circle:not(.ad-pulso) {
   fill: var(--ad-verde);
   stroke: #fff;
   stroke-width: 1.5;
@@ -929,10 +975,6 @@ body:has(.ad-root) {
   font-size: 0.8rem;
   font-weight: 900;
 }
-.ad-ficha-badge.is-borrador {
-  background: #efe3ff;
-  color: #5b2a9e;
-}
 .ad-chips {
   display: flex;
   flex-wrap: wrap;
@@ -1032,7 +1074,7 @@ body:has(.ad-root) {
   font-weight: 800;
   text-align: center;
 }
-.ad-registral {
+.ad-quien .ad-registral {
   margin-top: 6px;
   color: var(--ad-verde);
   font-family: var(--ad-mano);
@@ -1062,7 +1104,7 @@ body:has(.ad-root) {
   font-weight: 700;
 }
 .ad-hito-anio {
-  color: var(--ad-naranja);
+  color: var(--ad-naranja-texto);
   font-size: 1.15rem;
   font-style: italic;
   font-weight: 900;
@@ -1086,9 +1128,12 @@ body:has(.ad-root) {
 .ad-gestion {
   background: linear-gradient(180deg, var(--ad-crema), #fdeedd);
 }
+/* Columnas de ancho acotado y centradas: con dos casos publicados (o uno)
+   la grilla no deja un hueco a la derecha. */
 .ad-casos {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 390px));
+  justify-content: center;
   gap: 28px;
   max-width: 1240px;
   margin: 0 auto;
@@ -1099,7 +1144,7 @@ body:has(.ad-root) {
   box-shadow: 0 24px 50px -30px rgba(36, 22, 63, 0.55);
 }
 .ad-caso-cholila {
-  --tono: #127a7f;
+  --tono: #0f6d71;
   background: #d5efed;
 }
 .ad-caso-elmaiten {
@@ -1165,8 +1210,8 @@ body:has(.ad-root) {
   gap: 12px;
   margin: 8px 0 16px;
 }
-.ad-cifra strong {
-  color: var(--ad-naranja);
+.ad-caso .ad-cifra strong {
+  color: var(--ad-naranja-texto);
   font-size: clamp(3.6rem, 7vw, 5rem);
   font-style: italic;
   font-weight: 900;
@@ -1266,7 +1311,7 @@ body:has(.ad-root) {
 }
 .ad-manif-oro {
   padding-bottom: 0.08em;
-  background: linear-gradient(100deg, #ffc94a 0%, #ffe9a8 22%, #ffc94a 40%, #f7931e 70%, #ffc94a 100%) 0 0 / 220% 100%;
+  background: linear-gradient(100deg, #e6a92b 0%, #ffe3a3 22%, #e6a92b 40%, #f7931e 70%, #e6a92b 100%) 0 0 / 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1408,10 +1453,10 @@ body:has(.ad-root) {
 
 /* ── Sumate ───────────────────────────────────────────────────────────── */
 
-.ad-sumate {
+.ad-contacto {
   padding: 40px clamp(16px, 4vw, 40px) 110px;
 }
-.ad-sumate-caja {
+.ad-contacto-caja {
   position: relative;
   overflow: hidden;
   max-width: 1160px;
@@ -1430,14 +1475,14 @@ body:has(.ad-root) {
   font-size: 64px;
   animation: ad-latido 2.4s ease-in-out infinite;
 }
-.ad-sumate h2 {
+.ad-contacto h2 {
   margin-top: 10px;
   font-size: clamp(3.2rem, 10vw, 6.4rem);
   font-style: italic;
   font-weight: 900;
   line-height: 0.95;
 }
-.ad-sumate-bajada {
+.ad-contacto-bajada {
   max-width: 46ch;
   margin: 16px auto 0;
   font-size: 1.2rem;
@@ -1505,6 +1550,9 @@ body:has(.ad-root) {
 }
 
 /* Sin formulario habilitado: el contacto va por Instagram. */
+.ad-sin-envio p {
+  max-width: 40ch;
+}
 .ad-sin-envio {
   display: grid;
   justify-items: center;
@@ -1541,7 +1589,7 @@ body:has(.ad-root) {
   opacity: 0.7;
   cursor: progress;
 }
-.ad-sumate .ad-form-error {
+.ad-contacto .ad-form-error {
   flex-basis: 100%;
   min-height: 1.5em;
   color: #ffd6d6;
@@ -1557,7 +1605,7 @@ body:has(.ad-root) {
   width: 1px;
   height: 1px;
 }
-.ad-sumate .ad-form-gracias {
+.ad-contacto .ad-form-gracias {
   display: grid;
   justify-items: center;
   gap: 14px;
@@ -1594,7 +1642,7 @@ body:has(.ad-root) {
   height: auto;
   border-radius: 16px;
 }
-.ad-pie-nombre {
+.ad-pie-sitio .ad-pie-nombre {
   color: #fff;
   font-size: clamp(1.6rem, 4vw, 2.1rem);
   font-style: italic;
@@ -1607,7 +1655,7 @@ body:has(.ad-root) {
   font-size: 2.1rem;
   font-weight: 700;
 }
-.ad-pie-aviso {
+.ad-pie-sitio .ad-pie-aviso {
   font-size: 0.9rem;
 }
 .ad-pie-ig {
@@ -1700,21 +1748,38 @@ body:has(.ad-root) {
   font-size: 1.1rem;
   text-align: center;
 }
-.ad-noscript-nombre {
+.ad-noscript .ad-noscript-nombre {
   font-size: clamp(2.2rem, 8vw, 3.6rem);
   font-style: italic;
   font-weight: 900;
   line-height: 1;
 }
 .ad-noscript a {
-  color: var(--ad-dorado, #f0b323);
+  color: var(--ad-dorado);
   font-weight: 800;
 }
-.ad-noscript-aviso {
+.ad-noscript .ad-noscript-aviso {
   font-size: 0.9rem;
   opacity: 0.75;
 }
-.ad-pie-fuente {
+.ad-pie-sitio .ad-pie-fuente {
   font-size: 0.78rem;
   opacity: 0.6;
+}
+
+/* Sin corazón antes del lanzamiento, la píldora del hero queda simétrica. */
+.ad-hero-kicker:not(:has(.ad-corazon)) {
+  padding-left: 16px;
+}
+
+/* Viñetas de las obras: el corazón es parte del logo y espera al lanzamiento
+   (data-lanzamiento lo pone el layout); hasta entonces, un punto. */
+.ad-root:not([data-lanzamiento]) .ad-caso li::before {
+  -webkit-mask: none;
+  mask: none;
+  width: 9px;
+  height: 9px;
+  top: 0.55em;
+  left: 3px;
+  border-radius: 50%;
 }

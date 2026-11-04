@@ -8,6 +8,9 @@ import { sitio } from "../_lib/contenido";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/** Cascada de entrada del titular: 0,45s y después una palabra cada 0,12s. */
+const retraso = (i: number) => ({ "--retraso": `${0.45 + i * 0.12}s` }) as React.CSSProperties;
+
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const progreso = useProgresoHero(ref);
@@ -36,27 +39,19 @@ export default function Hero() {
         </motion.p>
 
         <h1 id="ad-hero-titulo" className="ad-hero-titulo">
-          {/* Cada palabra entra por separado, pero entre ellas va un espacio
-              real: sin él, lectores de pantalla y buscadores leen
-              "Chubuttiene". */}
+          {/* Cada palabra entra por separado, con un espacio real entre ellas:
+              sin él, lectores de pantalla y buscadores leen "Chubuttiene".
+              La entrada es CSS y no Framer: arranca con el primer pintado en
+              lugar de esperar a que hidrate el JavaScript, que en un celular
+              demoraba segundos el titular (el LCP de la página). */}
           {palabras.map((p, i) => (
             <Fragment key={p + i}>
-              <motion.span
-                className="ad-palabra"
-                initial={{ opacity: 0, y: "0.6em", rotate: 2 }}
-                animate={{ opacity: 1, y: 0, rotate: 0 }}
-                transition={{ duration: 0.9, delay: 0.45 + i * 0.12, ease: EASE }}
-              >
+              <span className="ad-palabra" style={retraso(i)}>
                 {p}
-              </motion.span>{" "}
+              </span>{" "}
             </Fragment>
           ))}
-          <motion.span
-            className="ad-palabra ad-destacado"
-            initial={{ opacity: 0, y: "0.6em", rotate: -2 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={{ duration: 0.9, delay: 0.45 + palabras.length * 0.12, ease: EASE }}
-          >
+          <span className="ad-palabra ad-destacado" style={{ ...retraso(palabras.length), "--giro": "-2deg" } as React.CSSProperties}>
             {destacado}
             <svg className="ad-subrayado" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true">
               <motion.path
@@ -70,7 +65,7 @@ export default function Hero() {
                 transition={{ duration: 1.1, delay: 1.25, ease: "easeInOut" }}
               />
             </svg>
-          </motion.span>
+          </span>
         </h1>
 
         <motion.p

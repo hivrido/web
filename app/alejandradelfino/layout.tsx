@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Caveat, Nunito } from "next/font/google";
 import { marca, perfil, sitio } from "./_lib/contenido";
-import { LANZAMIENTO, ruta } from "./_config/site";
+import { LANZAMIENTO, SITE_INDEXABLE, ruta } from "./_config/site";
 import "./delfino.css";
 
 /* Sitio de Alejandra Delfino, alojado en hivrido mientras se habilita
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   description: descripcion,
   /* Es una vista previa en un dominio ajeno: si Google la indexa acá, después
      compite con alejandradelfino.com.ar por las mismas búsquedas. */
-  robots: { index: false, follow: false },
-  alternates: { canonical: "/alejandradelfino" },
+  robots: SITE_INDEXABLE ? { index: true, follow: true } : { index: false, follow: false },
+  alternates: { canonical: ruta("/") },
   /* El ícono con el logo AD espera al lanzamiento; hasta entonces, iniciales
      simples. La imagen para compartir la genera opengraph-image.tsx. */
   icons: { icon: LANZAMIENTO ? ruta(marca.logo) : ruta("icono.svg") },
@@ -59,7 +59,11 @@ const persona = {
 
 export default function DelfinoLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`ad-root ${nunito.variable} ${caveat.variable}`}>
+    <div
+      className={`ad-root ${nunito.variable} ${caveat.variable}`}
+      data-lanzamiento={LANZAMIENTO || undefined}
+      style={{ "--ad-tulipanes": `url("${ruta("tulipanes.svg")}")` } as React.CSSProperties}
+    >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(persona) }} />
       {/* Sin JavaScript las animaciones no arrancan y el contenido queda
           invisible: en su lugar, un resumen estático. Tapa también el aviso

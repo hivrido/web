@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, Rubik } from "next/font/google";
 import "./globals.css";
-import GoogleTag from "./components/analytics/GoogleTag";
-import WhatsAppConversion from "./components/analytics/WhatsAppConversion";
+import Medicion from "./components/analytics/Medicion";
 
 /* Cuenta de Google Ads. La etiqueta es global porque los botones de WhatsApp
    —que son la conversión— están en todas las rutas, no solo en la landing. */
@@ -72,8 +71,7 @@ export default function RootLayout({
       }
     >
       <body style={{ overflowX: "hidden" }}>
-        <GoogleTag id={GOOGLE_ADS_ID} />
-        <WhatsAppConversion />
+        <Medicion id={GOOGLE_ADS_ID} />
         {children}
         <noscript>
           <style>{`#main{display:block!important;opacity:1!important}`}</style>

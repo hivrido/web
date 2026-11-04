@@ -1,6 +1,7 @@
 "use client";
 
 import { expediente, mapa, regionDeDepartamento, regiones } from "../../_lib/contenido";
+import { LANZAMIENTO } from "../../_config/site";
 
 type Props = {
   activa: string | null;
@@ -98,7 +99,8 @@ export default function MapaChubut({ activa, sobre, onElegir, onSobre }: Props) 
         ))}
       </g>
 
-      {/* Donde hay gestión documentada, el marcador es el corazón del logo. */}
+      {/* Donde hay gestión documentada va un marcador que late. Después del
+          lanzamiento es el corazón del logo; hasta entonces, un punto. */}
       <g className="ad-gestion-marcas" aria-hidden="true">
         {expediente.gestion.map((id) => {
           const p = mapa.puntos[id];
@@ -106,7 +108,11 @@ export default function MapaChubut({ activa, sobre, onElegir, onSobre }: Props) 
           return (
             <g key={id} transform={`translate(${p[0]},${p[1]})`}>
               <circle className="ad-pulso" r="14" />
-              <path d="M0,7 C-12,-1 -10,-11 -4.5,-11 C-2,-11 -0.6,-9.4 0,-8 C0.6,-9.4 2,-11 4.5,-11 C10,-11 12,-1 0,7 Z" />
+              {LANZAMIENTO ? (
+                <path d="M0,7 C-12,-1 -10,-11 -4.5,-11 C-2,-11 -0.6,-9.4 0,-8 C0.6,-9.4 2,-11 4.5,-11 C10,-11 12,-1 0,7 Z" />
+              ) : (
+                <circle r="6.5" />
+              )}
             </g>
           );
         })}

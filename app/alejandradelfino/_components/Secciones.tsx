@@ -139,11 +139,11 @@ export function Propuestas() {
 export function Contacto() {
   const s = sitio.formulario;
   return (
-    <section id="contacto" className="ad-sumate" aria-labelledby="ad-sumate-titulo">
-      <Reveal className="ad-sumate-caja">
+    <section id="contacto" className="ad-contacto" aria-labelledby="ad-contacto-titulo">
+      <Reveal className="ad-contacto-caja">
         <Corazon grande />
-        <h2 id="ad-sumate-titulo">{s.titulo}</h2>
-        <p className="ad-sumate-bajada">{s.bajada}</p>
+        <h2 id="ad-contacto-titulo">{s.titulo}</h2>
+        <p className="ad-contacto-bajada">{s.bajada}</p>
         <FormContacto />
       </Reveal>
     </section>
