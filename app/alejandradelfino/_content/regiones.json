@@ -9,7 +9,7 @@
       "produce": ["Turismo", "Fruta fina", "Producción forestal", "Energía hidroeléctrica"],
       "identidad": "Lagos, bosques andinos y el Parque Nacional Los Alerces, Patrimonio de la Humanidad.",
       "fuenteIdentidad": "Lista del Patrimonio Mundial de la UNESCO (Los Alerces, 2017)",
-      "propuesta": { "texto": "Prevención de incendios: una red de cisternas estratégicas y bases operativas para brigadistas, para que el fuego no vuelva a llevarse el bosque.", "estado": "borrador" }
+      "propuesta": { "texto": "Prevención de incendios: una red de cisternas estratégicas y bases operativas para brigadistas, para cuidar el bosque andino.", "estado": "borrador" }
     },
     {
       "id": "meseta",
@@ -18,7 +18,7 @@
       "departamentos": ["Gastre", "Telsen", "Mártires", "Paso de Indios"],
       "produce": ["Ganadería ovina", "Lana", "Turismo de naturaleza"],
       "identidad": "El corazón de la provincia: distancias largas, pueblos chicos y una cultura de trabajo que nació con la lana.",
-      "propuesta": { "texto": "Terminar con el aislamiento: conexión aérea con los valles y perforaciones de agua profunda para la producción ovina.", "estado": "borrador" }
+      "propuesta": { "texto": "Más conexión para la meseta: vuelos con los valles y perforaciones de agua profunda para la producción ovina.", "estado": "borrador" }
     },
     {
       "id": "virch",
@@ -28,7 +28,7 @@
       "produce": ["Agricultura bajo riego", "Pesca", "Energía eólica", "Servicios"],
       "identidad": "La capital provincial y los pueblos que fundaron los colonos galeses llegados en 1865.",
       "fuenteIdentidad": "Llegada del velero Mimosa a Puerto Madryn, 28/07/1865 (dato histórico público)",
-      "propuesta": { "texto": "Escuelas climatizadas y conectadas para que las clases empiecen a tiempo, y un transporte interurbano que no se coma el sueldo.", "estado": "borrador" }
+      "propuesta": { "texto": "Escuelas climatizadas y conectadas, y un transporte interurbano accesible.", "estado": "borrador" }
     },
     {
       "id": "costa",
@@ -48,7 +48,7 @@
       "produce": ["Petróleo y gas", "Energía eólica", "Servicios", "Agricultura del valle de Sarmiento"],
       "identidad": "En Comodoro Rivadavia se descubrió el petróleo argentino, en 1907.",
       "fuenteIdentidad": "Descubrimiento del petróleo en Comodoro Rivadavia, 13/12/1907 (dato histórico público)",
-      "propuesta": { "texto": "Un plan de ordenamiento urbano definitivo: regularizar lotes y asegurar el suelo antes de llevar los servicios, como reclama el cerro Hermitte.", "estado": "borrador" }
+      "propuesta": { "texto": "Un plan de ordenamiento urbano definitivo: regularizar lotes y asegurar el suelo antes de llevar los servicios.", "estado": "borrador" }
     },
     {
       "id": "sur",
