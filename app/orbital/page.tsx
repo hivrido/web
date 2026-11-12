@@ -1,29 +1,30 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Orbitron, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import OrbitalGallery from "./OrbitalGallery";
 import "./orbital.css";
 
 /* Fuentes propias de esta ruta: no tocan las del sitio principal.
    Se exponen como variables CSS porque el canvas de las tarjetas necesita
-   leer el nombre real de la familia, que next/font genera con hash. */
-const grotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+   leer el nombre real de la familia, que next/font genera con hash.
+   Los archivos están en app/fonts: ver el comentario de app/layout.tsx. */
+const orbitalGrotesk = localFont({
+  src: "../fonts/space-grotesk.woff2",
+  weight: "400 700",
   variable: "--font-grotesk",
   display: "swap",
 });
 
 /* Los títulos de las tarjetas: cara techno, ancha y geométrica. */
-const techno = Orbitron({
-  subsets: ["latin"],
-  weight: ["500", "700"],
+const orbitalTechno = localFont({
+  src: "../fonts/orbitron.woff2",
+  weight: "400 900",
   variable: "--font-techno",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const orbitalMono = localFont({
+  src: "../fonts/jetbrains-mono.woff2",
+  weight: "400 500",
   variable: "--font-mono-orbital",
   display: "swap",
 });
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
 
 export default function OrbitalPage() {
   return (
-    <div className={`${grotesk.variable} ${techno.variable} ${mono.variable}`}>
+    <div className={`${orbitalGrotesk.variable} ${orbitalTechno.variable} ${orbitalMono.variable}`}>
       <OrbitalGallery />
     </div>
   );

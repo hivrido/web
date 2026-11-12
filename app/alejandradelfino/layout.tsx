@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Nunito } from "next/font/google";
+import localFont from "next/font/local";
 import { marca, perfil, sitio } from "./_lib/contenido";
 import { LANZAMIENTO, SITE_INDEXABLE, ruta } from "./_config/site";
 import "./delfino.css";
@@ -9,17 +9,20 @@ import "./delfino.css";
    componentes, estilos y el generador del mapa— para que la mudanza al
    dominio propio sea mover la carpeta y nada más. */
 
-const nunito = Nunito({
-  subsets: ["latin"],
-  weight: ["400", "600", "800", "900"],
-  style: ["normal", "italic"],
+/* Fuentes locales (subconjunto latino de Google Fonts) dentro de esta misma
+   carpeta, para que se muden con ella y el build no dependa de Google. */
+const nunito = localFont({
+  src: [
+    { path: "./_fonts/nunito.woff2", weight: "400 900", style: "normal" },
+    { path: "./_fonts/nunito-italic.woff2", weight: "400 900", style: "italic" },
+  ],
   variable: "--ad-font",
   display: "swap",
 });
 
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["500", "700"],
+const caveat = localFont({
+  src: "./_fonts/caveat.woff2",
+  weight: "500 700",
   variable: "--ad-hand",
   display: "swap",
 });

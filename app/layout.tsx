@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron, Rubik } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Medicion from "./components/analytics/Medicion";
 
@@ -7,17 +7,20 @@ import Medicion from "./components/analytics/Medicion";
    —que son la conversión— están en todas las rutas, no solo en la landing. */
 const GOOGLE_ADS_ID = "AW-18174991826";
 
-const orbitron = Orbitron({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
+/* Las fuentes viven en app/fonts (el subconjunto latino de Google Fonts, el
+   mismo archivo que servía next/font/google). Locales, el build no depende de
+   que Google responda: un fallo suyo llegó a tumbar un deploy. */
+const orbitron = localFont({
+  src: "./fonts/orbitron.woff2",
+  weight: "400 900",
   variable: "--font-orbitron",
   display: "swap",
   preload: true,
 });
 
-const rubik = Rubik({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+const rubik = localFont({
+  src: "./fonts/rubik.woff2",
+  weight: "300 700",
   variable: "--font-rubik",
   display: "swap",
   preload: false,
