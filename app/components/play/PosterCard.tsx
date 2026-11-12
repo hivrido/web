@@ -10,7 +10,7 @@
  */
 
 import Link from "next/link";
-import NextImage from "next/image";
+import Poster from "./Poster";
 import type { Entry } from "../../lib/catalog";
 import { useMyList } from "./library";
 
@@ -101,15 +101,7 @@ export default function PosterCard({
       <div className="hp-card-frame" style={accentOf(item)} onPointerMove={tilt} onPointerLeave={untilt}>
         <Link href={item.href} className="hp-card-link" draggable={false} aria-label={item.title}>
           {item.poster ? (
-            <NextImage
-              src={item.poster}
-              alt=""
-              fill
-              sizes="(max-width: 768px) 70vw, 340px"
-              loading="lazy"
-              draggable={false}
-              className="hp-card-img"
-            />
+            <Poster src={item.poster} sizes="(max-width: 768px) 70vw, 340px" className="hp-card-img" />
           ) : (
             /* Sin afiche: el título compuesto en tipografía, sobre grano. */
             <span className="hp-card-fallback" aria-hidden="true">{item.title}</span>

@@ -482,8 +482,10 @@ html:has(.mp-app) body { overflow-y: visible; }
 .hp-hero-img {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   transform: scale(1.04);
 }
 /* Un acercamiento lento mientras el slide está en pantalla. */
@@ -740,6 +742,8 @@ html:has(.mp-app) body { overflow-y: visible; }
 }
 .hp-card-link { position: absolute; inset: 0; display: block; }
 .hp-card-link:focus-visible { outline-offset: -2px; border-radius: var(--hp-r); }
+/* Los afiches llenan su contenedor (lo que antes hacía `fill` de next/image). */
+.hp-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hp-card-img { object-fit: cover; transition: transform 0.7s var(--hp-ease), filter 0.45s; }
 
 .hp-card-fallback {
