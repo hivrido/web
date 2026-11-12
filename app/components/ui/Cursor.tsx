@@ -10,6 +10,11 @@ export default function Cursor() {
     const dotEl = dot.current;
     if (!outerEl || !dotEl) return;
 
+    // Solo con mouse: en táctil no hay puntero que reemplazar, y antes el aro
+    // y el punto quedaban clavados en la esquina y el bucle corría igual.
+    if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    outerEl.style.display = dotEl.style.display = "block";
+
     // Hide default cursor
     document.documentElement.style.cursor = "none";
 
@@ -63,24 +68,24 @@ export default function Cursor() {
       delete outerEl.dataset.hover;
     };
 
-    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mousemove", onMove, { passive: true });
 
-    const addHovers = () => {
-      document.querySelectorAll("a, button, [data-cursor]").forEach((el) => {
-        el.addEventListener("mouseenter", onEnterLink);
-        el.addEventListener("mouseleave", onLeaveLink);
-      });
+    /* Un solo oyente delegado. Antes había un MutationObserver que, ante
+       cada cambio del DOM, volvía a recorrer todos los enlaces y botones de
+       la página para engancharles dos oyentes: con un título que se descifra
+       letra a letra eso era un recorrido completo por cuadro. */
+    const HOVER = "a, button, [role=button], [data-cursor]";
+    const onOver = (e: MouseEvent) => {
+      const hit = (e.target as Element | null)?.closest?.(HOVER);
+      if (hit) onEnterLink(); else onLeaveLink();
     };
-    addHovers();
-
-    const observer = new MutationObserver(addHovers);
-    observer.observe(document.body, { childList: true, subtree: true });
+    document.addEventListener("mouseover", onOver, { passive: true });
 
     return () => {
       document.documentElement.style.cursor = "";
       document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
       cancelAnimationFrame(rafId);
-      observer.disconnect();
     };
   }, []);
 
@@ -94,6 +99,7 @@ export default function Cursor() {
           height: 32,
           borderRadius: "50%",
           border: "1px solid rgba(167,139,250,0.6)",
+          display: "none",
           pointerEvents: "none",
           zIndex: 10000,
           top: 0,
@@ -110,6 +116,7 @@ export default function Cursor() {
           height: 5,
           borderRadius: "50%",
           background: "#A78BFA",
+          display: "none",
           pointerEvents: "none",
           zIndex: 10001,
           top: 0,
