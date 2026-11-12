@@ -10,6 +10,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { CATALOG, FACETS } from "../../lib/catalog";
 import PosterCard from "./PosterCard";
+import { medir } from "../../lib/medir";
 
 /* Estado compartido mínimo: quién abre el buscador no tiene por qué ser
    pariente de quien lo dibuja. */
@@ -75,6 +76,15 @@ export default function SearchOverlay() {
       ({ t }) => t,
     );
   }, [query, facet]);
+
+  /* Una búsqueda cuenta cuando se deja de escribir, no en cada tecla. Las que
+     no encuentran nada dicen qué falta en el catálogo. */
+  useEffect(() => {
+    const q = query.trim();
+    if (!open || q.length < 2) return;
+    const t = setTimeout(() => medir("search", { search_term: q, resultados: results.length, filtro: facet }), 1200);
+    return () => clearTimeout(t);
+  }, [open, query, facet, results.length]);
 
   if (!open) return null;
 

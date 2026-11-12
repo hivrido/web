@@ -22,6 +22,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getProgress, saveProgress } from "./library";
+import { medir } from "../../lib/medir";
 
 /* Tipos mínimos de la API de YouTube que se usan acá. */
 export type YTPlayer = {
@@ -252,6 +253,28 @@ export default function CinePlayer({
     const t = setInterval(() => setTime(playerRef.current?.getCurrentTime() ?? 0), 250);
     return () => clearInterval(t);
   }, [phase]);
+
+  /* Medición con los nombres de video que GA4 ya reconoce: arranque, cada
+     cuarto visto y final. Cada hito sale una vez por reproductor, aunque se
+     pause, se adelante o se vuelva a ver. */
+  const hitosRef = useRef(new Set<string>());
+  const hito = useCallback(
+    (evento: string, extra: Record<string, number> = {}) => {
+      const key = evento + (extra.video_percent ?? "");
+      if (hitosRef.current.has(key)) return;
+      hitosRef.current.add(key);
+      medir(evento, { video_title: title, video_id: ytId, video_provider: "youtube", ...extra });
+    },
+    [title, ytId],
+  );
+  useEffect(() => {
+    if (phase === "playing") hito("video_start");
+    if (phase === "ended") hito("video_complete");
+  }, [phase, hito]);
+  useEffect(() => {
+    if (!duration) return;
+    for (const p of [25, 50, 75]) if (time / duration >= p / 100) hito("video_progress", { video_percent: p });
+  }, [time, duration, hito]);
 
   /* Progreso para "Seguir viendo": cada tanto mientras corre, y al pausar o
      terminar. Terminado cuenta como visto entero y sale de la fila. */

@@ -12,8 +12,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { whatsapp } from "../lib/contacto";
-
-const WHATSAPP = "5491156072460";
+import { medir } from "../lib/medir";
 
 type Fields = { nombre: string; telefono: string; email: string };
 type Errors = Partial<Record<keyof Fields, string>>;
@@ -74,6 +73,9 @@ export default function CastingCall() {
     const win = window.open(url, "_blank", "noopener,noreferrer");
     if (!win) window.location.href = url;
 
+    /* Abre WhatsApp con window.open y no con un enlace: el oyente de clics de
+       WhatsAppConversion no lo ve, así que se mide acá. Sin los datos cargados. */
+    medir("casting_submit", { casting: "cuchillo-paz" });
     setSent(fields);
     setFields(EMPTY);
   };

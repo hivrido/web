@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import GoogleTag from "./GoogleTag";
 import WhatsAppConversion from "./WhatsAppConversion";
+import ScrollDepth from "./ScrollDepth";
 
 /* Sitios de terceros alojados en hivrido.com: no llevan la medición de
    Hivrido. El de Alejandra Delfino es de una dirigente política; ponerle el
@@ -17,6 +18,7 @@ export default function Medicion({ id }: { id: string }) {
     <>
       <GoogleTag id={id} ga4={process.env.NEXT_PUBLIC_GA4_ID} />
       <WhatsAppConversion />
+      <ScrollDepth />
     </>
   );
 }

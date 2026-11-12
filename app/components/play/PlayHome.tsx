@@ -32,6 +32,7 @@ import { useHistory, useMyList } from "./library";
 import { playFonts } from "./fonts";
 import "./play.css";
 import { whatsapp } from "../../lib/contacto";
+import { medir } from "../../lib/medir";
 
 const byId = (id: string) => CATALOG.find((t) => t.id === id);
 
@@ -129,6 +130,8 @@ function ComingSoon() {
               <a
                 className="hp-btn is-ghost is-sm"
                 href={whatsapp(`Hola Hivrido! Avisame cuando se estrene ${t.title} en PLAY`)}
+                data-wa-origen="avisame"
+                onClick={() => medir("avisame_click", { titulo: t.title })}
                 target="_blank"
                 rel="noopener noreferrer"
               >

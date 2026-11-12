@@ -16,6 +16,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import SignaturePad from "signature_pad";
 import { VERSIONES, VERSION_ACTUAL } from "@/app/lib/cesion/textos";
+import { medir } from "@/app/lib/medir";
 
 type ApiFirma = { vacio: () => boolean; png: () => string | null; limpiar: () => void };
 
@@ -311,6 +312,7 @@ export default function CesionForm() {
         return;
       }
 
+      medir("cesion_firmada", { version: VERSION_ACTUAL });
       setListo({ id: data.id, creado_en: data.creado_en });
     } catch {
       setError("No hay conexión. Revisá los datos móviles e intentá de nuevo.");
