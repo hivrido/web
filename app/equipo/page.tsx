@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd, SITE, migas, organizacion } from "../lib/schema";
+import HMark from "../components/immersive/HMark";
+import Hive from "../components/immersive/Hive";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign, { type LandingContent } from "../components/sections/WebDesign";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Página del equipo.
@@ -19,8 +23,7 @@ import WebDesign, { type LandingContent } from "../components/sections/WebDesign
  * teléfono descompuesto, y esa es la promesa que la página sostiene.
  */
 
-const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
-  encodeURIComponent("Hola Hivrido! Quiero hablar con el equipo.");
+const WA = whatsapp("Hola Hivrido! Quiero hablar con el equipo.");
 
 export const metadata: Metadata = {
   title: "Equipo | Lucas Ariel Manzano, Ingeniero en Prompt | Hivrido",
@@ -34,12 +37,12 @@ export const metadata: Metadata = {
     "prompt engineer argentina",
     "dirección creativa",
   ],
-  alternates: { canonical: "/equipo" },
+  alternates: { canonical: "/equipo/" },
   openGraph: {
     title: "Equipo | Hivrido",
     description:
       "Lucas Ariel Manzano, CEO e ingeniero en prompt de Hivrido. Dirección creativa e ingeniería de IA en la misma cabeza.",
-    url: "https://hivrido.com/equipo",
+    url: "https://hivrido.com/equipo/",
     siteName: "Hivrido",
     locale: "es_AR",
     type: "website",
@@ -160,6 +163,23 @@ const CONTENT: LandingContent = {
 export default function EquipoPage() {
   return (
     <ClientShell>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            organizacion,
+            {
+              "@type": "Person",
+              "@id": `${SITE}/equipo/#lucas-ariel-manzano`,
+              name: "Lucas Ariel Manzano",
+              jobTitle: "CEO e ingeniero en prompt",
+              worksFor: { "@id": `${SITE}/#organization` },
+              url: `${SITE}/equipo/`,
+            },
+            migas([["Hivrido", "/web/"], ["Equipo", "/equipo/"]]),
+          ],
+        }}
+      />
       {/* 300 y no el valor por defecto: ese espera a que el preloader de la
           home se retire, y a quien ya lo vio hace poco se le saltea — el
           logo quedaría invisible dos segundos con el header a la vista. */}
@@ -167,6 +187,9 @@ export default function EquipoPage() {
 
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
+          {/* Capa inmersiva: decorativa, detrás del texto y fuera del camino del primer pintado. */}
+          <Hive />
+          <HMark className="dw-hero-mark" />
           <div className="section-container">
             <p className="dw-hero-eyebrow">Equipo · Lucas Ariel Manzano</p>
 

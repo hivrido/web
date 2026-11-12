@@ -3,7 +3,8 @@ import PlayHeader from "../components/play/PlayHeader";
 import PlayFooter from "../components/play/PlayFooter";
 import TitleView, { type Episode } from "../components/play/TitleView";
 import { playFonts } from "../components/play/fonts";
-import { CATALOG, relatedTo } from "../lib/catalog";
+import { CATALOG, directorsOf, relatedTo } from "../lib/catalog";
+import { JsonLd, SITE, migas } from "../lib/schema";
 import "../components/play/play.css";
 import "../play/[id]/title.css";
 
@@ -42,6 +43,26 @@ export default function OkupasPage() {
   if (!t) notFound();
   return (
     <div className={`mp-app hp tv ${playFonts}`} style={{ "--tp-accent": "#7C3AED" } as React.CSSProperties}>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "TVSeries",
+              name: t.title,
+              description: t.detail?.about ?? t.synopsis,
+              genre: t.genre,
+              inLanguage: "es-AR",
+              url: `${SITE}/okupas/`,
+              image: `${SITE}${t.poster}`,
+              numberOfEpisodes: EPISODES.filter((e) => !e.special).length,
+              director: directorsOf(t).map((name) => ({ "@type": "Person", name })),
+              actor: (t.detail?.cast ?? []).map((c) => ({ "@type": "Person", name: c.name })),
+            },
+            migas([["Hivrido PLAY", "/"], ["Series", "/"], [t.title, "/okupas/"]]),
+          ],
+        }}
+      />
       <PlayHeader />
       <main>
         <TitleView t={t} episodes={EPISODES} related={relatedTo(t)} />

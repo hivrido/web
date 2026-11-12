@@ -17,6 +17,7 @@
 import { useEffect } from "react";
 import ScrambleLink from "../ui/ScrambleLink";
 import { jumpTo } from "./jump";
+import WaGeneral from "../../components/ui/WaGeneral";
 
 /* Las secciones de la plataforma, más la salida al sitio institucional. */
 const ITEMS = [
@@ -28,7 +29,6 @@ const ITEMS = [
   { label: "Hivrido", href: "/web/" },
 ];
 
-const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
 export default function PlayMenu({ open, onClose: close }: { open: boolean; onClose: () => void }) {
   /* Escape cierra, como en los paneles del anillo. */
@@ -71,7 +71,7 @@ export default function PlayMenu({ open, onClose: close }: { open: boolean; onCl
           ))}
         </ul>
         <div className="nav-cta">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer">+ Contacto</a>
+          <WaGeneral lugar="el menú">+ Contacto</WaGeneral>
           <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
         </div>
       </nav>

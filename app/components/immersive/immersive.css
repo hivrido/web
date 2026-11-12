@@ -1,0 +1,101 @@
+/* ── Capa inmersiva ────────────────────────────────────────────────────────
+   Paleta de marca. Vive acá y no en :root para no pisar los tokens de cada
+   sección: solo la usan las piezas nuevas. */
+.hm,
+.hive {
+  --hv-negro: #0D0717;
+  --hv-noche: #3C1053;
+  --hv-electrico: #5F259F;
+  --hv-ultra: #8246AF;
+  --hv-neon: #AC4FC6;
+}
+
+/* ── Símbolo H▷ ── */
+.hm {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  pointer-events: none;
+}
+.hm-svg,
+.hm-gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hm-svg { overflow: visible; transition: opacity 0.7s ease; }
+.hm-gl { opacity: 0; transition: opacity 0.7s ease; }
+.hm.is-live .hm-gl { opacity: 1; }
+.hm.is-live .hm-svg { opacity: 0; }
+
+/* El cartel se prende de abajo hacia arriba: una máscara que sube y, mientras
+   sube, el tubo titila. Todo CSS: corre con el primer pintado. */
+.hm-neon { filter: drop-shadow(0 0 10px #AC4FC6) drop-shadow(0 0 34px rgba(172, 79, 198, 0.55)); }
+.hm-wipe-rect {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: hm-rise 1.25s cubic-bezier(0.3, 0, 0.2, 1) 0.15s both;
+}
+.hm-neon { animation: hm-flick 1.5s linear 0.15s both; }
+@keyframes hm-rise {
+  from { transform: scaleY(0.2); opacity: 0; }
+  8% { opacity: 1; }
+  to { transform: scaleY(1); }
+}
+@keyframes hm-flick {
+  0%, 9%, 22%, 26%, 41%, 44% { opacity: 0.25; }
+  5%, 14%, 24%, 34%, 43%, 60%, 100% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-wipe-rect, .hm-neon { animation: none; }
+  .hm-svg, .hm-gl { transition: none; }
+}
+
+/* ── Fondo de colmena ── */
+.hive {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* Respaldo estático: la misma grilla, quieta. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='79.67' viewBox='0 0 46 79.67'%3E%3Cpath d='M23 0l23 13.28v26.55L23 53.11 0 39.83V13.28zM0 66.39l23 13.28 23-13.28' fill='none' stroke='%233C1053' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 46px 79.67px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 20%, transparent 85%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 20%, transparent 85%);
+  opacity: 0.55;
+}
+.hive-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.2s ease; }
+.hive.is-live { background-image: none; opacity: 0.9; }
+.hive.is-live .hive-gl { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .hive-gl { transition: none; } }
+
+/* ── En el hero de las landings de servicio ── */
+.dw-hero > .section-container { position: relative; z-index: 1; }
+.dw-hero-mark {
+  position: absolute;
+  z-index: 0;
+  width: clamp(300px, 36vw, 560px);
+  right: clamp(-40px, 2vw, 60px);
+  bottom: clamp(-70px, -3vw, -20px);
+}
+@media (max-width: 900px) {
+  .dw-hero-mark { width: 230px; right: -46px; top: -34px; bottom: auto; opacity: 0.55; }
+}
+
+/* En pantallas chicas y táctiles el símbolo va pequeño y atenuado: el
+   resplandor desenfocado y la máscara animada obligan a repintar cada cuadro
+   durante el encendido, y ahí ese costo no se ve. Queda un fundido, que lo
+   resuelve el compositor. */
+@media (max-width: 900px), (hover: none) {
+  .hm-neon { filter: none; animation: hm-on 1.1s ease-out 0.15s both; }
+  .hm-wipe-rect { animation: none; }
+  .hive { -webkit-mask-image: none; mask-image: none; opacity: 0.3; }
+  .hive.is-live { opacity: 0.8; }
+}
+@keyframes hm-on { from { opacity: 0.2; } }
+@media (prefers-reduced-motion: reduce) {
+  .hm-neon { animation: none !important; }
+}

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import LogoAnimated from "../ui/LogoAnimated";
 import ScrambleLink from "../ui/ScrambleLink";
+import WaGeneral from "../../components/ui/WaGeneral";
 
 /* El menú es el mismo mapa que dibujan las fichas del cosmos: una entrada por
    tarjeta, en su orden —el del anillo en `public/cosmos/projects.js`, que
@@ -17,17 +18,16 @@ import ScrambleLink from "../ui/ScrambleLink";
    Esta lista está duplicada a mano en el drawer de `public/web/index.html`, que no
    comparte código con este componente; las dos se mueven juntas. */
 const NAV_ITEMS = [
-  { label: "Home",         href: "/web" },
-  { label: "Artistas",     href: "/artistas" },
+  { label: "Home",         href: "/web/" },
+  { label: "Artistas",     href: "/artistas/" },
   { label: "Hivrido PLAY", href: "/" },
-  { label: "Grow Digital", href: "/diseno-web" },
-  { label: "Branding",     href: "/branding" },
-  { label: "Equipo",       href: "/equipo" },
-  { label: "Publicidad",   href: "/publicidad" },
-  { label: "Agentes IA",   href: "/colmena-agentes" },
+  { label: "Grow Digital", href: "/diseno-web/" },
+  { label: "Branding",     href: "/branding/" },
+  { label: "Equipo",       href: "/equipo/" },
+  { label: "Publicidad",   href: "/publicidad/" },
+  { label: "Agentes IA",   href: "/colmena-agentes/" },
 ];
 
-const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
 /**
  * @param base Prefijo para los enlaces de ancla. Vacío en el home, donde las
@@ -101,7 +101,7 @@ export default function Header({ base = "", logoDelay }: { base?: string; logoDe
           ))}
         </ul>
         <div className="nav-cta">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer">+ Contacto</a>
+          <WaGeneral lugar="el menú">+ Contacto</WaGeneral>
           <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
         </div>
       </nav>

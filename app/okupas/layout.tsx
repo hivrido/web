@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Okupas — Serie completa en Hivrido PLAY",
   description:
     "Mirá Okupas completa en Hivrido PLAY: los 11 episodios y el detrás de escena contado por sus protagonistas.",
-  alternates: { canonical: "/okupas" },
+  alternates: { canonical: "/okupas/" },
   openGraph: {
     title: "Okupas — Serie completa en Hivrido PLAY",
     description:

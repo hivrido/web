@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd, servicioLd } from "../lib/schema";
+import HMark from "../components/immersive/HMark";
+import Hive from "../components/immersive/Hive";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign from "../components/sections/WebDesign";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Página de destino para las campañas de búsqueda.
@@ -20,13 +24,14 @@ import WebDesign from "../components/sections/WebDesign";
  * de media hora.
  */
 
-const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
-  encodeURIComponent("Hola Hivrido! Quiero un presupuesto para mi sitio web.");
+const WA = whatsapp("Hola Hivrido! Quiero un presupuesto para mi sitio web.");
+
+const DESCRIPCION =
+  "Diseño web y diseño de página web para empresas y marcas. Desarrollo web, programación a medida, desarrollo de sistemas y colmenas de agentes IA. Presupuesto concreto en 24 horas.";
 
 export const metadata: Metadata = {
   title: "Diseño Web y Desarrollo a Medida | Hivrido",
-  description:
-    "Diseño web y diseño de página web para empresas y marcas. Desarrollo web, programación a medida, desarrollo de sistemas y colmenas de agentes IA. Presupuesto concreto en 24 horas.",
+  description: DESCRIPCION,
   keywords: [
     "diseño web",
     "diseño pagina web",
@@ -35,12 +40,12 @@ export const metadata: Metadata = {
     "desarrollo de sistemas",
     "agentes IA",
   ],
-  alternates: { canonical: "/diseno-web" },
+  alternates: { canonical: "/diseno-web/" },
   openGraph: {
     title: "Diseño Web y Desarrollo a Medida | Hivrido",
     description:
       "Sitios que venden: diseño web, desarrollo a medida, sistemas y agentes IA. Presupuesto en 24 horas.",
-    url: "https://hivrido.com/diseno-web",
+    url: "https://hivrido.com/diseno-web/",
     siteName: "Hivrido",
     locale: "es_AR",
     type: "website",
@@ -50,6 +55,7 @@ export const metadata: Metadata = {
 export default function DisenoWebPage() {
   return (
     <ClientShell>
+      <JsonLd data={servicioLd({ nombre: "Diseño web y desarrollo a medida", tipo: "Diseño y desarrollo web", descripcion: DESCRIPCION, ruta: "/diseno-web/" })} />
 
       {/* 300 y no el valor por defecto: ese espera a que el preloader de la
           home se retire, y a quien ya lo vio hace poco se le saltea — el
@@ -58,6 +64,9 @@ export default function DisenoWebPage() {
 
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
+          {/* Capa inmersiva: decorativa, detrás del texto y fuera del camino del primer pintado. */}
+          <Hive />
+          <HMark className="dw-hero-mark" />
           <div className="section-container">
             <p className="dw-hero-eyebrow">Diseño y desarrollo web · Buenos Aires</p>
 

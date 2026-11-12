@@ -25,13 +25,11 @@ import AIHiveSection from "./AIHiveSection";
 import MatrixCol from "../ui/MatrixCol";
 import { useScramble } from "../ui/useScramble";
 import { useStaggerReveal } from "../../hooks/useStaggerReveal";
+import { whatsapp } from "../../lib/contacto";
 
 const COLORS = { primary: "#7C3AED", secondary: "#FF1B8D" };
 
-const wa = (asunto: string) =>
-  `https://api.whatsapp.com/send?phone=5491156072460&text=${encodeURIComponent(
-    `Hola Hivrido! Quiero consultar por ${asunto}.`
-  )}`;
+const wa = (asunto: string) => whatsapp(`Hola Hivrido! Quiero consultar por ${asunto}.`);
 
 /* ── Contenido ──
    La estructura es la misma para toda landing de servicio; lo que cambia es
@@ -211,7 +209,6 @@ function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
       className="svc-item"
       role="button"
       tabIndex={0}
-      aria-label={`${sv.title} — ver detalle`}
       onClick={onClick}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } }}
       onMouseEnter={onEnter}
@@ -249,7 +246,8 @@ function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
         style={{
           fontFamily: "var(--font-display)",
           fontSize: "0.65rem",
-          color: COLORS.primary,
+          /* El violeta pleno no llega a 4,5:1 sobre negro en un texto de 10 px. */
+          color: "#A78BFA",
           letterSpacing: "0.2em",
           position: "relative",
           zIndex: 1,
@@ -320,7 +318,7 @@ function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
             : "0 0 6px rgba(255,27,141,0.5)",
         }}
       >
-        Ver más →
+        Ver detalle →
       </span>
     </motion.div>
   );

@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd, servicioLd } from "../lib/schema";
+import HMark from "../components/immersive/HMark";
+import Hive from "../components/immersive/Hive";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign, { type LandingContent } from "../components/sections/WebDesign";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Página de destino para publicidad digital y crecimiento en redes.
@@ -12,13 +16,14 @@ import WebDesign, { type LandingContent } from "../components/sections/WebDesign
  * arquitectura de agentes.
  */
 
-const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
-  encodeURIComponent("Hola Hivrido! Quiero pautar y hacer crecer mis redes.");
+const WA = whatsapp("Hola Hivrido! Quiero pautar y hacer crecer mis redes.");
+
+const DESCRIPCION =
+  "Campañas en Meta Ads, Google Ads y YouTube: search, display, performance max, in-stream, bumpers y Shorts. Crecimiento de presencia y seguidores, y colaboraciones con influencers y artistas.";
 
 export const metadata: Metadata = {
   title: "Publicidad Digital | Meta y Google Ads | Hivrido",
-  description:
-    "Campañas en Meta Ads, Google Ads y YouTube: search, display, performance max, in-stream, bumpers y Shorts. Crecimiento de presencia y seguidores, y colaboraciones con influencers y artistas.",
+  description: DESCRIPCION,
   keywords: [
     "publicidad digital",
     "meta ads",
@@ -28,12 +33,12 @@ export const metadata: Metadata = {
     "crecimiento en redes",
     "influencers",
   ],
-  alternates: { canonical: "/publicidad" },
+  alternates: { canonical: "/publicidad/" },
   openGraph: {
     title: "Publicidad Digital | Hivrido",
     description:
       "Meta, Google y YouTube. Campañas medidas contra el costo por adquisición real, más crecimiento de redes y colaboraciones.",
-    url: "https://hivrido.com/publicidad",
+    url: "https://hivrido.com/publicidad/",
     siteName: "Hivrido",
     locale: "es_AR",
     type: "website",
@@ -150,6 +155,7 @@ const CONTENT: LandingContent = {
 export default function PublicidadPage() {
   return (
     <ClientShell>
+      <JsonLd data={servicioLd({ nombre: "Publicidad digital", tipo: "Publicidad en Meta y Google Ads", descripcion: DESCRIPCION, ruta: "/publicidad/" })} />
       {/* 300 y no el valor por defecto: ese espera a que el preloader de la
           home se retire, y a quien ya lo vio hace poco se le saltea — el
           logo quedaría invisible dos segundos con el header a la vista. */}
@@ -157,6 +163,9 @@ export default function PublicidadPage() {
 
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
+          {/* Capa inmersiva: decorativa, detrás del texto y fuera del camino del primer pintado. */}
+          <Hive />
+          <HMark className="dw-hero-mark" />
           <div className="section-container">
             <p className="dw-hero-eyebrow">Publicidad digital · Partner de Meta · Google Ads</p>
 

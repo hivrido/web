@@ -1,3 +1,4 @@
+import { whatsapp } from "../lib/contacto";
 /**
  * Texto de /origen. Sale de la estrategia de ORIGEN —manifiesto, generaciones,
  * caja negra, recorrido y expansión— y vive acá para que la página solo arme.
@@ -7,8 +8,7 @@
  * horarios son tentativos hasta que se abra la convocatoria.
  */
 
-const WA_BASE = "https://api.whatsapp.com/send?phone=5491156072460&text=";
-export const wa = (texto: string) => WA_BASE + encodeURIComponent(texto);
+export const wa = whatsapp;
 
 export const WA_ARTISTA = wa("Hola Hivrido! Quiero ser parte de la Generación 001 de ORIGEN.");
 export const WA_CREATIVO = wa("Hola Hivrido! Soy productor/creativo y quiero sumarme a ORIGEN.");

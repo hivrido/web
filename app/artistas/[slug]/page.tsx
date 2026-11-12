@@ -20,6 +20,7 @@ import Cifra from "../Cifra";
 import CardFanCarousel from "../../components/ui/CardFanCarousel";
 import "../artistas.css";
 import "../reproductor.css";
+import { whatsapp } from "../../lib/contacto";
 
 /**
  * Ficha de artista.
@@ -34,7 +35,6 @@ import "../reproductor.css";
  * existe el proyecto, qué publicó, dónde vive y cómo se lo contrata.
  */
 
-const WA_BASE = "https://api.whatsapp.com/send?phone=5491156072460&text=";
 
 export const dynamicParams = false;
 
@@ -58,11 +58,11 @@ export async function generateMetadata({
     title: titulo,
     description: desc,
     keywords: [a.nombre, a.alias, ...a.disciplinas, "artista argentino", "Hivrido"],
-    alternates: { canonical: `/artistas/${a.slug}` },
+    alternates: { canonical: `/artistas/${a.slug}/` },
     openGraph: {
       title: titulo,
       description: desc,
-      url: `https://hivrido.com/artistas/${a.slug}`,
+      url: `https://hivrido.com/artistas/${a.slug}/`,
       siteName: "Hivrido",
       locale: "es_AR",
       type: "profile",
@@ -85,7 +85,7 @@ function jsonLd(a: Artista) {
     "@type": a.schema,
     name: a.nombre,
     alternateName: a.alias,
-    url: `https://hivrido.com/artistas/${a.slug}`,
+    url: `https://hivrido.com/artistas/${a.slug}/`,
     description: a.tagline,
     sameAs: a.enlaces.map((e) => e.href),
   };
@@ -121,7 +121,7 @@ export default async function FichaArtistaPage({
   const vecinos = vecinosDe(a);
 
   const waArtista =
-    WA_BASE + encodeURIComponent(`Hola Hivrido! Quiero contratar a ${a.nombre}.`);
+    whatsapp(`Hola Hivrido! Quiero contratar a ${a.nombre}.`);
 
   /* El nombre se parte para que la dosis baje al segundo renglón con el peso
      del prospecto: "AMPLAX" arriba, "10 MG" abajo. Si un artista no tiene esa
@@ -166,7 +166,7 @@ export default async function FichaArtistaPage({
             <div className="art-hero-grid">
               <div>
                 <p className="art-hero-alias">
-                  <Link href="/artistas">Roster Hivrido</Link> · {a.alias}
+                  <Link href="/artistas/">Roster Hivrido</Link> · {a.alias}
                 </p>
 
                 <h1

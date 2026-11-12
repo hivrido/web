@@ -58,3 +58,7 @@ next-env.d.ts
 # un espejo de referencia): no se versiona. Lo servido vive en
 # public/alejandradelfino.
 /public/aledelfino/
+
+# Evidencia de auditoría: capturas, videos y JSON de Lighthouse pesan decenas
+# de MB. Los informes .md de /auditoria sí se versionan.
+/auditoria/evidencia/

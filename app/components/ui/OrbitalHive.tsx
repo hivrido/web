@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { whatsapp } from "../../lib/contacto";
 
 interface Agent {
   id: number;
   label: string;
-  abbrev: string;
   headline: string;
   desc: string;
   stat: string;
@@ -17,42 +17,42 @@ interface Agent {
 
 const agents: Agent[] = [
   {
-    id: 0, label: "Análisis", abbrev: "ANL",
+    id: 0, label: "Análisis",
     headline: "Inteligencia en tiempo real",
     desc: "Monitoreo continuo de mercado, competencia y audiencia. Cada señal se convierte en decisión sin intervención manual.",
     stat: "24/7", statLabel: "Monitoreo activo", energy: 96,
     connected: ["Contenido", "Ads", "SEO"],
   },
   {
-    id: 1, label: "Contenido", abbrev: "CTN",
+    id: 1, label: "Contenido",
     headline: "Producción sin límite",
     desc: "Creatividades, copies y variaciones en masa a partir de datos reales. La visión es humana — la producción es de la colmena.",
     stat: "×10", statLabel: "Velocidad de producción", energy: 94,
     connected: ["Análisis", "Ads", "Ventas"],
   },
   {
-    id: 2, label: "Ads", abbrev: "ADS",
+    id: 2, label: "Ads",
     headline: "Inversión que se convierte",
     desc: "Optimización continua de campañas en Meta y Google. Segmentación, creativos y presupuesto ajustados en tiempo real.",
     stat: "ROAS+", statLabel: "Retorno medible", energy: 97,
     connected: ["Análisis", "Contenido", "CRM"],
   },
   {
-    id: 3, label: "CRM", abbrev: "CRM",
+    id: 3, label: "CRM",
     headline: "Seguimiento que no falla",
     desc: "Gestión de leads y clientes integrada. Cada interacción queda registrada y el seguimiento nunca se pierde.",
     stat: "100%", statLabel: "Cobertura de pipeline", energy: 98,
     connected: ["Ads", "SEO", "Ventas"],
   },
   {
-    id: 4, label: "SEO", abbrev: "SEO",
+    id: 4, label: "SEO",
     headline: "Visibilidad que escala",
     desc: "Posicionamiento orgánico optimizado de forma continua. Contenido, técnica y autoridad alineados sin esfuerzo manual.",
     stat: "TOP", statLabel: "Posicionamiento orgánico", energy: 95,
     connected: ["Análisis", "CRM", "Contenido"],
   },
   {
-    id: 5, label: "Ventas", abbrev: "VNT",
+    id: 5, label: "Ventas",
     headline: "Pipeline en piloto automático",
     desc: "Nurturing, seguimiento y cierre automatizados. El agente trabaja 24/7 sin perder ninguna oportunidad.",
     stat: "×3", statLabel: "Conversión de leads", energy: 99,
@@ -132,8 +132,8 @@ export default function OrbitalHive() {
       <svg
         viewBox="0 0 300 300"
         style={{ width: "100%", maxWidth: "320px", overflow: "visible" }}
-        aria-label="Colmena de agentes IA — tocá un nodo para ver cómo funciona"
-        role="img"
+        aria-label="Colmena de agentes IA: elegí un agente para ver cómo funciona"
+        role="group"
       >
         <defs>
           <filter id="orb-glow-lg" x="-80%" y="-80%" width="260%" height="260%">
@@ -219,10 +219,21 @@ export default function OrbitalHive() {
           const isActive = isSel || isHov;
           return (
             <g key={`node-${i}`}
+              /* Cada nodo es un botón de verdad: se llega con Tab y se
+                 activa con Enter o espacio. Antes era un <g> con onClick
+                 dentro de un svg role="img": invisible para el teclado. */
+              role="button"
+              tabIndex={0}
+              aria-pressed={isSel}
+              aria-label={`Agente de ${agent.label}`}
+              className="orb-node"
               onClick={() => handleNodeClick(i)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleNodeClick(i); } }}
+              onFocus={() => setHovered(i)}
+              onBlur={() => setHovered(null)}
               onMouseEnter={() => setHovered(i)}
               onMouseLeave={() => setHovered(null)}
-              style={{ cursor: "none" }}
+              style={{ cursor: "pointer", outline: "none" }}
             >
               <circle cx={pos.x} cy={pos.y} r={NODE_R * 2.5}
                 fill={`rgba(255,10,130,${isActive ? 0.11 : 0.03})`}
@@ -239,20 +250,13 @@ export default function OrbitalHive() {
                 strokeWidth={isSel ? 1.5 : 1}
                 filter={isActive ? "url(#orb-glow-sm)" : undefined}
                 style={{ transition: "fill 0.25s, stroke 0.25s" }} />
-              <circle cx={pos.x} cy={pos.y} r={isActive ? 3.5 : 2.4}
+              <circle cx={pos.x} cy={pos.y} r={isActive ? 4.5 : 3}
                 fill={isActive ? "#FF0A82" : "rgba(255,10,130,0.5)"}
                 filter={isActive ? "url(#orb-glow-sm)" : undefined}
                 style={{ transition: "fill 0.25s" }} />
-              <text x={pos.x} y={pos.y - 1} textAnchor="middle" dominantBaseline="middle"
-                fontSize="7.5" fontFamily="monospace" fontWeight="bold"
-                fill={isActive ? "rgba(255,10,130,1)" : "rgba(255,10,130,0.5)"}
-                letterSpacing="0.04em"
-                style={{ pointerEvents: "none", transition: "fill 0.25s" }}>
-                {agent.abbrev}
-              </text>
               <text x={pos.x} y={pos.y + NODE_R + 13} textAnchor="middle" dominantBaseline="middle"
-                fontSize="8.5" fontFamily="'Courier New', monospace"
-                fill={isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.3)"}
+                fontSize="9.5" fontFamily="'Courier New', monospace"
+                fill={isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.72)"}
                 style={{ pointerEvents: "none", transition: "fill 0.25s" }}>
                 {agent.label}
               </text>
@@ -268,9 +272,9 @@ export default function OrbitalHive() {
             transition={{ duration: 0.3 }}
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "0.5rem",
-              letterSpacing: "0.22em",
-              color: "rgba(240,240,240,0.2)",
+              fontSize: "0.68rem",
+              letterSpacing: "0.18em",
+              color: "rgba(240,240,240,0.7)",
               textAlign: "center",
               marginTop: "10px",
               textTransform: "uppercase",
@@ -455,7 +459,7 @@ export default function OrbitalHive() {
             </div>
 
             <a
-              href={`https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20Me%20interesa%20el%20agente%20de%20${encodeURIComponent(selectedAgent.label)}%20%F0%9F%9A%80`}
+              href={whatsapp(`Hola Hivrido! Me interesa el agente de ${selectedAgent.label}.`)}
               target="_blank"
               rel="noopener noreferrer"
               style={{

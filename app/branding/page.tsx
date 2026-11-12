@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd, servicioLd } from "../lib/schema";
+import HMark from "../components/immersive/HMark";
+import Hive from "../components/immersive/Hive";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign, { type LandingContent } from "../components/sections/WebDesign";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Página de destino para branding e identidad de marca.
@@ -13,13 +17,14 @@ import WebDesign, { type LandingContent } from "../components/sections/WebDesign
  * marca no aporta nada y solo aleja el contacto.
  */
 
-const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
-  encodeURIComponent("Hola Hivrido! Quiero un presupuesto de branding para mi marca.");
+const WA = whatsapp("Hola Hivrido! Quiero un presupuesto de branding para mi marca.");
+
+const DESCRIPCION =
+  "Branding profesional: identidad de marca, diseño de logo, manual de marca, naming y sistema visual completo. Renders de arquitectura, interiores y exteriores a escala con SketchUp, Rhino y Revit. Propuesta concreta en 24 horas.";
 
 export const metadata: Metadata = {
   title: "Branding e Identidad de Marca | Manual de Marca | Hivrido",
-  description:
-    "Branding profesional: identidad de marca, diseño de logo, manual de marca, naming y sistema visual completo. Renders de arquitectura, interiores y exteriores a escala con SketchUp, Rhino y Revit. Propuesta concreta en 24 horas.",
+  description: DESCRIPCION,
   keywords: [
     "branding",
     "identidad de marca",
@@ -31,12 +36,12 @@ export const metadata: Metadata = {
     "renders de arquitectura",
     "renders de interiores",
   ],
-  alternates: { canonical: "/branding" },
+  alternates: { canonical: "/branding/" },
   openGraph: {
     title: "Branding e Identidad de Marca | Hivrido",
     description:
       "Identidad de marca, logo, manual y sistema visual completo. Una marca que se recuerda y que tu equipo sabe aplicar.",
-    url: "https://hivrido.com/branding",
+    url: "https://hivrido.com/branding/",
     siteName: "Hivrido",
     locale: "es_AR",
     type: "website",
@@ -163,6 +168,7 @@ const CONTENT: LandingContent = {
 export default function BrandingPage() {
   return (
     <ClientShell>
+      <JsonLd data={servicioLd({ nombre: "Branding e identidad de marca", tipo: "Branding", descripcion: DESCRIPCION, ruta: "/branding/" })} />
       {/* 300 y no el valor por defecto: ese espera a que el preloader de la
           home se retire, y a quien ya lo vio hace poco se le saltea — el
           logo quedaría invisible dos segundos con el header a la vista. */}
@@ -170,6 +176,9 @@ export default function BrandingPage() {
 
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
+          {/* Capa inmersiva: decorativa, detrás del texto y fuera del camino del primer pintado. */}
+          <Hive />
+          <HMark className="dw-hero-mark" />
           <div className="section-container">
             <p className="dw-hero-eyebrow">Branding · Identidad de marca</p>
 

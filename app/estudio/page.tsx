@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "El estudio | Hivrido",
   description:
     "Producción audiovisual, branding, desarrollo y agentes IA. El recorrido completo del estudio: proyectos, servicios, equipo y clientes.",
-  alternates: { canonical: "/estudio" },
+  alternates: { canonical: "/estudio/" },
 };
 
 // Below-fold sections — separate JS chunks, parsed only when needed

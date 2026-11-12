@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import PlayHome from "./components/play/PlayHome";
 import { CATALOG, FEATURED } from "./lib/catalog";
+import { posterSrcSet } from "./components/play/Poster";
 
 /* La portada del dominio es la plataforma. El anillo institucional vive en
    /web (public/web/index.html, servido por el rewrite de next.config.ts).
@@ -126,6 +127,8 @@ export default function Page() {
         rel="preload"
         as="image"
         href={FEATURED[0].hero!.image}
+        imageSrcSet={posterSrcSet(FEATURED[0].hero!.image)}
+        imageSizes="100vw"
         fetchPriority="high"
       />
       <script

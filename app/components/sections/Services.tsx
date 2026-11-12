@@ -6,6 +6,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import SectionTitle from "../ui/SectionTitle";
 import MatrixCol from "../ui/MatrixCol";
 import { useScramble } from "../ui/useScramble";
+import { whatsapp } from "../../lib/contacto";
 
 // Colores bicolores: Violeta Hivrido + Fucsia Fuxxia
 const COLORS = {
@@ -385,7 +386,7 @@ export default function Services() {
         <div className="svc-modal-cta-row">
           <a
             className="svc-modal-cta"
-            href={`https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20me%20interesa%20${encodeURIComponent(s.title)}`}
+            href={whatsapp(`Hola Hivrido! Me interesa ${s.title}.`)}
             target="_blank"
             rel="noopener noreferrer"
           >

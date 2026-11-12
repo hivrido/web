@@ -33,9 +33,16 @@ export function useStaggerReveal(
 
     items.forEach((el) => { el.style.opacity = "0"; el.style.transform = `translateY(${y}px)`; });
 
+    /* Un fundido con desplazamiento es una transición de CSS: corre en el
+       compositor y no hace falta traer GSAP para esto. */
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const show = () => {
-      import("gsap").then(({ gsap }) => {
-        gsap.to(items, { opacity: 1, y: 0, duration, ease: "power3.out", stagger, clearProps: "transform" });
+      items.forEach((el, i) => {
+        if (!reduced) {
+          el.style.transition = `opacity ${duration}s cubic-bezier(0.16,1,0.3,1) ${i * stagger}s, transform ${duration}s cubic-bezier(0.16,1,0.3,1) ${i * stagger}s`;
+        }
+        el.style.opacity = "1";
+        el.style.transform = "none";
       });
     };
 

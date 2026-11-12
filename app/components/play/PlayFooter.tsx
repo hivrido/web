@@ -1,5 +1,6 @@
 import Link from "next/link";
 import LogoAnimated from "../ui/LogoAnimated";
+import WaGeneral from "../../components/ui/WaGeneral";
 
 /** Pie de PLAY, el mismo en la portada y en las fichas. */
 export default function PlayFooter() {
@@ -23,7 +24,7 @@ export default function PlayFooter() {
           <span className="hp-footer-label">Hivrido</span>
           <Link href="/casting/">Casting</Link>
           <Link href="/web/">Productora</Link>
-          <a href="https://wa.me/5491156072460?text=Hola!%20Quiero%20hablar%20con%20HIVRIDO" target="_blank" rel="noopener noreferrer">Contacto</a>
+          <WaGeneral lugar="el pie">Contacto</WaGeneral>
         </div>
         <div>
           <span className="hp-footer-label">Redes</span>

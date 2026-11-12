@@ -16,6 +16,7 @@ import Link from "next/link";
 import { FEATURED, type Entry } from "../../lib/catalog";
 import { loadYouTubeApi, type YTPlayer } from "./CinePlayer";
 import { Badges, ListIcon } from "./PosterCard";
+import Poster from "./Poster";
 import { useMyList } from "./library";
 
 const SLIDE_MS = 8000;
@@ -160,10 +161,13 @@ export default function Hero() {
       <div className="hp-hero-stage">
         {FEATURED.map((item, i) => (
           <div key={item.id} className={`hp-hero-slide${i === current ? " is-active" : ""}`} aria-hidden={i !== current}>
-            <div
-              className="hp-hero-img"
-              style={painted.includes(i) ? { backgroundImage: `url('${item.hero!.image}')` } : undefined}
-            />
+            {/* Una imagen de verdad y no un fondo por CSS: así lleva `srcset`
+                —el teléfono baja la variante de 960 px y no la de 1600— y el
+                navegador la descubre al leer el HTML. Solo la primera va con
+                prioridad; las demás se montan cuando les toca. */}
+            {painted.includes(i) && (
+              <Poster src={item.hero!.image} sizes="100vw" className="hp-hero-img" priority={i === 0} />
+            )}
             {i === current && preview && item.ytId && <HeroVideo ytId={item.ytId} zoom={item.ytZoom} />}
           </div>
         ))}

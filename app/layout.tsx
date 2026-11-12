@@ -61,7 +61,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="es"
+      lang="es-AR"
       className={`${orbitron.variable} ${rubik.variable}`}
       style={
         {
@@ -73,20 +73,13 @@ export default function RootLayout({
       <body style={{ overflowX: "hidden" }}>
         <Medicion id={GOOGLE_ADS_ID} />
         {children}
+        {/* Sin JavaScript el sitio se lee igual: todo el contenido viene en el
+            HTML. Antes había acá un cartel a pantalla completa ("Este sitio
+            requiere JavaScript") que lo tapaba entero. Lo único que hace falta
+            es retirar la cortina de carga y mostrar lo que espera a una
+            animación para aparecer. */}
         <noscript>
-          <style>{`#main{display:block!important;opacity:1!important}`}</style>
-          <div className="hv-noscript" style={{
-            position: "fixed", inset: 0, background: "#0a0a0a",
-            color: "#f0f0f0", display: "flex", alignItems: "center",
-            justifyContent: "center", flexDirection: "column", gap: "16px",
-            fontFamily: "sans-serif", fontSize: "14px", zIndex: 99999,
-            textAlign: "center", padding: "40px"
-          }}>
-            <strong style={{ fontSize: "1.4rem", letterSpacing: "0.2em" }}>Hivrido</strong>
-            <p style={{ color: "rgba(255,255,255,0.5)", margin: 0 }}>
-              Este sitio requiere JavaScript para funcionar correctamente.
-            </p>
-          </div>
+          <style>{`.loader-wrap{display:none!important}#main{display:block!important;opacity:1!important}.svc-desc,.fcar-card,.fcar-card-body,.fan-ig,[data-reveal]{opacity:1!important;transform:none!important;visibility:visible!important}`}</style>
         </noscript>
       </body>
     </html>

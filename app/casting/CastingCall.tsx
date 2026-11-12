@@ -11,6 +11,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { whatsapp } from "../lib/contacto";
 
 const WHATSAPP = "5491156072460";
 
@@ -40,7 +41,7 @@ function waLink({ nombre, telefono, email }: Fields) {
     `Teléfono: ${telefono.trim()}`,
     `Email: ${email.trim()}`,
   ].join("\n");
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+  return whatsapp(text);
 }
 
 const WhatsAppIcon = ({ size = 20 }: { size?: number }) => (

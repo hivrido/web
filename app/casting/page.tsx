@@ -29,7 +29,7 @@ export const viewport = {
 export const metadata: Metadata = {
   title: SEO.title,
   description: SEO.description,
-  alternates: { canonical: "/casting" },
+  alternates: { canonical: "/casting/" },
   openGraph: {
     title: "Sé parte de Cuchillo Paz | Hivrido",
     description: SEO.description,
