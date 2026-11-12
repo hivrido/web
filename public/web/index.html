@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -139,7 +139,36 @@ body{
   .loader-wrap{transition:opacity .2s ease}
   .loader-bar{transition:none}
 }
+/* El contenido en HTML (.eco). Con el anillo andando es el equivalente en
+   texto del lienzo: fuera de la vista, dentro del árbol de accesibilidad.
+   Sin JavaScript pasa a ser la página (ver el <noscript> de abajo). */
+.eco{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Si el motor no llega a arrancar (script bloqueado, red cortada), la cortina
+   se retira sola: nunca un 0% eterno. */
+.loader-wrap{animation:boot-failsafe .6s ease 14s forwards}
+.loader-wrap.done{animation:none}
+@keyframes boot-failsafe{to{opacity:0;visibility:hidden}}
 </style>
+<noscript><style>
+html,body{height:auto;overflow:auto!important}
+#boot,#gl,.veil,#hud,#hint,#panel,#menuBtn,#navOverlay{display:none!important}
+.main-header{opacity:1!important;position:static!important}
+.logo-holder::after{content:"HIVRIDO";font-family:var(--font-display);font-weight:900;letter-spacing:.2em;color:#fff}
+.nav-drawer{position:static!important;transform:none!important;visibility:visible!important;width:auto!important;height:auto!important;padding:24px clamp(18px,4vw,44px)!important;background:none!important;border:0!important}
+.nav-drawer .nav-menu a{transform:none!important;color:rgba(255,255,255,.75)!important;font-size:1rem!important}.nav-menu{display:flex;flex-wrap:wrap;gap:4px 22px}.nav-title-dec{display:none}
+.eco{position:static;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal;max-width:1100px;margin:0 auto;padding:24px clamp(18px,4vw,44px) 96px}
+.eco-head h1{font-family:var(--font-display);font-size:clamp(1.8rem,5vw,3rem);font-weight:900;line-height:1.05;color:#fff}
+.eco-head p{margin-top:14px;max-width:60ch;color:#b9b3c9;line-height:1.7}
+.eco-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:40px}
+.eco-item{padding:24px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03)}
+.eco-kicker{font-family:var(--font-display);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#A78BFA}
+.eco-item h2{margin:10px 0 12px;font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:#fff}
+.eco-item p{color:#b9b3c9;line-height:1.7;font-size:.94rem}
+.eco-tags{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0;padding:0;list-style:none}
+.eco-tags li{font-size:11px;padding:4px 10px;border:1px solid rgba(167,139,250,.4);border-radius:999px;color:#d6ccf5}
+.eco-link,.eco-foot a{color:#E8C97A;font-weight:700}
+.eco-foot{display:flex;flex-wrap:wrap;gap:20px;margin-top:40px}
+</style></noscript>
 
 <!-- ── Todo el CSS de la portada, incrustado ──
      GENERADO por scripts/build-cosmos-css.mjs a partir de
@@ -237,7 +266,7 @@ body{
       <div id="hudLeft" class="pointer-events-auto min-w-0">
         <p id="qLabel" class="mono mb-4 text-[var(--dim)]">¿Qué estás buscando?</p>
         <ul id="qlist" class="qlist mono hidden list-none p-0 sm:grid" aria-label="Disciplinas"></ul>
-        <a href="https://wa.me/5491156072460?text=Hola!%20Quiero%20hablar%20con%20HIVRIDO%20%F0%9F%9A%80"
+        <a href="https://wa.me/5491156072460?text=Hola%20Hivrido!%20Tengo%20una%20consulta%20(portada%20de%20la%20productora)."
            target="_blank" rel="noopener" class="btn-glow mono mt-6 inline-flex">
           Preguntanos lo que sea
         </a>
@@ -248,7 +277,7 @@ body{
         <div id="hudInfo" class="min-w-0">
           <p id="cat" class="mono mb-2 text-[var(--ac)] transition-colors duration-500">01 — REPRESENTACIÓN</p>
           <div class="overflow-hidden pb-[.06em]">
-            <h1 id="title" class="title">ARTISTAS</h1>
+            <p id="title" class="title">ARTISTAS</p>
           </div>
           <button id="openBtn" class="btn-bevel mt-4">
             Ver el roster <span aria-hidden="true">→</span>
@@ -266,7 +295,7 @@ body{
 
         <div id="hudTicksRow" class="flex items-center gap-4">
           <div id="ticks" class="flex items-center gap-1.5" role="tablist" aria-label="Proyectos"></div>
-          <span id="counter" class="mono text-[var(--muted)]"><b class="text-white">01</b> / 08</span>
+          <span id="counter" class="mono text-[var(--muted)]"><b class="text-white">01</b> / 07</span>
         </div>
       </div>
     </div>
@@ -279,9 +308,9 @@ body{
 </p>
 
 <!-- Botón flotante de WhatsApp (el mismo de la home) -->
-<a href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20Hivrido!%20%F0%9F%91%8B"
+<a href="https://wa.me/5491156072460?text=Hola%20Hivrido!%20Les%20escribo%20desde%20la%20portada%20de%20la%20productora%20(el%20bot%C3%B3n%20de%20WhatsApp)."
    target="_blank" rel="noopener noreferrer"
-   class="wa-btn" title="Hablemos por WhatsApp" aria-label="Contactar por WhatsApp">
+   class="wa-btn" title="Hablemos por WhatsApp" aria-label="Escribinos por WhatsApp (abre en otra pestaña)">
   <span class="wa-ring wa-ring-1" aria-hidden="true"></span>
   <span class="wa-ring wa-ring-2" aria-hidden="true"></span>
   <span class="wa-icon">
@@ -345,10 +374,77 @@ body{
     <li><a href="/colmena-agentes/"><span>08.</span> <b class="lbl">Agentes IA</b></a></li>
   </ul>
   <div class="nav-cta">
-    <a href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!" target="_blank" rel="noopener">+ Contacto</a>
-    <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
+    <a href="https://wa.me/5491156072460?text=Hola%20Hivrido!%20Les%20escribo%20desde%20la%20portada%20de%20la%20productora%20(el%20men%C3%BA)." target="_blank" rel="noopener">+ Contacto</a>
+    <a href="mailto:hola@hivrido.com?subject=Consulta%20desde%20hivrido.com">hola@hivrido.com</a>
   </div>
 </nav>
+
+<!-- ═══════════ CONTENIDO EN HTML ═══════════
+     GENERADO por scripts/build-cosmos-content.mjs desde public/cosmos/projects.js.
+     No editar acá: se pisa en el próximo build. -->
+<!-- contenido:estatico -->
+<main id="contenido" class="eco">
+  <header class="eco-head">
+    <h1>Hivrido: inteligencia creativa</h1>
+    <p>Producción audiovisual, branding, desarrollo digital, publicidad y agentes IA. No es una agencia: es un sistema de crecimiento.</p>
+  </header>
+  <div class="eco-list">
+    <article class="eco-item">
+      <p class="eco-kicker">01 · Representación</p>
+      <h2><a href="/artistas/">Artistas</a></h2>
+      <p>Representamos artistas con audiencia real y ninguna casa: les construimos identidad, catálogo y una URL propia. Dirección creativa, producción audiovisual, contenido y pauta, para que lo que ya funciona en un feed se pueda mostrar, contratar y medir. Trabajamos con pocos a la vez porque cada carrera lleva producción propia.</p>
+      <ul class="eco-tags"><li>Representación</li><li>Dirección</li><li>Contenido</li><li>Pauta</li></ul>
+      <a class="eco-link" href="/artistas/">Ver el roster →</a>
+    </article>
+    <article class="eco-item">
+      <p class="eco-kicker">02 · Series y películas</p>
+      <h2><a href="/">Hivrido PLAY</a></h2>
+      <p>Nuestra plataforma de contenidos: series y películas propias de habla hispana, con los estrenos que se ven primero acá.</p>
+      <ul class="eco-tags"><li>Streaming</li><li>Cine</li><li>Series</li></ul>
+      <a class="eco-link" href="/">Ver el catálogo →</a>
+    </article>
+    <article class="eco-item">
+      <p class="eco-kicker">03 · Diseño Web &amp; APP</p>
+      <h2><a href="/diseno-web/">Grow digital</a></h2>
+      <p>Diseño web y aplicaciones a medida, con el software que hace falta detrás: sistemas CRM, integraciones y automatizaciones que conectan lo que ya usás. Desarrollo de programación a medida personalizada, con Python y las últimas tecnologías, para que cada pieza escale con el negocio.</p>
+      <ul class="eco-tags"><li>Diseño Web</li><li>Apps</li><li>CRM</li><li>Python</li></ul>
+      <a class="eco-link" href="/diseno-web/">Ir a Desarrollo digital →</a>
+    </article>
+    <article class="eco-item">
+      <p class="eco-kicker">04 · Identidad de</p>
+      <h2><a href="/branding/">Branding</a></h2>
+      <p>Identidad de marca completa: diseño de logo, paleta, tipografía, voz y todo el sistema visual, documentado en un manual de marca que tu equipo puede aplicar sin depender de nosotros. Construimos marcas que generan reconocimiento y conexión emocional, no un archivo suelto.</p>
+      <ul class="eco-tags"><li>Identidad</li><li>Logo</li><li>Manual de Marca</li><li>Naming</li></ul>
+      <a class="eco-link" href="/branding/">Ir a Branding →</a>
+    </article>
+    <article class="eco-item">
+      <p class="eco-kicker">05 · Lucas Ariel Manzano</p>
+      <h2><a href="/equipo/">Equipo</a></h2>
+      <p>Hivrido lo dirige Lucas Ariel Manzano, su CEO e ingeniero en prompt. Un solo perfil que cubre las dos mitades del oficio: la dirección creativa que pone lo emocional en cada pieza, y la ingeniería de inteligencia artificial que la convierte en un sistema que escala. No trabajamos con equipos tercerizados: el que te atiende es el que hace.</p>
+      <ul class="eco-tags"><li>Prompt</li><li>Dirección</li><li>IA</li><li>Estrategia</li></ul>
+      <a class="eco-link" href="/equipo/">Ir a Equipo →</a>
+    </article>
+    <article class="eco-item">
+      <p class="eco-kicker">06 · Partner de Google y Meta</p>
+      <h2><a href="/publicidad/">Publicidad</a></h2>
+      <p>Campañas en Meta, Google y YouTube en todos sus formatos: búsqueda, Performance Max, Shopping, in-stream, bumpers y Shorts. Los creativos los producimos nosotros. Y lo que la pauta empuja, el crecimiento de redes y las colaboraciones con artistas e influencers lo sostienen. Todo medido contra el costo real de conseguir un cliente.</p>
+      <ul class="eco-tags"><li>Meta Ads</li><li>Google Ads</li><li>YouTube</li><li>Influencers</li></ul>
+      <a class="eco-link" href="/publicidad/">Ir a Publicidad →</a>
+    </article>
+    <article class="eco-item">
+      <p class="eco-kicker">07 · Agentes IA</p>
+      <h2><a href="/colmena-agentes/">Agentes</a></h2>
+      <p>Colmenas de agentes IA que operan solas: atienden consultas, califican interesados, ejecutan procesos y reportan a escala. Conectados a tu CRM, tus campañas y tus canales de comunicación, trabajando mientras dormís. Es PUNY, el motor que corre dentro de Hivrido, adaptado a tu negocio.</p>
+      <ul class="eco-tags"><li>Multi-agente</li><li>CRM</li><li>Autónomo</li><li>24/7</li></ul>
+      <a class="eco-link" href="/colmena-agentes/">Ir a Colmena de agentes →</a>
+    </article>
+  </div>
+  <footer class="eco-foot">
+    <a href="https://wa.me/5491156072460?text=Hola%20Hivrido!%20Les%20escribo%20desde%20la%20portada%20de%20la%20productora.">Escribinos por WhatsApp</a>
+    <a href="mailto:hola@hivrido.com?subject=Consulta%20desde%20hivrido.com">hola@hivrido.com</a>
+  </footer>
+</main>
+<!-- /contenido:estatico -->
 
 <p class="sr-only" aria-live="polite" id="live"></p>
 
