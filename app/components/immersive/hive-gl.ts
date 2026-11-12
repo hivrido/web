@@ -68,10 +68,10 @@ void main(){
 
 export type HiveScene = { setRunning(on: boolean): void; stats(): { fps: number }; dispose(): void };
 
-export function createHive(canvas: HTMLCanvasElement, opts: { tier: Tier; still: boolean; onReady: () => void }): HiveScene | null {
+export async function createHive(canvas: HTMLCanvasElement, opts: { tier: Tier; still: boolean; onReady: () => void }): Promise<HiveScene | null> {
   const gl = createContext(canvas);
   if (!gl) return null;
-  const prog = createProgram(gl, FULLSCREEN_VS, FS);
+  const prog = await createProgram(gl, FULLSCREEN_VS, FS);
   if (!prog) return null;
   const u = uniforms(gl, prog, ["uRes", "uMouse", "uTime", "uScroll", "uGain"] as const);
   gl.bindVertexArray(gl.createVertexArray());

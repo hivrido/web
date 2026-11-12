@@ -299,18 +299,21 @@ export type HMarkScene = {
   dispose(): void;
 };
 
-export function createHMark(
+export async function createHMark(
   canvas: HTMLCanvasElement,
   opts: { tier: Tier; still: boolean; onReady: () => void },
-): HMarkScene | null {
+): Promise<HMarkScene | null> {
   const gl = createContext(canvas);
   if (!gl) return null;
 
-  const solid = createProgram(gl, SOLID_VS, SOLID_FS);
-  const neon = createProgram(gl, NEON_VS, NEON_FS);
-  const bright = createProgram(gl, FULLSCREEN_VS, BRIGHT_FS);
-  const blur = createProgram(gl, FULLSCREEN_VS, BLUR_FS);
-  const compose = createProgram(gl, FULLSCREEN_VS, COMPOSE_FS);
+  // Los cinco programas se mandan a compilar juntos y se esperan sin bloquear.
+  const [solid, neon, bright, blur, compose] = await Promise.all([
+    createProgram(gl, SOLID_VS, SOLID_FS),
+    createProgram(gl, NEON_VS, NEON_FS),
+    createProgram(gl, FULLSCREEN_VS, BRIGHT_FS),
+    createProgram(gl, FULLSCREEN_VS, BLUR_FS),
+    createProgram(gl, FULLSCREEN_VS, COMPOSE_FS),
+  ]);
   if (!solid || !neon || !bright || !blur || !compose) return null;
 
   const uS = uniforms(gl, solid, ["uProj", "uModel", "uCamZ", "uTime", "uLight", "uOn", "uSheen"] as const);

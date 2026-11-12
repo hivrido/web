@@ -209,7 +209,6 @@ function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
       className="svc-item"
       role="button"
       tabIndex={0}
-      aria-label={`${sv.title} — ver detalle`}
       onClick={onClick}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } }}
       onMouseEnter={onEnter}
@@ -247,7 +246,8 @@ function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
         style={{
           fontFamily: "var(--font-display)",
           fontSize: "0.65rem",
-          color: COLORS.primary,
+          /* El violeta pleno no llega a 4,5:1 sobre negro en un texto de 10 px. */
+          color: "#A78BFA",
           letterSpacing: "0.2em",
           position: "relative",
           zIndex: 1,
@@ -318,7 +318,7 @@ function ServicioItem({ sv, onClick }: { sv: Servicio; onClick: () => void }) {
             : "0 0 6px rgba(255,27,141,0.5)",
         }}
       >
-        Ver más →
+        Ver detalle →
       </span>
     </motion.div>
   );

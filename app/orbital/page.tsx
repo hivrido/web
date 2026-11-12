@@ -32,6 +32,7 @@ export const metadata: Metadata = {
   title: "Órbita — HIVRIDO",
   description:
     "Galería orbital de proyectos: dirección creativa, film, producto e inteligencia artificial.",
+  alternates: { canonical: "/orbital/" },
   openGraph: {
     title: "Órbita — HIVRIDO",
     description: "Galería orbital de proyectos de HIVRIDO.",

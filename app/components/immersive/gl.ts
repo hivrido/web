@@ -37,17 +37,33 @@ function shader(gl: GL, type: number, src: string) {
   return s;
 }
 
-/** Compila y enlaza. Devuelve null si falla: quien llama se queda en el estático. */
-export function createProgram(gl: GL, vs: string, fs: string, attribs: string[] = []): WebGLProgram | null {
+/**
+ * Compila y enlaza sin frenar el hilo principal.
+ *
+ * Preguntar si un programa enlazó obliga al navegador a esperar al compilador
+ * de shaders ahí mismo: decenas o cientos de milisegundos de bloqueo en un
+ * teléfono. Con KHR_parallel_shader_compile se pregunta primero si ya terminó
+ * y, mientras no, se cede el cuadro. Donde la extensión no existe se consulta
+ * directo, como siempre.
+ *
+ * Devuelve null si falla: quien llama se queda en el estático.
+ */
+export async function createProgram(gl: GL, vs: string, fs: string): Promise<WebGLProgram | null> {
   const p = gl.createProgram()!;
   const v = shader(gl, gl.VERTEX_SHADER, vs);
   const f = shader(gl, gl.FRAGMENT_SHADER, fs);
   gl.attachShader(p, v);
   gl.attachShader(p, f);
-  attribs.forEach((name, i) => gl.bindAttribLocation(p, i, name));
   gl.linkProgram(p);
-  /* El estado se consulta una sola vez, después de enlazar: preguntar por
-     cada shader obliga al driver a terminar la compilación en el momento. */
+
+  const ext = gl.getExtension("KHR_parallel_shader_compile");
+  if (ext) {
+    const limit = performance.now() + 8000;
+    while (!gl.getProgramParameter(p, ext.COMPLETION_STATUS_KHR) && performance.now() < limit) {
+      await new Promise((r) => requestAnimationFrame(r));
+      if (gl.isContextLost()) return null;
+    }
+  }
   if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
     if (process.env.NODE_ENV !== "production") {
       console.warn("[inmersivo] shader:", gl.getProgramInfoLog(p), gl.getShaderInfoLog(v), gl.getShaderInfoLog(f));

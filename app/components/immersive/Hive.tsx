@@ -29,6 +29,7 @@ export default function Hive({ className = "" }: { className?: string }) {
     let scene: HiveScene | null = null;
     let dead = false;
     let visible = false;
+    let asked = false;
     let cancelIdle = () => {};
     const sync = () => scene?.setRunning(visible && !document.hidden);
 
@@ -37,13 +38,15 @@ export default function Hive({ className = "" }: { className?: string }) {
       if (await lowBattery()) return;
       const { createHive } = await import("./hive-gl");
       if (dead) return;
-      scene = createHive(cv, { tier, still: reducedMotion(), onReady: () => !dead && setLive(true) });
+      const made = await createHive(cv, { tier, still: reducedMotion(), onReady: () => !dead && setLive(true) });
+      if (dead) { made?.dispose(); return; }
+      scene = made;
       sync();
     };
 
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible && !scene) cancelIdle = whenIdle(boot);
+      if (visible && !scene && !asked) { asked = true; cancelIdle = whenIdle(boot, { waitForGesture: tier < 2 }); }
       sync();
     });
     io.observe(el);

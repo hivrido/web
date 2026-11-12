@@ -35,6 +35,7 @@ export default function HMark({ className = "" }: { className?: string }) {
     let scene: HMarkScene | null = null;
     let dead = false;
     let visible = false;
+    let asked = false;
     let cancelIdle = () => {};
 
     const sync = () => scene?.setRunning(visible && !document.hidden);
@@ -44,14 +45,16 @@ export default function HMark({ className = "" }: { className?: string }) {
       if (await lowBattery()) return;
       const { createHMark } = await import("./hmark-gl");
       if (dead) return;
-      scene = createHMark(cv, { tier, still: reducedMotion(), onReady: () => !dead && setLive(true) });
+      const made = await createHMark(cv, { tier, still: reducedMotion(), onReady: () => !dead && setLive(true) });
+      if (dead) { made?.dispose(); return; }
+      scene = made;
       sync();
     };
 
     // Solo se pide el 3D si el símbolo llega a verse.
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
-      if (visible && !scene) cancelIdle = whenIdle(boot);
+      if (visible && !scene && !asked) { asked = true; cancelIdle = whenIdle(boot, { waitForGesture: tier < 2 }); }
       sync();
     }, { rootMargin: "80px" });
     io.observe(el);

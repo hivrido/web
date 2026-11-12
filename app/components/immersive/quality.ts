@@ -44,20 +44,36 @@ export async function lowBattery(): Promise<boolean> {
   }
 }
 
-/** Corre cuando el navegador queda libre, nunca antes de que la página cargue. */
-export function whenIdle(run: () => void, timeout = 2500): () => void {
+/**
+ * Corre cuando el navegador queda libre, nunca antes de que la página cargue.
+ *
+ * Con `waitForGesture` espera además al primer gesto de quien visita (tocar,
+ * scrollear, una tecla). Es para táctiles y equipos medios: ahí compilar
+ * shaders mientras la página todavía se está armando se nota, y el respaldo
+ * en SVG ya se ve completo. En cuanto la persona hace algo, el 3D se suma.
+ */
+export function whenIdle(run: () => void, { timeout = 2500, waitForGesture = false } = {}): () => void {
   let id = 0;
   let cancelled = false;
+  const GESTURES = ["pointerdown", "touchstart", "scroll", "keydown"] as const;
   const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-  const go = () => {
+  const idle = () => {
     if (cancelled) return;
     if (ric) id = ric(() => !cancelled && run(), { timeout });
     else id = window.setTimeout(() => !cancelled && run(), 200);
+  };
+  const onGesture = () => { unlisten(); idle(); };
+  const unlisten = () => GESTURES.forEach((g) => removeEventListener(g, onGesture));
+  const go = () => {
+    if (cancelled) return;
+    if (waitForGesture) GESTURES.forEach((g) => addEventListener(g, onGesture, { passive: true, once: true }));
+    else idle();
   };
   if (document.readyState === "complete") go();
   else window.addEventListener("load", go, { once: true });
   return () => {
     cancelled = true;
+    unlisten();
     window.removeEventListener("load", go);
     if (id) {
       (window as Window & { cancelIdleCallback?: (n: number) => void }).cancelIdleCallback?.(id);
