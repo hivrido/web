@@ -1,6 +1,6 @@
 import LogoAnimated from "../ui/LogoAnimated";
+import WaGeneral from "../../components/ui/WaGeneral";
 
-const WA_URL = "https://api.whatsapp.com/send?phone=5491156072460&text=Hola%20H%C3%ADvrido!";
 
 export default function Footer() {
   return (
@@ -36,9 +36,7 @@ export default function Footer() {
             <ul className="footer-links">
               <li><a href="mailto:hola@hivrido.com">hola@hivrido.com</a></li>
               <li>
-                <a href={WA_URL} target="_blank" rel="noopener noreferrer">
-                  WhatsApp
-                </a>
+                <WaGeneral lugar="el pie">WhatsApp</WaGeneral>
               </li>
               <li><a href="mailto:hola@hivrido.com">Trabaja con nosotros</a></li>
             </ul>

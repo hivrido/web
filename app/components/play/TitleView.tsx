@@ -13,9 +13,11 @@
 import { useState } from "react";
 import CinePlayer from "./CinePlayer";
 import PosterCard, { Badges, ListIcon } from "./PosterCard";
+import { posterAt } from "./Poster";
 import Row from "./Row";
 import { useMyList } from "./library";
 import type { Entry } from "../../lib/catalog";
+import { whatsapp } from "../../lib/contacto";
 
 export type Episode = {
   ytId: string;
@@ -39,7 +41,6 @@ type Video = {
 };
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
-const WA = "https://wa.me/5491156072460?text=";
 const pad = (n: number) => String(n).padStart(2, "0");
 const ytThumb = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 
@@ -102,7 +103,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
      los extras de la ficha. */
   const extras: Video[] = t.ytId
     ? [
-        { ytId: t.ytId, label: t.ytFull ? "Película completa" : "Tráiler", title: t.title, poster: t.poster, zoom: t.ytZoom, external: t.ytExternal },
+        { ytId: t.ytId, label: t.ytFull ? "Película completa" : "Tráiler", title: t.title, poster: t.poster && posterAt(t.poster, 960), zoom: t.ytZoom, external: t.ytExternal },
         ...(d?.videos ?? []).map((v) => ({ ytId: v.ytId, label: v.label, title: `${v.label} de ${t.title}`, zoom: v.zoom })),
       ]
     : [];
@@ -133,7 +134,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
   return (
     <>
       {/* Atmósfera: el afiche, muy desenfocado, tiñe la parte alta de la página. */}
-      {t.poster && <div className="tv-ambient" style={{ backgroundImage: `url('${t.poster}')` }} aria-hidden="true" />}
+      {t.poster && <div className="tv-ambient" style={{ backgroundImage: `url('${posterAt(t.poster, 640)}')` }} aria-hidden="true" />}
 
       <div className="tv-grid">
         {/* ── REPRODUCTOR ── */}
@@ -184,7 +185,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
         {/* ── FICHA ── */}
         <div className="tv-col">
           <section className="tv-card">
-            {t.poster && <div className="tv-card-thumb" style={{ backgroundImage: `url('${t.poster}')` }} aria-hidden="true" />}
+            {t.poster && <div className="tv-card-thumb" style={{ backgroundImage: `url('${posterAt(t.poster, 640)}')` }} aria-hidden="true" />}
             <div className="tv-card-body">
               <h1 className="tv-title">{t.title}</h1>
               <p className="tv-meta">{t.genre}</p>
@@ -208,7 +209,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
                 ) : (
                   <a
                     className="hp-btn is-primary hp-haz"
-                    href={`${WA}${encodeURIComponent(`Hola Hivrido! Avisame cuando se estrene ${t.title} en PLAY`)}`}
+                    href={whatsapp(`Hola Hivrido! Avisame cuando se estrene ${t.title} en PLAY`)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

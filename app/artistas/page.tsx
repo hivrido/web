@@ -6,6 +6,7 @@ import { ARTISTAS, estiloAcento } from "../lib/artistas";
 import FondoVivo from "./FondoVivo";
 import FichaViva from "./FichaViva";
 import "./artistas.css";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Índice del roster.
@@ -21,8 +22,7 @@ import "./artistas.css";
  */
 
 const WA =
-  "https://api.whatsapp.com/send?phone=5491156072460&text=" +
-  encodeURIComponent("Hola Hivrido! Soy artista y quiero que representen mi carrera.");
+  whatsapp("Hola Hivrido! Soy artista y quiero que representen mi carrera.");
 
 /**
  * Qué pone Hivrido según el oficio.
@@ -85,12 +85,12 @@ export const metadata: Metadata = {
     "management de streamers",
     "productora para youtubers",
   ],
-  alternates: { canonical: "/artistas" },
+  alternates: { canonical: "/artistas/" },
   openGraph: {
     title: "Artistas | Hivrido",
     description:
       "Artistas a los que les construimos identidad, catálogo y presencia digital. Una carrera es un proyecto, no un feed.",
-    url: "https://hivrido.com/artistas",
+    url: "https://hivrido.com/artistas/",
     siteName: "Hivrido",
     locale: "es_AR",
     type: "website",

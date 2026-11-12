@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "Chapadmalal",
     "ORIGEN",
   ],
-  alternates: { canonical: "/origen" },
+  alternates: { canonical: "/origen/" },
   openGraph: {
     title: "ORIGEN · Todo artista tiene un origen | Hivrido",
     description: SEO.description,

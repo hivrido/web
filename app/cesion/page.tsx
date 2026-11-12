@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Formulario de cesión de derechos de imagen, voz y actuación para participantes de castings y rodajes de Hivrido.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/cesion" },
+  alternates: { canonical: "/cesion/" },
 };
 
 export default function CesionPage() {

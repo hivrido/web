@@ -25,13 +25,11 @@ import AIHiveSection from "./AIHiveSection";
 import MatrixCol from "../ui/MatrixCol";
 import { useScramble } from "../ui/useScramble";
 import { useStaggerReveal } from "../../hooks/useStaggerReveal";
+import { whatsapp } from "../../lib/contacto";
 
 const COLORS = { primary: "#7C3AED", secondary: "#FF1B8D" };
 
-const wa = (asunto: string) =>
-  `https://api.whatsapp.com/send?phone=5491156072460&text=${encodeURIComponent(
-    `Hola Hivrido! Quiero consultar por ${asunto}.`
-  )}`;
+const wa = (asunto: string) => whatsapp(`Hola Hivrido! Quiero consultar por ${asunto}.`);
 
 /* ── Contenido ──
    La estructura es la misma para toda landing de servicio; lo que cambia es

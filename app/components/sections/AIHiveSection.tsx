@@ -3,6 +3,7 @@
 import ScrollReveal from "../ui/ScrollReveal";
 import SectionTitle from "../ui/SectionTitle";
 import OrbitalHive from "../ui/OrbitalHive";
+import { whatsapp } from "../../lib/contacto";
 
 const IcoNetwork = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
@@ -265,7 +266,7 @@ export default function AIHiveSection({ ctaHref = "#sec4" }: { ctaHref?: string 
                   resto de los botones del sitio. */}
               <a
                 className="aih-cta-btn aih-cta-btn--solid"
-                href="https://api.whatsapp.com/send?phone=5491156072460&text=Hola!%20Me%20interesa%20activar%20la%20colmena%20de%20agentes%20PUNY%20%F0%9F%9A%80"
+                href={whatsapp("Hola Hivrido! Me interesa activar la colmena de agentes PUNY.")}
                 target="_blank"
                 rel="noopener noreferrer"
               >

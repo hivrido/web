@@ -24,6 +24,7 @@ import { cardTextureSize, makeCardTexture, readCardFonts, waitForFonts } from ".
 import { useOrbitalInput } from "./useOrbitalInput";
 import { minRadiusFor, nearestSlotForProject, type OrbitConfig } from "./orbital-math";
 import type { OrbitalScene } from "./OrbitalScene";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Vueltas que da cada proyecto por la hélice.
@@ -59,7 +60,7 @@ const ORBIT: OrbitConfig = {
   roll: 0.11,
 };
 
-const WHATSAPP = "https://wa.me/5491156072460";
+const WHATSAPP = whatsapp("Hola Hivrido! Les escribo desde la galería orbital.");
 
 /** Puertas de entrada por disciplina: cada una lleva a su proyecto insignia. */
 const ENTRIES = [

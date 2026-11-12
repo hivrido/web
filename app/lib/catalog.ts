@@ -106,7 +106,7 @@ const TITLES: Title[] = [
        scripts/build-casting-assets.mjs desde el mismo máster. */
     poster: "/images/series/cuchillo-paz.webp",
     /* La serie se está armando con el casting abierto: la ficha lleva ahí. */
-    cta: { label: "Sumate al casting", href: "/casting" },
+    cta: { label: "Sumate al casting", href: "/casting/" },
   },
   {
     id: "el-docke",

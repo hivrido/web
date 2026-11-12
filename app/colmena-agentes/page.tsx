@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { JsonLd, servicioLd } from "../lib/schema";
+import HMark from "../components/immersive/HMark";
+import Hive from "../components/immersive/Hive";
 import ClientShell from "../components/layout/ClientShell";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import WebDesign, { type LandingContent } from "../components/sections/WebDesign";
+import { whatsapp } from "../lib/contacto";
 
 /**
  * Página de destino para la colmena de agentes IA.
@@ -18,13 +22,14 @@ import WebDesign, { type LandingContent } from "../components/sections/WebDesign
  * habla de landings se paga en costo por clic.
  */
 
-const WA = "https://api.whatsapp.com/send?phone=5491156072460&text=" +
-  encodeURIComponent("Hola Hivrido! Quiero saber más sobre la colmena de agentes IA.");
+const WA = whatsapp("Hola Hivrido! Quiero saber más sobre la colmena de agentes IA.");
+
+const DESCRIPCION =
+  "Colmena de agentes IA para tu negocio: atienden consultas, califican interesados, generan contenido y ejecutan procesos 24/7. Conectados a tu CRM, tus campañas y tus canales. Propuesta concreta en 24 horas.";
 
 export const metadata: Metadata = {
   title: "Colmena de Agentes IA | Automatización a Medida | Hivrido",
-  description:
-    "Colmena de agentes IA para tu negocio: atienden consultas, califican interesados, generan contenido y ejecutan procesos 24/7. Conectados a tu CRM, tus campañas y tus canales. Propuesta concreta en 24 horas.",
+  description: DESCRIPCION,
   keywords: [
     "agentes IA",
     "colmena de agentes",
@@ -33,12 +38,12 @@ export const metadata: Metadata = {
     "agentes autónomos",
     "automatización de procesos",
   ],
-  alternates: { canonical: "/colmena-agentes" },
+  alternates: { canonical: "/colmena-agentes/" },
   openGraph: {
     title: "Colmena de Agentes IA | Hivrido",
     description:
       "Agentes que analizan, crean, optimizan y ejecutan a escala. Conectados a tu CRM y a tus canales, trabajando mientras dormís.",
-    url: "https://hivrido.com/colmena-agentes",
+    url: "https://hivrido.com/colmena-agentes/",
     siteName: "Hivrido",
     locale: "es_AR",
     type: "website",
@@ -154,6 +159,7 @@ const CONTENT: LandingContent = {
 export default function ColmenaAgentesPage() {
   return (
     <ClientShell>
+      <JsonLd data={servicioLd({ nombre: "Colmena de agentes IA", tipo: "Automatización con agentes de inteligencia artificial", descripcion: DESCRIPCION, ruta: "/colmena-agentes/" })} />
       {/* 300 y no el valor por defecto: ese espera a que el preloader de la
           home se retire, y a quien ya lo vio hace poco se le saltea — el
           logo quedaría invisible dos segundos con el header a la vista. */}
@@ -161,6 +167,9 @@ export default function ColmenaAgentesPage() {
 
       <main className="dw-page page-wrapper">
         <section className="dw-hero">
+          {/* Capa inmersiva: decorativa, detrás del texto y fuera del camino del primer pintado. */}
+          <Hive />
+          <HMark className="dw-hero-mark" />
           <div className="section-container">
             <p className="dw-hero-eyebrow">Agentes IA · Automatización · Buenos Aires</p>
 

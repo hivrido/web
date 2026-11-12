@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Órbita — HIVRIDO",
     description: "Galería orbital de proyectos de HIVRIDO.",
-    url: "https://hivrido.com/orbital",
+    url: "https://hivrido.com/orbital/",
     type: "website",
   },
 };

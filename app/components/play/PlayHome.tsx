@@ -9,7 +9,7 @@
  */
 
 import Link from "next/link";
-import NextImage from "next/image";
+import Poster from "./Poster";
 import {
   CATALOG,
   EDITORIAL,
@@ -31,9 +31,9 @@ import { openSearch } from "./SearchOverlay";
 import { useHistory, useMyList } from "./library";
 import { playFonts } from "./fonts";
 import "./play.css";
+import { whatsapp } from "../../lib/contacto";
 
 const byId = (id: string) => CATALOG.find((t) => t.id === id);
-const WA = "https://wa.me/5491156072460?text=";
 
 /* Filas que dependen de lo que hizo el visitante. En el servidor no existen,
    y aparecen solo si tienen algo que mostrar. */
@@ -74,7 +74,7 @@ function Editorial({ t }: { t: Entry }) {
   return (
     <section className="hp-editorial" aria-label={`Estreno: ${t.title}`}>
       <Link href={t.href} className="hp-editorial-media" tabIndex={-1} aria-hidden="true">
-        {t.poster && <NextImage src={t.poster} alt="" fill sizes="(max-width: 900px) 100vw, 60vw" className="hp-editorial-img" />}
+        {t.poster && <Poster src={t.poster} sizes="(max-width: 900px) 100vw, 60vw" className="hp-editorial-img" />}
       </Link>
       <div className="hp-editorial-copy">
         <p className="hp-kicker"><span className="hp-kicker-dot" />Estreno · {t.detail?.format.split("·")[0].trim() ?? "Película"}</p>
@@ -115,7 +115,7 @@ function ComingSoon() {
           <article key={t.id} className={`hp-soon${t.poster ? " has-poster" : ""}`}>
             <Link href={t.href} className="hp-soon-media" aria-label={t.title} style={accentOf(t)} onPointerMove={t.poster ? tilt : undefined} onPointerLeave={t.poster ? untilt : undefined}>
               {t.poster ? (
-                <NextImage src={t.poster} alt="" fill sizes="(max-width: 768px) 90vw, 420px" className="hp-card-img" />
+                <Poster src={t.poster} sizes="(max-width: 768px) 90vw, 420px" className="hp-card-img" />
               ) : (
                 <span className="hp-card-fallback is-lg" aria-hidden="true">{t.title}</span>
               )}
@@ -128,7 +128,7 @@ function ComingSoon() {
               </div>
               <a
                 className="hp-btn is-ghost is-sm"
-                href={`${WA}${encodeURIComponent(`Hola Hivrido! Avisame cuando se estrene ${t.title} en PLAY`)}`}
+                href={whatsapp(`Hola Hivrido! Avisame cuando se estrene ${t.title} en PLAY`)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -162,7 +162,7 @@ function Genres() {
             <span className="hp-genre-stack" aria-hidden="true">
               {items.filter((t) => t.poster).slice(0, 3).map((t) => (
                 <span key={t.id} className="hp-genre-poster">
-                  <NextImage src={t.poster!} alt="" fill sizes="160px" className="hp-card-img" />
+                  <Poster src={t.poster!} sizes="160px" className="hp-card-img" />
                 </span>
               ))}
             </span>
