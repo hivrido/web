@@ -35,7 +35,8 @@ Otros:
 7. **Privacidad.** El sitio carga una etiqueta publicitaria con cookies de terceros en todas las rutas y no tiene aviso ni política de privacidad. Es lo que baja Best Practices a 79. Decidí si querés aviso de cookies / consentimiento.
 8. **Botón de WhatsApp en PLAY.** La portada y las fichas no tienen botón flotante. ¿Querés uno, o PLAY se queda como plataforma de contenido?
 9. **Vercel sin GitHub.** El proyecto sigue sin conectarse al repo: cada publicación es manual. Conectarlo (`vercel git connect`) te daría además una URL de vista previa por rama, que es el staging que hoy no existe.
-10. **Reglas de proyecto para las redirecciones nuevas.** Las 17 variantes nuevas viven en `vercel.json`; sin su espejo como regla de proyecto, la versión sin barra llega en dos saltos. Se cargan con `vercel routes` (desde PowerShell).
+
+**Resuelto después de publicar (2026-11-12):** las 17 redirecciones nuevas tienen su espejo como regla de proyecto en Vercel (`npx vercel routes ls`: 24 reglas) y llegan en un salto. Las fuentes dejaron de pedirse a Google durante el build (`app/fonts/`, `next/font/local`): un fallo de Google Fonts ya no puede tumbar un deploy.
 
 ## 3. Medición: qué quedó listo y qué falta
 
@@ -50,16 +51,18 @@ Ya emite, sin cuentas nuevas (los recibe la etiqueta de Ads y quedan en `dataLay
 
 Para verlos en Analytics: crear una propiedad GA4 y cargar `NEXT_PUBLIC_GA4_ID=G-XXXX` en Vercel y en `.env.local`. No hay que tocar código.
 
-Propuesto y **no implementado**:
+Sumados después (salen por `app/lib/medir.ts`; ninguno lleva datos de la persona):
 
-| Evento | Dónde se engancha |
-|---|---|
-| `trailer_play` (+ 25/50/75/100 %) | `CinePlayer.tsx`, que ya consulta el tiempo cada 250 ms |
-| `avisame_click` con el título | el enlace de "Próximamente" en `PlayHome.tsx` |
-| `casting_submit` | `onSubmit` de `CastingCall.tsx` |
-| `scroll_depth` 50/90 % en servicios | un `IntersectionObserver` en `WebDesign.tsx` |
-| `search` en PLAY | `SearchOverlay.tsx` |
-| `cesion_firmada` | respuesta OK de `/api/cesion` |
+| Evento | Cuándo | Parámetros |
+|---|---|---|
+| `video_start` · `video_progress` · `video_complete` | reproductor de PLAY: arranque, 25/50/75 % y final, una vez cada uno | `video_title`, `video_id`, `video_percent` |
+| `avisame_click` | "Avisame" de Próximamente | `titulo` |
+| `casting_submit` | envío del formulario del casting (abre WhatsApp por `window.open`, que el oyente de clics no veía) | `casting` |
+| `scroll_depth` | 50 % y 90 % de cualquier página de Next | `percent_scrolled` |
+| `search` | buscador de PLAY, al dejar de escribir | `search_term`, `resultados`, `filtro` |
+| `cesion_firmada` | firma registrada en `/cesion` | `version` |
+
+Los de video y `search` usan los nombres que GA4 ya reconoce, así entran en sus informes sin configurarlos.
 
 Cuentas que harían falta: GA4, Google Search Console (verificar el dominio y enviar el sitemap) y, si hay pauta en Meta, Pixel + Conversions API.
 

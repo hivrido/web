@@ -1,6 +1,6 @@
 # Publicar y volver atrás
 
-Nada de esta rama está en producción. `main` y hivrido.com siguen en `f6938a1`.
+Publicado el 2026-11-12: la rama entró a `main` con el merge `20ec379` y está en hivrido.com. Lo que sigue queda como guía para la próxima publicación y para volver atrás.
 
 ## Antes de publicar
 
