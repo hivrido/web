@@ -15,7 +15,7 @@ export default function Medicion({ id }: { id: string }) {
   if (AJENAS.some((r) => ruta.startsWith(r))) return null;
   return (
     <>
-      <GoogleTag id={id} />
+      <GoogleTag id={id} ga4={process.env.NEXT_PUBLIC_GA4_ID} />
       <WhatsAppConversion />
     </>
   );
