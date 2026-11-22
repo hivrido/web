@@ -154,12 +154,13 @@ export const RYTMOS: Rytmos = {
   /* Fotos: las de perfil de Instagram (public/images/rytmos/equipo/). */
   equipo: [
     { nombre: "Lucas Ariel Manzano", rol: "Creador", instagram: "hivrido.product.x1_ok", foto: "/images/rytmos/equipo/lucas-manzano.webp", principal: true },
-    { nombre: "Malena Luchetti", rol: "Dirección de casting", instagram: "malenaluchetti", foto: "/images/rytmos/equipo/malena-luchetti.webp" },
-    { nombre: "Zurdosound", rol: "Postproducción, filmación y contenidos", instagram: "zurdosound", foto: "/images/rytmos/equipo/zurdosound.webp" },
-    { nombre: "Joaquín Pramori", rol: "Logística & eventos", instagram: "jokospramori", foto: "/images/rytmos/equipo/joaquin-pramori.webp" },
     /* TODO-CONTENIDO: el rol de Leandro en la serie. Así escribe su nombre en
        Instagram, con tilde. */
     { nombre: "Leandro Domé", instagram: "leandro_dome", foto: "/images/rytmos/equipo/leandro-dome.webp" },
+    { nombre: "Joaquín Pramori", rol: "Logística & eventos", instagram: "jokospramori", foto: "/images/rytmos/equipo/joaquin-pramori.webp" },
+    /* Zurdosound es su nombre artístico (ver app/lib/artistas.ts). */
+    { nombre: "Alan Ezequiel Mendoza", rol: "Postproducción, filmación y contenidos", instagram: "zurdosound", foto: "/images/rytmos/equipo/zurdosound.webp" },
+    { nombre: "Malena Luchetti", rol: "Dirección de casting", instagram: "malenaluchetti", foto: "/images/rytmos/equipo/malena-luchetti.webp" },
   ],
   /* TODO-CONTENIDO: premios, festivales o prensa, solo si existen. */
   prensa: [],

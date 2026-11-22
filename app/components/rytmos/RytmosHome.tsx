@@ -11,7 +11,7 @@ import Trailer, { VerTrailer } from "./Trailer";
 import Elenco from "./Elenco";
 import Galeria from "./Galeria";
 import BandaSonora from "./BandaSonora";
-import { AnclasViejas, LinkFicha, SCRIPT_ANCLAS } from "./Acciones";
+import { AnclasViejas, SCRIPT_ANCLAS } from "./Acciones";
 import { Cabecera, Foto } from "./piezas";
 import { FinTransicion, VIAJA } from "../play/transicion";
 import { playFonts } from "../play/fonts";
@@ -201,7 +201,6 @@ function Hero() {
           <span className={`hp-badge ${proximamente ? "is-gold" : "is-accent"}`}>{estado}</span>
           {S.clasificacion && <span className="hp-badge">{S.clasificacion}</span>}
           {linea && <span className="hp-meta">{linea}</span>}
-          <LinkFicha href={RYTMOS_FICHA}>Ficha en PLAY</LinkFicha>
         </div>
         {S.tagline && <p className="ry-hero-tagline">{S.tagline}</p>}
         {/* El contador va al casting mientras esté abierto; después, al

@@ -1,24 +1,11 @@
 "use client";
 
 /**
- * Piezas de cliente chicas de la home:
- * - el link a la ficha, que viaja con transición de vista;
- * - la red de las anclas viejas del catálogo.
+ * Pieza de cliente chica de la home: la red de las anclas viejas del
+ * catálogo.
  */
 
 import { useEffect } from "react";
-import Link from "next/link";
-import { useNavegarConTransicion } from "../play/transicion";
-
-export function LinkFicha({ href, children }: { href: string; children: React.ReactNode }) {
-  const navegar = useNavegarConTransicion();
-  return (
-    <Link href={href} className="ry-link" onClick={navegar} data-medir="ficha_click" data-medir-origen="hero">
-      {children}
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-    </Link>
-  );
-}
 
 /** Las anclas del catálogo que vivieron en la raíz. */
 export const ANCLAS_VIEJAS = ["series", "peliculas", "proximamente"];
