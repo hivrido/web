@@ -17,6 +17,8 @@
  * degradado de la casa—; las que faltan están listadas en PORTADAS.md.
  */
 
+import { RYTMOS, estadoRytmos, lineaTemporada } from "./rytmos";
+
 export type ContentType = "serie" | "pelicula";
 
 /** Datos extendidos de la ficha: créditos, elenco, relatos, premios. */
@@ -83,8 +85,37 @@ export type Title = {
   detail?: Detail;
 };
 
+/**
+ * RYTMOS, la serie que abre la home. Sus datos no se cargan acá: salen de
+ * app/lib/rytmos.ts, que también alimenta la home. Mientras no tenga
+ * sinopsis es provisoria —noindex, fuera del sitemap y en Próximamente—, y al
+ * cargarla entra sola a las filas que le toquen.
+ */
+const rytmos: Title = {
+  id: RYTMOS.id,
+  title: RYTMOS.nombre,
+  type: "serie",
+  year: RYTMOS.temporada && RYTMOS.estreno ? `T${RYTMOS.temporada} · ${RYTMOS.estreno.slice(0, 4)}` : undefined,
+  seasons: RYTMOS.temporada ? `${RYTMOS.temporada} temporada${RYTMOS.temporada === 1 ? "" : "s"}` : undefined,
+  genre: RYTMOS.genero.join(" · "),
+  synopsis: RYTMOS.sinopsisCorta ?? "Sinopsis provisoria. Pendiente de completar con el material definitivo.",
+  badge: estadoRytmos() === "Estreno" ? "NUEVA" : "PRONTO",
+  poster: RYTMOS.poster,
+  ...(RYTMOS.trailer && "ytId" in RYTMOS.trailer ? { ytId: RYTMOS.trailer.ytId } : {}),
+  isPlaceholder: !RYTMOS.sinopsisCorta,
+  detail: RYTMOS.sinopsisLarga
+    ? {
+        about: RYTMOS.sinopsisLarga,
+        format: ["Serie", lineaTemporada()].filter(Boolean).join(" · "),
+        crew: RYTMOS.creditos.map((c) => ({ role: c.rol, name: c.nombre })),
+        cast: RYTMOS.elenco.map((p) => ({ name: p.nombre, character: p.personaje })),
+      }
+    : undefined,
+};
+
 const TITLES: Title[] = [
   /* ── SERIES ─────────────────────────────────────────────────────────── */
+  rytmos,
   {
     /* La producción en curso, por eso abre la fila. No lleva `isPlaceholder`:
        tiene afiche propio y una sinopsis apoyada en lo que el casting ya
