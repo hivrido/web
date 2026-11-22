@@ -32,6 +32,13 @@
   --hp-gold: #ffaa3b;
   --hp-gold-ink: #1a0f00;
   --hp-danger: #ff4d4f;
+  /* Paleta de marca Hivrido (la misma de la capa inmersiva, immersive.css):
+     la usan las piezas de lanzamiento, como la home de RYTMOS. */
+  --hp-ink: #0d0717;
+  --hp-night: #3c1053;
+  --hp-electric: #5f259f;
+  --hp-ultra: #8246af;
+  --hp-neon: #ac4fc6;
 
   --hp-display: var(--font-hp-display), "Anton", Impact, sans-serif;
   --hp-sans: var(--font-hp-sans), "Inter", system-ui, sans-serif;
@@ -388,6 +395,10 @@ html:has(.mp-app) body { overflow-y: visible; }
 /* El cajón del menú (piezas de globals.css) va por encima de la barra. */
 .mp-app .nav-overlay-bg { z-index: 150; }
 .mp-app .nav-drawer { z-index: 160; }
+/* Al abrir, visible en el acto: con la transición de 0,5 s el cajón seguía
+   oculto en el cuadro en que PlayMenu le pasa el foco, y el navegador lo
+   rechazaba. Al cerrar, la demora queda para que se vea salir. */
+.mp-app .nav-drawer.open { transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), visibility 0s; }
 @media (min-width: 769px) {
   .mp-app .nav-drawer,
   .mp-app .nav-overlay-bg { display: none; }
@@ -1393,3 +1404,19 @@ html:has(.mp-app) body { overflow-y: visible; }
 @media (prefers-reduced-motion: reduce) {
   .cp-cover { animation: none; }
 }
+
+/* El logo del header y del pie son dos destinos: la marca vuelve a la home
+   del dominio y la píldora PLAY, al catálogo. */
+.hp-logo-mark { display: flex; align-items: center; color: inherit; }
+.hp-logo-pill { transition: box-shadow 0.3s var(--hp-ease), transform 0.3s var(--hp-ease); }
+a.hp-logo-pill:hover { box-shadow: 0 0 22px 0 rgba(255, 170, 59, 0.7); }
+a.hp-logo-pill:active { transform: scale(0.96); }
+
+/* ── TRANSICIONES DE VISTA ──
+   El nombre de RYTMOS viaja entre la home, el catálogo y su ficha
+   (transicion.tsx). Vive acá porque las tres páginas cargan esta hoja: la
+   regla tiene que existir de los dos lados de la navegación. Quién viaja lo
+   decide cada página con `view-transition-name: rytmos-obra`. */
+::view-transition-group(rytmos-obra) { animation-duration: 0.6s; animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 0.35s; }

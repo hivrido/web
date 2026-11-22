@@ -12,6 +12,7 @@
 
 import { useState } from "react";
 import CinePlayer from "./CinePlayer";
+import { FinTransicion, VIAJA } from "./transicion";
 import PosterCard, { Badges, ListIcon } from "./PosterCard";
 import { posterAt } from "./Poster";
 import Row from "./Row";
@@ -133,6 +134,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
 
   return (
     <>
+      <FinTransicion />
       {/* Atmósfera: el afiche, muy desenfocado, tiñe la parte alta de la página. */}
       {t.poster && <div className="tv-ambient" style={{ backgroundImage: `url('${posterAt(t.poster, 640)}')` }} aria-hidden="true" />}
 
@@ -187,8 +189,8 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
           <section className="tv-card">
             {t.poster && <div className="tv-card-thumb" style={{ backgroundImage: `url('${posterAt(t.poster, 640)}')` }} aria-hidden="true" />}
             <div className="tv-card-body">
-              <h1 className="tv-title">{t.title}</h1>
-              <p className="tv-meta">{t.genre}</p>
+              <h1 className="tv-title" style={t.id === "rytmos" ? VIAJA : undefined}>{t.title}</h1>
+              {t.genre && <p className="tv-meta">{t.genre}</p>}
               <p className="tv-meta is-strong">
                 {meta}
                 <Badges item={t} hideNew />
@@ -346,7 +348,7 @@ export default function TitleView({ t, episodes, related }: { t: Entry; episodes
               {t.year && (
                 <div><dt>Año</dt><dd>{t.year}</dd></div>
               )}
-              <div><dt>Género</dt><dd>{t.genre}</dd></div>
+              {t.genre && <div><dt>Género</dt><dd>{t.genre}</dd></div>}
               <div><dt>País · Idioma</dt><dd>Argentina · Español</dd></div>
             </dl>
           </section>

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { seccionDe } from "../../lib/contacto";
+import { medir } from "../../lib/medir";
 
 /** Acción de conversión "Solicitar cotización" de la cuenta de Google Ads. */
 const SEND_TO = "AW-18174991826/u2P8CID8lt8cENK7wdpD";
@@ -31,10 +32,25 @@ declare global {
  * pestaña, esta página sigue viva y el pedido llega igual. La cola de `gtag`
  * existe desde el HTML (GoogleTag.tsx), así que un clic anterior a que baje
  * la librería queda anotado y se envía cuando llega.
+ *
+ * El mismo oyente mide cualquier elemento marcado con `data-medir="evento"`:
+ * los `data-medir-*` restantes viajan como parámetros (`data-medir-origen`
+ * → `origen`). Así un componente de servidor declara su medición sin pasar
+ * a ser de cliente. Se emite además de lo anterior, no en su lugar: un
+ * "Avisame" sigue contando como conversión de WhatsApp.
  */
 export default function WhatsAppConversion() {
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
+      const marcado = (e.target as HTMLElement | null)?.closest?.<HTMLElement>("[data-medir]");
+      if (marcado) {
+        const params: Record<string, string> = {};
+        for (const [k, v] of Object.entries(marcado.dataset)) {
+          if (k.startsWith("medir") && k !== "medir" && v) params[k.slice(5).toLowerCase()] = v;
+        }
+        medir(marcado.dataset.medir!, params);
+      }
+
       const link = (e.target as HTMLElement | null)?.closest?.<HTMLAnchorElement>("a[href]");
       if (!link) return;
       const href = link.href;

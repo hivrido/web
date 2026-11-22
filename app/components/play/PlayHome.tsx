@@ -33,6 +33,7 @@ import { playFonts } from "./fonts";
 import "./play.css";
 import { whatsapp } from "../../lib/contacto";
 import { medir } from "../../lib/medir";
+import { FinTransicion, VIAJA, useNavegarConTransicion } from "./transicion";
 
 const byId = (id: string) => CATALOG.find((t) => t.id === id);
 
@@ -105,6 +106,7 @@ function Editorial({ t }: { t: Entry }) {
 }
 
 function ComingSoon() {
+  const navegar = useNavegarConTransicion();
   return (
     <section className="hp-shelf" id="proximamente" aria-label="Próximamente">
       <header className="hp-shelf-head">
@@ -114,7 +116,16 @@ function ComingSoon() {
       <div className="hp-soon-grid">
         {UPCOMING.map((t) => (
           <article key={t.id} className={`hp-soon${t.poster ? " has-poster" : ""}`}>
-            <Link href={t.href} className="hp-soon-media" aria-label={t.title} style={accentOf(t)} onPointerMove={t.poster ? tilt : undefined} onPointerLeave={t.poster ? untilt : undefined}>
+            <Link
+              href={t.href}
+              className="hp-soon-media"
+              aria-label={t.title}
+              /* RYTMOS viaja hasta su ficha (transicion.tsx). */
+              style={t.id === "rytmos" ? { ...accentOf(t), ...VIAJA } : accentOf(t)}
+              onClick={t.id === "rytmos" ? navegar : undefined}
+              onPointerMove={t.poster ? tilt : undefined}
+              onPointerLeave={t.poster ? untilt : undefined}
+            >
               {t.poster ? (
                 <Poster src={t.poster} sizes="(max-width: 768px) 90vw, 420px" className="hp-card-img" />
               ) : (
@@ -201,6 +212,7 @@ function Ticker() {
 export default function PlayHome() {
   return (
     <div className={`mp-app hp ${playFonts}`}>
+      <FinTransicion />
       <PlayHeader home />
       {/* El título del slider cambia solo: el h1 tiene que decir de qué es la
           página, no qué obra estaba en pantalla cuando pasó Google. */}

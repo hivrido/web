@@ -12,26 +12,54 @@
  *
  * Lo abre "Más", en la barra inferior: el header de PLAY ya no lleva botón de
  * menú en el teléfono. En escritorio no se muestra: play.css decide eso.
+ *
+ * La home de RYTMOS usa este mismo cajón con su propia lista (el mapa de
+ * app/lib/mapa.ts) y ahí sí se abre también en escritorio.
  */
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import ScrambleLink from "../ui/ScrambleLink";
 import { jumpTo } from "./jump";
 import WaGeneral from "../../components/ui/WaGeneral";
 
 /* Las secciones de la plataforma, más la salida al sitio institucional. */
-const ITEMS = [
+export type MenuItem = { label: string; href: string };
+
+const ITEMS: MenuItem[] = [
   { label: "Inicio", href: "/" },
-  { label: "Series", href: "/#series" },
-  { label: "Películas", href: "/#peliculas" },
-  { label: "Próximamente", href: "/#proximamente" },
+  { label: "Catálogo", href: "/play/" },
+  { label: "Series", href: "/play/#series" },
+  { label: "Películas", href: "/play/#peliculas" },
+  { label: "Próximamente", href: "/play/#proximamente" },
   { label: "Casting", href: "/casting/" },
   { label: "Hivrido", href: "/web/" },
 ];
 
 
-export default function PlayMenu({ open, onClose: close }: { open: boolean; onClose: () => void }) {
-  /* Escape cierra, como en los paneles del anillo. */
+export default function PlayMenu({
+  open,
+  onClose: close,
+  items = ITEMS,
+  title = "Hivrido PLAY",
+  id,
+}: {
+  open: boolean;
+  onClose: () => void;
+  items?: MenuItem[];
+  title?: string;
+  id?: string;
+}) {
+  const cierre = useRef<HTMLButtonElement>(null);
+
+  /* Escape cierra, como en los paneles del anillo. Al abrir, el foco entra
+     al cajón; al cerrar vuelve a donde estaba (el botón que lo abrió). */
+  useEffect(() => {
+    if (!open) return;
+    const antes = document.activeElement as HTMLElement | null;
+    cierre.current?.focus({ preventScroll: true });
+    return () => antes?.focus?.({ preventScroll: true });
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
@@ -43,8 +71,9 @@ export default function PlayMenu({ open, onClose: close }: { open: boolean; onCl
     <>
       <div className={`nav-overlay-bg${open ? " open" : ""}`} onClick={close} />
 
-      <nav className={`nav-drawer${open ? " open" : ""}`} aria-label="Navegación">
+      <nav id={id} className={`nav-drawer${open ? " open" : ""}`} aria-label="Navegación">
         <button
+          ref={cierre}
           type="button"
           className="mp-drawer-close"
           onClick={close}
@@ -56,9 +85,9 @@ export default function PlayMenu({ open, onClose: close }: { open: boolean; onCl
           </svg>
         </button>
 
-        <div className="nav-title-dec">Hivrido PLAY</div>
+        <div className="nav-title-dec">{title}</div>
         <ul className="nav-menu">
-          {ITEMS.map((item, i) => (
+          {items.map((item, i) => (
             <li key={item.href}>
               <ScrambleLink
                 label={item.label}

@@ -19,7 +19,9 @@ export function metaOf(t: Entry) {
   const parts = [t.type === "serie" ? "Serie" : "Película"];
   if (t.year) parts.push(t.year);
   else if (t.duration && t.duration !== "—") parts.push(t.duration);
-  parts.push(t.genre.split("·")[0].trim());
+  /* Sin género confirmado no se rellena: la línea queda más corta. */
+  const genre = t.genre.split("·")[0].trim();
+  if (genre) parts.push(genre);
   return parts;
 }
 
