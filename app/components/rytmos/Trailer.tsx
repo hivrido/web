@@ -20,11 +20,11 @@ import type { Rytmos } from "../../lib/rytmos";
 export const EVENTO_TRAILER = "rytmos:trailer";
 
 function Archivo({ src, subtitulos, poster, titulo, arrancar }: { src: string; subtitulos?: string; poster?: string; titulo: string; arrancar: boolean }) {
+  /* Cuando el hero pide arrancar, el padre lo vuelve a montar (key) con
+     `arrancar`: el estado inicial ya lo contempla. */
   const [cargado, setCargado] = useState(arrancar);
   const ref = useRef<HTMLVideoElement>(null);
   const hitos = useRef(new Set<string>());
-
-  useEffect(() => { if (arrancar) setCargado(true); }, [arrancar]);
 
   const una = (evento: string, extra: Record<string, number> = {}) => {
     const k = `${evento}${extra.video_percent ?? ""}`;

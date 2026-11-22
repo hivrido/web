@@ -35,16 +35,20 @@ export default function Cuenta({ fecha }: { fecha: string }) {
   }).format(meta);
   if (ahora !== null && ahora >= meta) return null;
 
-  let resto = ahora === null ? 0 : Math.floor((meta - ahora) / 1000);
+  const total = ahora === null ? 0 : Math.floor((meta - ahora) / 1000);
+  /* Cada unidad es lo que sobra de la mayor: días, después horas del día… */
+  const valor = (seg: number, i: number) => {
+    const mayor = i === 0 ? Infinity : UNIDADES[i - 1][1];
+    return Math.floor((total % mayor) / seg);
+  };
   return (
     <div className="ry-countdown">
       <p className="ry-count-date">Estreno · {legible}</p>
       {/* role="timer" anuncia el valor solo si se lo consulta: sin aria-live,
           el lector de pantalla no lee un número nuevo por segundo. */}
       <div className="ry-count" role="timer" aria-label={`Faltan para el estreno del ${legible}`}>
-        {UNIDADES.map(([rotulo, seg]) => {
-          const v = Math.floor(resto / seg);
-          resto -= v * seg;
+        {UNIDADES.map(([rotulo, seg], i) => {
+          const v = valor(seg, i);
           return (
             <span key={rotulo} className="ry-count-unit">
               <span className="ry-count-num">{ahora === null ? "--" : String(v).padStart(2, "0")}</span>

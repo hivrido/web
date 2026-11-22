@@ -20,7 +20,6 @@ export default function Elenco({ personas }: { personas: Persona[] }) {
             {p.foto && (
               <picture>
                 <source type="image/avif" srcSet={srcsetDe(p.foto, "avif", 1080)} sizes="(max-width: 768px) 72vw, 300px" />
-                {/* eslint-disable-next-line @next/next/no-img-element -- variantes propias */}
                 <img src={`${p.foto}-640.webp`} srcSet={srcsetDe(p.foto, "webp", 1080)} sizes="(max-width: 768px) 72vw, 300px" alt={p.personaje ? `${p.nombre} como ${p.personaje}` : p.nombre} loading="lazy" decoding="async" width={800} height={1000} />
               </picture>
             )}
