@@ -62,3 +62,7 @@ next-env.d.ts
 # Evidencia de auditoría: capturas, videos y JSON de Lighthouse pesan decenas
 # de MB. Los informes .md de /auditoria sí se versionan.
 /auditoria/evidencia/
+
+# Másters de material (key art, fotos de elenco, stills): se procesan con
+# los scripts de scripts/ y lo que se sirve sale en public/. No se versionan.
+/material/

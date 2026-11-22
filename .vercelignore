@@ -37,3 +37,6 @@
 # originales y el espejo de la referencia. Lo que el sitio sirve ya está
 # procesado en /public/alejandradelfino.
 /public/aledelfino
+
+# Másters de material: no se versionan ni se sirven.
+/material
