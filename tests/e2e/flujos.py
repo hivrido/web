@@ -24,14 +24,19 @@ BASE = os.environ.get("BASE", "http://localhost:3311").rstrip("/")
 NUMERO = "5491156072460"
 MOVIL = dict(viewport={"width": 390, "height": 844}, device_scale_factor=2, is_mobile=True, has_touch=True)
 ESCRITORIO = dict(viewport={"width": 1440, "height": 900})
+# Dónde vive el catálogo de PLAY: /play/ con la home de RYTMOS, la raíz si se
+# volvió a la portada anterior (PORTADA=play, ver app/lib/portada.ts).
+CATALOGO = "/" if os.environ.get("PORTADA") == "play" else "/play/"
 
 RUTAS = [
-    "/", "/web/", "/okupas/", "/casting/", "/cesion/", "/origen/", "/estudio/", "/orbital/",
+    "/", "/play/", "/web/", "/okupas/", "/casting/", "/cesion/", "/origen/", "/estudio/", "/orbital/",
     "/diseno-web/", "/branding/", "/equipo/", "/publicidad/", "/colmena-agentes/", "/artistas/",
     "/artistas/amplax/", "/artistas/zurdosound/",
     "/play/el-rectangulo-de-angeles/", "/play/erase-una-vez-en-virreyes/", "/play/mia/",
-    "/play/cuchillo-paz/", "/play/insomnio/",
+    "/play/cuchillo-paz/", "/play/insomnio/", "/play/rytmos/",
 ]
+if CATALOGO == "/":
+    RUTAS.remove("/play/")  # con la portada anterior, /play/ es un duplicado con canónica "/"
 
 
 class Flujos(unittest.TestCase):
@@ -55,7 +60,7 @@ class Flujos(unittest.TestCase):
     # ── Catálogo ────────────────────────────────────────────────────────────
 
     def test_catalogo_lleva_a_la_ficha(self):
-        page = self.pagina("/")
+        page = self.pagina(CATALOGO)
         self.assertEqual(page.locator("h1").count(), 1)
         card = page.locator("#peliculas .hp-card-link").first
         destino = card.get_attribute("href")
@@ -65,7 +70,7 @@ class Flujos(unittest.TestCase):
         self.assertTrue(page.locator("h1.tv-title").inner_text().strip())
 
     def test_buscador_encuentra_por_genero(self):
-        page = self.pagina("/")
+        page = self.pagina(CATALOGO)
         page.locator(".hp-search-btn").click()
         campo = page.locator(".hp-search-input")
         campo.fill("terror")
@@ -74,7 +79,7 @@ class Flujos(unittest.TestCase):
         page.keyboard.press("Escape")
 
     def test_hero_usa_imagen_con_variantes(self):
-        page = self.pagina("/", movil=True)
+        page = self.pagina(CATALOGO, movil=True)
         img = page.locator(".hp-hero-slide.is-active img.hp-hero-img")
         self.assertIn("-960.webp", img.get_attribute("srcset") or "")
         self.assertEqual(img.get_attribute("fetchpriority"), "high")
@@ -97,7 +102,7 @@ class Flujos(unittest.TestCase):
     # ── Avisame ─────────────────────────────────────────────────────────────
 
     def test_avisame_lleva_el_titulo_en_el_mensaje(self):
-        page = self.pagina("/")
+        page = self.pagina(CATALOGO)
         tarjetas = page.locator("#proximamente .hp-soon")
         self.assertGreater(tarjetas.count(), 0)
         for i in range(tarjetas.count()):
@@ -170,7 +175,7 @@ class Flujos(unittest.TestCase):
         page.wait_for_url(re.compile(r"/artistas/$"))
 
     def test_menu_de_play_en_movil(self):
-        page = self.pagina("/", movil=True)
+        page = self.pagina(CATALOGO, movil=True)
         page.locator(".hp-tabbar button", has_text="Más").click()
         page.locator("nav.nav-drawer.open").wait_for(state="visible")
         page.keyboard.press("Escape")
@@ -193,14 +198,14 @@ class Flujos(unittest.TestCase):
     # ── Sin JavaScript ──────────────────────────────────────────────────────
 
     def test_sin_javascript_el_contenido_esta_y_se_ve(self):
-        for ruta in ["/", "/web/", "/diseno-web/", "/artistas/", "/play/mia/", "/casting/"]:
+        for ruta in ["/", CATALOGO, "/web/", "/diseno-web/", "/artistas/", "/play/mia/", "/casting/"]:
             with self.subTest(ruta=ruta):
                 page = self.pagina(ruta, js=False)
                 page.wait_for_timeout(300)
                 self.assertEqual(page.locator("h1").count(), 1)
                 self.assertEqual(page.locator(".hv-noscript").count(), 0, "no debe quedar el cartel que tapaba todo")
                 h1 = page.locator("h1")
-                if ruta != "/":  # el h1 de la portada de PLAY es solo para lectores
+                if ruta != CATALOGO:  # el h1 de la portada de PLAY es solo para lectores
                     self.assertTrue(h1.is_visible())
                 texto = page.locator("body").inner_text()
                 self.assertGreater(len(texto.split()), 80, "tiene que haber texto visible")
