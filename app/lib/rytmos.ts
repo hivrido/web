@@ -74,6 +74,9 @@ export type Rytmos = {
   trailer?: { ytId: string } | { src: string; subtitulos?: string; duracion?: string };
   /** Key art apaisado, sin texto. Es el fondo del hero y el LCP de la home. */
   keyArt?: Imagen;
+  /** Versión vertical del key art para teléfonos (9:16). Sin ella, el
+      teléfono recorta el centro del apaisado y pierde casi tres cuartos. */
+  keyArtVertical?: Imagen;
   /** Loop de fondo del hero (MP4 H.264, mudo, ≤ 3 MB). Solo se carga después
       del key art y nunca con movimiento reducido. */
   loop?: string;
@@ -91,10 +94,11 @@ export type Rytmos = {
 
 export const RYTMOS: Rytmos = {
   id: "rytmos",
-  /* TODO-CONTENIDO: confirmar mayúsculas, tildes y estilo del logo. */
+  /* Así lo escribe el logo entregado. */
   nombre: "RYTMOS",
-  /* TODO-CONTENIDO: logo de la serie (SVG). */
-  logo: undefined,
+  /* El hero lo anima en 3D desde app/components/rytmos/logo-trazos.ts, que
+     es este mismo archivo partido por letra. */
+  logo: { src: "/images/rytmos/rytmos-logo.svg", ancho: 266.5, alto: 41.982 },
   /* TODO-CONTENIDO: tagline. */
   tagline: undefined,
   /* TODO-CONTENIDO: sinopsis corta (una línea) y larga (un párrafo). */
@@ -120,6 +124,8 @@ export const RYTMOS: Rytmos = {
   trailer: undefined,
   /* TODO-CONTENIDO: key art. */
   keyArt: undefined,
+  /* TODO-CONTENIDO: key art vertical (opcional, muy recomendado). */
+  keyArtVertical: undefined,
   /* TODO-CONTENIDO: loop de video para el hero (opcional). */
   loop: undefined,
   /* TODO-CONTENIDO: afiche 16:9 de la tarjeta. */

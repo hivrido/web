@@ -45,17 +45,23 @@ export function Cabecera({ n, rotulo, titulo, children }: { n: number; rotulo: s
  */
 export function Foto({
   img,
+  movil,
   sizes,
   className,
   prioridad = false,
 }: {
   img: Imagen;
+  /** Otro encuadre para pantallas de hasta 768 px (art direction). */
+  movil?: Imagen;
   sizes: string;
   className?: string;
   prioridad?: boolean;
 }) {
+  const enMovil = "(max-width: 768px)";
   return (
     <picture className={className}>
+      {movil && <source media={enMovil} type="image/avif" srcSet={srcsetDe(movil.src, "avif", movil.ancho)} sizes="100vw" />}
+      {movil && <source media={enMovil} type="image/webp" srcSet={srcsetDe(movil.src, "webp", movil.ancho)} sizes="100vw" />}
       <source type="image/avif" srcSet={srcsetDe(img.src, "avif", img.ancho)} sizes={sizes} />
       <source type="image/webp" srcSet={srcsetDe(img.src, "webp", img.ancho)} sizes={sizes} />
       {/* eslint-disable-next-line @next/next/no-img-element -- variantes propias, ver Poster.tsx */}

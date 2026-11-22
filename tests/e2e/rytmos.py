@@ -70,7 +70,7 @@ class HomeRytmos(Base):
         self.assertIn("serie", titulo.lower())
         self.assertIn("Hivrido PLAY", titulo)
         self.assertEqual(page.locator("link[rel=canonical]").get_attribute("href"), "https://hivrido.com/")
-        self.assertEqual(page.locator("meta[property='og:image']").get_attribute("content"), "https://hivrido.com/images/share/rytmos-portada.jpg")
+        self.assertEqual(page.locator("meta[property='og:image']").get_attribute("content"), "https://hivrido.com/images/share/rytmos-portada-v2.jpg")
         self.assertEqual(page.locator("meta[name='twitter:card']").get_attribute("content"), "summary_large_image")
         self.assertEqual(page.locator("h1").count(), 1)
         self.assertIn("RYTMOS", page.locator("h1").inner_text())
@@ -169,7 +169,8 @@ class HomeRytmos(Base):
 
     def test_movimiento_reducido_no_anima(self):
         page = self.pagina("/", reducido=True)
-        anim = page.eval_on_selector(".ry-logo-l", "e => getComputedStyle(e).animationName")
+        anim = page.eval_on_selector(".ry-mark-l, .ry-logo-l", "e => getComputedStyle(e).animationName")
+        self.assertEqual(page.eval_on_selector(".ry-mark-glitch, .ry-logo", "e => getComputedStyle(e).animationName"), "none")
         self.assertEqual(anim, "none")
 
     def test_sin_javascript_se_lee_todo(self):

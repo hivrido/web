@@ -3,6 +3,7 @@ import Link from "next/link";
 import RytmosHeader from "./RytmosHeader";
 import Cuenta from "./Cuenta";
 import Loop from "./Loop";
+import LogoRytmos from "./LogoRytmos";
 import Trailer, { VerTrailer } from "./Trailer";
 import Elenco from "./Elenco";
 import Galeria from "./Galeria";
@@ -19,7 +20,7 @@ import WhatsAppBtn from "../ui/WhatsAppBtn";
 import HMark from "../immersive/HMark";
 import Hive from "../immersive/Hive";
 import { SELECTION, UPCOMING } from "../../lib/catalog";
-import { RYTMOS, RYTMOS_FICHA, avisameRytmos, estadoRytmos, lineaTemporada, tieneFicha } from "../../lib/rytmos";
+import { RYTMOS, RYTMOS_FICHA, avisameRytmos, estadoRytmos, lineaTemporada, srcsetDe, tieneFicha } from "../../lib/rytmos";
 import { MAS_RUTAS, PUERTAS } from "../../lib/mapa";
 import { INSTAGRAM, MAIL, mail, whatsapp } from "../../lib/contacto";
 import { JsonLd, SITE, migas, organizacionPlay, sitioWeb } from "../../lib/schema";
@@ -42,7 +43,7 @@ const DESCRIPTION = S.sinopsisCorta
   : `${S.nombre} es la nueva serie de Hivrido PLAY. Enterate primero del estreno y explorá el catálogo de series y películas argentinas de Hivrido.`;
 /* Sin pieza propia todavía, la tarjeta tipográfica de RYTMOS. Al cargar el
    key art, scripts/build-rytmos-images.mjs genera la definitiva. */
-const SHARE = S.share ?? "/images/share/rytmos-portada.jpg";
+const SHARE = S.share ?? "/images/share/rytmos-portada-v2.jpg";
 
 export const rytmosMetadata: Metadata = {
   title: TITLE,
@@ -148,7 +149,7 @@ function Hero() {
     <section className={`ry-hero${S.keyArt ? "" : " is-bare"}`} aria-label={`${S.nombre}, la nueva serie de Hivrido PLAY`}>
       <div className="ry-hero-bg" aria-hidden="true">
         {S.keyArt ? (
-          <Foto img={{ ...S.keyArt, alt: "" }} sizes="100vw" className="ry-hero-art" prioridad />
+          <Foto img={{ ...S.keyArt, alt: "" }} movil={S.keyArtVertical} sizes="100vw" className="ry-hero-art" prioridad />
         ) : (
           <div className="ry-stage">
             <span className="ry-beam is-a" />
@@ -165,8 +166,10 @@ function Hero() {
             horizonte que lo acompaña. */}
         <h1 className="ry-logo">
           {S.logo ? (
-            // eslint-disable-next-line @next/next/no-img-element -- logo vectorial o PNG ya dimensionado
-            <img className="ry-logo-img" style={VIAJA} src={S.logo.src} width={S.logo.ancho} height={S.logo.alto} alt={S.nombre} fetchPriority="high" />
+            <>
+              <span className="hp-sr">{S.nombre}</span>
+              <LogoRytmos />
+            </>
           ) : (
             <>
               <span className="hp-sr">{S.nombre}</span>
@@ -431,8 +434,13 @@ export default function RytmosHome() {
     <div className={`mp-app hp ry ${playFonts}`}>
       {/* Antes que nada: /#series y compañía van al catálogo. */}
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_ANCLAS }} />
+      {/* El key art es el LCP: se pide junto con el HTML, la variante que
+          corresponde a cada pantalla. */}
       {S.keyArt && (
-        <link rel="preload" as="image" type="image/avif" imageSrcSet={`${S.keyArt.src}-640.avif 640w, ${S.keyArt.src}-1080.avif 1080w, ${S.keyArt.src}-1600.avif 1600w, ${S.keyArt.src}-2400.avif 2400w`} imageSizes="100vw" fetchPriority="high" />
+        <link rel="preload" as="image" type="image/avif" imageSrcSet={srcsetDe(S.keyArt.src, "avif", S.keyArt.ancho)} imageSizes="100vw" fetchPriority="high" media={S.keyArtVertical ? "(min-width: 769px)" : undefined} />
+      )}
+      {S.keyArtVertical && (
+        <link rel="preload" as="image" type="image/avif" imageSrcSet={srcsetDe(S.keyArtVertical.src, "avif", S.keyArtVertical.ancho)} imageSizes="100vw" fetchPriority="high" media="(max-width: 768px)" />
       )}
       <JsonLd data={jsonLd()} />
       <AnclasViejas />

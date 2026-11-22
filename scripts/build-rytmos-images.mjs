@@ -12,7 +12,8 @@
  *
  * Por nombre de archivo:
  *   key-art.<ext>        → key-art-{640,1080,1600,2400}.{avif,webp} (16:9)
- *                          y además /images/share/rytmos-portada.jpg (1200×630)
+ *   key-art-vertical.<ext> → key-art-vertical-{640,1080}.{avif,webp} (9:16)
+ *                          y además /images/share/rytmos-key-art-share.jpg (1200×630)
  *                          y /images/series/rytmos.webp (afiche 16:9, 1600 px)
  *   elenco-<slug>.<ext>  → recorte 4:5, {640,1080}
  *   still-<nn>.<ext>     → stills y fotos de rodaje, {640,1080,1600}
@@ -62,13 +63,19 @@ for (const file of (await readdir(SRC)).sort()) {
   const src = path.join(SRC, file);
   const base = file.replace(/\.[^.]+$/, "").toLowerCase();
 
-  if (base === "key-art") {
+  if (base === "key-art-vertical") {
+    const d = await variantes(src, base, [640, 1080], 9 / 16);
+    pegar.push(`keyArtVertical: { src: "${WEB}/key-art-vertical", alt: "", ancho: ${d.ancho}, alto: ${d.alto} },`);
+  } else if (base === "key-art") {
     const d = await variantes(src, base, [640, 1080, 1600, 2400], 16 / 9);
     pegar.push(`keyArt: { src: "${WEB}/key-art", alt: "", ancho: ${d.ancho}, alto: ${d.alto} },`);
 
-    const share = path.join(root, "public", "images", "share", "rytmos-portada.jpg");
+    const share = path.join(root, "public", "images", "share", "rytmos-key-art-share.jpg");
     await sharp(src).rotate().resize({ width: 1200, height: 630, fit: "cover", position: "attention" }).jpeg({ quality: 82, mozjpeg: true }).toFile(share);
-    log.push(`/images/share/rytmos-portada.jpg  ${await kb(share)}`);
+    log.push(`/images/share/rytmos-key-art-share.jpg  ${await kb(share)}`);
+    /* Nombre propio y no el de la tarjeta tipográfica: /images se cachea un
+       año como inmutable, así que una imagen nueva lleva un nombre nuevo. */
+    pegar.push(`share: "/images/share/rytmos-key-art-share.jpg",`);
 
     const poster = path.join(root, "public", "images", "series", "rytmos.webp");
     await sharp(src).rotate().resize({ width: 1600, height: 900, fit: "cover", position: "attention" }).webp({ quality: 76 }).toFile(poster);

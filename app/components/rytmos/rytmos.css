@@ -174,7 +174,34 @@
    centro de la pantalla y más grande. */
 .ry-hero.is-bare { align-items: center; }
 .ry-hero.is-bare .ry-hero-content { padding-top: calc(var(--hp-header-h) + 56px); }
-.ry-logo-img { display: block; width: min(86vw, 760px); height: auto; filter: drop-shadow(0 0 24px color-mix(in srgb, var(--hp-neon) 55%, transparent)); }
+/* ── LOGO 3D (LogoRytmos.tsx) ──
+   Tres niveles para que cada movimiento tenga su capa: el cursor inclina
+   `.ry-mark-tilt`, la flotación mueve `.ry-mark-stage` y el scroll recuesta
+   `.ry-mark`. Todos preservan el 3D para que la extrusión se vea de costado. */
+@property --ry-depth { syntax: "<number>"; inherits: true; initial-value: 1; }
+.ry-mark {
+  display: block;
+  width: min(88vw, 1040px);
+  aspect-ratio: 266.5 / 41.982;
+  /* 3D ortográfico, sin perspectiva: con perspectiva la transformación deja
+     de ser afín, Chrome rasteriza las capas a baja resolución y el logo se
+     pixelaba. Sin ella, la extrusión se ve igual al girar y el trazo queda
+     nítido. */
+  transform-style: preserve-3d;
+  line-height: 0;
+}
+.ry-mark-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ry-mark-tilt,
+.ry-mark-stage { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; }
+.ry-mark-stage { transform: rotateX(7deg) rotateY(-10deg); }
+.ry-mark-tilt { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.7s var(--hp-ease); }
+.ry-mark svg:not(.ry-mark-defs) { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ry-mark-depth { transform: translateZ(calc(var(--z) * var(--ry-depth) * -3px)); }
+.ry-mark-face { filter: var(--ry-glow); }
+.ry-mark-l { transform-box: fill-box; transform-origin: 50% 100%; }
+.ry-mark-glitch { opacity: 0; mix-blend-mode: screen; pointer-events: none; }
+.ry-mark-glitch.is-a { color: var(--hp-neon); }
+.ry-mark-glitch.is-b { color: var(--hp-gold); }
 /* El barrido de luz que enciende el cartel. */
 .ry-logo::after {
   content: "";
@@ -468,7 +495,24 @@
   .ry-logo-l:nth-child(5) { animation-delay: 0.13s; }
   .ry-logo-l:nth-child(6) { animation-delay: 0.29s; }
   .ry-logo-l:nth-child(n + 7) { animation-delay: 0.33s; }
-  .ry-logo-img { animation: ry-beat 0.8s cubic-bezier(0.2, 0.9, 0.25, 1.1) 0.05s both; }
+  /* Logo 3D: las letras caen a compás, la extrusión crece hacia atrás, el
+     cartel flota y cada 7 s la señal se corta (la primera ráfaga, al
+     terminar de entrar). */
+  .ry-mark-l { animation: ry-mark-beat 0.62s cubic-bezier(0.2, 0.9, 0.25, 1.15) both; }
+  .ry-mark-l:nth-child(1) { animation-delay: 0.05s; }
+  .ry-mark-l:nth-child(2) { animation-delay: 0.21s; }
+  .ry-mark-l:nth-child(3) { animation-delay: 0.13s; }
+  .ry-mark-l:nth-child(4) { animation-delay: 0.29s; }
+  .ry-mark-l:nth-child(5) { animation-delay: 0.13s; }
+  .ry-mark-l:nth-child(6) { animation-delay: 0.29s; }
+  /* Un solo giro que termina en pose, no una flotación sin fin: el cartel
+     llega, se acomoda y queda quieto, que es cuando mejor se lee. */
+  .ry-mark-stage { animation: ry-depth 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both, ry-pose 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both; }
+  .ry-mark-face { animation: ry-ignite 1.5s ease-out 0.55s both, ry-glitch-face 7s steps(1) -5.6s infinite; }
+  .ry-mark-glitch.is-a { animation: ry-glitch-a 7s steps(1) -5.6s infinite; }
+  .ry-mark-glitch.is-b { animation: ry-glitch-b 7s steps(1) -5.6s infinite; }
+  .ry-mark:hover .ry-mark-glitch.is-a { animation: ry-glitch-a 0.9s steps(1) -0.8s infinite; }
+  .ry-mark:hover .ry-mark-glitch.is-b { animation: ry-glitch-b 0.9s steps(1) -0.8s infinite; }
   .ry-logo-word { animation: ry-ignite 1.5s ease-out 0.55s both; }
   .ry-logo::after { animation: ry-sweep 1.1s cubic-bezier(0.6, 0, 0.3, 1) 0.7s both; }
   .ry-horizon { animation: ry-horizon 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
@@ -484,6 +528,8 @@
        texto se apaga. */
     .ry-hero-bg { animation: ry-hero-px linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
     .ry-hero-content { animation: ry-hero-out linear both; animation-timeline: scroll(root); animation-range: 0 80vh; }
+    /* Al bajar, el cartel se recuesta hacia atrás y se ve su espesor. */
+    .ry-mark { animation: ry-mark-tumba linear both; animation-timeline: scroll(root); animation-range: 0 70vh; }
 
     .ry-w > span { animation: ry-word linear both; animation-timeline: view(); animation-range: entry 0% entry calc(55% + var(--i, 0) * 7%); }
     .ry-reveal { animation: ry-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 45%; }
@@ -512,6 +558,42 @@
   30% { filter: var(--ry-glow); }
   36% { filter: drop-shadow(0 0 4px rgba(172, 79, 198, 0.9)) drop-shadow(0 0 0 rgba(95, 37, 159, 0)); }
   100% { filter: var(--ry-glow); }
+}
+@keyframes ry-mark-beat {
+  0% { transform: translateY(70%) scaleY(1.4); opacity: 0.01; filter: blur(3px); }
+  55% { transform: translateY(-4%) scaleY(0.97); opacity: 1; filter: blur(0); }
+  100% { transform: none; opacity: 1; filter: none; }
+}
+@keyframes ry-depth { from { --ry-depth: 0; } to { --ry-depth: 1; } }
+@keyframes ry-pose {
+  from { transform: rotateX(18deg) rotateY(14deg); }
+  to { transform: rotateX(7deg) rotateY(-10deg); }
+}
+@keyframes ry-mark-tumba { to { transform: rotateX(38deg) translateY(-8%) scale(0.9); } }
+/* Ráfagas de glitch: 93–97 % del ciclo, el resto quieto. Las copias de color
+   se corren y se cortan en franjas; la cara tiembla y se tuerce un cuadro. */
+@keyframes ry-glitch-a {
+  0%, 92.9% { opacity: 0; transform: none; clip-path: none; }
+  93% { opacity: 0.9; transform: translate(-1.6%, 0); clip-path: inset(8% 0 62% 0); }
+  94% { transform: translate(1.2%, -4%); clip-path: inset(58% 0 14% 0); }
+  95% { transform: translate(-0.8%, 3%); clip-path: inset(30% 0 42% 0); }
+  96% { transform: translate(2%, 0); clip-path: inset(72% 0 4% 0); }
+  97%, 100% { opacity: 0; transform: none; clip-path: none; }
+}
+@keyframes ry-glitch-b {
+  0%, 92.9% { opacity: 0; transform: none; clip-path: none; }
+  93% { opacity: 0.75; transform: translate(1.4%, 2%); clip-path: inset(48% 0 30% 0); }
+  94% { transform: translate(-1.8%, 0); clip-path: inset(12% 0 70% 0); }
+  95% { transform: translate(1%, -2%); clip-path: inset(66% 0 10% 0); }
+  96% { transform: translate(-0.6%, 4%); clip-path: inset(22% 0 56% 0); }
+  97%, 100% { opacity: 0; transform: none; clip-path: none; }
+}
+@keyframes ry-glitch-face {
+  0%, 92.9% { transform: none; }
+  93.5% { transform: translateX(0.6%) skewX(-6deg); }
+  94.5% { transform: translateX(-0.8%); }
+  95.5% { transform: skewX(4deg); }
+  96.5%, 100% { transform: none; }
 }
 @keyframes ry-sweep { 0% { transform: translateX(-120%); opacity: 1; } 100% { transform: translateX(120%); opacity: 0; } }
 @keyframes ry-horizon { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 0.8; } }
