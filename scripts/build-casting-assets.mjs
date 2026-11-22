@@ -1,5 +1,13 @@
 /**
- * Genera las imágenes de /casting a partir del póster de Cuchillo Paz.
+ * Genera las imágenes de /casting a partir del póster del casting vigente.
+ *
+ *     node scripts/build-casting-assets.mjs            # RYTMOS (el vigente)
+ *     node scripts/build-casting-assets.mjs cuchillo   # Cuchillo Paz
+ *
+ * Cada casting es una entrada de CASTINGS, abajo: póster, textos de la
+ * tarjeta y nombres de salida. Lo que sigue describe la primera convocatoria,
+ * la de Cuchillo Paz; RYTMOS usa las mismas piezas salvo la tarjeta del
+ * catálogo (la suya sale de scripts/build-rytmos-images.mjs).
  *
  * Produce tres cosas:
  *
@@ -37,9 +45,45 @@ import sharp from "sharp";
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 
-/* El póster, tal como lo dejó producción. No se versiona: si falta, el script
-   avisa y los archivos ya generados siguen sirviendo. */
-const POSTER = path.join(root, "public", "images", "bg", "cuchillo paz.png");
+/* Los pósters, tal como los dejó producción. No se versionan: si falta, el
+   script avisa y los archivos ya generados siguen sirviendo.
+
+   Los textos son los mismos de app/casting/contenido.ts. Se copian a mano:
+   este script es Node puro y no puede importar un módulo de TypeScript. */
+const CASTINGS = {
+  rytmos: {
+    poster: path.join(root, "material", "rytmos", "afiche-casting.png"),
+    slug: "rytmos",
+    card: false,
+    texto: {
+      arriba: "CASTING ABIERTO",
+      serie: "RYTMOS",
+      fecha: "LUNES 23 DE NOVIEMBRE · 15 HS",
+      calle: "Parque Centenario, Buenos Aires",
+      zona: "Dirección de casting: Malena Luchetti",
+      claim: "NO HACE FALTA EXPERIENCIA.",
+      pie: "GRATIS · SIN BOOK NI FOTOS · BUENOS AIRES",
+    },
+  },
+  cuchillo: {
+    poster: path.join(root, "public", "images", "bg", "cuchillo paz.png"),
+    slug: "cuchillo-paz",
+    card: true,
+    texto: {
+      arriba: "CASTING ABIERTO",
+      serie: "CUCHILLO PAZ",
+      fecha: "PRIMERA TEMPORADA · 2026",
+      calle: "Dejá tus datos en hivrido.com/casting",
+      zona: "Te escribimos por WhatsApp",
+      claim: "NO HACE FALTA EXPERIENCIA.",
+      pie: "GRATIS · SIN BOOK NI FOTOS · BUENOS AIRES",
+    },
+  },
+};
+
+const elegido = CASTINGS[process.argv[2] ?? "rytmos"];
+if (!elegido) throw new Error(`Casting desconocido. Opciones: ${Object.keys(CASTINGS).join(", ")}`);
+const { poster: POSTER, slug: SLUG, texto: TEXTO } = elegido;
 
 const outDir = path.join(root, "public", "images", "casting");
 
@@ -48,18 +92,6 @@ const H = 630;
 /* El póster es 1024x1536, o sea 2:3. La franja mide 420x630, que es la misma
    proporción: entra entero, sin recortar a nadie la cara. */
 const PANEL = 420;
-
-/* Los mismos valores que app/casting/contenido.ts. Se copian a mano: este
-   script es Node puro y no puede importar un módulo de TypeScript. */
-const TEXTO = {
-  arriba: "CASTING ABIERTO",
-  serie: "CUCHILLO PAZ",
-  fecha: "PRIMERA TEMPORADA · 2026",
-  calle: "Dejá tus datos en hivrido.com/casting",
-  zona: "Te escribimos por WhatsApp",
-  claim: "NO HACE FALTA EXPERIENCIA.",
-  pie: "GRATIS · SIN BOOK NI FOTOS · BUENOS AIRES",
-};
 
 const esc = (s) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -133,7 +165,7 @@ const poster = await sharp(POSTER)
   .resize(PANEL, H, { fit: "cover", position: "top" })
   .toBuffer();
 
-const og = path.join(outDir, "casting-cuchillo-paz.jpg");
+const og = path.join(outDir, `casting-${SLUG}.jpg`);
 
 /* JPEG y no PNG: WhatsApp descarta las previsualizaciones pesadas, y el
    póster es una foto —en PNG pesaría varias veces lo mismo sin verse mejor. */
@@ -146,7 +178,7 @@ const ogInfo = await sharp(Buffer.from(fondo, "utf8"))
   .toFile(og);
 
 console.log(
-  `casting-cuchillo-paz.jpg — ${ogInfo.width}x${ogInfo.height}, ${(ogInfo.size / 1024).toFixed(0)} kB`
+  `casting-${SLUG}.jpg — ${ogInfo.width}x${ogInfo.height}, ${(ogInfo.size / 1024).toFixed(0)} kB`
 );
 
 /* ── 2 · El póster dentro de la página ──────────────────────────────────── */
@@ -154,13 +186,13 @@ console.log(
 /* 400 para el teléfono, 800 para pantallas densas y escritorio. El PNG de
    2,7 MB que entrega producción no viaja por datos móviles ni de casualidad. */
 for (const ancho of [400, 800]) {
-  const dst = path.join(outDir, `cuchillo-paz-poster-${ancho}.webp`);
+  const dst = path.join(outDir, `${SLUG}-poster-${ancho}.webp`);
   const info = await sharp(POSTER)
     .resize(ancho, Math.round((ancho * 3) / 2), { fit: "cover", position: "top" })
     .webp({ quality: 74, effort: 6 })
     .toFile(dst);
   console.log(
-    `cuchillo-paz-poster-${ancho}.webp — ${info.width}x${info.height}, ${(info.size / 1024).toFixed(0)} kB`
+    `${SLUG}-poster-${ancho}.webp — ${info.width}x${info.height}, ${(info.size / 1024).toFixed(0)} kB`
   );
 }
 
@@ -184,6 +216,7 @@ for (const ancho of [400, 800]) {
  * El recorte se expresa en fracciones del alto de la fuente y no en píxeles,
  * así un re-export del póster a otra medida sigue cayendo en el mismo lugar.
  */
+if (elegido.card) {
 const cardDir = path.join(root, "public", "images", "series");
 const { width: srcW, height: srcH } = await sharp(POSTER).metadata();
 
@@ -213,3 +246,4 @@ const cardInfo = await sharp(POSTER)
 console.log(
   `series/cuchillo-paz.webp — ${cardInfo.width}x${cardInfo.height}, ${(cardInfo.size / 1024).toFixed(0)} kB`
 );
+}

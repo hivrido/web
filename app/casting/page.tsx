@@ -9,7 +9,8 @@ import "./casting.css";
 import "./formulario.css";
 
 /**
- * El casting de Cuchillo Paz: el formulario para anotarse arriba y, debajo,
+ * El casting vigente (RYTMOS, ver CONVOCATORIA en contenido.ts): el formulario
+ * para anotarse arriba y, debajo,
  * todo lo que hay que saber de la prueba.
  *
  * Fue la página de una jornada con fecha y dirección; pasada la jornada, la
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   description: SEO.description,
   alternates: { canonical: "/casting/" },
   openGraph: {
-    title: "Sé parte de Cuchillo Paz | Hivrido",
+    title: SEO.share,
     description: SEO.description,
     url: "https://hivrido.com/casting/",
     siteName: "Hivrido",
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sé parte de Cuchillo Paz | Hivrido",
+    title: SEO.share,
     description: SEO.description,
     images: [SEO.ogImage],
   },

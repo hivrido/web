@@ -89,6 +89,9 @@ export type Rytmos = {
   /** Si la serie gira alrededor de la música: la banda sonora pasa a ser
       protagonista (sube en la página y crece). Solo con confirmación. */
   musicaProtagonista: boolean;
+  /** Casting abierto. La home lo anuncia mientras la fecha no pasó (se
+      decide al construir: después de la fecha, un deploy lo retira). */
+  casting?: { fecha: string; texto: string; href: string };
   prensa: Mencion[];
 };
 
@@ -99,8 +102,8 @@ export const RYTMOS: Rytmos = {
   /* El hero lo anima en 3D desde app/components/rytmos/logo-trazos.ts, que
      es este mismo archivo partido por letra. */
   logo: { src: "/images/rytmos/rytmos-logo.svg", ancho: 266.5, alto: 41.982 },
-  /* TODO-CONTENIDO: tagline. */
-  tagline: undefined,
+  /* Del afiche oficial del casting. */
+  tagline: "Para escapar del infierno tenés que atravesarlo.",
   /* TODO-CONTENIDO: sinopsis corta (una línea) y larga (un párrafo). */
   sinopsisCorta: undefined,
   sinopsisLarga: undefined,
@@ -138,6 +141,8 @@ export const RYTMOS: Rytmos = {
   bandaSonora: [],
   /* TODO-CONTENIDO: confirmar si la serie gira alrededor de la música. */
   musicaProtagonista: false,
+  /* El afiche: lunes 23/11, 15 hs, Parque Centenario. */
+  casting: { fecha: "2026-11-23T15:00:00-03:00", texto: "Casting abierto · Lunes 23/11 · 15 hs · Parque Centenario", href: "/casting/" },
   /* TODO-CONTENIDO: premios, festivales o prensa, solo si existen. */
   prensa: [],
 };
@@ -168,6 +173,11 @@ export function lineaTemporada(r: Rytmos = RYTMOS) {
 export function estadoRytmos(r: Rytmos = RYTMOS, ahora = Date.now()) {
   if (r.estreno && Date.parse(r.estreno) <= ahora) return "Estreno";
   return "Próximamente";
+}
+
+/** El casting a anunciar, si todavía no pasó (se evalúa al construir). */
+export function castingAbierto(r: Rytmos = RYTMOS, ahora = Date.now()) {
+  return r.casting && Date.parse(r.casting.fecha) > ahora ? r.casting : undefined;
 }
 
 /** Variantes generadas por scripts/build-rytmos-images.mjs. */

@@ -20,7 +20,7 @@ import WhatsAppBtn from "../ui/WhatsAppBtn";
 import HMark from "../immersive/HMark";
 import Hive from "../immersive/Hive";
 import { SELECTION, UPCOMING } from "../../lib/catalog";
-import { RYTMOS, RYTMOS_FICHA, avisameRytmos, estadoRytmos, lineaTemporada, srcsetDe, tieneFicha } from "../../lib/rytmos";
+import { RYTMOS, RYTMOS_FICHA, avisameRytmos, castingAbierto, estadoRytmos, lineaTemporada, srcsetDe, tieneFicha } from "../../lib/rytmos";
 import { MAS_RUTAS, PUERTAS } from "../../lib/mapa";
 import { INSTAGRAM, MAIL, mail, whatsapp } from "../../lib/contacto";
 import { JsonLd, SITE, migas, organizacionPlay, sitioWeb } from "../../lib/schema";
@@ -128,6 +128,7 @@ function Hero() {
   const estado = estadoRytmos();
   const proximamente = estado === "Próximamente";
   const linea = lineaTemporada();
+  const casting = castingAbierto();
   const poster = S.keyArt ? `${S.keyArt.src}-1600.webp` : undefined;
   const avisame = (
     <a
@@ -190,6 +191,13 @@ function Hero() {
           <LinkFicha href={RYTMOS_FICHA}>Ficha en PLAY</LinkFicha>
         </div>
         {S.tagline && <p className="ry-hero-tagline">{S.tagline}</p>}
+        {casting && (
+          <Link href={casting.href} className="ry-casting" data-medir="casting_click" data-medir-origen="hero">
+            <span className="hp-kicker-dot" aria-hidden="true" />
+            {casting.texto}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </Link>
+        )}
         {S.estreno && proximamente && <Cuenta fecha={S.estreno} />}
         <div className="ry-hero-actions">
           {S.trailer && <VerTrailer />}

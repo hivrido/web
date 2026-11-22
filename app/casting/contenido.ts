@@ -14,6 +14,21 @@
  * qué es, que es lo que hace que no venga.
  */
 
+/* ── La convocatoria vigente ───────────────────────────────────────────
+   RYTMOS, según el afiche oficial del casting. Antes fue la de Cuchillo Paz;
+   sus textos siguen en el historial de git y su afiche en
+   public/images/casting/cuchillo-paz-poster-*.webp. */
+
+export const CONVOCATORIA = {
+  serie: "RYTMOS",
+  slug: "rytmos",
+  fecha: "Lunes 23 de noviembre",
+  hora: "15:00 hs",
+  lugar: "Parque Centenario",
+  ciudad: "Buenos Aires",
+  direccion: "Malena Luchetti",
+} as const;
+
 /* ── Lo que falta definir ─────────────────────────────────────────────── */
 
 /** Respuesta a "¿cuándo me avisan?". Cambiala cuando haya fecha real. */
@@ -28,12 +43,12 @@ export const AVISO_RESPUESTA =
 export const ARTE = {
   titulo: "La serie",
   texto:
-    "Buscamos caras nuevas para la primera temporada. Si nunca actuaste, mejor: el casting está pensado para eso.",
+    "RYTMOS es una serie argentina y buscamos caras nuevas. Si nunca actuaste, mejor: el casting está pensado para eso. Para escapar del infierno tenés que atravesarlo.",
   /* El alt describe la escena, no repite el título: quien usa lector de
      pantalla ya escuchó el nombre de la serie tres veces más arriba. */
-  alt: "Afiche de Cuchillo Paz: cuatro jóvenes de espaldas, en una loma, miran el conurbano al atardecer.",
-  poster400: "/images/casting/cuchillo-paz-poster-400.webp",
-  poster800: "/images/casting/cuchillo-paz-poster-800.webp",
+  alt: "Afiche del casting: un joven con capucha y gorra frente a la entrada del Parque Centenario al atardecer, junto a una pared con grafitis.",
+  poster400: "/images/casting/rytmos-poster-400.webp",
+  poster800: "/images/casting/rytmos-poster-800.webp",
 } as const;
 
 /* ── 2 · Datos clave ────────────────────────────────────────────────────── */
@@ -48,9 +63,9 @@ export const DATOS_CLAVE: {
 }[] = [
   {
     icono: "fila",
-    titulo: "Te avisamos por WhatsApp",
+    titulo: "Lunes 23 de noviembre, 15 hs",
     texto:
-      "Con tus datos en el formulario te escribimos con la fecha, el lugar y el personaje que buscamos.",
+      "En Parque Centenario, Buenos Aires. Llegá con tiempo: puede haber espera. Si dejás tus datos en el formulario, te escribimos por WhatsApp.",
   },
   {
     icono: "dni",
@@ -237,7 +252,7 @@ export const FAQ: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: "¿Puedo anotarme si no soy de Buenos Aires?",
     respuesta:
-      "Sí. El casting es abierto. La prueba es presencial en Buenos Aires, así que la única condición es poder llegar el día que te citemos.",
+      "Sí. El casting es abierto. La prueba es presencial: el lunes 23 de noviembre a las 15 en Parque Centenario, Buenos Aires. La única condición es poder llegar.",
   },
   {
     pregunta: "¿Cuánto cuesta?",
@@ -258,10 +273,11 @@ export const FAQ: { pregunta: string; respuesta: string }[] = [
 /* ── Metadata ───────────────────────────────────────────────────────────── */
 
 export const SEO = {
-  title: "Casting abierto Cuchillo Paz | Hivrido",
+  title: "Casting abierto RYTMOS, serie argentina | Hivrido",
+  share: "Sé parte de RYTMOS | Hivrido",
   description:
-    "Casting abierto y gratuito para la primera temporada de la serie Cuchillo Paz. Dejá tus datos y te escribimos por WhatsApp con la fecha, el lugar y el personaje. No hace falta experiencia.",
+    "Casting abierto y gratuito para RYTMOS, una serie argentina: lunes 23 de noviembre a las 15 en Parque Centenario. Dirección de casting: Malena Luchetti. No hace falta experiencia.",
   /* El que se ve al pegar el link en WhatsApp. Sale de scripts/build-casting-assets.mjs. */
-  ogImage: "/images/casting/casting-cuchillo-paz.jpg",
-  ogImageAlt: "Casting abierto de la serie Cuchillo Paz: primera temporada, 2026",
+  ogImage: "/images/casting/casting-rytmos.jpg",
+  ogImageAlt: "Casting abierto de RYTMOS: lunes 23 de noviembre, 15 hs, Parque Centenario",
 } as const;

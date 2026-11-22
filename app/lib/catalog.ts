@@ -103,6 +103,8 @@ const rytmos: Title = {
   poster: RYTMOS.poster,
   ...(RYTMOS.trailer && "ytId" in RYTMOS.trailer ? { ytId: RYTMOS.trailer.ytId } : {}),
   isPlaceholder: !RYTMOS.sinopsisCorta,
+  /* /casting es hoy la convocatoria de RYTMOS: la ficha lleva ahí. */
+  ...(RYTMOS.casting ? { cta: { label: "Sumate al casting", href: RYTMOS.casting.href } } : {}),
   detail: RYTMOS.sinopsisLarga
     ? {
         about: RYTMOS.sinopsisLarga,
@@ -136,8 +138,6 @@ const TITLES: Title[] = [
        16:9, así que al recortarlo se perdía la mitad del título. La genera
        scripts/build-casting-assets.mjs desde el mismo máster. */
     poster: "/images/series/cuchillo-paz.webp",
-    /* La serie se está armando con el casting abierto: la ficha lleva ahí. */
-    cta: { label: "Sumate al casting", href: "/casting/" },
   },
   {
     id: "el-docke",

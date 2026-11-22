@@ -1,7 +1,8 @@
 "use client";
 
 /**
- * El formulario del casting de Cuchillo Paz, en la cabecera de /casting.
+ * El formulario del casting vigente (CONVOCATORIA, en contenido.ts), en la
+ * cabecera de /casting.
  *
  * El formulario no POSTea a ningún lado: compone el mensaje y abre WhatsApp con los datos cargados. El
  * envío lo hace la persona, que es además lo que abre la conversación del lado
@@ -13,6 +14,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { whatsapp } from "../lib/contacto";
 import { medir } from "../lib/medir";
+import { CONVOCATORIA as C } from "./contenido";
 
 type Fields = { nombre: string; telefono: string; email: string };
 type Errors = Partial<Record<keyof Fields, string>>;
@@ -34,7 +36,7 @@ function validate({ nombre, telefono, email }: Fields): Errors {
 
 function waLink({ nombre, telefono, email }: Fields) {
   const text = [
-    "Hola HIVRIDO! Quiero sumarme al casting de la serie Cuchillo Paz.",
+    `Hola HIVRIDO! Quiero sumarme al casting de la serie ${C.serie} (${C.fecha}, ${C.lugar}).`,
     "",
     `Nombre: ${nombre.trim()}`,
     `Teléfono: ${telefono.trim()}`,
@@ -75,7 +77,7 @@ export default function CastingCall() {
 
     /* Abre WhatsApp con window.open y no con un enlace: el oyente de clics de
        WhatsAppConversion no lo ve, así que se mide acá. Sin los datos cargados. */
-    medir("casting_submit", { casting: "cuchillo-paz" });
+    medir("casting_submit", { casting: C.slug });
     setSent(fields);
     setFields(EMPTY);
   };
@@ -91,22 +93,24 @@ export default function CastingCall() {
         <div className="mp-casting-copy">
           <div className="mp-casting-eyebrow">
             <span className="mp-casting-eyebrow-line" />
-            Casting abierto · 2026
+            Casting abierto · {C.fecha}
           </div>
 
           <h1 className="mp-casting-title">
             <span>Sé parte de</span>
-            <strong>Cuchillo Paz</strong>
+            <strong>{C.serie}</strong>
           </h1>
 
           <p className="mp-casting-lead">
-            Buscamos caras nuevas para la primera temporada de la serie. Dejanos
-            tus datos y te escribimos por WhatsApp con la fecha, el lugar y el
-            personaje que estamos buscando.
+            Una serie argentina. Buscamos caras nuevas: te esperamos el{" "}
+            {C.fecha.toLowerCase()} a las {C.hora.replace(":00 hs", "")} en{" "}
+            {C.lugar}. Dejanos tus datos y te escribimos por WhatsApp.
           </p>
 
           <ul className="mp-casting-points">
-            <li>Casting presencial en Buenos Aires</li>
+            <li>{C.fecha} · {C.hora}</li>
+            <li>{C.lugar}, {C.ciudad}</li>
+            <li>Dirección de casting: {C.direccion}</li>
           </ul>
         </div>
 
