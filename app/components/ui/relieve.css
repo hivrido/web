@@ -100,7 +100,11 @@
 }
 
 /* ── Equipo (Equipo.tsx) ── */
-.equipo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 18px; list-style: none; padding: 0; margin: 0; }
+/* Columnas fijas: con auto-fit, la tarjeta principal (que ocupa toda la
+   fila) creaba columnas vacías y apretaba a las demás. */
+.equipo { display: grid; grid-template-columns: 1fr; gap: 18px; list-style: none; padding: 0; margin: 0; }
+@media (min-width: 640px) { .equipo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .equipo { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .equipo-card {
   display: flex;
   align-items: center;
@@ -120,8 +124,9 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
   border-radius: 50%;
   background: linear-gradient(135deg, #8246af, #3c1053);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 0 18px rgba(172, 79, 198, 0.45);
@@ -134,3 +139,13 @@
 .equipo-rol { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #ffaa3b; }
 .equipo-ig { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(245, 245, 247, 0.66); overflow-wrap: anywhere; }
 .equipo-card:hover .equipo-ig { color: #fff; }
+.equipo-ini img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+/* El aro de luz alrededor de la foto. */
+.equipo-ini { outline: 2px solid rgba(172, 79, 198, 0.55); outline-offset: 3px; }
+/* La tarjeta de quien crea la serie: a todo el ancho, foto grande. */
+.equipo-principal { grid-column: 1 / -1; }
+.equipo-principal .equipo-card { padding: clamp(20px, 3vw, 32px); gap: clamp(18px, 3vw, 32px); }
+.equipo-principal .equipo-ini { width: clamp(96px, 12vw, 140px); height: clamp(96px, 12vw, 140px); }
+.equipo-principal .equipo-nombre { font-size: clamp(22px, 3vw, 34px); }
+.equipo-principal .equipo-rol { font-size: 13px; }
+.equipo-kicker { font-size: 10.5px; letter-spacing: 0.24em; text-transform: uppercase; color: #ac4fc6; }

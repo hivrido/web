@@ -160,6 +160,11 @@ function Hero() {
           <Foto img={{ ...S.keyArt, alt: "" }} movil={S.keyArtVertical} sizes="100vw" className="ry-hero-art" prioridad />
         ) : (
           <div className="ry-stage">
+            {/* Aurora que se mueve despacio, la colmena 3D de la casa (la
+                misma del hub, WebGL que arranca cuando el navegador queda
+                libre) y dos conos de luz que se balancean. */}
+            <span className="ry-aurora" />
+            <Hive className="ry-hero-hive" />
             <span className="ry-beam is-a" />
             <span className="ry-beam is-b" />
           </div>
