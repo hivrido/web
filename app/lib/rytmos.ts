@@ -92,6 +92,8 @@ export type Rytmos = {
   /** Casting abierto. La home lo anuncia mientras la fecha no pasó (se
       decide al construir: después de la fecha, un deploy lo retira). */
   casting?: { fecha: string; titulo: string; detalle: string; lugar: string; href: string };
+  /** Equipo de la convocatoria, con su Instagram. Sin `rol`, no se inventa. */
+  equipo: { nombre: string; rol?: string; instagram: string }[];
   prensa: Mencion[];
 };
 
@@ -149,6 +151,12 @@ export const RYTMOS: Rytmos = {
     lugar: "Parque Centenario",
     href: "/casting/",
   },
+  equipo: [
+    { nombre: "Malena Luchetti", rol: "Dirección de casting", instagram: "malenaluchetti" },
+    { nombre: "Joaquín Pramori", rol: "Logística & eventos", instagram: "jokospramori" },
+    /* TODO-CONTENIDO: el rol de Leandro en la serie. */
+    { nombre: "Leandro Dome", instagram: "leandro_dome" },
+  ],
   /* TODO-CONTENIDO: premios, festivales o prensa, solo si existen. */
   prensa: [],
 };

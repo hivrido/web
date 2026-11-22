@@ -14,7 +14,18 @@ import LogoAnimated from "../ui/LogoAnimated";
 import PlayMenu, { type MenuItem } from "../play/PlayMenu";
 import { jumpTo } from "../play/jump";
 
-export default function RytmosHeader({ anclas, menu, nombre }: { anclas: MenuItem[]; menu: MenuItem[]; nombre: string }) {
+export default function RytmosHeader({
+  anclas,
+  menu,
+  nombre,
+  casting,
+}: {
+  anclas: MenuItem[];
+  menu: MenuItem[];
+  nombre: string;
+  /** Con casting abierto, el botón de arriba lleva ahí en vez de a PLAY. */
+  casting?: string;
+}) {
   const [scrolled, setScrolled] = useState(false);
   const [abierto, setAbierto] = useState(false);
   const cerrar = useCallback(() => setAbierto(false), []);
@@ -45,10 +56,17 @@ export default function RytmosHeader({ anclas, menu, nombre }: { anclas: MenuIte
         )}
 
         <div className="ry-header-end">
-          <Link href="/play/" className="ry-play-link" data-medir="explorar_play" data-medir-origen="header">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-            Play
-          </Link>
+          {casting ? (
+            <Link href={casting} className="ry-play-link is-casting" data-medir="casting_click" data-medir-origen="header">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              Sumate al casting
+            </Link>
+          ) : (
+            <Link href="/play/" className="ry-play-link" data-medir="explorar_play" data-medir-origen="header">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              Play
+            </Link>
+          )}
           <button type="button" className="ry-burger" onClick={() => setAbierto(true)} aria-expanded={abierto} aria-controls="ry-menu" aria-label="Abrir el menú">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
           </button>

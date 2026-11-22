@@ -5,6 +5,8 @@
  */
 
 import Reveal from "./Reveal";
+import Afiche3D from "../components/ui/Afiche3D";
+import Equipo from "../components/ui/Equipo";
 import { IconoDato } from "./Iconos";
 import {
   ARTE,
@@ -27,21 +29,15 @@ export default function SeccionesCasting() {
           hueco antes de que baje, así nada salta al aparecer. */}
       <section className="cst-seccion cst-arte" aria-labelledby="t-arte">
         <div className="cst-wrap cst-arte-inner">
-          {/* eslint-disable-next-line @next/next/no-img-element --
-              next/image no optimiza nada en este proyecto (`unoptimized` en
-              next.config.ts) y con esa bandera tampoco arma el srcset: daría
-              una sola variante y JS de más. Las dos webp ya vienen del
-              script de assets. */}
-          <img
+          {/* El afiche en 3D, con la luz de la casa recorriendo el borde
+              (components/ui/Afiche3D.tsx, el mismo de la home). Las dos webp
+              vienen de scripts/build-casting-assets.mjs. */}
+          <Afiche3D
             className="cst-arte-poster"
-            src={ARTE.poster400}
-            srcSet={`${ARTE.poster400} 400w, ${ARTE.poster800} 800w`}
-            sizes="(min-width: 720px) 300px, min(72vw, 300px)"
-            width={400}
-            height={600}
+            src400={ARTE.poster400}
+            src800={ARTE.poster800}
             alt={ARTE.alt}
-            loading="lazy"
-            decoding="async"
+            sizes="(min-width: 720px) 300px, min(72vw, 300px)"
           />
           <div className="cst-arte-copy">
             <h2 className="cst-h2 cst-h2-chico" id="t-arte">
@@ -49,6 +45,16 @@ export default function SeccionesCasting() {
             </h2>
             <p className="cst-arte-texto">{ARTE.texto}</p>
           </div>
+        </div>
+      </section>
+
+      {/* ── El equipo ───────────────────────────────────────────────── */}
+      <section className="cst-seccion" aria-labelledby="t-equipo">
+        <div className="cst-wrap">
+          <h2 className="cst-h2" id="t-equipo">
+            El equipo
+          </h2>
+          <Equipo />
         </div>
       </section>
 

@@ -54,6 +54,10 @@
 }
 .ry-play-link:hover { border-color: color-mix(in srgb, var(--hp-gold) 70%, transparent); background: rgba(255, 170, 59, 0.08); }
 .ry-play-link svg { color: var(--hp-gold); }
+/* "Sumate al casting": el llamado de la temporada, en violeta lleno. */
+.ry-play-link.is-casting { background: var(--hp-accent); border-color: transparent; color: #fff; letter-spacing: 0.1em; }
+.ry-play-link.is-casting svg { color: #fff; }
+.ry-play-link.is-casting:hover { background: var(--hp-accent-2); }
 .ry-burger {
   display: grid;
   place-items: center;
@@ -149,9 +153,22 @@
     linear-gradient(to right, rgba(10, 10, 11, 0.55), transparent 60%);
 }
 
+/* Columna de texto y, con casting, el afiche en 3D al lado. */
+.ry-hero-inner {
+  width: 100%;
+  display: grid;
+  gap: clamp(36px, 6vw, 72px);
+  align-items: center;
+  padding: calc(var(--hp-header-h) + 32px) var(--hp-gutter) clamp(40px, 9vh, 96px);
+}
+@media (min-width: 1024px) {
+  .ry-hero-inner.has-afiche { grid-template-columns: minmax(0, 1fr) clamp(260px, 25vw, 360px); }
+}
+.ry-hero .ry-hero-afiche { justify-self: center; width: min(100%, 300px); }
+@media (min-width: 1024px) { .ry-hero .ry-hero-afiche { width: 100%; } }
 .ry-hero-content {
   width: 100%;
-  padding: calc(var(--hp-header-h) + 32px) var(--hp-gutter) clamp(40px, 9vh, 96px);
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -160,6 +177,9 @@
 
 .ry-logo {
   position: relative;
+  /* Ancho completo de su columna: el logo 3D mide un porcentaje de esto, y
+     encogido a su contenido quedaba en cero. */
+  align-self: stretch;
   margin: 4px 0 0 -0.04em;
   font-family: var(--hp-display);
   font-size: clamp(84px, 24vw, 320px);
@@ -173,7 +193,7 @@
 /* Sin key art, el título es el cartel y la sala se arma alrededor: va al
    centro de la pantalla y más grande. */
 .ry-hero.is-bare { align-items: center; }
-.ry-hero.is-bare .ry-hero-content { padding-top: calc(var(--hp-header-h) + 56px); }
+.ry-hero.is-bare .ry-hero-inner { padding-top: calc(var(--hp-header-h) + 56px); }
 /* ── LOGO 3D (LogoRytmos.tsx) ──
    Tres niveles para que cada movimiento tenga su capa: el cursor inclina
    `.ry-mark-tilt`, la flotación mueve `.ry-mark-stage` y el scroll recuesta
@@ -181,7 +201,7 @@
 @property --ry-depth { syntax: "<number>"; inherits: true; initial-value: 1; }
 .ry-mark {
   display: block;
-  width: min(88vw, 1040px);
+  width: min(100%, 1040px);
   aspect-ratio: 266.5 / 41.982;
   /* 3D ortográfico, sin perspectiva: con perspectiva la transformación deja
      de ser afín, Chrome rasteriza las capas a baja resolución y el logo se
@@ -569,8 +589,21 @@
 .ry-hub-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  border-top: 1px solid var(--hp-border);
-  border-left: 1px solid var(--hp-border);
+  gap: clamp(12px, 1.4vw, 18px);
+}
+/* Título con el barrido de color de la casa (epicSheen de globals.css):
+   blanco, lila, violeta, magenta, en loop. */
+.ry-hub .ry-h2 .ry-w > span {
+  background: linear-gradient(100deg, #ffffff 0%, #c4b5fd 26%, #7c3aed 52%, #ff1b8d 78%, #ffffff 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  /* La caja crece hacia arriba para que el degradado pinte también las
+     tildes (ACÁ), que quedan por encima de la letra. */
+  padding-top: 0.14em;
+  margin-top: -0.14em;
 }
 .ry-door {
   position: relative;
@@ -579,18 +612,22 @@
   gap: 10px;
   min-height: clamp(150px, 15vw, 210px);
   padding: clamp(16px, 1.6vw, 24px);
-  border-right: 1px solid var(--hp-border);
-  border-bottom: 1px solid var(--hp-border);
-  background: rgba(10, 10, 11, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(172, 79, 198, 0.14), transparent 60%),
+    linear-gradient(160deg, rgba(29, 18, 41, 0.92) 0%, rgba(18, 11, 28, 0.92) 55%, rgba(13, 7, 23, 0.95) 100%);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  transition: background 0.4s var(--hp-ease);
-  overflow: hidden;
+  transition: translate 0.4s var(--hp-ease);
 }
+/* `translate` y no `transform`: el reveal por scroll ya ocupa transform. */
+.ry-door:is(:hover, :focus-within) { translate: 0 -5px; }
 .ry-door::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: radial-gradient(120% 90% at 0% 100%, color-mix(in srgb, var(--hp-electric) 55%, transparent), transparent 60%);
   opacity: 0;
   transition: opacity 0.45s var(--hp-ease);
@@ -657,6 +694,7 @@
   .ry-cd-digit { animation: ry-cd-flip 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
   .ry-cd-rivets span:first-child { animation: ry-cd-blink 1s steps(1) infinite; }
   .ry-cd-live::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid var(--hp-neon); animation: ry-cd-pulse 1.6s ease-out infinite; }
+  .ry-hub .ry-h2 .ry-w > span { animation: ry-sheen 7s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -0.6s); }
   .ry-scroll { animation: ry-drip 2.4s ease-in-out 1.6s infinite; }
 
   @supports (animation-timeline: view()) {
@@ -668,6 +706,13 @@
     .ry-mark { animation: ry-mark-tumba linear both; animation-timeline: scroll(root); animation-range: 0 70vh; }
 
     .ry-w > span { animation: ry-word linear both; animation-timeline: view(); animation-range: entry 0% entry calc(55% + var(--i, 0) * 7%); }
+    /* En el hub, el reveal por scroll y el barrido de color van juntos. */
+    .ry-hub .ry-h2 .ry-w > span {
+      animation: ry-word linear both, ry-sheen 7s ease-in-out infinite;
+      animation-timeline: view(), auto;
+      animation-range: entry 0% entry calc(55% + var(--i, 0) * 7%), normal;
+      animation-delay: 0s, calc(var(--i, 0) * -0.6s);
+    }
     .ry-reveal { animation: ry-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 45%; }
     .ry-stagger > * { animation: ry-rise linear both; animation-timeline: view(); animation-range: entry 0% entry calc(40% + var(--i, 0) * 9%); }
     .ry-parallax img { animation: ry-px linear both; animation-timeline: view(); animation-range: cover; }
@@ -734,6 +779,7 @@
 @keyframes ry-cd-flip { from { transform: rotateX(-95deg); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes ry-cd-blink { 50% { background: radial-gradient(circle at 35% 30%, #f3e2ff 0%, var(--hp-neon) 45%, var(--hp-night) 100%); box-shadow: 0 0 10px var(--hp-neon); } }
 @keyframes ry-cd-pulse { from { transform: scale(1); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
+@keyframes ry-sheen { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes ry-sweep { 0% { transform: translateX(-120%); opacity: 1; } 100% { transform: translateX(120%); opacity: 0; } }
 @keyframes ry-horizon { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 0.8; } }
 @keyframes ry-beam { from { opacity: 0; } }

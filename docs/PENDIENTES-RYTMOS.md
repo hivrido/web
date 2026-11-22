@@ -138,4 +138,6 @@ detalle o cita y link → `prensa`.
    correcta lleva tilde, conviene cambiarla en todo el sitio de una vez.
 2. **"País · Idioma: Argentina · Español"** aparece en la ficha técnica de
    todas las obras de PLAY, RYTMOS incluida. Confirmá que vale para la serie.
-3. **Derechos de la música** (punto 8), antes de publicar cualquier tema.
+3. **El rol de Leandro Dome** (@leandro_dome) en la serie: hoy figura en
+   "El equipo" solo con su nombre y su Instagram (`equipo` en rytmos.ts).
+4. **Derechos de la música** (punto 8), antes de publicar cualquier tema.

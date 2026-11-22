@@ -4,21 +4,21 @@ import RytmosHeader from "./RytmosHeader";
 import Cuenta from "./Cuenta";
 import Loop from "./Loop";
 import LogoRytmos from "./LogoRytmos";
+import Afiche3D from "../ui/Afiche3D";
+import Equipo from "../ui/Equipo";
+import { ARTE } from "../../casting/contenido";
 import Trailer, { VerTrailer } from "./Trailer";
 import Elenco from "./Elenco";
 import Galeria from "./Galeria";
 import BandaSonora from "./BandaSonora";
 import { AnclasViejas, LinkFicha, SCRIPT_ANCLAS } from "./Acciones";
 import { Cabecera, Foto } from "./piezas";
-import Row from "../play/Row";
-import PosterCard from "../play/PosterCard";
 import { FinTransicion, VIAJA } from "../play/transicion";
 import { playFonts } from "../play/fonts";
 import LogoAnimated from "../ui/LogoAnimated";
 import WaGeneral from "../ui/WaGeneral";
 import HMark from "../immersive/HMark";
 import Hive from "../immersive/Hive";
-import { SELECTION, UPCOMING } from "../../lib/catalog";
 import { RYTMOS, RYTMOS_FICHA, avisameRytmos, castingAbierto, estadoRytmos, lineaTemporada, srcsetDe, tieneFicha } from "../../lib/rytmos";
 import { MAS_RUTAS, PUERTAS } from "../../lib/mapa";
 import { INSTAGRAM, MAIL, mail, whatsapp } from "../../lib/contacto";
@@ -129,6 +129,14 @@ function Hero() {
   const linea = lineaTemporada();
   const casting = castingAbierto();
   const poster = S.keyArt ? `${S.keyArt.src}-1600.webp` : undefined;
+  const campana = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0" /></svg>;
+  /* Con el casting abierto, el llamado principal lleva al casting. */
+  const irAlCasting = casting && (
+    <Link href={casting.href} className="hp-btn is-primary hp-haz" data-medir="casting_click" data-medir-origen="hero">
+      {campana}
+      Ir al casting
+    </Link>
+  );
   const avisame = (
     <a
       className={`hp-btn ${S.trailer ? "is-ghost" : "is-primary hp-haz"}`}
@@ -140,7 +148,7 @@ function Hero() {
       data-medir-titulo={S.nombre}
       data-medir-origen="hero"
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0" /></svg>
+      {campana}
       Avisame
     </a>
   );
@@ -160,6 +168,7 @@ function Hero() {
       </div>
       <div className="ry-hero-shade" aria-hidden="true" />
 
+      <div className={`ry-hero-inner${casting ? " has-afiche" : ""}`}>
       <div className="ry-hero-content">
         <p className="hp-kicker"><span className="hp-kicker-dot" />Hivrido PLAY · Nueva serie</p>
         {/* Lo que viaja a la ficha (transicion.tsx) es el nombre, no el
@@ -193,17 +202,28 @@ function Hero() {
         {/* El contador va al casting mientras esté abierto; después, al
             estreno si hay fecha. */}
         {casting ? (
-          <Cuenta fecha={casting.fecha} titulo={casting.titulo} detalle={casting.detalle} fin="El casting empezó" href={casting.href} enlace={`${casting.lugar} · Ver el casting`} />
+          <Cuenta fecha={casting.fecha} titulo={casting.titulo} detalle={casting.detalle} fin="El casting empezó" href={casting.href} enlace={casting.lugar} />
         ) : (
           S.estreno && proximamente && <Cuenta fecha={S.estreno} titulo="Estreno" detalle={`${S.estreno.slice(8, 10)}/${S.estreno.slice(5, 7)}`} fin="Ya está en PLAY" href={RYTMOS_FICHA} enlace="Ver la ficha" />
         )}
         <div className="ry-hero-actions">
           {S.trailer && <VerTrailer />}
-          {proximamente && avisame}
-          <Link href="/play/" className="hp-btn is-ghost" data-medir="explorar_play" data-medir-origen="hero">
-            Explorar Hivrido PLAY
-          </Link>
+          {irAlCasting || (proximamente && avisame)}
         </div>
+      </div>
+      {/* El afiche del casting, en 3D: a la derecha en escritorio, debajo de
+          los llamados en el teléfono. */}
+      {casting && (
+        <Afiche3D
+          className="ry-hero-afiche"
+          src400={ARTE.poster400}
+          src800={ARTE.poster800}
+          alt={ARTE.alt}
+          sizes="(min-width: 1024px) 340px, min(78vw, 340px)"
+          href={casting.href}
+          prioridad
+        />
+      )}
       </div>
       <span className="ry-scroll" aria-hidden="true" />
     </section>
@@ -319,33 +339,12 @@ function seccionesDeLaSerie(): Seccion[] {
   return out;
 }
 
-/* ── SEGUÍ EN PLAY ── */
-function SeguiEnPlay({ n }: { n: number }) {
-  /* RYTMOS ya es el hero: en la fila de Próximamente sería repetirla. */
-  const proximas = UPCOMING.filter((t) => t.id !== S.id);
+/* ── EQUIPO ── */
+function SeccionEquipo({ n }: { n: number }) {
   return (
-    <section className="ry-sec ry-play" id="play" aria-label="Seguí en Hivrido PLAY">
-      <Cabecera n={n} rotulo="Hivrido PLAY" titulo="Seguí en Hivrido PLAY" />
-      <div className="ry-play-rows">
-        <Row title="Selección Hivrido" note="Curaduría">
-          {SELECTION.map((t, i) => (
-            <PosterCard key={t.id} item={t} rank={i + 1} />
-          ))}
-        </Row>
-        {proximas.length > 0 && (
-          <Row title="Próximamente" note={`${String(proximas.length).padStart(2, "0")} en camino`}>
-            {proximas.map((t) => (
-              <PosterCard key={t.id} item={t} />
-            ))}
-          </Row>
-        )}
-      </div>
-      <div className="ry-play-cta">
-        <Link href="/play/" className="hp-btn is-ghost" data-medir="explorar_play" data-medir-origen="segui_en_play">
-          Ver todo el catálogo
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        </Link>
-      </div>
+    <section className="ry-sec" id="equipo" aria-label="Equipo">
+      <Cabecera n={n} rotulo="Casting" titulo="El equipo" />
+      <Equipo className="ry-reveal" />
     </section>
   );
 }
@@ -362,7 +361,7 @@ function Hub({ n }: { n: number }) {
       <ul className="ry-hub-grid">
         {PUERTAS.map((p, i) =>
           p.href ? (
-            <li key={p.n} className="ry-door" style={{ "--i": i } as React.CSSProperties}>
+            <li key={p.n} className="ry-door relieve luz-borde" style={{ "--i": i, "--luz-delay": `${-i * 0.37}s` } as React.CSSProperties}>
               <span className="ry-door-n">{p.n}</span>
               <svg className="ry-door-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9" /></svg>
               <Link href={p.href} className="ry-door-label ry-door-link" data-medir="hub_click" data-medir-destino={p.label}>
@@ -371,7 +370,7 @@ function Hub({ n }: { n: number }) {
               <span className="ry-door-sub">{p.bajada}</span>
             </li>
           ) : (
-            <li key={p.n} className="ry-door is-contact" style={{ "--i": i } as React.CSSProperties}>
+            <li key={p.n} className="ry-door is-contact relieve luz-borde" style={{ "--i": i, "--luz-delay": `${-i * 0.37}s` } as React.CSSProperties}>
               <span className="ry-door-n">{p.n}</span>
               <p className="ry-door-label">{p.label}</p>
               <div className="ry-door-contact">
@@ -451,7 +450,7 @@ export default function RytmosHome() {
       <JsonLd data={jsonLd()} />
       <AnclasViejas />
       <FinTransicion />
-      <RytmosHeader anclas={anclas} menu={menu} nombre={S.nombre} />
+      <RytmosHeader anclas={anclas} menu={menu} nombre={S.nombre} casting={castingAbierto()?.href} />
 
       <main className="ry-main">
         <Hero />
@@ -461,8 +460,8 @@ export default function RytmosHome() {
             {s.cuerpo}
           </section>
         ))}
-        <SeguiEnPlay n={serie.length + 1} />
-        <Hub n={serie.length + 2} />
+        {S.equipo.length > 0 && <SeccionEquipo n={serie.length + 1} />}
+        <Hub n={serie.length + (S.equipo.length > 0 ? 2 : 1)} />
       </main>
 
       <Pie />

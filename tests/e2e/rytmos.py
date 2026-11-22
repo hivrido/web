@@ -87,19 +87,36 @@ class HomeRytmos(Base):
         for sec in page.locator("main section.ry-sec").all():
             self.assertTrue(sec.locator(".ry-h2").inner_text().strip(), "sección sin titular")
 
-    def test_avisame_abre_whatsapp_con_el_mensaje_y_el_origen(self):
+    def test_llamados_del_hero(self):
+        """Con casting abierto, todo lleva al casting; sin él, Avisame abre WhatsApp."""
         page = self.pagina("/")
-        href = page.locator(".ry-hero a", has_text="Avisame").get_attribute("href")
-        self.assertTrue(href.startswith(f"https://wa.me/{NUMERO}?text="), href)
-        mensaje = unquote(href)
-        self.assertIn("Avisame cuando se estrene RYTMOS en PLAY", mensaje)
-        self.assertIn("portada", mensaje)
+        if page.locator(".ry-hero .ry-cd").count():
+            ir = page.locator(".ry-hero a", has_text="Ir al casting")
+            self.assertEqual(ir.get_attribute("href"), "/casting/")
+            self.assertEqual(ir.locator("svg").count(), 1, "lleva la campanita")
+            self.assertEqual(page.locator(".ry-header a", has_text="Sumate al casting").get_attribute("href"), "/casting/")
+            self.assertEqual(page.locator(".ry-hero a", has_text="Explorar Hivrido PLAY").count(), 0)
+            self.assertEqual(page.locator(".ry-hero .afiche3d-pieza").get_attribute("href"), "/casting/")
+            ir.click()
+            page.wait_for_url(re.compile(r"/casting/$"))
+        else:
+            href = page.locator(".ry-hero a", has_text="Avisame").get_attribute("href")
+            self.assertTrue(href.startswith(f"https://wa.me/{NUMERO}?text="), href)
+            self.assertIn("Avisame cuando se estrene RYTMOS en PLAY", unquote(href))
 
-    def test_explorar_play_lleva_al_catalogo(self):
-        page = self.pagina("/")
-        page.locator(".ry-hero a", has_text="Explorar Hivrido PLAY").click()
-        page.wait_for_url(re.compile(r"/play/$"))
-        page.locator("#series").wait_for()
+    def test_equipo_con_sus_instagram(self):
+        for ruta in ["/", "/casting/"]:
+            with self.subTest(ruta=ruta):
+                page = self.pagina(ruta, js=False)
+                hrefs = page.eval_on_selector_all(".equipo a", "els => els.map(e => e.href)")
+                self.assertIn("https://www.instagram.com/malenaluchetti/", hrefs)
+                self.assertIn("https://www.instagram.com/jokospramori/", hrefs)
+                self.assertIn("https://www.instagram.com/leandro_dome/", hrefs)
+
+    def test_sin_otras_series_en_la_home(self):
+        page = self.pagina("/", js=False)
+        self.assertEqual(page.locator(".hp-card").count(), 0)
+        self.assertIn("hivrido sale de acá", page.locator("#todo-hivrido h2").text_content().lower())
 
     def test_trailer_carga_al_tocarlo(self):
         page = self.pagina("/")
