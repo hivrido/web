@@ -91,7 +91,7 @@ export type Rytmos = {
   musicaProtagonista: boolean;
   /** Casting abierto. La home lo anuncia mientras la fecha no pasó (se
       decide al construir: después de la fecha, un deploy lo retira). */
-  casting?: { fecha: string; texto: string; href: string };
+  casting?: { fecha: string; titulo: string; detalle: string; lugar: string; href: string };
   prensa: Mencion[];
 };
 
@@ -142,7 +142,13 @@ export const RYTMOS: Rytmos = {
   /* TODO-CONTENIDO: confirmar si la serie gira alrededor de la música. */
   musicaProtagonista: false,
   /* El afiche: lunes 23/11, 15 hs, Parque Centenario. */
-  casting: { fecha: "2026-11-23T15:00:00-03:00", texto: "Casting abierto · Lunes 23/11 · 15 hs · Parque Centenario", href: "/casting/" },
+  casting: {
+    fecha: "2026-11-23T15:00:00-03:00",
+    titulo: "Casting abierto",
+    detalle: "Lun 23/11 · 15 hs",
+    lugar: "Parque Centenario",
+    href: "/casting/",
+  },
   /* TODO-CONTENIDO: premios, festivales o prensa, solo si existen. */
   prensa: [],
 };

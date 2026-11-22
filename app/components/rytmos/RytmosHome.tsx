@@ -16,7 +16,6 @@ import { FinTransicion, VIAJA } from "../play/transicion";
 import { playFonts } from "../play/fonts";
 import LogoAnimated from "../ui/LogoAnimated";
 import WaGeneral from "../ui/WaGeneral";
-import WhatsAppBtn from "../ui/WhatsAppBtn";
 import HMark from "../immersive/HMark";
 import Hive from "../immersive/Hive";
 import { SELECTION, UPCOMING } from "../../lib/catalog";
@@ -191,14 +190,13 @@ function Hero() {
           <LinkFicha href={RYTMOS_FICHA}>Ficha en PLAY</LinkFicha>
         </div>
         {S.tagline && <p className="ry-hero-tagline">{S.tagline}</p>}
-        {casting && (
-          <Link href={casting.href} className="ry-casting" data-medir="casting_click" data-medir-origen="hero">
-            <span className="hp-kicker-dot" aria-hidden="true" />
-            {casting.texto}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          </Link>
+        {/* El contador va al casting mientras esté abierto; después, al
+            estreno si hay fecha. */}
+        {casting ? (
+          <Cuenta fecha={casting.fecha} titulo={casting.titulo} detalle={casting.detalle} fin="El casting empezó" href={casting.href} enlace={`${casting.lugar} · Ver el casting`} />
+        ) : (
+          S.estreno && proximamente && <Cuenta fecha={S.estreno} titulo="Estreno" detalle={`${S.estreno.slice(8, 10)}/${S.estreno.slice(5, 7)}`} fin="Ya está en PLAY" href={RYTMOS_FICHA} enlace="Ver la ficha" />
         )}
-        {S.estreno && proximamente && <Cuenta fecha={S.estreno} />}
         <div className="ry-hero-actions">
           {S.trailer && <VerTrailer />}
           {proximamente && avisame}
@@ -355,10 +353,10 @@ function SeguiEnPlay({ n }: { n: number }) {
 /* ── TODO HIVRIDO ── */
 function Hub({ n }: { n: number }) {
   return (
-    <section className="ry-sec ry-hub" id="todo-hivrido" aria-label="Todo Hivrido sale de acá">
+    <section className="ry-sec ry-hub" id="todo-hivrido" aria-label="Hivrido sale de acá">
       <Hive className="ry-hub-bg" />
       <div className="ry-hub-top">
-        <Cabecera n={n} rotulo="Todo Hivrido" titulo="Todo Hivrido sale de acá" />
+        <Cabecera n={n} rotulo="Hivrido" titulo="Hivrido sale de acá" />
         <HMark className="ry-hub-mark" />
       </div>
       <ul className="ry-hub-grid">
@@ -377,7 +375,7 @@ function Hub({ n }: { n: number }) {
               <span className="ry-door-n">{p.n}</span>
               <p className="ry-door-label">{p.label}</p>
               <div className="ry-door-contact">
-                <a href={whatsapp("Hola Hivrido! Les escribo desde la portada (Todo Hivrido).")} target="_blank" rel="noopener noreferrer" data-wa-origen="hub" data-medir="hub_click" data-medir-destino="WhatsApp">
+                <a href={whatsapp("Hola Hivrido! Les escribo desde la portada (Hivrido sale de acá).")} target="_blank" rel="noopener noreferrer" data-wa-origen="hub" data-medir="hub_click" data-medir-destino="WhatsApp">
                   WhatsApp<span className="ry-door-tel"> +54 9 11 5607-2460</span>
                 </a>
                 <a href={mail("Consulta desde hivrido.com")} data-medir="hub_click" data-medir-destino="Mail">{MAIL}</a>
@@ -468,7 +466,6 @@ export default function RytmosHome() {
       </main>
 
       <Pie />
-      <WhatsAppBtn />
     </div>
   );
 }

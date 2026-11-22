@@ -147,14 +147,19 @@ class HomeRytmos(Base):
         page.locator("nav.nav-drawer.open .nav-menu a", has_text="Casting").click()
         page.wait_for_url(re.compile(r"/casting/$"))
 
-    def test_boton_flotante_no_tapa_los_llamados_en_movil(self):
+    def test_sin_boton_flotante_y_con_cuenta_del_casting(self):
         page = self.pagina("/", movil=True)
-        page.wait_for_timeout(2000)
-        a = page.locator("a.wa-btn").bounding_box()
-        for b in page.locator(".ry-hero-actions .hp-btn").all():
-            c = b.bounding_box()
-            solapan = not (a["x"] >= c["x"] + c["width"] or a["x"] + a["width"] <= c["x"] or a["y"] >= c["y"] + c["height"] or a["y"] + a["height"] <= c["y"])
-            self.assertFalse(solapan, b.inner_text())
+        self.assertEqual(page.locator("a.wa-btn").count(), 0, "la home no lleva botón flotante")
+        cuenta = page.locator(".ry-hero .ry-cd [role=timer]")
+        if cuenta.count() == 0:
+            self.skipTest("el casting ya pasó: el contador se retira con el deploy")
+        page.wait_for_timeout(1500)
+        digitos = cuenta.locator(".ry-cd-digit").all_inner_texts()
+        self.assertEqual(len(digitos), 4)
+        self.assertTrue(all(d.isdigit() for d in digitos), digitos)
+        self.assertEqual(cuenta.locator("a.ry-cd-link").get_attribute("href"), "/casting/")
+        ancho = page.evaluate("document.documentElement.scrollWidth")
+        self.assertLessEqual(ancho, 390, "sin desborde lateral en el teléfono")
 
     def test_anclas_viejas_llegan_a_su_seccion_en_play(self):
         for ancla in ["series", "peliculas", "proximamente"]:
