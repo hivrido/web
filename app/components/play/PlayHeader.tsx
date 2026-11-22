@@ -13,14 +13,14 @@ import PlayMenu from "./PlayMenu";
 import SearchOverlay, { openSearch } from "./SearchOverlay";
 import { jumpTo } from "./jump";
 
+/* "Inicio" es la home del dominio; las secciones son anclas del catálogo,
+   que vive en /play/. */
 const LINKS = [
-  { label: "Inicio", hash: "" },
-  { label: "Series", hash: "series" },
-  { label: "Películas", hash: "peliculas" },
-  { label: "Próximamente", hash: "proximamente" },
+  { label: "Inicio", href: "/", hash: "" },
+  { label: "Series", href: "/play/#series", hash: "series" },
+  { label: "Películas", href: "/play/#peliculas", hash: "peliculas" },
+  { label: "Próximamente", href: "/play/#proximamente", hash: "proximamente" },
 ];
-
-const href = (hash: string) => (hash ? `/#${hash}` : "/");
 
 /* Qué sección se está mirando, para marcarla en la barra. Solo tiene sentido
    en la portada: en una ficha no hay secciones de la barra en pantalla.
@@ -75,19 +75,24 @@ export default function PlayHeader({ home = false }: { home?: boolean }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (hash: string) => home && active === hash;
+  /* Inicio sale del catálogo, así que nunca se marca como sección activa. */
+  const isActive = (hash: string) => home && !!hash && active === hash;
 
   return (
     <>
       <header className={`hp-header${scrolled ? " is-scrolled" : ""}`}>
-        <Link href="/" onClick={(e) => jumpTo(e, "/")} className="hp-logo" aria-label="Hivrido PLAY, inicio">
-          <LogoAnimated height={22} delay={300} />
-          <span className="hp-logo-pill">Play</span>
-        </Link>
+        {/* Dos destinos: el logo de Hivrido vuelve a la home y la píldora
+            PLAY, al catálogo. */}
+        <div className="hp-logo">
+          <Link href="/" aria-label="Hivrido, inicio" className="hp-logo-mark">
+            <LogoAnimated height={22} delay={300} />
+          </Link>
+          <Link href="/play/" onClick={(e) => jumpTo(e, "/play/")} className="hp-logo-pill" aria-label="Hivrido PLAY, catálogo">Play</Link>
+        </div>
 
         <nav className="hp-nav" aria-label="Secciones">
           {LINKS.map((l) => (
-            <Link key={l.label} href={href(l.hash)} onClick={(e) => jumpTo(e, href(l.hash))} className={isActive(l.hash) ? "is-active" : undefined} aria-current={isActive(l.hash) ? "true" : undefined}>
+            <Link key={l.label} href={l.href} onClick={(e) => jumpTo(e, l.href)} className={isActive(l.hash) ? "is-active" : undefined} aria-current={isActive(l.hash) ? "true" : undefined}>
               {l.label}
             </Link>
           ))}
@@ -102,7 +107,7 @@ export default function PlayHeader({ home = false }: { home?: boolean }) {
 
       <nav className="hp-tabbar" aria-label="Secciones">
         {LINKS.slice(0, 3).map((l) => (
-          <Link key={l.label} href={href(l.hash)} onClick={(e) => jumpTo(e, href(l.hash))} className={isActive(l.hash) ? "is-active" : undefined}>
+          <Link key={l.label} href={l.href} onClick={(e) => jumpTo(e, l.href)} className={isActive(l.hash) ? "is-active" : undefined}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true">{ICONS[l.hash]}</svg>
             <span>{l.label}</span>
           </Link>

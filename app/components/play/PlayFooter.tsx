@@ -7,18 +7,21 @@ export default function PlayFooter() {
   return (
     <footer className="hp-footer">
       <div className="hp-footer-brand">
-        <Link href="/" className="hp-logo hp-footer-mark" aria-label="Hivrido PLAY, inicio">
-          <LogoAnimated height={26} startOnView />
-          <span className="hp-logo-pill">Play</span>
-        </Link>
+        <div className="hp-logo hp-footer-mark">
+          <Link href="/" aria-label="Hivrido, inicio" className="hp-logo-mark">
+            <LogoAnimated height={26} startOnView />
+          </Link>
+          <Link href="/play/" className="hp-logo-pill" aria-label="Hivrido PLAY, catálogo">Play</Link>
+        </div>
         <p>Cine y series hechos en Argentina.</p>
       </div>
       <nav className="hp-footer-cols" aria-label="Pie de página">
         <div>
           <span className="hp-footer-label">Explorar</span>
-          <Link href="/#series">Series</Link>
-          <Link href="/#peliculas">Películas</Link>
-          <Link href="/#proximamente">Próximamente</Link>
+          <Link href="/play/">Catálogo</Link>
+          <Link href="/play/#series">Series</Link>
+          <Link href="/play/#peliculas">Películas</Link>
+          <Link href="/play/#proximamente">Próximamente</Link>
         </div>
         <div>
           <span className="hp-footer-label">Hivrido</span>

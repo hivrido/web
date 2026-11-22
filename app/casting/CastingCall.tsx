@@ -129,7 +129,7 @@ export default function CastingCall() {
                 <WhatsAppIcon />
                 Abrir WhatsApp de nuevo
               </a>
-              <Link className="mp-casting-ghost" href="/">
+              <Link className="mp-casting-ghost" href="/play/">
                 Mientras tanto, mirá el catálogo
               </Link>
             </div>

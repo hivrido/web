@@ -59,7 +59,7 @@ export const PROJECTS = [
     /* La ficha lleva el logotipo en blanco en lugar de un título tipografiado */
     brandLogo: true,
     /* Con `href` la tarjeta muestra el PLAY y el click navega */
-    href: '/',
+    href: '/play/',
     cta: 'Ver el catálogo',
     /* Palabra de la pastilla de la tarjeta, en lugar del PLAY por defecto */
     playLabel: 'VER',

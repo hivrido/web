@@ -2,16 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/play",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/play/",
-      "destination": "/",
-      "permanent": true
-    },
-    {
       "source": "/movie/okupas",
       "destination": "/okupas/",
       "permanent": true
@@ -23,12 +13,12 @@
     },
     {
       "source": "/movie",
-      "destination": "/",
+      "destination": "/play/",
       "permanent": true
     },
     {
       "source": "/movie/",
-      "destination": "/",
+      "destination": "/play/",
       "permanent": true
     },
     {
@@ -173,22 +163,22 @@
     },
     {
       "source": "/peliculas",
-      "destination": "/",
+      "destination": "/play/#peliculas",
       "permanent": true
     },
     {
       "source": "/peliculas/",
-      "destination": "/",
+      "destination": "/play/#peliculas",
       "permanent": true
     },
     {
       "source": "/series",
-      "destination": "/",
+      "destination": "/play/#series",
       "permanent": true
     },
     {
       "source": "/series/",
-      "destination": "/",
+      "destination": "/play/#series",
       "permanent": true
     },
     {

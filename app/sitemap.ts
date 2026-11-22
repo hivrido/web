@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { ARTISTAS } from "./lib/artistas";
 import { WITH_PAGE } from "./lib/catalog";
+import { PORTADA } from "./lib/portada";
 
 export const dynamic = "force-static";
 
@@ -9,12 +10,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const entries: MetadataRoute.Sitemap = [
     {
-      /* La raíz es Hivrido PLAY: cambia con cada estreno. */
+      /* La raíz: la home de RYTMOS o, si se volvió atrás, el catálogo. */
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
     },
+    /* El catálogo de PLAY, cuando la raíz es RYTMOS: cambia con cada estreno.
+       Con la portada anterior su canónica es la raíz y no se declara. */
+    ...(PORTADA === "rytmos"
+      ? [{ url: `${baseUrl}/play`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.95 }]
+      : []),
     {
       /* El anillo institucional. */
       url: `${baseUrl}/web`,
@@ -87,6 +93,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),
+    /* Las fichas, RYTMOS incluida: entra sola cuando deja de ser provisoria. */
     ...WITH_PAGE.filter((t) => !t.isPlaceholder).map((t) => ({
       url: `${baseUrl}${t.href}`,
       lastModified: new Date(),

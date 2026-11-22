@@ -59,7 +59,7 @@ export default function OkupasPage() {
               director: directorsOf(t).map((name) => ({ "@type": "Person", name })),
               actor: (t.detail?.cast ?? []).map((c) => ({ "@type": "Person", name: c.name })),
             },
-            migas([["Hivrido PLAY", "/"], ["Series", "/"], [t.title, "/okupas/"]]),
+            migas([["Hivrido PLAY", "/play/"], ["Series", "/play/"], [t.title, "/okupas/"]]),
           ],
         }}
       />

@@ -33,6 +33,30 @@ export const organizacion = {
   },
 };
 
+/** La organización tal como la presenta la raíz del dominio: Hivrido, con
+    PLAY como nombre alternativo. Es lo que Google usa para el nombre del sitio
+    y el panel de marca. */
+export const organizacionPlay = {
+  "@type": "Organization",
+  "@id": ORG_ID,
+  name: "Hivrido",
+  alternateName: "Hivrido PLAY",
+  url: `${SITE}/`,
+  logo: { "@type": "ImageObject", url: `${SITE}/images/logo/hivrido-logo-512.png`, width: 512, height: 512 },
+  email: MAIL,
+  sameAs: [INSTAGRAM],
+};
+
+export const sitioWeb = {
+  "@type": "WebSite",
+  "@id": `${SITE}/#website`,
+  name: "Hivrido PLAY",
+  alternateName: "Hivrido",
+  url: `${SITE}/`,
+  inLanguage: "es-AR",
+  publisher: { "@id": ORG_ID },
+};
+
 /** Migas: de la portada a la página. Cada paso es [nombre, ruta con barra final]. */
 export function migas(pasos: [string, string][]) {
   return {

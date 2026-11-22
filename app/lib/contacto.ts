@@ -39,8 +39,10 @@ const SECCIONES: [RegExp, string][] = [
   [/^\/estudio/, "el estudio"],
   [/^\/orbital/, "la galería orbital"],
   [/^\/okupas/, "Okupas en PLAY"],
+  [/^\/play\/?$/, "Hivrido PLAY"],
+  [/^\/play\/rytmos/, "la ficha de RYTMOS"],
   [/^\/play\//, "una ficha de PLAY"],
-  [/^\/$/, "Hivrido PLAY"],
+  [/^\/$/, "la portada"],
 ];
 
 /** "Diseño web", "Hivrido PLAY"… según la ruta. Vacío si no se reconoce. */

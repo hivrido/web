@@ -20,7 +20,7 @@ import WaGeneral from "../../components/ui/WaGeneral";
 const NAV_ITEMS = [
   { label: "Home",         href: "/web/" },
   { label: "Artistas",     href: "/artistas/" },
-  { label: "Hivrido PLAY", href: "/" },
+  { label: "Hivrido PLAY", href: "/play/" },
   { label: "Grow Digital", href: "/diseno-web/" },
   { label: "Branding",     href: "/branding/" },
   { label: "Equipo",       href: "/equipo/" },

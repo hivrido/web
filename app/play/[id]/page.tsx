@@ -89,7 +89,7 @@ export default async function TitlePage({ params }: Props) {
                 }
               : {}),
           },
-          migas([["Hivrido PLAY", "/"], [t.type === "serie" ? "Series" : "Películas", "/"], [t.title, `${t.href}/`]]),
+          migas([["Hivrido PLAY", "/play/"], [t.type === "serie" ? "Series" : "Películas", "/play/"], [t.title, `${t.href}/`]]),
         ],
       };
 
