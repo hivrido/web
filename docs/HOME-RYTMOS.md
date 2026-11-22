@@ -5,7 +5,8 @@ el lanzamiento de **RYTMOS**, la nueva serie de la plataforma. El catálogo se
 muda entero, sin cambios visuales, a **`/play/`**. La home nueva es además la
 puerta a todo Hivrido: cualquier página del sitio queda a uno o dos toques.
 
-Rama: `home-rytmos`. **Nada de esto está publicado.**
+Rama: `home-rytmos`, mergeada a `main`. **Publicado el 22/11/2026**
+(deploy `hivrido-cq4y333vp`, reglas de proyecto de Vercel actualizadas).
 
 ---
 
@@ -169,9 +170,9 @@ se revierten en orden inverso.
 
 ---
 
-## 4 · Para publicar (requiere tu confirmación)
+## 4 · Cómo se publicó (y cómo se repite)
 
-No se publicó nada. Cuando lo apruebes, en este orden:
+Se hizo en este orden el 22/11/2026:
 
 1. **Reglas de proyecto de Vercel.** Están fuera del repo y corren en el CDN
    antes que el deploy (CLAUDE.md, "Reglas de proyecto: un solo salto"). Hoy

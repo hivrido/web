@@ -572,13 +572,12 @@ función; hoy el sitio corre con servidor y las dos opciones andarían, pero se
 quedan juntas en un solo lugar que además se aplica en el borde, antes de que
 la request llegue a la app.
 
-- **`/play` → `/` (301).** Hivrido PLAY pasó a ser la portada del dominio y la
-  institucional se mudó a `/web/`. Las fichas siguen en `/play/<id>`: solo se
-  movió la portada de la plataforma, y sus anclas (`/play/#series`) llegan
-  igual porque el navegador conserva el fragmento.
-- **`/movie` → `/` (301).** La plataforma vivió en `/movie` y ese link se
+- **`/play` ya no redirige (desde el 22/11/2026).** El catálogo de PLAY vive
+  en `/play/` y la raíz es la home de RYTMOS (`app/lib/portada.ts`, ver
+  docs/HOME-RYTMOS.md). La regla de proyecto `^/play/?$` se borró.
+- **`/movie` → `/play/` (301).** La plataforma vivió en `/movie` y ese link se
   compartió públicamente. Apunta directo a su lugar actual para no encadenar
-  dos saltos.
+  dos saltos. `/series` y `/peliculas` van a `/play/#series` y `/play/#peliculas`.
 - **`/movie/okupas` → `/okupas/` (301).** Misma razón.
 - **`/cine-video` → `/web/` (301).** La sección Cine & Video se dio de baja
   (tarjeta del anillo, menú, página y tarjeta de `/orbital`), pero su URL
