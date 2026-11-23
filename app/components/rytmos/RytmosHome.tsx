@@ -3,6 +3,7 @@ import Link from "next/link";
 import RytmosHeader from "./RytmosHeader";
 import Cuenta from "./Cuenta";
 import Loop from "./Loop";
+import Precarga from "./Precarga";
 import LogoRytmos from "./LogoRytmos";
 import Afiche3D from "../ui/Afiche3D";
 import Equipo from "../ui/Equipo";
@@ -11,9 +12,11 @@ import Trailer, { VerTrailer } from "./Trailer";
 import Elenco from "./Elenco";
 import Galeria from "./Galeria";
 import BandaSonora from "./BandaSonora";
-import { AnclasViejas, SCRIPT_ANCLAS } from "./Acciones";
+import { AnclasViejas } from "./Acciones";
+import { SCRIPT_ANCLAS, SCRIPT_PRECARGA } from "./scripts";
 import { Cabecera, Foto } from "./piezas";
-import { FinTransicion, VIAJA } from "../play/transicion";
+import { FinTransicion } from "../play/transicion";
+import { VIAJA } from "../play/viaja";
 import { playFonts } from "../play/fonts";
 import LogoAnimated from "../ui/LogoAnimated";
 import WaGeneral from "../ui/WaGeneral";
@@ -160,11 +163,9 @@ function Hero() {
           <Foto img={{ ...S.keyArt, alt: "" }} movil={S.keyArtVertical} sizes="100vw" className="ry-hero-art" prioridad />
         ) : (
           <div className="ry-stage">
-            {/* Aurora que se mueve despacio, la colmena 3D de la casa (la
-                misma del hub, WebGL que arranca cuando el navegador queda
-                libre) y dos conos de luz que se balancean. */}
+            {/* Aurora que se mueve despacio y dos conos de luz que se
+                balancean, sobre la colmena fija de toda la página. */}
             <span className="ry-aurora" />
-            <Hive className="ry-hero-hive" />
             <span className="ry-beam is-a" />
             <span className="ry-beam is-b" />
           </div>
@@ -357,7 +358,6 @@ function SeccionEquipo({ n }: { n: number }) {
 function Hub({ n }: { n: number }) {
   return (
     <section className="ry-sec ry-hub" id="todo-hivrido" aria-label="Hivrido sale de acá">
-      <Hive className="ry-hub-bg" />
       <div className="ry-hub-top">
         <Cabecera n={n} rotulo="Hivrido" titulo="Hivrido sale de acá" />
         <HMark className="ry-hub-mark" />
@@ -441,8 +441,14 @@ export default function RytmosHome() {
 
   return (
     <div className={`mp-app hp ry ${playFonts}`}>
-      {/* Antes que nada: /#series y compañía van al catálogo. */}
-      <script dangerouslySetInnerHTML={{ __html: SCRIPT_ANCLAS }} />
+      {/* Antes que nada: /#series y compañía van al catálogo, y la entrada
+          del hero espera a que se levante la cortina. */}
+      <script dangerouslySetInnerHTML={{ __html: SCRIPT_ANCLAS + SCRIPT_PRECARGA }} />
+      <Precarga />
+      {/* La colmena tecnológica de la casa, fija detrás de todas las
+          secciones: un solo WebGL para toda la página, que arranca cuando el
+          navegador queda libre y se apaga en equipos que no dan. */}
+      <Hive className="ry-fondo" />
       {/* El key art es el LCP: se pide junto con el HTML, la variante que
           corresponde a cada pantalla. */}
       {S.keyArt && (

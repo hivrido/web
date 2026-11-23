@@ -6,9 +6,7 @@
  */
 
 import { useEffect } from "react";
-
-/** Las anclas del catálogo que vivieron en la raíz. */
-export const ANCLAS_VIEJAS = ["series", "peliculas", "proximamente"];
+import { ANCLAS_VIEJAS } from "./scripts";
 
 /**
  * El hash no llega al servidor, así que /#series no se puede redirigir en
@@ -24,4 +22,3 @@ export function AnclasViejas() {
   return null;
 }
 
-export const SCRIPT_ANCLAS = `(function(h){if(/^#(${ANCLAS_VIEJAS.join("|")})$/.test(h))location.replace("/play/"+h)})(location.hash)`;

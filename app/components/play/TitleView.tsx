@@ -12,7 +12,8 @@
 
 import { useState } from "react";
 import CinePlayer from "./CinePlayer";
-import { FinTransicion, VIAJA } from "./transicion";
+import { FinTransicion } from "./transicion";
+import { VIAJA } from "./viaja";
 import PosterCard, { Badges, ListIcon } from "./PosterCard";
 import { posterAt } from "./Poster";
 import Row from "./Row";

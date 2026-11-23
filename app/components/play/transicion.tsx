@@ -60,5 +60,3 @@ export function useNavegarConTransicion() {
   };
 }
 
-/** Estilo del elemento que viaja. Uno solo por página. */
-export const VIAJA = { viewTransitionName: "rytmos-obra" } as React.CSSProperties;

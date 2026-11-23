@@ -22,7 +22,27 @@
   --ry-section-pad: clamp(72px, 11vw, 160px);
 }
 
-.ry-main { position: relative; z-index: 1; }
+.ry-main,
+.ry .ry-footer { position: relative; z-index: 1; }
+
+/* ── FONDO: la colmena fija detrás de toda la página ──
+   Las secciones son transparentes y la dejan ver; el viñeteado la apaga en
+   los bordes para que el texto siempre gane. */
+.ry .ry-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 35%, transparent 100%);
+}
+.ry .ry-fondo.is-live { opacity: 0.7; }
+
+/* Mientras la cortina de Hivrido está puesta (Precarga.tsx), la entrada del
+   hero espera: arranca cuando se levanta. */
+html[data-precarga] .ry-hero *,
+html[data-precarga] .ry-hero *::before,
+html[data-precarga] .ry-hero *::after { animation-play-state: paused !important; }
 
 /* ── HEADER ── */
 .ry-header { gap: 18px; }
@@ -87,7 +107,6 @@
   align-items: flex-end;
   overflow: clip;
   isolation: isolate;
-  background: var(--hp-bg);
 }
 .ry-hero-bg { position: absolute; inset: 0; z-index: -2; }
 .ry-hero-art,
@@ -114,7 +133,7 @@
     radial-gradient(70% 55% at 50% 112%, color-mix(in srgb, var(--hp-electric) 80%, transparent), transparent 70%),
     radial-gradient(45% 40% at 86% 6%, color-mix(in srgb, var(--hp-night) 90%, transparent), transparent 72%),
     radial-gradient(40% 34% at 8% 30%, color-mix(in srgb, var(--hp-night) 55%, transparent), transparent 70%),
-    linear-gradient(to bottom, var(--hp-ink), var(--hp-bg) 70%);
+    linear-gradient(to bottom, rgba(13, 7, 23, 0.7), transparent 75%);
 }
 .ry-beam {
   position: absolute;
@@ -140,7 +159,7 @@
   filter: blur(30px);
   mix-blend-mode: screen;
 }
-.ry-hero-hive { opacity: 0.6; }
+
 /* El horizonte va dentro del título, apoyado en su base, y se estira a todo
    el ancho del hero (que recorta): así acompaña al logo en cualquier
    pantalla. */
@@ -161,7 +180,7 @@
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(to top, var(--hp-bg) 2%, rgba(10, 10, 11, 0.7) 34%, transparent 66%),
+    linear-gradient(to top, rgba(10, 10, 11, 0.55) 0%, rgba(10, 10, 11, 0.45) 34%, transparent 66%),
     linear-gradient(to right, rgba(10, 10, 11, 0.55), transparent 60%);
 }
 
@@ -599,7 +618,6 @@
 
 /* ── TODO HIVRIDO ── */
 .ry-hub { overflow: clip; padding-bottom: var(--ry-section-pad); }
-.ry-hub-bg { position: absolute; inset: 0; z-index: -1; opacity: 0.55; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 80%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 80%, transparent); }
 .ry-hub-top { display: grid; grid-template-columns: minmax(0, 1fr) clamp(160px, 22vw, 300px); align-items: end; gap: 24px; }
 .ry-hub-mark { width: 100%; margin-bottom: clamp(28px, 4vw, 56px); }
 .ry-hub-grid {

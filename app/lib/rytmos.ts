@@ -154,9 +154,8 @@ export const RYTMOS: Rytmos = {
   /* Fotos: las de perfil de Instagram (public/images/rytmos/equipo/). */
   equipo: [
     { nombre: "Lucas Ariel Manzano", rol: "Creador", instagram: "hivrido.product.x1_ok", foto: "/images/rytmos/equipo/lucas-manzano.webp", principal: true },
-    /* TODO-CONTENIDO: el rol de Leandro en la serie. Así escribe su nombre en
-       Instagram, con tilde. */
-    { nombre: "Leandro Domé", instagram: "leandro_dome", foto: "/images/rytmos/equipo/leandro-dome.webp" },
+    /* Así escribe su nombre en Instagram, con tilde. */
+    { nombre: "Leandro Domé", rol: "Cofundador", instagram: "leandro_dome", foto: "/images/rytmos/equipo/leandro-dome.webp" },
     { nombre: "Joaquín Pramori", rol: "Logística & eventos", instagram: "jokospramori", foto: "/images/rytmos/equipo/joaquin-pramori.webp" },
     /* Zurdosound es su nombre artístico (ver app/lib/artistas.ts). */
     { nombre: "Alan Ezequiel Mendoza", rol: "Postproducción, filmación y contenidos", instagram: "zurdosound", foto: "/images/rytmos/equipo/zurdosound.webp" },

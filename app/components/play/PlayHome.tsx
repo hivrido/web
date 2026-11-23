@@ -33,7 +33,8 @@ import { playFonts } from "./fonts";
 import "./play.css";
 import { whatsapp } from "../../lib/contacto";
 import { medir } from "../../lib/medir";
-import { FinTransicion, VIAJA, useNavegarConTransicion } from "./transicion";
+import { FinTransicion, useNavegarConTransicion } from "./transicion";
+import { VIAJA } from "./viaja";
 
 const byId = (id: string) => CATALOG.find((t) => t.id === id);
 

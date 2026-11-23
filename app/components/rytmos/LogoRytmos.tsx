@@ -19,7 +19,7 @@
  */
 
 import { tilt, untilt } from "../play/PosterCard";
-import { VIAJA } from "../play/transicion";
+import { VIAJA } from "../play/viaja";
 import { LOGO_LETRAS, LOGO_TRANSFORM, LOGO_VIEWBOX } from "./logo-trazos";
 
 const CAPAS = 7;

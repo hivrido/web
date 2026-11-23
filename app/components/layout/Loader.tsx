@@ -23,7 +23,12 @@ export default function Loader({ onDone }: { onDone: () => void }) {
   const [bar, setBar] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [instant, setInstant] = useState(false);
-  const [count, setCount] = useState(0);
+  /* El porcentaje se escribe directo en el DOM: con un estado de React era
+     un render por cuadro durante 1,4 s —unos 85 seguidos—, justo mientras la
+     página arranca, y en un teléfono eso es tiempo de bloqueo puro. Solo la
+     aparición del lema pasa por React, una vez. */
+  const [tagline, setTagline] = useState(false);
+  const countRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -52,11 +57,14 @@ export default function Loader({ onDone }: { onDone: () => void }) {
     const t3 = setTimeout(forceHide, 3000);
 
     let start: number | null = null;
+    let lema = false;
     const duration = 1400;
     const step = (timestamp: number) => {
       if (!start) start = timestamp;
       const progress = Math.min((timestamp - start) / duration, 1);
-      setCount(Math.floor(progress * 100));
+      const pct = Math.floor(progress * 100);
+      if (countRef.current) countRef.current.textContent = `${pct}%`;
+      if (!lema && pct >= 40) { lema = true; setTagline(true); }
       if (progress < 1) rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
@@ -76,11 +84,11 @@ export default function Loader({ onDone }: { onDone: () => void }) {
           {/* Draw animation starts at 0ms — logo draws itself during loader */}
           <LogoAnimated delay={200} height={70} />
         </div>
-        <div className={`loader-tagline${count >= 40 ? " visible" : ""}`}>
+        <div className={`loader-tagline${tagline ? " visible" : ""}`}>
           Is the Future
         </div>
       </div>
-      <div className="loader-count">{count}%</div>
+      <div ref={countRef} className="loader-count">0%</div>
       <div className={`loader-bar${bar ? " full" : ""}`} />
     </div>
   );
