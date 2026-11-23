@@ -56,7 +56,7 @@ ${items}
   </div>
   <footer class="eco-foot">
     <a href="https://wa.me/5491156072460?text=${wa}">Escribinos por WhatsApp</a>
-    <a href="mailto:hola@hivrido.com?subject=${asunto}">hola@hivrido.com</a>
+    <a href="mailto:hivridoads@gmail.com?subject=${asunto}">hivridoads@gmail.com</a>
   </footer>
 </main>
 ${CLOSE}`;

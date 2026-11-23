@@ -34,11 +34,11 @@ export default function Footer() {
           <div>
             <div className="footer-col-title">Contacto</div>
             <ul className="footer-links">
-              <li><a href="mailto:hola@hivrido.com">hola@hivrido.com</a></li>
+              <li><a href="mailto:hivridoads@gmail.com">hivridoads@gmail.com</a></li>
               <li>
                 <WaGeneral lugar="el pie">WhatsApp</WaGeneral>
               </li>
-              <li><a href="mailto:hola@hivrido.com">Trabaja con nosotros</a></li>
+              <li><a href="mailto:hivridoads@gmail.com">Trabaja con nosotros</a></li>
             </ul>
           </div>
         </div>

@@ -14,7 +14,7 @@
  */
 
 export const WHATSAPP_NUMERO = "5491156072460";
-export const MAIL = "hola@hivrido.com";
+export const MAIL = "hivridoads@gmail.com";
 export const INSTAGRAM = "https://www.instagram.com/hivrido.product.x1_ok/";
 
 /** Enlace a WhatsApp con el mensaje precargado. */

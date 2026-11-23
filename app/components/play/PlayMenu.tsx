@@ -101,7 +101,7 @@ export default function PlayMenu({
         </ul>
         <div className="nav-cta">
           <WaGeneral lugar="el menú">+ Contacto</WaGeneral>
-          <a href="mailto:hola@hivrido.com">hola@hivrido.com</a>
+          <a href="mailto:hivridoads@gmail.com">hivridoads@gmail.com</a>
         </div>
       </nav>
     </>

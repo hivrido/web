@@ -562,8 +562,8 @@ export default function WebDesign({ content = WEB_CONTENT }: { content?: Landing
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </a>
-              <a className="web-cta-mail" href={`mailto:hola@hivrido.com?subject=${encodeURIComponent(content.cta.mail)}`}>
-                hola@hivrido.com
+              <a className="web-cta-mail" href={`mailto:hivridoads@gmail.com?subject=${encodeURIComponent(content.cta.mail)}`}>
+                hivridoads@gmail.com
               </a>
             </div>
           </div>

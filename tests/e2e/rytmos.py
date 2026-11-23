@@ -146,7 +146,7 @@ class HomeRytmos(Base):
         page.goto(BASE + "/", wait_until="load")
         contacto = page.locator("#todo-hivrido .ry-door.is-contact")
         self.assertIn(f"wa.me/{NUMERO}", contacto.locator("a").first.get_attribute("href"))
-        self.assertTrue(contacto.locator("a[href^='mailto:hola@hivrido.com']").count())
+        self.assertTrue(contacto.locator("a[href^='mailto:hivridoads@gmail.com']").count())
 
     def test_menu_movil_mapa_completo_foco_y_escape(self):
         page = self.pagina("/", movil=True)

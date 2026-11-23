@@ -391,9 +391,9 @@ export default function SeccionesOrigen() {
               </a>
               <a
                 className="web-cta-mail"
-                href={`mailto:hola@hivrido.com?subject=${encodeURIComponent("ORIGEN · Generación 001")}`}
+                href={`mailto:hivridoads@gmail.com?subject=${encodeURIComponent("ORIGEN · Generación 001")}`}
               >
-                hola@hivrido.com
+                hivridoads@gmail.com
               </a>
             </div>
           </div>
