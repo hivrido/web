@@ -123,6 +123,74 @@ html:has(.cs-page) body {
   color: var(--text-muted);
 }
 
+/* ── La convocatoria: de qué serie es la firma, cuándo y dónde ────────── */
+
+.cs-serie-logo {
+  display: block;
+  width: min(220px, 60%);
+  height: auto;
+  margin: 0 0 22px;
+  filter: drop-shadow(0 0 18px rgba(124, 58, 237, 0.55));
+}
+
+.cs-datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 24px 0 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--border);
+}
+.cs-datos > div { padding: 12px 14px; background: rgba(14, 10, 22, 0.92); }
+.cs-datos dt {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.cs-datos dd { margin: 5px 0 0; font-size: 14px; line-height: 1.35; color: var(--text); }
+
+.cs-notas {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.cs-notas li { position: relative; padding-left: 16px; }
+.cs-notas li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.8);
+}
+.cs-notas strong { color: var(--text); font-weight: 600; }
+
+.cs-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--violet-light);
+  transition: color 0.2s, gap 0.2s;
+}
+.cs-volver:hover { color: #fff; gap: 12px; }
+
+@media (max-width: 380px) { .cs-datos { grid-template-columns: 1fr; } }
+
 /* ── Bloques del formulario ───────────────────────────────────────────── */
 
 .cs-form { display: flex; flex-direction: column; gap: 18px; }

@@ -59,6 +59,15 @@ El titular de los datos puede ejercer los derechos de acceso, rectificación y s
 9. DECLARACIÓN FINAL
 El Cedente declara haber leído íntegramente el presente texto, comprender su alcance y firmarlo de manera libre y voluntaria.`;
 
+/* v2 (casting de RYTMOS): misma redacción que v1, con la producción
+   nombrada en el objeto. La cesión sigue cubriendo toda la producción de
+   Hivrido —quien firma en el casting puede terminar en otra pieza—, pero
+   quien firma sabe a qué serie se está presentando. */
+const V2 = V1.replace(
+  "durante castings, pruebas de cámara, ensayos, rodajes y toda instancia de producción audiovisual en la que el Cedente participe.",
+  "durante castings, pruebas de cámara, ensayos, rodajes y toda instancia de producción audiovisual en la que el Cedente participe, en particular el casting y la producción de la serie RYTMOS, de Hivrido PLAY."
+);
+
 export const VERSIONES: Record<string, VersionCesion> = {
   "v1": {
     id: "v1",
@@ -66,10 +75,16 @@ export const VERSIONES: Record<string, VersionCesion> = {
     titulo: "Cesión de derechos de imagen, voz y actuación",
     texto: V1,
   },
+  "v2": {
+    id: "v2",
+    vigenteDesde: "2026-11-23",
+    titulo: "Cesión de derechos de imagen, voz y actuación — RYTMOS",
+    texto: V2,
+  },
 };
 
 /** La versión que se le muestra hoy a quien entra a firmar. */
-export const VERSION_ACTUAL = "v1";
+export const VERSION_ACTUAL = "v2";
 
 export function getVersion(id: string): VersionCesion | null {
   return Object.prototype.hasOwnProperty.call(VERSIONES, id) ? VERSIONES[id] : null;

@@ -141,3 +141,18 @@ detalle o cita y link → `prensa`.
 3. **El rol de Leandro Dome** (@leandro_dome) en la serie: hoy figura en
    "El equipo" solo con su nombre y su Instagram (`equipo` en rytmos.ts).
 4. **Derechos de la música** (punto 8), antes de publicar cualquier tema.
+
+## Firma de la cesión (/firma → /cesion) — sin base de datos (23/11)
+
+La página ya es la del casting de RYTMOS (texto legal v2, que nombra la serie;
+v1 queda intacta para las firmas anteriores). Pero el proyecto de Supabase que
+guarda las firmas no existe más —su dirección no resuelve, ni en DNS público—,
+así que **hoy enviar la firma da error y no se guarda nada**.
+
+Para volver a activarla:
+1. supabase.com → reactivar el proyecto pausado o crear uno nuevo (plan Free).
+2. SQL Editor → pegar y correr `scripts/cesiones.sql`.
+3. Settings → API: copiar Project URL y la `service_role` key.
+4. Cargarlas en Vercel (Production) como `SUPABASE_URL` y
+   `SUPABASE_SERVICE_ROLE_KEY`, y en `.env.local`. `IP_HASH_SALT` no se toca.
+5. Redeploy y una firma de prueba.
