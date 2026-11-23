@@ -59,7 +59,7 @@ export default function RytmosHeader({
           {casting ? (
             <Link href={casting} className="ry-play-link is-casting" data-medir="casting_click" data-medir-origen="header">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-              Sumate al casting
+              <span className="ry-play-largo">Sumate al </span>casting
             </Link>
           ) : (
             <Link href="/play/" className="ry-play-link" data-medir="explorar_play" data-medir-origen="header">

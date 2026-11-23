@@ -23,7 +23,7 @@
 }
 
 .ry-main,
-.ry .ry-footer { position: relative; z-index: 1; }
+.ry .ry-pie { position: relative; z-index: 1; }
 
 /* ── FONDOS ──
    Cada sección tiene el suyo, animado y distinto, en la misma paleta:
@@ -141,6 +141,15 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
 .ry-play-link.is-casting { background: var(--hp-accent); border-color: transparent; color: #fff; letter-spacing: 0.1em; }
 .ry-play-link.is-casting svg { color: #fff; }
 .ry-play-link.is-casting:hover { background: var(--hp-accent-2); }
+.ry-play-link { white-space: nowrap; }
+/* Teléfonos angostos: el llamado entra en una línea junto al logo. */
+@media (max-width: 400px) {
+  .ry-play-link.is-casting { padding: 0 12px 0 10px; gap: 6px; font-size: 10px; letter-spacing: 0.06em; }
+}
+/* Los más angostos (320–380 px): solo "Casting", para que entre el menú. */
+@media (max-width: 380px) {
+  .ry-play-largo { display: none; }
+}
 .ry-burger {
   display: grid;
   place-items: center;
@@ -768,9 +777,91 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
 .ry-door-contact a:hover { text-decoration-color: var(--hp-neon); }
 .ry-door.is-contact .ry-door-label { margin-top: 0; }
 
-/* ── PIE ── */
-.ry-footer { grid-template-columns: minmax(0, 1fr); }
-.ry-footer .hp-footer-cols { flex-wrap: wrap; }
+/* ── PIE ──
+   Pegado al final del hub (sin margen: una sola costura), con una línea de
+   neón en degradado arriba, la marca y sus redes a la izquierda, el mapa a
+   la derecha y HIVRIDO de marca de agua al cierre. */
+.ry-pie {
+  position: relative;
+  overflow: clip;
+  padding: clamp(48px, 7vw, 96px) var(--hp-gutter) 28px;
+  background:
+    radial-gradient(60% 120% at 15% 0%, rgba(95, 37, 159, 0.16), transparent 60%),
+    linear-gradient(to bottom, transparent, rgba(13, 7, 23, 0.85));
+}
+.ry-pie::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hp-electric) 20%, var(--hp-neon) 50%, var(--hp-gold) 75%, transparent);
+  box-shadow: 0 0 18px rgba(172, 79, 198, 0.6);
+}
+.ry-pie-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: clamp(36px, 6vw, 96px);
+}
+.ry-pie-marca { display: grid; gap: 16px; align-content: start; }
+.ry-pie-lema { font-size: 15px; color: var(--hp-muted); max-width: 30ch; }
+.ry-pie-redes { display: flex; gap: 10px; margin-top: 6px; }
+.ry-pie-red {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--hp-border-strong);
+  background: rgba(18, 18, 20, 0.6);
+  color: var(--hp-text);
+  transition: border-color 0.25s var(--hp-ease), color 0.25s var(--hp-ease), box-shadow 0.25s var(--hp-ease), translate 0.25s var(--hp-ease);
+}
+.ry-pie-red:hover { border-color: var(--hp-neon); color: #fff; box-shadow: 0 0 18px rgba(172, 79, 198, 0.55); translate: 0 -2px; }
+.ry-pie-mapa { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: clamp(24px, 3vw, 48px); }
+.ry-pie-col { display: flex; flex-direction: column; gap: 11px; min-width: 0; }
+.ry-pie-lista { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px 24px; }
+.ry-pie-rot { font-family: var(--hp-mono); font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--hp-gold); margin-bottom: 4px; }
+.ry-pie-col a,
+.ry-pie-lista a {
+  font-size: 14px;
+  color: rgba(245, 245, 247, 0.66);
+  overflow-wrap: anywhere;
+  transition: color 0.2s var(--hp-ease);
+}
+.ry-pie-col a:hover,
+.ry-pie-lista a:hover { color: #fff; }
+.ry-pie-agua {
+  margin: clamp(40px, 6vw, 80px) 0 0;
+  font-family: var(--hp-display);
+  font-size: clamp(64px, 17vw, 300px);
+  line-height: 0.8;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(172, 79, 198, 0.28);
+  background: linear-gradient(to bottom, rgba(172, 79, 198, 0.12), transparent 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  user-select: none;
+}
+.ry-pie-base {
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--hp-border);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--hp-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(138, 138, 147, 0.8);
+}
+.ry-pie-arriba { display: inline-flex; align-items: center; gap: 8px; color: var(--hp-muted); transition: color 0.2s; }
+.ry-pie-arriba:hover { color: #fff; }
 
 /* ── MOVIMIENTO ── */
 @media (prefers-reduced-motion: no-preference) {
@@ -859,6 +950,9 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
        poco, mientras la siguiente entra. Va en la sección y no en sus hijos,
        que tienen sus propios reveals. */
     .ry-sec { animation: ry-settle linear both; animation-timeline: view(); animation-range: exit 30% exit 100%; }
+    /* La última sección no se retira: al fondo de la página convive con el
+       pie, y achicada dejaba ver el borde de su recorte. */
+    .ry-sec.ry-hub { animation: none; }
     .ry-door { animation: ry-rise linear both; animation-timeline: view(); animation-range: entry 0% entry calc(35% + var(--i, 0) * 5%); }
   }
 }
@@ -954,12 +1048,17 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
 
 /* ── TELÉFONO ── */
 @media (max-width: 1024px) {
+  .ry-pie-in { grid-template-columns: 1fr; }
   .ry-serie { grid-template-columns: 1fr; }
   .ry-hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ry-hub-top { grid-template-columns: 1fr; }
   .ry-hub-mark { display: none; }
 }
 @media (max-width: 768px) {
+  /* Mapa en dos columnas: PLAY y Contacto arriba, Hivrido debajo a lo ancho. */
+  .ry-pie-mapa { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 20px; }
+  .ry-pie-col.is-doble { grid-column: 1 / -1; order: 3; }
+  .ry-pie-col a, .ry-pie-lista a { font-size: 15px; }
   .ry-header { justify-content: space-between; }
   .ry-header .hp-nav { display: none; }
   .ry-hero-content { gap: 14px; }

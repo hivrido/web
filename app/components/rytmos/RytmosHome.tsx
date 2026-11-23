@@ -406,43 +406,71 @@ function Hub({ n }: { n: number }) {
 
 /* ── PIE ── */
 function Pie() {
+  const hivrido = [
+    ...PUERTAS.filter((p) => p.href && p.href !== "/play/").map((p) => ({ label: p.label, href: p.href! })),
+    ...MAS_RUTAS,
+  ];
   return (
-    <footer className="hp-footer ry-footer">
-      <div className="hp-footer-brand">
-        <div className="hp-logo hp-footer-mark">
-          <Link href="/" aria-label="Hivrido, inicio" className="hp-logo-mark">
-            <LogoAnimated height={26} startOnView />
-          </Link>
-          <Link href="/play/" className="hp-logo-pill" aria-label="Hivrido PLAY, catálogo">Play</Link>
+    <footer className="ry-pie">
+      <div className="ry-pie-in">
+        <div className="ry-pie-marca">
+          <div className="hp-logo hp-footer-mark">
+            <Link href="/" aria-label="Hivrido, inicio" className="hp-logo-mark">
+              <LogoAnimated height={26} startOnView />
+            </Link>
+            <Link href="/play/" className="hp-logo-pill" aria-label="Hivrido PLAY, catálogo">Play</Link>
+          </div>
+          <p className="ry-pie-lema">Cine y series hechos en Argentina.</p>
+          <div className="ry-pie-redes">
+            <a className="ry-pie-red" href={INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Instagram de Hivrido">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+            </a>
+            <WaGeneral lugar="el pie" className="ry-pie-red" aria-label="WhatsApp de Hivrido (abre en otra pestaña)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35zM12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.69 1.45c6.55 0 11.89-5.34 11.89-11.89A11.82 11.82 0 0012.05 0zm0 21.79a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.27c0-5.45 4.44-9.88 9.89-9.88a9.83 9.83 0 019.88 9.89c0 5.45-4.43 9.89-9.88 9.89z" /></svg>
+            </WaGeneral>
+            <a className="ry-pie-red" href={mail("Consulta desde hivrido.com")} aria-label={`Escribir a ${MAIL}`}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></svg>
+            </a>
+          </div>
         </div>
-        <p>Cine y series hechos en Argentina.</p>
+
+        <nav className="ry-pie-mapa" aria-label="Mapa del sitio">
+          <div className="ry-pie-col">
+            <span className="ry-pie-rot">Hivrido PLAY</span>
+            <Link href="/play/">Catálogo</Link>
+            <Link href={RYTMOS_FICHA}>{S.nombre}</Link>
+            <Link href="/play/#series">Series</Link>
+            <Link href="/play/#peliculas">Películas</Link>
+            <Link href="/play/#proximamente">Próximamente</Link>
+          </div>
+          <div className="ry-pie-col is-doble">
+            <span className="ry-pie-rot">Hivrido</span>
+            <div className="ry-pie-lista">
+              {hivrido.map((r) => (
+                <Link key={r.href} href={r.href}>{r.label}</Link>
+              ))}
+            </div>
+          </div>
+          <div className="ry-pie-col">
+            <span className="ry-pie-rot">Contacto</span>
+            <WaGeneral lugar="el pie">WhatsApp</WaGeneral>
+            <a href={mail("Consulta desde hivrido.com")}>{MAIL}</a>
+            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a>
+            <Link href="/casting/">Casting {S.nombre}</Link>
+          </div>
+        </nav>
       </div>
-      <nav className="hp-footer-cols" aria-label="Mapa del sitio">
-        <div>
-          <span className="hp-footer-label">Hivrido PLAY</span>
-          <Link href="/play/">Catálogo</Link>
-          <Link href={RYTMOS_FICHA}>{S.nombre}</Link>
-          <Link href="/play/#series">Series</Link>
-          <Link href="/play/#peliculas">Películas</Link>
-          <Link href="/play/#proximamente">Próximamente</Link>
-        </div>
-        <div>
-          <span className="hp-footer-label">Hivrido</span>
-          {PUERTAS.filter((p) => p.href && p.href !== "/play/").map((p) => (
-            <Link key={p.n} href={p.href!}>{p.label}</Link>
-          ))}
-          {MAS_RUTAS.map((r) => (
-            <Link key={r.href} href={r.href}>{r.label}</Link>
-          ))}
-        </div>
-        <div>
-          <span className="hp-footer-label">Contacto</span>
-          <WaGeneral lugar="el pie">WhatsApp</WaGeneral>
-          <a href={mail("Consulta desde hivrido.com")}>{MAIL}</a>
-          <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">Instagram</a>
-        </div>
-      </nav>
-      <p className="hp-footer-legal">© 2026 Hivrido · Hivrido PLAY</p>
+
+      {/* La marca de agua: HIVRIDO en contorno, a lo ancho. */}
+      <p className="ry-pie-agua" aria-hidden="true">HIVRIDO</p>
+
+      <div className="ry-pie-base">
+        <span>© 2026 Hivrido · Hivrido PLAY</span>
+        <a href="#" className="ry-pie-arriba">
+          Volver arriba
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+        </a>
+      </div>
     </footer>
   );
 }
