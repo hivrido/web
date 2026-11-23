@@ -16,17 +16,21 @@ import { whatsapp } from "../lib/contacto";
 import { medir } from "../lib/medir";
 import { CONVOCATORIA as C } from "./contenido";
 
-type Fields = { nombre: string; telefono: string; email: string };
+type Fields = { nombre: string; telefono: string; email: string; perfil: string };
 type Errors = Partial<Record<keyof Fields, string>>;
 
-const EMPTY: Fields = { nombre: "", telefono: "", email: "" };
+const EMPTY: Fields = { nombre: "", telefono: "", email: "", perfil: "" };
+
+/** Qué hace quien se anota: decide qué prueba le toca (ver COMO_VA_A_SER). */
+const PERFILES = ["Actor / actriz / actuante", "Freestyler", "Otrx"] as const;
 
 /* Suficiente para atajar el error de tipeo, no para pelear con direcciones
    raras: lo que valida de verdad el dato es que la persona conteste. */
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-function validate({ nombre, telefono, email }: Fields): Errors {
+function validate({ nombre, telefono, email, perfil }: Fields): Errors {
   const errors: Errors = {};
+  if (!perfil) errors.perfil = "Elegí qué hacés.";
   if (nombre.trim().length < 3) errors.nombre = "Escribí tu nombre y apellido.";
   // Solo los dígitos: la gente escribe el teléfono con espacios, guiones y +54
   if (telefono.replace(/\D/g, "").length < 8) errors.telefono = "Falta un teléfono con característica.";
@@ -34,10 +38,11 @@ function validate({ nombre, telefono, email }: Fields): Errors {
   return errors;
 }
 
-function waLink({ nombre, telefono, email }: Fields) {
+function waLink({ nombre, telefono, email, perfil }: Fields) {
   const text = [
     `Hola HIVRIDO! Quiero sumarme al casting de la serie ${C.serie} (${C.fecha}, ${C.lugar}).`,
     "",
+    `Perfil: ${perfil}`,
     `Nombre: ${nombre.trim()}`,
     `Teléfono: ${telefono.trim()}`,
     `Email: ${email.trim()}`,
@@ -143,6 +148,19 @@ export default function CastingCall() {
                 <span className="mp-casting-form-kicker">Formulario de casting</span>
                 <h2 className="mp-casting-form-title">Suscribite</h2>
               </div>
+
+              <fieldset className="mp-casting-field mp-casting-perfil" aria-invalid={!!errors.perfil}>
+                <legend>¿Qué hacés?</legend>
+                <div className="mp-casting-opciones">
+                  {PERFILES.map((p) => (
+                    <label key={p} className={`mp-casting-opcion${fields.perfil === p ? " is-on" : ""}`}>
+                      <input type="radio" name="perfil" value={p} checked={fields.perfil === p} onChange={set("perfil")} />
+                      {p}
+                    </label>
+                  ))}
+                </div>
+                {errors.perfil && <em className="mp-casting-error">{errors.perfil}</em>}
+              </fieldset>
 
               <label className="mp-casting-field">
                 <span>Nombre y apellido</span>

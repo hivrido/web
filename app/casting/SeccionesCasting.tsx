@@ -86,9 +86,9 @@ export default function SeccionesCasting() {
         </div>
       </section>
 
-      {/* ── 3 · Cómo va a ser ────────────────────────────────────────
-          <ol> y no <ul>: los dos momentos pasan en ese orden y no en
-          otro, y esa es la única pregunta que la sección contesta. */}
+      {/* ── 3 · Cómo es la prueba ────────────────────────────────────
+          Un camino por perfil: freestyle, actuación o, sin nada
+          preparado, una de las situaciones de abajo. */}
       <section className="cst-seccion" aria-labelledby="t-hacer">
         <div className="cst-wrap">
           <h2 className="cst-h2" id="t-hacer">
@@ -101,11 +101,11 @@ export default function SeccionesCasting() {
               <Reveal as="li" key={momento.etiqueta} delay={i * 0.08} className="cst-paso">
                 <p className="cst-paso-meta">
                   <span className="cst-paso-num">{momento.etiqueta}</span>
-                  <span className="cst-paso-duracion">{momento.duracion}</span>
+                  {momento.duracion && <span className="cst-paso-duracion">{momento.duracion}</span>}
                 </p>
                 <h3 className="cst-paso-titulo">{momento.titulo}</h3>
                 <p className="cst-paso-texto">{momento.texto}</p>
-                <p className="cst-paso-nota">{momento.nota}</p>
+                {momento.nota && <p className="cst-paso-nota">{momento.nota}</p>}
               </Reveal>
             ))}
           </ol>

@@ -125,6 +125,11 @@ class Flujos(unittest.TestCase):
         page.locator("form input[name=nombre]").fill("Prueba Automática")
         page.locator("form input[type=tel]").fill("11 5555 5555")
         page.locator("form input[type=email]").fill("prueba@example.com")
+        # Sin perfil no deja enviar: es lo que decide qué prueba le toca.
+        page.locator("form [type=submit]").first.click()
+        page.wait_for_timeout(300)
+        self.assertEqual(page.locator(".mp-casting-done").count(), 0, "sin perfil no se envía")
+        page.locator(".mp-casting-opcion", has_text="Freestyler").click()
         # El envío abre WhatsApp: se intercepta para no salir del sitio.
         page.evaluate("window.open = (u) => { window.__wa = u; return {}; }")
         page.locator("form [type=submit]").first.click()
@@ -132,6 +137,7 @@ class Flujos(unittest.TestCase):
         destino = unquote(page.evaluate("window.__wa") or "")
         self.assertIn(f"wa.me/{NUMERO}", destino)
         self.assertIn("Prueba Automática", destino)
+        self.assertIn("Perfil: Freestyler", destino)
         self.assertGreater(page.locator(".mp-casting-done").count(), 0, "tiene que confirmar el envío")
 
     # ── WhatsApp ────────────────────────────────────────────────────────────
