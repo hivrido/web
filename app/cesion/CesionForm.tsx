@@ -29,7 +29,6 @@ type Campos = {
   telefono: string;
   email: string;
   instagram: string;
-  numero_orden: string;
   adulto_nombre: string;
   adulto_dni: string;
   adulto_vinculo: string;
@@ -44,7 +43,6 @@ const VACIO: Campos = {
   telefono: "",
   email: "",
   instagram: "",
-  numero_orden: "",
   adulto_nombre: "",
   adulto_dni: "",
   adulto_vinculo: "",
@@ -461,21 +459,12 @@ export default function CesionForm() {
           </label>
         </div>
 
-        <div className="cs-fila">
-          <label className="cs-campo">
-            <span className="cs-label">
-              Instagram <em>opcional</em>
-            </span>
-            <input type="text" value={campos.instagram} onChange={set("instagram")} placeholder="@usuario" />
-          </label>
-
-          <label className="cs-campo">
-            <span className="cs-label">
-              N.º de orden <em>opcional</em>
-            </span>
-            <input type="text" inputMode="numeric" value={campos.numero_orden} onChange={set("numero_orden")} />
-          </label>
-        </div>
+        <label className="cs-campo">
+          <span className="cs-label">
+            Instagram <em>opcional</em>
+          </span>
+          <input type="text" value={campos.instagram} onChange={set("instagram")} placeholder="@usuario" />
+        </label>
       </section>
 
       {esMenor && (
