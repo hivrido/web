@@ -100,12 +100,18 @@
 }
 
 /* ── Equipo (Equipo.tsx) ── */
-/* Columnas fijas: con auto-fit, la tarjeta principal (que ocupa toda la
-   fila) creaba columnas vacías y apretaba a las demás. */
+/* Las columnas dependen del ancho de la caja, no de la pantalla: en la home
+   el equipo ocupa todo el ancho y en /casting una columna angosta, y con
+   cuatro columnas por ancho de pantalla las fichas del casting quedaban
+   apretadas. Columnas fijas y no auto-fit: la principal ocupa toda la fila
+   y con auto-fit creaba columnas vacías. */
+.equipo-caja { container-type: inline-size; }
 .equipo { display: grid; grid-template-columns: 1fr; gap: 18px; list-style: none; padding: 0; margin: 0; }
-@media (min-width: 640px) { .equipo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1100px) { .equipo { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@container (min-width: 560px) { .equipo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container (min-width: 1100px) { .equipo { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.equipo li { display: flex; }
 .equipo-card {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 16px;

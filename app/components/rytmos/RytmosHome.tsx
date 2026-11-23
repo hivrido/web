@@ -351,10 +351,12 @@ function seccionesDeLaSerie(): Seccion[] {
 /* ── EQUIPO ── */
 function SeccionEquipo({ n }: { n: number }) {
   return (
-    <section className="ry-sec ry-fondo-grilla" id="equipo" aria-label="Equipo">
+    <section className="ry-sec ry-fondo-colmena" id="equipo" aria-label="Equipo">
+      {/* La colmena 3D de la casa, como en el hero, con un resplandor que
+          respira debajo de las tarjetas. */}
       <span className="ry-capa" aria-hidden="true">
         <span className="ry-horizonte" />
-        <span className="ry-grilla" />
+        <Hive className="ry-equipo-hive" />
       </span>
       <Cabecera n={n} rotulo="Casting" titulo="El equipo" />
       <Equipo className="ry-reveal" />

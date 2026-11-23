@@ -28,14 +28,14 @@
 /* ── FONDOS ──
    Cada sección tiene el suyo, animado y distinto, en la misma paleta:
    - hero: colmena 3D (WebGL), aurora y conos de luz;
-   - equipo: piso de grilla neón en perspectiva que avanza, con horizonte;
+   - equipo: la colmena 3D, como el hero, con un resplandor que respira;
    - hub: halo cónico que gira muy lento, y cada puerta con su dibujo
      animado en SVG (PuertaFondo.tsx).
    Todo anima transform u opacity (lo hace la GPU, sin repintar). Con
    movimiento reducido quedan quietos. */
 .ry-hero-hive { opacity: 0.6; }
 
-.ry-fondo-grilla,
+.ry-fondo-colmena,
 .ry-hub { overflow: clip; isolation: isolate; }
 /* Cada fondo vive en una capa que se funde arriba y abajo: así no hay
    costura entre una sección y la siguiente. */
@@ -48,40 +48,16 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
   mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
 }
-/* En el equipo el piso llega hasta abajo: el fundido inferior es corto. */
-.ry-fondo-grilla > .ry-capa {
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 94%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 94%, transparent);
-}
-/* El equipo deja aire abajo para que se vea su piso. */
-.ry-sec.ry-fondo-grilla { padding-bottom: clamp(160px, 20vw, 280px); }
 
-/* Equipo: el piso. Se desplaza exactamente una celda y vuelve, así el loop
-   no tiene salto. La máscara lo funde hacia el fondo. */
-.ry-grilla {
-  position: absolute;
-  z-index: -1;
-  left: -40%;
-  right: -40%;
-  bottom: 0;
-  height: 140%;
-  background-image:
-    linear-gradient(rgba(172, 79, 198, 0.42) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(172, 79, 198, 0.42) 1px, transparent 1px);
-  background-size: 64px 64px;
-  transform: perspective(520px) rotateX(56deg);
-  transform-origin: 50% 100%;
-  -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 80%);
-  mask-image: linear-gradient(to top, #000 15%, transparent 80%);
-  pointer-events: none;
-}
-/* El horizonte del piso: el resplandor donde la grilla se pierde. */
+/* Equipo: la colmena (más tenue que en el hero, para que manden las caras)
+   y un resplandor que respira detrás de las tarjetas. */
+.ry-equipo-hive { opacity: 0.5; }
 .ry-horizonte {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 38%;
-  height: 300px;
+  bottom: 10%;
+  height: 60%;
   background: radial-gradient(60% 50% at 50% 100%, rgba(130, 70, 175, 0.5), transparent 70%);
 }
 
@@ -900,7 +876,6 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
   .ry-beam { animation: ry-beam 2.2s ease-out both, ry-sway 13s ease-in-out 2.2s infinite alternate; }
   .ry-beam.is-b { animation-duration: 2.2s, 17s; }
   .ry-aurora { animation: ry-aurora 22s ease-in-out infinite alternate; }
-  .ry-grilla { animation: ry-grilla 3.2s linear infinite; }
   .ry-horizonte { animation: ry-respira 6s ease-in-out infinite; }
   .ry-halo { animation: ry-halo 48s linear infinite; }
   .ry-door-svg .pf-gira { animation: pf-gira 14s linear infinite; }
@@ -1018,10 +993,6 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
   0% { transform: translate3d(-4%, -2%, 0) rotate(0deg) scale(1); }
   50% { transform: translate3d(3%, 3%, 0) rotate(8deg) scale(1.08); }
   100% { transform: translate3d(5%, -3%, 0) rotate(-6deg) scale(1.02); }
-}
-@keyframes ry-grilla {
-  from { transform: perspective(520px) rotateX(56deg) translateY(0); }
-  to { transform: perspective(520px) rotateX(56deg) translateY(64px); }
 }
 @keyframes ry-respira { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 @keyframes ry-halo { to { rotate: 360deg; } }

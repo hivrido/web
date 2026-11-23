@@ -156,10 +156,10 @@ export const RYTMOS: Rytmos = {
     { nombre: "Lucas Ariel Manzano", rol: "Creador", instagram: "hivrido.product.x1_ok", foto: "/images/rytmos/equipo/lucas-manzano.webp", principal: true },
     /* Así escribe su nombre en Instagram, con tilde. */
     { nombre: "Leandro Domé", rol: "Cofundador", instagram: "leandro_dome", foto: "/images/rytmos/equipo/leandro-dome.webp" },
+    { nombre: "Malena Luchetti", rol: "Dirección de casting", instagram: "malenaluchetti", foto: "/images/rytmos/equipo/malena-luchetti.webp" },
     { nombre: "Joaquín Pramori", rol: "Logística & eventos", instagram: "jokospramori", foto: "/images/rytmos/equipo/joaquin-pramori.webp" },
     /* Zurdosound es su nombre artístico (ver app/lib/artistas.ts). */
-    { nombre: "Alan Ezequiel Mendoza", rol: "Contenidos", instagram: "zurdosound", foto: "/images/rytmos/equipo/zurdosound.webp" },
-    { nombre: "Malena Luchetti", rol: "Dirección de casting", instagram: "malenaluchetti", foto: "/images/rytmos/equipo/malena-luchetti.webp" },
+    { nombre: "Alan Mendoza", rol: "Contenidos", instagram: "zurdosound", foto: "/images/rytmos/equipo/zurdosound.webp" },
   ],
   /* TODO-CONTENIDO: premios, festivales o prensa, solo si existen. */
   prensa: [],

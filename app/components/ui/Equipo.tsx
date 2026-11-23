@@ -19,32 +19,34 @@ const iniciales = (n: string) =>
 
 export default function Equipo({ className = "" }: { className?: string }) {
   return (
-    <ul className={`equipo ${className}`}>
-      {RYTMOS.equipo.map((p, i) => (
-        <li key={p.instagram} className={p.principal ? "equipo-principal" : undefined}>
-          <a
-            className="equipo-card relieve luz-borde"
-            style={{ "--luz-delay": `${-i * 1.2}s` } as React.CSSProperties}
-            href={`https://www.instagram.com/${p.instagram}/`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${p.nombre}${p.rol ? `, ${p.rol}` : ""}: Instagram @${p.instagram}`}
-          >
-            <span className="equipo-ini" aria-hidden="true">
-              {p.foto ? <img src={p.foto} alt="" width={150} height={150} loading="lazy" decoding="async" /> : iniciales(p.nombre)}
-            </span>
-            <span className="equipo-txt">
-              {p.principal && <span className="equipo-kicker">{RYTMOS.nombre}</span>}
-              <span className="equipo-nombre">{p.nombre}</span>
-              {p.rol && <span className="equipo-rol">{p.rol}</span>}
-              <span className="equipo-ig">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
-                @{p.instagram}
+    <div className="equipo-caja">
+      <ul className={`equipo ${className}`}>
+        {RYTMOS.equipo.map((p, i) => (
+          <li key={p.instagram} className={p.principal ? "equipo-principal" : undefined}>
+            <a
+              className="equipo-card relieve luz-borde"
+              style={{ "--luz-delay": `${-i * 1.2}s` } as React.CSSProperties}
+              href={`https://www.instagram.com/${p.instagram}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${p.nombre}${p.rol ? `, ${p.rol}` : ""}: Instagram @${p.instagram}`}
+            >
+              <span className="equipo-ini" aria-hidden="true">
+                {p.foto ? <img src={p.foto} alt="" width={150} height={150} loading="lazy" decoding="async" /> : iniciales(p.nombre)}
               </span>
-            </span>
-          </a>
-        </li>
-      ))}
-    </ul>
+              <span className="equipo-txt">
+                {p.principal && <span className="equipo-kicker">{RYTMOS.nombre}</span>}
+                <span className="equipo-nombre">{p.nombre}</span>
+                {p.rol && <span className="equipo-rol">{p.rol}</span>}
+                <span className="equipo-ig">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" /></svg>
+                  @{p.instagram}
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
