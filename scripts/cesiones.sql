@@ -90,3 +90,9 @@ create index if not exists idx_cesiones_dni       on public.cesiones (dni);
 -- El único acceso es el route handler con la service_role key, que la saltea
 -- por diseño. Son datos personales y firmas: el default tiene que ser "nadie".
 alter table public.cesiones enable row level security;
+
+-- Permisos. Los proyectos de Supabase creados desde fines de 2025 ya no le
+-- dan acceso automático a las tablas nuevas a ningún rol: sin esto, hasta la
+-- clave secreta recibe "permission denied". Solo el servidor (service_role)
+-- lee —para el freno por IP— y escribe; anon y authenticated, nada.
+grant select, insert on public.cesiones to service_role;
