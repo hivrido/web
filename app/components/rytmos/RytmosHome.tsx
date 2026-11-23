@@ -5,6 +5,7 @@ import Cuenta from "./Cuenta";
 import Loop from "./Loop";
 import Precarga from "./Precarga";
 import LogoRytmos from "./LogoRytmos";
+import PuertaFondo from "./PuertaFondo";
 import Afiche3D from "../ui/Afiche3D";
 import Equipo from "../ui/Equipo";
 import { ARTE } from "../../casting/contenido";
@@ -367,7 +368,6 @@ function Hub({ n }: { n: number }) {
     <section className="ry-sec ry-hub" id="todo-hivrido" aria-label="Hivrido sale de acá">
       <span className="ry-capa" aria-hidden="true">
         <span className="ry-halo" />
-        <span className="ry-escaneo" />
       </span>
       <div className="ry-hub-top">
         <Cabecera n={n} rotulo="Hivrido" titulo="Hivrido sale de acá" />
@@ -377,6 +377,7 @@ function Hub({ n }: { n: number }) {
         {PUERTAS.map((p, i) =>
           p.href ? (
             <li key={p.n} className="ry-door relieve luz-borde" style={{ "--i": i, "--luz-delay": `${-i * 0.37}s` } as React.CSSProperties}>
+              <PuertaFondo n={p.n} />
               <span className="ry-door-n">{p.n}</span>
               <svg className="ry-door-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9" /></svg>
               <Link href={p.href} className="ry-door-label ry-door-link" data-medir="hub_click" data-medir-destino={p.label}>
@@ -386,6 +387,7 @@ function Hub({ n }: { n: number }) {
             </li>
           ) : (
             <li key={p.n} className="ry-door is-contact relieve luz-borde" style={{ "--i": i, "--luz-delay": `${-i * 0.37}s` } as React.CSSProperties}>
+              <PuertaFondo n={p.n} />
               <span className="ry-door-n">{p.n}</span>
               <p className="ry-door-label">{p.label}</p>
               <div className="ry-door-contact">
