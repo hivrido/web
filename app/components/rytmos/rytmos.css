@@ -25,18 +25,92 @@
 .ry-main,
 .ry .ry-footer { position: relative; z-index: 1; }
 
-/* ── FONDO: la colmena fija detrás de toda la página ──
-   Las secciones son transparentes y la dejan ver; el viñeteado la apaga en
-   los bordes para que el texto siempre gane. */
-.ry .ry-fondo {
-  position: fixed;
+/* ── FONDOS ──
+   Cada sección tiene el suyo, animado y distinto, en la misma paleta:
+   - hero: colmena 3D (WebGL), aurora y conos de luz;
+   - equipo: piso de grilla neón en perspectiva que avanza, con horizonte;
+   - hub: halo cónico que gira muy lento y una línea de escaneo.
+   Todo anima transform u opacity (lo hace la GPU, sin repintar). Con
+   movimiento reducido quedan quietos. */
+.ry-hero-hive { opacity: 0.6; }
+
+.ry-fondo-grilla,
+.ry-hub { overflow: clip; isolation: isolate; }
+/* Cada fondo vive en una capa que se funde arriba y abajo: así no hay
+   costura entre una sección y la siguiente. */
+.ry-capa {
+  position: absolute;
   inset: 0;
-  z-index: 0;
-  opacity: 0.55;
-  -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 35%, transparent 100%);
-  mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 35%, transparent 100%);
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
 }
-.ry .ry-fondo.is-live { opacity: 0.7; }
+/* En el equipo el piso llega hasta abajo: el fundido inferior es corto. */
+.ry-fondo-grilla > .ry-capa {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 94%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 94%, transparent);
+}
+/* El equipo deja aire abajo para que se vea su piso. */
+.ry-sec.ry-fondo-grilla { padding-bottom: clamp(160px, 20vw, 280px); }
+
+/* Equipo: el piso. Se desplaza exactamente una celda y vuelve, así el loop
+   no tiene salto. La máscara lo funde hacia el fondo. */
+.ry-grilla {
+  position: absolute;
+  z-index: -1;
+  left: -40%;
+  right: -40%;
+  bottom: 0;
+  height: 140%;
+  background-image:
+    linear-gradient(rgba(172, 79, 198, 0.42) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(172, 79, 198, 0.42) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(520px) rotateX(56deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 80%);
+  mask-image: linear-gradient(to top, #000 15%, transparent 80%);
+  pointer-events: none;
+}
+/* El horizonte del piso: el resplandor donde la grilla se pierde. */
+.ry-horizonte {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 38%;
+  height: 300px;
+  background: radial-gradient(60% 50% at 50% 100%, rgba(130, 70, 175, 0.5), transparent 70%);
+}
+
+/* Hub: halo que gira detrás de las puertas. */
+.ry-halo {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 55%;
+  width: 130vmax;
+  height: 130vmax;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg, transparent 0 14%, rgba(124, 58, 237, 0.34) 24%, transparent 38%,
+    rgba(255, 27, 141, 0.2) 52%, transparent 64%, rgba(201, 168, 76, 0.16) 76%, transparent 88%);
+  filter: blur(70px);
+  opacity: 0.75;
+  pointer-events: none;
+}
+/* Hub: una línea de escaneo que baja, fina, como un monitor. */
+/* Del alto de la sección, con la banda al pie: se mueve en porcentaje de sí
+   misma y recorre el hub entero, mida lo que mida. */
+.ry-escaneo {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent calc(100% - 150px), rgba(172, 79, 198, 0.12) calc(100% - 60px),
+    rgba(231, 213, 255, 0.32) calc(100% - 2px), transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* Mientras la cortina de Hivrido está puesta (Precarga.tsx), la entrada del
    hero espera: arranca cuando se levanta. */
@@ -721,6 +795,10 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
   .ry-beam { animation: ry-beam 2.2s ease-out both, ry-sway 13s ease-in-out 2.2s infinite alternate; }
   .ry-beam.is-b { animation-duration: 2.2s, 17s; }
   .ry-aurora { animation: ry-aurora 22s ease-in-out infinite alternate; }
+  .ry-grilla { animation: ry-grilla 3.2s linear infinite; }
+  .ry-horizonte { animation: ry-respira 6s ease-in-out infinite; }
+  .ry-halo { animation: ry-halo 48s linear infinite; }
+  .ry-escaneo { animation: ry-escaneo 9s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
   .ry-horizon { animation: ry-horizon 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both, ry-pulso 5s ease-in-out 1.8s infinite; }
   .ry-hero-content > :not(.ry-logo) { animation: hp-rise 0.9s var(--hp-ease) 0.75s both; }
   .ry-hero-content > :nth-child(4) { animation-delay: 0.85s; }
@@ -821,6 +899,18 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
   0% { transform: translate3d(-4%, -2%, 0) rotate(0deg) scale(1); }
   50% { transform: translate3d(3%, 3%, 0) rotate(8deg) scale(1.08); }
   100% { transform: translate3d(5%, -3%, 0) rotate(-6deg) scale(1.02); }
+}
+@keyframes ry-grilla {
+  from { transform: perspective(520px) rotateX(56deg) translateY(0); }
+  to { transform: perspective(520px) rotateX(56deg) translateY(64px); }
+}
+@keyframes ry-respira { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+@keyframes ry-halo { to { rotate: 360deg; } }
+@keyframes ry-escaneo {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
 }
 @keyframes ry-pulso { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.45; } }
 @keyframes ry-sweep { 0% { transform: translateX(-120%); opacity: 1; } 100% { transform: translateX(120%); opacity: 0; } }

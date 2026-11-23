@@ -163,9 +163,12 @@ function Hero() {
           <Foto img={{ ...S.keyArt, alt: "" }} movil={S.keyArtVertical} sizes="100vw" className="ry-hero-art" prioridad />
         ) : (
           <div className="ry-stage">
-            {/* Aurora que se mueve despacio y dos conos de luz que se
-                balancean, sobre la colmena fija de toda la página. */}
+            {/* Cada sección tiene su fondo (rytmos.css, "FONDOS"). El del
+                hero: la colmena 3D de la casa (WebGL que arranca cuando el
+                navegador queda libre), una aurora que deriva y dos conos de
+                luz que se balancean. */}
             <span className="ry-aurora" />
+            <Hive className="ry-hero-hive" />
             <span className="ry-beam is-a" />
             <span className="ry-beam is-b" />
           </div>
@@ -347,7 +350,11 @@ function seccionesDeLaSerie(): Seccion[] {
 /* ── EQUIPO ── */
 function SeccionEquipo({ n }: { n: number }) {
   return (
-    <section className="ry-sec" id="equipo" aria-label="Equipo">
+    <section className="ry-sec ry-fondo-grilla" id="equipo" aria-label="Equipo">
+      <span className="ry-capa" aria-hidden="true">
+        <span className="ry-horizonte" />
+        <span className="ry-grilla" />
+      </span>
       <Cabecera n={n} rotulo="Casting" titulo="El equipo" />
       <Equipo className="ry-reveal" />
     </section>
@@ -358,6 +365,10 @@ function SeccionEquipo({ n }: { n: number }) {
 function Hub({ n }: { n: number }) {
   return (
     <section className="ry-sec ry-hub" id="todo-hivrido" aria-label="Hivrido sale de acá">
+      <span className="ry-capa" aria-hidden="true">
+        <span className="ry-halo" />
+        <span className="ry-escaneo" />
+      </span>
       <div className="ry-hub-top">
         <Cabecera n={n} rotulo="Hivrido" titulo="Hivrido sale de acá" />
         <HMark className="ry-hub-mark" />
@@ -445,10 +456,6 @@ export default function RytmosHome() {
           del hero espera a que se levante la cortina. */}
       <script dangerouslySetInnerHTML={{ __html: SCRIPT_ANCLAS + SCRIPT_PRECARGA }} />
       <Precarga />
-      {/* La colmena tecnológica de la casa, fija detrás de todas las
-          secciones: un solo WebGL para toda la página, que arranca cuando el
-          navegador queda libre y se apaga en equipos que no dan. */}
-      <Hive className="ry-fondo" />
       {/* El key art es el LCP: se pide junto con el HTML, la variante que
           corresponde a cada pantalla. */}
       {S.keyArt && (
