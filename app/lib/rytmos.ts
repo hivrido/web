@@ -143,11 +143,11 @@ export const RYTMOS: Rytmos = {
   bandaSonora: [],
   /* TODO-CONTENIDO: confirmar si la serie gira alrededor de la música. */
   musicaProtagonista: false,
-  /* El afiche: lunes 23/11, 15 hs, Parque Centenario. */
+  /* El afiche: lunes 23/11, 18 hs, Parque Centenario. */
   casting: {
-    fecha: "2026-11-23T15:00:00-03:00",
+    fecha: "2026-11-23T18:00:00-03:00",
     titulo: "Casting abierto",
-    detalle: "Lun 23/11 · 15 hs",
+    detalle: "Lun 23/11 · 18 hs",
     lugar: "Parque Centenario",
     href: "/casting/",
   },

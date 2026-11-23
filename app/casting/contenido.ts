@@ -20,7 +20,7 @@ export const CONVOCATORIA = {
   serie: "RYTMOS",
   slug: "rytmos",
   fecha: "Lunes 23 de noviembre",
-  hora: "15:00 hs",
+  hora: "18:00 hs",
   lugar: "Parque Centenario",
   ciudad: "Buenos Aires",
   direccion: "Malena Luchetti",
@@ -60,7 +60,7 @@ export const DATOS_CLAVE: {
 }[] = [
   {
     icono: "fila",
-    titulo: "Lunes 23 de noviembre, 15 hs",
+    titulo: "Lunes 23 de noviembre, 18 hs",
     texto:
       "En Parque Centenario, Buenos Aires. Llegá con tiempo: puede haber espera. Si dejás tus datos en el formulario, te escribimos por WhatsApp.",
   },
@@ -262,5 +262,5 @@ export const SEO = {
     "Casting abierto y gratuito para RYTMOS, una serie argentina: lunes 23 de noviembre a las 15 en Parque Centenario. Dirección de casting: Malena Luchetti. No hace falta experiencia.",
   /* El que se ve al pegar el link en WhatsApp. Sale de scripts/build-casting-assets.mjs. */
   ogImage: "/images/casting/casting-rytmos.jpg",
-  ogImageAlt: "Casting abierto de RYTMOS: lunes 23 de noviembre, 15 hs, Parque Centenario",
+  ogImageAlt: "Casting abierto de RYTMOS: lunes 23 de noviembre, 18 hs, Parque Centenario",
 } as const;

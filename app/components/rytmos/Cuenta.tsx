@@ -42,11 +42,11 @@ export default function Cuenta({
   href,
   enlace,
 }: {
-  /** ISO 8601 con zona: "2026-11-23T15:00:00-03:00". */
+  /** ISO 8601 con zona: "2026-11-23T18:00:00-03:00". */
   fecha: string;
   /** Barra superior, a la izquierda: "Casting abierto". */
   titulo: string;
-  /** Barra superior, a la derecha: "Lun 23/11 · 15 hs". */
+  /** Barra superior, a la derecha: "Lun 23/11 · 18 hs". */
   detalle?: string;
   /** Lo que dice la barra al llegar a cero: "El casting empezó". */
   fin: string;
