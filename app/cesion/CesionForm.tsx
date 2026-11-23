@@ -201,20 +201,17 @@ function CampoFirma({
 
 /* ───────────────────────────── Pantalla de éxito ──────────────────────────── */
 
-const SEGUNDOS = 5;
-
 /**
  * La confirmación ocupa la pantalla entera y cambia de color: en el casting,
  * quien asiste ve de lejos que la persona terminó bien sin pedirle el
- * celular. Muestra el nombre (para saber de quién es) y el comprobante, y a
- * los cinco segundos vuelve a la home: el próximo que use ese celular no
- * arranca sobre los datos del anterior.
+ * celular. Muestra el nombre (para saber de quién es) y el comprobante, y se
+ * queda ahí hasta que alguien toque "Volver al inicio": que se fuera sola
+ * hacía que el asistente llegara tarde a verla.
  *
  * Va por portal al <body>: dentro del formulario quedaría atrapada en el
  * apilamiento de la columna y el flotante de WhatsApp le pasaría por encima.
  */
 function Exito({ nombre, id, creadoEn }: { nombre: string; id: string; creadoEn: string }) {
-  const [quedan, setQuedan] = useState(SEGUNDOS);
   const boton = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -223,17 +220,7 @@ function Exito({ nombre, id, creadoEn }: { nombre: string; id: string; creadoEn:
     const html = document.documentElement;
     const previo = html.style.overflow;
     html.style.overflow = "hidden";
-    const inicio = Date.now();
-    const tic = window.setInterval(() => {
-      const r = Math.max(0, SEGUNDOS - Math.floor((Date.now() - inicio) / 1000));
-      setQuedan(r);
-      if (r === 0) {
-        window.clearInterval(tic);
-        window.location.assign("/");
-      }
-    }, 250);
     return () => {
-      window.clearInterval(tic);
       html.style.overflow = previo;
     };
   }, []);
@@ -271,16 +258,8 @@ function Exito({ nombre, id, creadoEn }: { nombre: string; id: string; creadoEn:
         </dl>
 
         <div className="cs-exito-pie">
-          <span className="cs-exito-cuenta" aria-live="polite">
-            <svg viewBox="0 0 36 36" aria-hidden="true">
-              <circle cx="18" cy="18" r="16" />
-              <circle className="cs-exito-cuenta-arco" cx="18" cy="18" r="16" style={{ animationDuration: `${SEGUNDOS}s` }} />
-            </svg>
-            <span>{quedan}</span>
-            <span className="cs-sr">segundos para volver al inicio</span>
-          </span>
-          {/* Recarga completa a propósito, igual que la cuenta: el formulario
-              no tiene que quedar en memoria para el próximo. */}
+          {/* Recarga completa a propósito: el formulario no tiene que quedar
+              en memoria para el próximo que use el celular. */}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a ref={boton} href="/" className="cs-exito-ir">Volver al inicio</a>
         </div>
