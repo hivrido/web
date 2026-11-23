@@ -1,10 +1,15 @@
 /**
  * Estilos de /cesion.
  *
- * Ruta de trámite, no de marca: toma la paleta y las tipografías de
- * globals.css —violeta, fondo #0a0a0a, Orbitron + Rubik— pero no arrastra nada
- * del sitio. Sin Three.js, sin GSAP, sin cursor propio ni smooth scroll: se
- * firma con el dedo en un celular de gama media con datos móviles.
+ * La portada lleva la puesta de la home de RYTMOS —colmena 3D, aurora, conos
+ * de luz y el logo en 3D (rytmos.css)—; el formulario, relieve y luz de borde
+ * (relieve.css). Sin GSAP, sin cursor propio ni smooth scroll: se firma con el
+ * dedo en un celular de gama media con datos móviles. La colmena se apaga sola
+ * cuando la portada sale de pantalla, así que al firmar no consume nada.
+ *
+ * Regla de esta página: nada mueve el recuadro de firma. Lo que anima abajo
+ * es luz y opacidad; el bloque de la firma no se traslada ni se escala,
+ * porque el trazo se calcula contra su posición en pantalla.
  *
  * Escrito mobile-first. Los breakpoints suben, nunca bajan.
  */
@@ -22,6 +27,14 @@ html:has(.cs-page) body {
 }
 
 .cs-page {
+  /* Los tokens de PLAY que usan las piezas de la home (rytmos.css). Acá no
+     va .mp-app, que además resetea márgenes que este formulario usa. */
+  --hp-neon: #ac4fc6;
+  --hp-electric: #5f259f;
+  --hp-night: #3c1053;
+  --hp-gold: #ffaa3b;
+  --hp-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hp-display: var(--font-display);
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -31,18 +44,37 @@ html:has(.cs-page) body {
   text-align: left;
 }
 
-/* Un solo halo violeta, estático. Un degradado fijo no cuesta nada de pintar
-   y evita que la página se vea como un formulario administrativo. */
+/* Detrás del formulario: un resplandor violeta que deriva y un panal muy
+   tenue que se desliza, fijos a la pantalla. Solo animan transform y
+   background-position de una capa propia: no repintan el formulario. */
 .cs-page::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 20% 30%, rgba(124, 58, 237, 0.16), transparent 70%),
+    radial-gradient(36% 32% at 85% 70%, rgba(172, 79, 198, 0.12), transparent 70%),
+    radial-gradient(30% 28% at 50% 100%, rgba(255, 170, 59, 0.05), transparent 70%);
+  z-index: 0;
+}
+.cs-page::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(70% 45% at 50% 0%, rgba(124, 58, 237, 0.16), transparent 70%),
-    radial-gradient(50% 40% at 100% 100%, rgba(167, 139, 250, 0.07), transparent 70%);
   z-index: 0;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0l28 16v32L28 64 0 48V16zM28 64l28 16v32M28 64L0 80v32' fill='none' stroke='%23ac4fc6' stroke-opacity='.16'/%3E%3C/svg%3E");
+  background-size: 56px 97px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 60%, #000, transparent 75%);
+  mask-image: radial-gradient(ellipse at 50% 60%, #000, transparent 75%);
 }
+@media (prefers-reduced-motion: no-preference) {
+  .cs-page::before { animation: ry-aurora 26s ease-in-out infinite alternate; }
+  .cs-page::after { animation: cs-panal 60s linear infinite; }
+}
+@keyframes cs-panal { to { background-position: 56px 97px; } }
 
 /* Los tres bloques del documento se levantan por encima del halo de arriba.
    Van nombrados uno por uno y NO como `.cs-page > *`: esa regla alcanzaba
@@ -52,6 +84,7 @@ html:has(.cs-page) body {
    estar anclado al viewport, se convertía en un ítem más de la columna flex
    y terminaba abajo a la izquierda, cortado contra el borde. */
 .cs-header,
+.cs-hero,
 .cs-main,
 .cs-footer { position: relative; z-index: 1; }
 
@@ -83,81 +116,124 @@ html:has(.cs-page) body {
   color: var(--text-muted);
 }
 
-/* ── Encabezado del documento ─────────────────────────────────────────── */
+/* ── Portada ──────────────────────────────────────────────────────────
+   La sala del hero de la home: colmena, aurora y conos de luz, con el logo
+   3D y su horizonte de neón. */
 
-.cs-main {
-  flex: 1;
-  width: 100%;
-  max-width: 680px;
-  margin: 0 auto;
-  /* El fondo generoso deja que el botón de enviar suba por encima del flotante
-     de WhatsApp al llegar al final, en vez de quedar tapado por él. */
-  padding: 32px 20px 96px;
+.cs-hero {
+  overflow: clip;
+  isolation: isolate;
+  padding: clamp(40px, 8vw, 96px) 20px clamp(44px, 6vw, 80px);
+}
+.cs-hero-bg { position: absolute; inset: 0; z-index: -2; }
+.cs-hero-bg .ry-stage {
+  -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent);
+  mask-image: linear-gradient(to bottom, #000 65%, transparent);
+}
+.cs-hero-hive { opacity: 0.6; }
+.cs-hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, transparent 35%, rgba(10, 10, 10, 0.4) 70%, transparent 100%);
+  pointer-events: none;
+}
+.cs-hero-in { width: 100%; max-width: 760px; margin: 0 auto; }
+
+.cs-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 0;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+.cs-hero-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--hp-gold);
+  box-shadow: 0 0 10px var(--hp-gold);
 }
 
-.cs-intro { margin-bottom: 32px; }
+/* El logo ocupa el ancho de la columna; el horizonte (rytmos.css) se apoya
+   en su base y se estira hasta el borde de la portada, que lo recorta. */
+.cs-hero-logo { position: relative; margin: 0 0 clamp(28px, 4vw, 42px); line-height: 0; }
+.cs-hero-logo .ry-mark { width: min(100%, 620px); }
+.cs-hero-logo .ry-horizon { bottom: -12px; }
+.cs-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 
 .cs-title {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: clamp(22px, 4.4vw, 38px);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.12;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
-
-.cs-title strong {
+/* El barrido de color de los títulos de la home. */
+.cs-brillo {
   display: block;
-  margin-top: 6px;
+  margin-top: 4px;
   font-weight: 900;
-  color: var(--text);
+  color: transparent;
+  background: linear-gradient(100deg, #fff 0%, #d9b8ff 22%, var(--hp-neon) 42%, var(--hp-gold) 62%, #fff 80%, #d9b8ff 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(172, 79, 198, 0.45));
 }
 
 .cs-lead {
   margin: 0;
   padding: 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--text-muted);
+  max-width: 60ch;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: rgba(240, 240, 240, 0.74);
 }
 
-/* ── La convocatoria: de qué serie es la firma, cuándo y dónde ────────── */
-
-.cs-serie-logo {
-  display: block;
-  width: min(220px, 60%);
-  height: auto;
-  margin: 0 0 22px;
-  filter: drop-shadow(0 0 18px rgba(124, 58, 237, 0.55));
-}
-
+/* ── La convocatoria: cuatro piezas en relieve con la luz en el borde ── */
 .cs-datos {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin: 24px 0 0;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  background: var(--border);
+  gap: 14px;
+  margin: 28px 0 0;
 }
-.cs-datos > div { padding: 12px 14px; background: rgba(14, 10, 22, 0.92); }
+.cs-dato {
+  padding: 15px 16px 16px;
+  border: 1px solid rgba(172, 79, 198, 0.22);
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(40, 20, 62, 0.92), rgba(14, 10, 22, 0.94));
+}
 .cs-datos dt {
   font-family: var(--font-display);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--hp-gold);
 }
-.cs-datos dd { margin: 5px 0 0; font-size: 14px; line-height: 1.35; color: var(--text); }
+.cs-datos dd { margin: 7px 0 0; font-size: 14.5px; line-height: 1.35; color: var(--text); }
 
 .cs-notas {
   display: grid;
   gap: 8px;
-  margin: 18px 0 0;
+  margin: 26px 0 0;
   padding: 0;
   list-style: none;
   font-size: 13.5px;
@@ -173,16 +249,58 @@ html:has(.cs-page) body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--violet);
-  box-shadow: 0 0 8px rgba(124, 58, 237, 0.8);
+  background: var(--hp-neon);
+  box-shadow: 0 0 8px rgba(172, 79, 198, 0.9);
 }
 .cs-notas strong { color: var(--text); font-weight: 600; }
+
+.cs-hero-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 26px;
+  margin-top: 28px;
+}
+/* El botón de la casa: violeta, con el haz que recorre el borde. */
+.cs-ir {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 24px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, var(--violet), #8b5cf6);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 34px -12px rgba(124, 58, 237, 0.9);
+  transition: box-shadow 0.25s var(--hp-ease), translate 0.25s var(--hp-ease);
+}
+.cs-ir:hover { box-shadow: 0 14px 44px -10px rgba(139, 92, 246, 1); translate: 0 -2px; }
+.cs-ir::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--luz-giro), transparent 0deg, transparent 220deg,
+    rgba(139, 92, 246, 0.75) 280deg, #ffaa3b 326deg, #fff4dc 346deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
 
 .cs-volver {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 18px;
   font-size: 13px;
   color: var(--violet-light);
   transition: color 0.2s, gap 0.2s;
@@ -191,15 +309,76 @@ html:has(.cs-page) body {
 
 @media (max-width: 380px) { .cs-datos { grid-template-columns: 1fr; } }
 
+/* ── Columna del formulario ── */
+.cs-main {
+  flex: 1;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  /* El fondo generoso deja que el botón de enviar suba por encima del flotante
+     de WhatsApp al llegar al final, en vez de quedar tapado por él. */
+  padding: 8px 20px 96px;
+  scroll-margin-top: 12px;
+}
+
+/* ── Movimiento ──
+   Portada: entrada escalonada y el barrido del título. Formulario: cada
+   bloque se enciende (opacidad y la línea de neón) al entrar en pantalla.
+   Sin desplazamientos en el formulario: ver la regla de arriba. */
+@media (prefers-reduced-motion: no-preference) {
+  .cs-hero-kicker,
+  .cs-title,
+  .cs-lead,
+  .cs-dato,
+  .cs-notas,
+  .cs-hero-acciones { animation: ry-rise 0.9s var(--hp-ease) both; }
+  .cs-hero-kicker { animation-delay: 0.1s; }
+  .cs-title { animation-delay: 0.75s; }
+  .cs-lead { animation-delay: 0.9s; }
+  .cs-dato { animation-delay: calc(1s + var(--i, 0) * 0.08s); }
+  .cs-notas { animation-delay: 1.35s; }
+  .cs-hero-acciones { animation-delay: 1.45s; }
+  .cs-brillo { animation: ry-sheen 7s ease-in-out infinite; }
+  .cs-ir::before { animation: luz-giro 3.2s linear infinite; }
+  .cs-submit:not(:disabled) { background-size: 220% 100%; animation: ry-sheen 5s ease-in-out infinite; }
+  .cs-dato.luz-borde::after { animation-duration: 4.8s; }
+
+  @supports (animation-timeline: view()) {
+    .cs-bloque { animation: cs-enciende linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    .cs-bloque::before { animation: cs-neon linear both; animation-timeline: view(); animation-range: entry 20% entry 90%; }
+  }
+}
+@keyframes cs-enciende { from { opacity: 0.25; } to { opacity: 1; } }
+@keyframes cs-neon { from { opacity: 0; scale: 0.2 1; } to { opacity: 0.75; scale: 1 1; } }
+
 /* ── Bloques del formulario ───────────────────────────────────────────── */
 
 .cs-form { display: flex; flex-direction: column; gap: 18px; }
 
 .cs-bloque {
-  padding: 22px 18px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.022);
+  position: relative;
+  padding: 24px 18px;
+  border: 1px solid rgba(172, 79, 198, 0.2);
+  border-radius: 16px;
+  background: linear-gradient(165deg, rgba(34, 18, 52, 0.8), rgba(12, 10, 18, 0.9));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 0 #2a1a3a,
+    0 4px 0 #1a1026,
+    0 24px 44px -18px rgba(95, 37, 159, 0.5);
+}
+/* La línea de neón que se enciende arriba de cada bloque. */
+.cs-bloque::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hp-neon) 30%, #fff 50%, var(--hp-gold) 70%, transparent);
+  box-shadow: 0 0 12px rgba(172, 79, 198, 0.7);
+  opacity: 0.75;
+  pointer-events: none;
 }
 
 /* El bloque de menores entra por color, no por un cartel: se nota que apareció
@@ -210,6 +389,9 @@ html:has(.cs-page) body {
 }
 
 .cs-bloque-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   margin: 0 0 18px;
   font-family: var(--font-display);
   font-size: 12px;
@@ -217,6 +399,16 @@ html:has(.cs-page) body {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--violet-light);
+}
+.cs-bloque-title::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.3em;
+  rotate: 45deg;
+  background: var(--hp-neon);
+  box-shadow: 0 0 10px var(--hp-neon);
 }
 
 .cs-bloque-lead {
@@ -446,6 +638,8 @@ html:has(.cs-page) body {
 
 .cs-submit {
   --bevel: 12px;
+  position: relative;
+  isolation: isolate;
   width: 100%;
   margin-top: 4px;
   padding: 18px 26px;
@@ -459,8 +653,10 @@ html:has(.cs-page) body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: filter 0.2s, opacity 0.2s;
+  box-shadow: 0 14px 40px -14px rgba(124, 58, 237, 0.95);
+  transition: filter 0.2s, opacity 0.2s, box-shadow 0.25s;
 }
+.cs-submit:not(:disabled):hover { filter: brightness(1.08); box-shadow: 0 18px 50px -12px rgba(139, 92, 246, 1); }
 
 .cs-submit:disabled {
   background: rgba(255, 255, 255, 0.07);
@@ -483,10 +679,14 @@ html:has(.cs-page) body {
 /* ── Confirmación ─────────────────────────────────────────────────────── */
 
 .cs-listo {
-  padding: 34px 22px;
-  border: 1px solid rgba(124, 58, 237, 0.35);
-  border-radius: 14px;
-  background: rgba(124, 58, 237, 0.06);
+  position: relative;
+  padding: 38px 22px;
+  border: 1px solid rgba(172, 79, 198, 0.4);
+  border-radius: 16px;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(172, 79, 198, 0.22), transparent 70%),
+    linear-gradient(165deg, rgba(34, 18, 52, 0.85), rgba(12, 10, 18, 0.92));
+  box-shadow: 0 2px 0 #2a1a3a, 0 4px 0 #1a1026, 0 30px 60px -20px rgba(95, 37, 159, 0.6);
   text-align: center;
 }
 
@@ -498,8 +698,9 @@ html:has(.cs-page) body {
   height: 54px;
   margin-bottom: 18px;
   border-radius: 50%;
-  background: rgba(124, 58, 237, 0.16);
-  color: var(--violet-light);
+  background: radial-gradient(circle at 35% 30%, #f3e2ff, var(--hp-neon) 55%, var(--hp-electric));
+  color: #fff;
+  box-shadow: 0 0 0 6px rgba(172, 79, 198, 0.15), 0 0 30px rgba(172, 79, 198, 0.8);
 }
 
 .cs-listo-title {
@@ -549,7 +750,7 @@ html:has(.cs-page) body {
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: 12.5px;
   line-height: 1.5;
-  word-break: break-all;
+  overflow-wrap: anywhere;
   color: var(--text);
 }
 
