@@ -142,17 +142,16 @@ detalle o cita y link → `prensa`.
    "El equipo" solo con su nombre y su Instagram (`equipo` en rytmos.ts).
 4. **Derechos de la música** (punto 8), antes de publicar cualquier tema.
 
-## Firma de la cesión (/firma → /cesion) — sin base de datos (23/11)
+## Firma de la cesión (/firma → /cesion) — resuelto (23/11)
 
-La página ya es la del casting de RYTMOS (texto legal v2, que nombra la serie;
-v1 queda intacta para las firmas anteriores). Pero el proyecto de Supabase que
-guarda las firmas no existe más —su dirección no resuelve, ni en DNS público—,
-así que **hoy enviar la firma da error y no se guarda nada**.
+La página es la del casting de RYTMOS (texto legal v2, que nombra la serie;
+v1 queda intacta para las firmas anteriores). El proyecto de Supabase viejo
+había desaparecido; las firmas se guardan ahora en el proyecto **Rytmos**
+(org Hivrido, plan Free), con la tabla de `scripts/cesiones.sql` —incluido el
+`grant` a service_role que piden los proyectos nuevos— y la clave secreta
+`sb_secret_…` cargada en Vercel y en `.env.local`. Probado con una firma real
+contra producción.
 
-Para volver a activarla:
-1. supabase.com → reactivar el proyecto pausado o crear uno nuevo (plan Free).
-2. SQL Editor → pegar y correr `scripts/cesiones.sql`.
-3. Settings → API: copiar Project URL y la `service_role` key.
-4. Cargarlas en Vercel (Production) como `SUPABASE_URL` y
-   `SUPABASE_SERVICE_ROLE_KEY`, y en `.env.local`. `IP_HASH_SALT` no se toca.
-5. Redeploy y una firma de prueba.
+- El plan Free pausa el proyecto tras una semana sin actividad: si se pausa,
+  la firma vuelve a fallar. Entrar al panel y reactivarlo (o pasar a Pro).
+- Las firmas se ven en Supabase → Table Editor → `cesiones`.
