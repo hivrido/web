@@ -14,6 +14,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import SignaturePad from "signature_pad";
 import { VERSIONES, VERSION_ACTUAL } from "@/app/lib/cesion/textos";
 import { medir } from "@/app/lib/medir";
@@ -200,6 +201,97 @@ function CampoFirma({
   );
 }
 
+/* ───────────────────────────── Pantalla de éxito ──────────────────────────── */
+
+const SEGUNDOS = 5;
+
+/**
+ * La confirmación ocupa la pantalla entera y cambia de color: en el casting,
+ * quien asiste ve de lejos que la persona terminó bien sin pedirle el
+ * celular. Muestra el nombre (para saber de quién es) y el comprobante, y a
+ * los cinco segundos vuelve a la home: el próximo que use ese celular no
+ * arranca sobre los datos del anterior.
+ *
+ * Va por portal al <body>: dentro del formulario quedaría atrapada en el
+ * apilamiento de la columna y el flotante de WhatsApp le pasaría por encima.
+ */
+function Exito({ nombre, id, creadoEn }: { nombre: string; id: string; creadoEn: string }) {
+  const [quedan, setQuedan] = useState(SEGUNDOS);
+  const boton = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    /* Solo existe después de un envío, en el navegador: hay document. */
+    boton.current?.focus({ preventScroll: true });
+    const html = document.documentElement;
+    const previo = html.style.overflow;
+    html.style.overflow = "hidden";
+    const inicio = Date.now();
+    const tic = window.setInterval(() => {
+      const r = Math.max(0, SEGUNDOS - Math.floor((Date.now() - inicio) / 1000));
+      setQuedan(r);
+      if (r === 0) {
+        window.clearInterval(tic);
+        window.location.assign("/");
+      }
+    }, 250);
+    return () => {
+      window.clearInterval(tic);
+      html.style.overflow = previo;
+    };
+  }, []);
+
+  const hora = creadoEn.slice(11, 16);
+  return createPortal(
+    <div className="cs-exito" role="alertdialog" aria-modal="true" aria-labelledby="cs-exito-titulo" aria-describedby="cs-exito-texto">
+      <span className="cs-exito-ondas" aria-hidden="true">
+        <span /><span /><span />
+      </span>
+
+      <div className="cs-exito-in">
+        <svg className="cs-exito-check" viewBox="0 0 120 120" aria-hidden="true">
+          <circle className="cs-exito-aro" cx="60" cy="60" r="52" />
+          <path className="cs-exito-tilde" d="M36 62l16 16 33-36" />
+        </svg>
+
+        <p className="cs-exito-kicker">Firma registrada</p>
+        <h2 id="cs-exito-titulo" className="cs-exito-titulo">¡Listo!</h2>
+        {nombre && <p className="cs-exito-nombre">{nombre}</p>}
+        <p id="cs-exito-texto" className="cs-exito-texto">
+          Tu cesión para el casting quedó asentada. Mostrale esta pantalla a
+          quien te recibe.
+        </p>
+
+        <dl className="cs-exito-datos">
+          <div>
+            <dt>Comprobante</dt>
+            <dd>{id.slice(0, 8).toUpperCase()}</dd>
+          </div>
+          <div>
+            <dt>Hora</dt>
+            <dd>{hora} hs</dd>
+          </div>
+        </dl>
+
+        <div className="cs-exito-pie">
+          <span className="cs-exito-cuenta" aria-live="polite">
+            <svg viewBox="0 0 36 36" aria-hidden="true">
+              <circle cx="18" cy="18" r="16" />
+              <circle className="cs-exito-cuenta-arco" cx="18" cy="18" r="16" style={{ animationDuration: `${SEGUNDOS}s` }} />
+            </svg>
+            <span>{quedan}</span>
+            <span className="cs-sr">segundos para volver al inicio</span>
+          </span>
+          {/* Recarga completa a propósito, igual que la cuenta: el formulario
+              no tiene que quedar en memoria para el próximo. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a ref={boton} href="/" className="cs-exito-ir">Volver al inicio</a>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 /* ─────────────────────────────── Formulario ─────────────────────────────── */
 
 export default function CesionForm() {
@@ -321,36 +413,7 @@ export default function CesionForm() {
   };
 
   if (listo) {
-    return (
-      <div className="cs-listo" role="status" aria-live="polite">
-        <div className="cs-listo-mark" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 6L9 17l-5-5" />
-          </svg>
-        </div>
-        <h2 className="cs-listo-title">Firma registrada</h2>
-        <p className="cs-listo-text">
-          Gracias, {campos.nombre.trim().split(" ")[0]}. Tu cesión quedó asentada
-          con fecha, hora y constancia técnica. Guardá este comprobante.
-        </p>
-        <dl className="cs-comprobante">
-          <div>
-            <dt>Comprobante</dt>
-            <dd>{listo.id}</dd>
-          </div>
-          <div>
-            <dt>Fecha y hora</dt>
-            <dd>{listo.creado_en}</dd>
-          </div>
-          <div>
-            <dt>Documento</dt>
-            <dd>
-              {version.titulo} ({version.id})
-            </dd>
-          </div>
-        </dl>
-      </div>
-    );
+    return <Exito nombre={campos.nombre.trim()} id={listo.id} creadoEn={listo.creado_en} />;
   }
 
   return (

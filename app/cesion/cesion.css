@@ -676,83 +676,179 @@ html:has(.cs-page) body {
   color: #ff8098;
 }
 
-/* ── Confirmación ─────────────────────────────────────────────────────── */
+/* ── Pantalla de éxito ──────────────────────────────────────────────────
+   Pantalla completa, de color pleno: se tiene que leer a tres metros. Ondas
+   que salen del centro, el tilde que se dibuja y la cuenta regresiva en un
+   aro. Vive fuera de .cs-page (portal), así que define lo suyo. */
 
-.cs-listo {
-  position: relative;
-  padding: 38px 22px;
-  border: 1px solid rgba(172, 79, 198, 0.4);
-  border-radius: 16px;
-  background:
-    radial-gradient(60% 50% at 50% 0%, rgba(172, 79, 198, 0.22), transparent 70%),
-    linear-gradient(165deg, rgba(34, 18, 52, 0.85), rgba(12, 10, 18, 0.92));
-  box-shadow: 0 2px 0 #2a1a3a, 0 4px 0 #1a1026, 0 30px 60px -20px rgba(95, 37, 159, 0.6);
+.cs-exito {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  overflow: hidden auto;
+  padding: 32px 20px;
+  color: #fff;
+  font-family: var(--font-body);
   text-align: center;
+  background:
+    radial-gradient(70% 55% at 50% 38%, rgba(255, 255, 255, 0.22), transparent 70%),
+    radial-gradient(60% 50% at 100% 100%, rgba(255, 170, 59, 0.35), transparent 70%),
+    linear-gradient(160deg, #8b3fd9 0%, #6d28d9 45%, #3c1053 100%);
 }
 
-.cs-listo-mark {
-  display: inline-flex;
+.cs-exito-ondas { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.cs-exito-ondas span {
+  grid-area: 1 / 1;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  translate: 0 -12vh;
+}
+
+.cs-exito-in { position: relative; width: 100%; max-width: 460px; }
+/* globals.css alinea y tiñe los <p> del sitio; acá van centrados y en blanco. */
+.cs-exito p { padding: 0; text-align: center; }
+.cs-exito-nombre { color: #fff; }
+
+.cs-exito-check { display: block; width: clamp(110px, 30vw, 150px); height: auto; margin: 0 auto 18px; overflow: visible; }
+.cs-exito-aro { fill: rgba(255, 255, 255, 0.14); stroke: #fff; stroke-width: 5; stroke-dasharray: 327; stroke-dashoffset: 0; transform-origin: 60px 60px; rotate: -90deg; }
+.cs-exito-tilde { fill: none; stroke: #fff; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 80; stroke-dashoffset: 0; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)); }
+
+.cs-exito-kicker {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #ffd79c;
+}
+.cs-exito-titulo {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(54px, 16vw, 92px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.45), 0 6px 0 rgba(60, 16, 83, 0.55);
+}
+.cs-exito-nombre {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+.cs-exito-texto {
+  margin: 12px auto 0;
+  max-width: 34ch;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cs-exito-datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 24px 0 0;
+}
+.cs-exito-datos > div {
+  padding: 12px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 12px;
+  background: rgba(20, 6, 34, 0.28);
+}
+.cs-exito-datos dt {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffd79c;
+}
+.cs-exito-datos dd {
+  margin: 6px 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.cs-exito-pie {
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  margin-bottom: 18px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f3e2ff, var(--hp-neon) 55%, var(--hp-electric));
-  color: #fff;
-  box-shadow: 0 0 0 6px rgba(172, 79, 198, 0.15), 0 0 30px rgba(172, 79, 198, 0.8);
+  gap: 16px;
+  margin-top: 26px;
 }
-
-.cs-listo-title {
-  margin: 0 0 10px;
+.cs-exito-cuenta {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text);
 }
-
-.cs-listo-text {
-  margin: 0 0 24px;
-  padding: 0;
-  text-align: center;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.cs-comprobante {
-  margin: 0;
-  text-align: left;
-  border-top: 1px solid var(--border);
-}
-
-.cs-comprobante > div {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.cs-comprobante dt {
-  font-size: 10px;
+.cs-exito-cuenta svg { position: absolute; inset: 0; width: 100%; height: 100%; rotate: -90deg; }
+.cs-exito-cuenta circle { fill: none; stroke: rgba(255, 255, 255, 0.25); stroke-width: 3; }
+.cs-exito-cuenta .cs-exito-cuenta-arco { stroke: #fff; stroke-linecap: round; stroke-dasharray: 100.5; stroke-dashoffset: 0; }
+.cs-exito-ir {
+  padding: 14px 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: #3c1053;
+  font-family: var(--font-display);
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  box-shadow: 0 10px 30px -10px rgba(20, 6, 34, 0.7);
+  transition: translate 0.2s, box-shadow 0.2s;
 }
+.cs-exito-ir:hover { translate: 0 -2px; box-shadow: 0 14px 36px -10px rgba(20, 6, 34, 0.9); }
+.cs-exito-ir:focus-visible { outline: 3px solid #ffd79c; outline-offset: 3px; }
 
-.cs-comprobante dd {
-  margin: 0;
-  /* El id es un UUID: en monoespaciada se puede leer y dictar sin errores. */
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 12.5px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-  color: var(--text);
+/* La cuenta corre siempre (es información); el resto, solo con movimiento. */
+.cs-exito-cuenta-arco { animation: cs-cuenta linear both; }
+@keyframes cs-cuenta { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 100.5; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cs-exito { animation: cs-exito-entra 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .cs-exito-ondas span { animation: cs-onda 2.4s ease-out infinite; }
+  .cs-exito-ondas span:nth-child(2) { animation-delay: 0.8s; }
+  .cs-exito-ondas span:nth-child(3) { animation-delay: 1.6s; }
+  .cs-exito-aro { animation: cs-trazo-aro 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.2s both; }
+  .cs-exito-tilde { animation: cs-trazo-tilde 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.75s both; }
+  .cs-exito-check { animation: cs-pop 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.3) 0.1s both; }
+  .cs-exito-kicker,
+  .cs-exito-titulo,
+  .cs-exito-nombre,
+  .cs-exito-texto,
+  .cs-exito-datos,
+  .cs-exito-pie { animation: cs-sube 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .cs-exito-kicker { animation-delay: 0.85s; }
+  .cs-exito-titulo { animation-delay: 0.95s; }
+  .cs-exito-nombre { animation-delay: 1.05s; }
+  .cs-exito-texto { animation-delay: 1.15s; }
+  .cs-exito-datos { animation-delay: 1.25s; }
+  .cs-exito-pie { animation-delay: 1.35s; }
 }
+@keyframes cs-exito-entra { from { clip-path: circle(0% at 50% 60%); } to { clip-path: circle(150% at 50% 60%); } }
+@keyframes cs-onda { from { scale: 0.6; opacity: 0.8; } to { scale: 4; opacity: 0; } }
+@keyframes cs-trazo-aro { from { stroke-dashoffset: 327; } }
+@keyframes cs-trazo-tilde { from { stroke-dashoffset: 80; } }
+@keyframes cs-pop { from { scale: 0.4; opacity: 0; } }
+@keyframes cs-sube { from { opacity: 0; translate: 0 18px; } }
 
 /* ── Pie ──────────────────────────────────────────────────────────────── */
 
