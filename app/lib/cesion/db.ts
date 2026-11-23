@@ -58,11 +58,12 @@ function headers(): Record<string, string> {
       "Faltan SUPABASE_URL y/o SUPABASE_SERVICE_ROLE_KEY en el entorno."
     );
   }
-  return {
-    apikey: SERVICE_KEY,
-    Authorization: `Bearer ${SERVICE_KEY}`,
-    "Content-Type": "application/json",
-  };
+  /* Sirven las dos claves de servidor de Supabase: la `service_role` vieja
+     (un JWT, "eyJ…") y la secreta nueva ("sb_secret_…"). La nueva no es un
+     JWT y va solo en `apikey`: mandarla además como Bearer la rechaza. */
+  const h: Record<string, string> = { apikey: SERVICE_KEY, "Content-Type": "application/json" };
+  if (SERVICE_KEY.startsWith("eyJ")) h.Authorization = `Bearer ${SERVICE_KEY}`;
+  return h;
 }
 
 export async function insertarCesion(fila: FilaCesion): Promise<void> {
