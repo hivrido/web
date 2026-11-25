@@ -1,7 +1,6 @@
 /**
- * La información del casting, debajo del formulario: la serie, qué hay que
- * saber, cómo es la prueba, las escenas, cómo prepararse, qué llevar y las
- * preguntas. Todo el texto sale de contenido.ts.
+ * La información del casting, debajo de la cabecera: la serie, qué hay que
+ * saber, qué grabar, cómo grabarse, cómo prepararse y las preguntas. Todo el texto sale de contenido.ts.
  */
 
 import Reveal from "./Reveal";
@@ -13,9 +12,8 @@ import {
   COMO_VA_A_SER,
   DATOS_CLAVE,
   FAQ,
+  GRABACION,
   PREPARACION,
-  QUE_LLEVAR,
-  SITUACIONES,
 } from "./contenido";
 
 export default function SeccionesCasting() {
@@ -44,6 +42,7 @@ export default function SeccionesCasting() {
               {ARTE.titulo}
             </h2>
             <p className="cst-arte-texto">{ARTE.texto}</p>
+            <p className="cst-arte-leyenda">{ARTE.leyenda}</p>
           </div>
         </div>
       </section>
@@ -86,9 +85,8 @@ export default function SeccionesCasting() {
         </div>
       </section>
 
-      {/* ── 3 · Cómo es la prueba ────────────────────────────────────
-          Un camino por perfil: freestyle, actuación o, sin nada
-          preparado, una de las situaciones de abajo. */}
+      {/* ── 3 · Qué grabar ──────────────────────────────────────────────
+          La presentación y, después, un camino por perfil. */}
       <section className="cst-seccion" aria-labelledby="t-hacer">
         <div className="cst-wrap">
           <h2 className="cst-h2" id="t-hacer">
@@ -118,37 +116,24 @@ export default function SeccionesCasting() {
         </div>
       </section>
 
-      {/* ── 4 · Las situaciones ──────────────────────────────────────
-          La letra vive dentro del <h3>, no en un adorno aparte: es cómo
-          se llama la escena el día del casting ("te tocó la C"), así que
-          el lector de pantalla tiene que leerla con el nombre. */}
-      <section className="cst-seccion" aria-labelledby="t-situaciones">
+      {/* ── 4 · Cómo grabarte ─────────────────────────────────────────── */}
+      <section className="cst-seccion" aria-labelledby="t-grabar">
         <div className="cst-wrap">
-          <h2 className="cst-h2" id="t-situaciones">
-            {SITUACIONES.titulo}
+          <h2 className="cst-h2" id="t-grabar">
+            {GRABACION.titulo}
           </h2>
-          <p className="cst-lead">{SITUACIONES.lead}</p>
 
-          <ul className="cst-situaciones">
-            {SITUACIONES.escenas.map((escena, i) => (
-              <Reveal
-                as="li"
-                key={escena.letra}
-                delay={i * 0.06}
-                className="cst-situacion"
-              >
-                <h3 className="cst-situacion-nombre">
-                  <span className="cst-situacion-letra">{escena.letra}</span>
-                  {escena.nombre}
-                </h3>
-                <ul className="cst-beats">
-                  {escena.beats.map((beat) => (
-                    <li key={beat}>{beat}</li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
-          </ul>
+          <Reveal>
+            <ul className="cst-llevar">
+              {GRABACION.items.map((item) => (
+                <li key={item.cosa}>
+                  <strong>{item.cosa}</strong>
+                  <span>{item.nota}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="cst-llevar-cierre">{GRABACION.cierre}</p>
+          </Reveal>
         </div>
       </section>
 
@@ -182,28 +167,7 @@ export default function SeccionesCasting() {
         </div>
       </section>
 
-      {/* ── 6 · Qué llevar ───────────────────────────────────────────── */}
-      <section className="cst-seccion" aria-labelledby="t-llevar">
-        <div className="cst-wrap">
-          <h2 className="cst-h2" id="t-llevar">
-            {QUE_LLEVAR.titulo}
-          </h2>
-
-          <Reveal>
-            <ul className="cst-llevar">
-              {QUE_LLEVAR.items.map((item) => (
-                <li key={item.cosa}>
-                  <strong>{item.cosa}</strong>
-                  <span>{item.nota}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="cst-llevar-cierre">{QUE_LLEVAR.cierre}</p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── 7 · Preguntas ────────────────────────────────────────────
+      {/* ── 6 · Preguntas ────────────────────────────────────────────
           <details> nativo: se abre y se cierra sin una línea de
           JavaScript, responde al teclado y al lector de pantalla solo, y
           los buscadores leen la respuesta aunque esté plegada. */}

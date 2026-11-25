@@ -1,61 +1,73 @@
 "use client";
 
 /**
- * El formulario del casting vigente (CONVOCATORIA, en contenido.ts), en la
- * cabecera de /casting.
+ * La cabecera de /casting: la consigna del selftape a la izquierda y, a la
+ * derecha, la tarjeta que arma el mail (CONVOCATORIA y SELFTAPE, en
+ * contenido.ts).
  *
- * El formulario no POSTea a ningún lado: compone el mensaje y abre WhatsApp con los datos cargados. El
- * envío lo hace la persona, que es además lo que abre la conversación del lado
- * correcto: nos escribe ella, con su número real, y la respuesta ya tiene a
- * dónde ir.
+ * No se sube nada a ningún lado: con el perfil y el nombre se compone el
+ * asunto y el cuerpo, y se abre la aplicación de mail de la persona para que
+ * adjunte el video. Como el navegador incrustado de Instagram y WhatsApp a
+ * veces no abre `mailto:`, la tarjeta ofrece también Gmail en la web y copiar
+ * la dirección.
  */
 
 import { useState } from "react";
-import Link from "next/link";
-import { whatsapp } from "../lib/contacto";
 import { medir } from "../lib/medir";
-import { CONVOCATORIA as C } from "./contenido";
+import { CONVOCATORIA as C, PERFILES, SELFTAPE as T } from "./contenido";
 
-type Fields = { nombre: string; telefono: string; email: string; perfil: string };
+type Fields = { nombre: string; perfil: string };
 type Errors = Partial<Record<keyof Fields, string>>;
 
-const EMPTY: Fields = { nombre: "", telefono: "", email: "", perfil: "" };
+const EMPTY: Fields = { nombre: "", perfil: "" };
 
-/** Qué hace quien se anota: decide qué prueba le toca (ver COMO_VA_A_SER). */
-const PERFILES = ["Actor / actriz / actuante", "Freestyler", "Otrx"] as const;
-
-/* Suficiente para atajar el error de tipeo, no para pelear con direcciones
-   raras: lo que valida de verdad el dato es que la persona conteste. */
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-function validate({ nombre, telefono, email, perfil }: Fields): Errors {
+function validate({ nombre, perfil }: Fields): Errors {
   const errors: Errors = {};
   if (!perfil) errors.perfil = "Elegí qué hacés.";
   if (nombre.trim().length < 3) errors.nombre = "Escribí tu nombre y apellido.";
-  // Solo los dígitos: la gente escribe el teléfono con espacios, guiones y +54
-  if (telefono.replace(/\D/g, "").length < 8) errors.telefono = "Falta un teléfono con característica.";
-  if (!EMAIL.test(email.trim())) errors.email = "Revisá el email.";
   return errors;
 }
 
-function waLink({ nombre, telefono, email, perfil }: Fields) {
-  const text = [
-    `Hola HIVRIDO! Quiero sumarme al casting de la serie ${C.serie} (${C.fecha}, ${C.lugar}).`,
-    "",
-    `Perfil: ${perfil}`,
-    `Nombre: ${nombre.trim()}`,
-    `Teléfono: ${telefono.trim()}`,
-    `Email: ${email.trim()}`,
-  ].join("\n");
-  return whatsapp(text);
+function mailtoLink({ nombre, perfil }: Fields) {
+  const n = nombre.trim();
+  return `mailto:${C.mail}?subject=${encodeURIComponent(T.asunto(perfil, n))}&body=${encodeURIComponent(T.cuerpo(perfil, n))}`;
 }
 
-const WhatsAppIcon = ({ size = 20 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35z"/>
-    <path d="M12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 005.69 1.45c6.55 0 11.89-5.34 11.89-11.89A11.82 11.82 0 0012.05 0zm0 21.79a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.27c0-5.45 4.44-9.88 9.89-9.88a9.83 9.83 0 019.88 9.89c0 5.45-4.43 9.89-9.88 9.89z"/>
+function gmailLink({ nombre, perfil }: Fields) {
+  const n = nombre.trim();
+  const q = new URLSearchParams({ view: "cm", fs: "1", to: C.mail, su: T.asunto(perfil, n), body: T.cuerpo(perfil, n) });
+  return `https://mail.google.com/mail/?${q}`;
+}
+
+const MailIcon = ({ size = 20 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="M3 7l9 6 9-6" />
   </svg>
 );
+
+/** La dirección, con un botón para copiarla: el plan B cuando no abre el mail. */
+function Direccion() {
+  const [copiado, setCopiado] = useState(false);
+  const copiar = async () => {
+    try {
+      await navigator.clipboard.writeText(C.mail);
+      setCopiado(true);
+      medir("selftape_copiar_mail", { casting: C.slug });
+      setTimeout(() => setCopiado(false), 2200);
+    } catch {
+      /* Sin permiso de portapapeles queda la dirección a la vista. */
+    }
+  };
+  return (
+    <div className="mp-casting-mail">
+      <span className="mp-casting-mail-dir">{C.mail}</span>
+      <button type="button" className="mp-casting-mail-copiar" onClick={copiar} aria-live="polite">
+        {copiado ? "Copiado" : "Copiar"}
+      </button>
+    </div>
+  );
+}
 
 export default function CastingCall() {
   const [fields, setFields] = useState<Fields>(EMPTY);
@@ -64,8 +76,7 @@ export default function CastingCall() {
 
   const set = (key: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setFields((f) => ({ ...f, [key]: e.target.value }));
-    // El error se va al corregir, no al reenviar: castigar dos veces el mismo
-    // typo es lo que hace que la gente abandone un formulario.
+    // El error se va al corregir, no al reenviar.
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
   };
 
@@ -73,18 +84,9 @@ export default function CastingCall() {
     e.preventDefault();
     const found = validate(fields);
     if (Object.keys(found).length) { setErrors(found); return; }
-
-    const url = waLink(fields);
-    /* La pestaña se abre dentro del gesto del click, que es la única ventana
-       en que el navegador la deja pasar. Si igual la bloquea, se navega. */
-    const win = window.open(url, "_blank", "noopener,noreferrer");
-    if (!win) window.location.href = url;
-
-    /* Abre WhatsApp con window.open y no con un enlace: el oyente de clics de
-       WhatsAppConversion no lo ve, así que se mide acá. Sin los datos cargados. */
-    medir("casting_submit", { casting: C.slug });
+    medir("selftape_mail", { casting: C.slug, perfil: fields.perfil });
     setSent(fields);
-    setFields(EMPTY);
+    window.location.href = mailtoLink(fields);
   };
 
   return (
@@ -98,7 +100,7 @@ export default function CastingCall() {
         <div className="mp-casting-copy">
           <div className="mp-casting-eyebrow">
             <span className="mp-casting-eyebrow-line" />
-            Casting abierto · {C.fecha}
+            Casting abierto · {C.modalidad}
           </div>
 
           <h1 className="mp-casting-title">
@@ -107,14 +109,26 @@ export default function CastingCall() {
           </h1>
 
           <p className="mp-casting-lead">
-            Una serie argentina. Buscamos caras nuevas: te esperamos el{" "}
-            {C.fecha.toLowerCase()} a las {C.hora.replace(":00 hs", "")} en{" "}
-            {C.lugar}. Dejanos tus datos y te escribimos por WhatsApp.
+            Una serie argentina. La jornada presencial ya pasó y el casting
+            sigue abierto: grabá un selftape de hasta {C.duracion} y mandalo
+            por mail. Buscamos caras nuevas.
           </p>
 
+          <ol className="mp-casting-pasos" id="selftape">
+            {T.pasos.map((p, i) => (
+              <li key={p.titulo}>
+                <span className="mp-casting-pasos-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <strong>{p.titulo}</strong>
+                  <span>{p.texto}</span>
+                </div>
+              </li>
+            ))}
+          </ol>
+
           <ul className="mp-casting-points">
-            <li>{C.fecha} · {C.hora}</li>
-            <li>{C.lugar}, {C.ciudad}</li>
+            <li>{C.modalidad} · Máx. {C.duracion}</li>
+            <li>Gratis</li>
             <li>Dirección de casting: {C.direccion}</li>
           </ul>
         </div>
@@ -125,28 +139,28 @@ export default function CastingCall() {
           {sent ? (
             <div className="mp-casting-done" role="status" aria-live="polite">
               <div className="mp-casting-done-mark" aria-hidden="true">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
+                <MailIcon size={26} />
               </div>
-              <h2 className="mp-casting-done-title">Listo, {sent.nombre.trim().split(" ")[0]}</h2>
+              <h2 className="mp-casting-done-title">Último paso, {sent.nombre.trim().split(" ")[0]}</h2>
               <p className="mp-casting-done-text">
-                Se abrió WhatsApp con tus datos cargados. Enviá el mensaje y
-                quedás anotado en el casting.
+                Se abrió tu mail con el asunto y tus datos. Completá lo que
+                falta, adjuntá el video (o el link de Drive o WeTransfer) y
+                enviálo.
               </p>
-              <a className="mp-casting-submit" href={waLink(sent)} target="_blank" rel="noopener noreferrer">
-                <WhatsAppIcon />
-                Abrir WhatsApp de nuevo
+              <a className="mp-casting-submit" href={gmailLink(sent)} target="_blank" rel="noopener noreferrer">
+                <MailIcon />
+                No se abrió: usar Gmail
               </a>
-              <Link className="mp-casting-ghost" href="/play/">
-                Mientras tanto, mirá el catálogo
-              </Link>
+              <Direccion />
+              <button type="button" className="mp-casting-ghost" onClick={() => { setSent(null); setFields(EMPTY); }}>
+                Mandar otro selftape
+              </button>
             </div>
           ) : (
             <form className="mp-casting-form" onSubmit={onSubmit} noValidate>
               <div className="mp-casting-form-head">
-                <span className="mp-casting-form-kicker">Formulario de casting</span>
-                <h2 className="mp-casting-form-title">Suscribite</h2>
+                <span className="mp-casting-form-kicker">{T.kicker}</span>
+                <h2 className="mp-casting-form-title">{T.titulo}</h2>
               </div>
 
               <fieldset className="mp-casting-field mp-casting-perfil" aria-invalid={!!errors.perfil}>
@@ -176,45 +190,15 @@ export default function CastingCall() {
                 {errors.nombre && <em className="mp-casting-error">{errors.nombre}</em>}
               </label>
 
-              <label className="mp-casting-field">
-                <span>Teléfono</span>
-                <input
-                  type="tel"
-                  name="telefono"
-                  inputMode="tel"
-                  value={fields.telefono}
-                  onChange={set("telefono")}
-                  placeholder="11 5607 2460"
-                  autoComplete="tel"
-                  aria-invalid={!!errors.telefono}
-                />
-                {errors.telefono && <em className="mp-casting-error">{errors.telefono}</em>}
-              </label>
-
-              <label className="mp-casting-field">
-                <span>Email</span>
-                <input
-                  type="email"
-                  name="email"
-                  inputMode="email"
-                  value={fields.email}
-                  onChange={set("email")}
-                  placeholder="camila@mail.com"
-                  autoComplete="email"
-                  aria-invalid={!!errors.email}
-                />
-                {errors.email && <em className="mp-casting-error">{errors.email}</em>}
-              </label>
-
               <button type="submit" className="mp-casting-submit">
-                <WhatsAppIcon />
-                Enviar por WhatsApp
+                <MailIcon />
+                Armar el mail
               </button>
 
-              <p className="mp-casting-fine">
-                Se abre WhatsApp con tus datos escritos. No compartimos nada con
-                nadie.
-              </p>
+              <p className="mp-casting-fine">{T.fino}</p>
+
+              <p className="mp-casting-mail-rotulo">O escribinos directo a</p>
+              <Direccion />
             </form>
           )}
         </div>

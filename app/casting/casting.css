@@ -156,6 +156,16 @@ html:has(.cst-page) body {
   text-align: center !important;
 }
 
+/* El afiche es de la jornada presencial: la leyenda avisa que ya pasó. */
+.cst-arte-leyenda {
+  margin-top: 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--cst-suave);
+  opacity: .75;
+  text-align: center;
+}
+
 /* ── 2 · Datos clave ──────────────────────────────────────────────────── */
 
 .cst-datos {
@@ -669,6 +679,8 @@ html:has(.cst-page) body {
   .cst-arte-texto {
     text-align: left !important;
   }
+
+  .cst-arte-leyenda { text-align: left; }
 
   .cst-datos {
     display: grid;

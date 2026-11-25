@@ -513,3 +513,92 @@
   background: rgba(240, 180, 41, 0.14);
   color: #fff;
 }
+
+/* ── Selftape: los pasos de la consigna, a la izquierda ── */
+.mp-casting-pasos {
+  list-style: none;
+  margin-top: 30px;
+  display: grid;
+  gap: 12px;
+  max-width: 52ch;
+}
+.mp-casting-pasos li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 14px 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+}
+.mp-casting-pasos-num {
+  font-family: var(--font-orbitron), var(--mp-font);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  color: var(--mp-gold);
+  line-height: 1.5;
+}
+.mp-casting-pasos strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.mp-casting-pasos li span:not(.mp-casting-pasos-num) {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--mp-muted);
+}
+
+/* ── La dirección de mail, con copiar ── */
+.mp-casting-mail-rotulo {
+  margin-top: 22px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(136,136,170,.8);
+}
+.mp-casting-mail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 6px 6px 6px 16px;
+  border: 1px solid rgba(240,180,41,.28);
+  border-radius: 11px;
+  background: rgba(240,180,41,.05);
+}
+.mp-casting-mail-dir {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e7d5a8;
+  user-select: all;
+}
+.mp-casting-mail-copiar {
+  flex: none;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(240,180,41,.16);
+  color: var(--mp-gold);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .25s;
+}
+.mp-casting-mail-copiar:hover { background: rgba(240,180,41,.26); }
+.mp-casting-done .mp-casting-mail { margin-top: 14px; }
+button.mp-casting-ghost { background: none; font-family: inherit; cursor: pointer; }

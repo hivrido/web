@@ -91,12 +91,13 @@ class HomeRytmos(Base):
         """Con casting abierto, todo lleva al casting; sin él, Avisame abre WhatsApp."""
         page = self.pagina("/")
         if page.locator(".ry-hero .ry-cd").count():
-            ir = page.locator(".ry-hero a", has_text="Ir al casting")
+            ir = page.locator(".ry-hero a", has_text="Mandá tu selftape")
             self.assertEqual(ir.get_attribute("href"), "/casting/")
             self.assertEqual(ir.locator("svg").count(), 1, "lleva la campanita")
             self.assertEqual(page.locator(".ry-header a", has_text="Sumate al casting").get_attribute("href"), "/casting/")
             self.assertEqual(page.locator(".ry-hero a", has_text="Explorar Hivrido PLAY").count(), 0)
-            self.assertEqual(page.locator(".ry-hero .afiche3d-pieza").get_attribute("href"), "/casting/")
+            # El afiche es el de la jornada presencial, ya hecha: no va en el hero.
+            self.assertEqual(page.locator(".ry-hero .afiche3d-pieza").count(), 0)
             ir.click()
             page.wait_for_url(re.compile(r"/casting/$"))
         else:
@@ -164,17 +165,16 @@ class HomeRytmos(Base):
         page.locator("nav.nav-drawer.open .nav-menu a", has_text="Casting").click()
         page.wait_for_url(re.compile(r"/casting/$"))
 
-    def test_sin_boton_flotante_y_con_cuenta_del_casting(self):
+    def test_sin_boton_flotante_y_con_panel_del_selftape(self):
         page = self.pagina("/", movil=True)
         self.assertEqual(page.locator("a.wa-btn").count(), 0, "la home no lleva botón flotante")
-        cuenta = page.locator(".ry-hero .ry-cd [role=timer]")
-        if cuenta.count() == 0:
-            self.skipTest("el casting ya pasó: el contador se retira con el deploy")
-        page.wait_for_timeout(1500)
-        digitos = cuenta.locator(".ry-cd-digit").all_inner_texts()
-        self.assertEqual(len(digitos), 4)
-        self.assertTrue(all(d.isdigit() for d in digitos), digitos)
-        self.assertEqual(cuenta.locator("a.ry-cd-link").get_attribute("href"), "/casting/")
+        self.assertEqual(page.locator(".ry-hero [role=timer]").count(), 0, "el casting presencial ya pasó: sin cuenta regresiva")
+        panel = page.locator(".ry-hero .ry-cd")
+        if panel.count() == 0:
+            self.skipTest("sin casting abierto")
+        self.assertIn("Selftape", panel.inner_text())
+        self.assertEqual(panel.locator(".ry-cd-digit").count(), 4)
+        self.assertEqual(panel.locator("a.ry-cd-link").get_attribute("href"), "/casting/")
         ancho = page.evaluate("document.documentElement.scrollWidth")
         self.assertLessEqual(ancho, 390, "sin desborde lateral en el teléfono")
 

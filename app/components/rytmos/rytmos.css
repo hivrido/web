@@ -505,6 +505,17 @@ html[data-precarga] .ry-hero *::after { animation-play-state: paused !important;
 .ry-cd-link:hover { color: #fff4dc; }
 .ry-cd-link svg { transition: transform 0.3s var(--hp-ease); }
 .ry-cd-link:hover svg { transform: translateX(3px); }
+/* El panel del selftape (PanelSelftape.tsx): las paletas llevan pasos, no
+   números, y abajo va la consigna en una línea corta. */
+.ry-st-grid { list-style: none; margin: 0; padding: 0; }
+.ry-st-texto {
+  margin-top: clamp(12px, 2vw, 16px);
+  font-size: clamp(12.5px, 1.5vw, 14px);
+  line-height: 1.6;
+  color: rgba(245, 245, 247, 0.72);
+  text-align: center;
+  text-wrap: pretty;
+}
 /* Teléfonos angostos: la barra y el link entran en una línea. */
 @media (max-width: 400px) {
   .ry-cd-bar, .ry-cd-link { font-size: 9.5px; letter-spacing: 0.08em; }

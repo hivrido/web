@@ -114,31 +114,25 @@ class Flujos(unittest.TestCase):
 
     # ── Casting ─────────────────────────────────────────────────────────────
 
-    def test_casting_valida_y_arma_el_whatsapp(self):
+    def test_casting_valida_y_arma_el_mail_del_selftape(self):
         page = self.pagina("/casting/", movil=True)
         page.wait_for_timeout(2500)
-        campos = page.locator("form input")
-        self.assertGreaterEqual(campos.count(), 3)
+        self.assertEqual(page.locator(".mp-casting-pasos li").count(), 4, "los cuatro pasos de la consigna")
         page.locator("form [type=submit]").first.click()
         page.wait_for_timeout(300)
-        self.assertGreater(page.locator("[role=alert], .sus-error, [aria-invalid=true]").count(), 0, "sin datos tiene que avisar")
+        self.assertGreater(page.locator("[aria-invalid=true]").count(), 0, "sin datos tiene que avisar")
         page.locator("form input[name=nombre]").fill("Prueba Automática")
-        page.locator("form input[type=tel]").fill("11 5555 5555")
-        page.locator("form input[type=email]").fill("prueba@example.com")
-        # Sin perfil no deja enviar: es lo que decide qué prueba le toca.
+        # Sin perfil no deja enviar: es lo que decide qué improvisa.
         page.locator("form [type=submit]").first.click()
         page.wait_for_timeout(300)
         self.assertEqual(page.locator(".mp-casting-done").count(), 0, "sin perfil no se envía")
         page.locator(".mp-casting-opcion", has_text="Freestyler").click()
-        # El envío abre WhatsApp: se intercepta para no salir del sitio.
-        page.evaluate("window.open = (u) => { window.__wa = u; return {}; }")
         page.locator("form [type=submit]").first.click()
         page.wait_for_timeout(600)
-        destino = unquote(page.evaluate("window.__wa") or "")
-        self.assertIn(f"wa.me/{NUMERO}", destino)
-        self.assertIn("Prueba Automática", destino)
-        self.assertIn("Perfil: Freestyler", destino)
-        self.assertGreater(page.locator(".mp-casting-done").count(), 0, "tiene que confirmar el envío")
+        self.assertGreater(page.locator(".mp-casting-done").count(), 0, "tiene que confirmar el armado")
+        gmail = unquote(page.locator(".mp-casting-done a.mp-casting-submit").get_attribute("href").replace("+", " "))
+        self.assertIn("to=hivridoads@gmail.com", gmail)
+        self.assertIn("Selftape RYTMOS · Freestyler · Prueba Automática", gmail)
 
     # ── WhatsApp ────────────────────────────────────────────────────────────
 

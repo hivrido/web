@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import RytmosHeader from "./RytmosHeader";
 import Cuenta from "./Cuenta";
+import PanelSelftape from "./PanelSelftape";
 import Loop from "./Loop";
 import Precarga from "./Precarga";
 import LogoRytmos from "./LogoRytmos";
 import PuertaFondo from "./PuertaFondo";
-import Afiche3D from "../ui/Afiche3D";
 import Equipo from "../ui/Equipo";
-import { ARTE } from "../../casting/contenido";
 import Trailer, { VerTrailer } from "./Trailer";
 import Elenco from "./Elenco";
 import Galeria from "./Galeria";
@@ -138,7 +137,7 @@ function Hero() {
   const irAlCasting = casting && (
     <Link href={casting.href} className="hp-btn is-primary hp-haz" data-medir="casting_click" data-medir-origen="hero">
       {campana}
-      Ir al casting
+      Mandá tu selftape
     </Link>
   );
   const avisame = (
@@ -178,7 +177,7 @@ function Hero() {
       </div>
       <div className="ry-hero-shade" aria-hidden="true" />
 
-      <div className={`ry-hero-inner${casting ? " has-afiche" : ""}`}>
+      <div className="ry-hero-inner">
       <div className="ry-hero-content">
         <p className="hp-kicker"><span className="hp-kicker-dot" />Hivrido PLAY · Nueva serie</p>
         {/* Lo que viaja a la ficha (transicion.tsx) es el nombre, no el
@@ -208,10 +207,10 @@ function Hero() {
           {linea && <span className="hp-meta">{linea}</span>}
         </div>
         {S.tagline && <p className="ry-hero-tagline">{S.tagline}</p>}
-        {/* El contador va al casting mientras esté abierto; después, al
-            estreno si hay fecha. */}
+        {/* Con el casting abierto va la consigna del selftape; después, la
+            cuenta regresiva al estreno si hay fecha. */}
         {casting ? (
-          <Cuenta fecha={casting.fecha} titulo={casting.titulo} detalle={casting.detalle} fin="El casting empezó" href={casting.href} enlace={casting.lugar} />
+          <PanelSelftape titulo={casting.titulo} detalle={casting.detalle} href={casting.href} />
         ) : (
           S.estreno && proximamente && <Cuenta fecha={S.estreno} titulo="Estreno" detalle={`${S.estreno.slice(8, 10)}/${S.estreno.slice(5, 7)}`} fin="Ya está en PLAY" href={RYTMOS_FICHA} enlace="Ver la ficha" />
         )}
@@ -220,19 +219,6 @@ function Hero() {
           {irAlCasting || (proximamente && avisame)}
         </div>
       </div>
-      {/* El afiche del casting, en 3D: a la derecha en escritorio, debajo de
-          los llamados en el teléfono. */}
-      {casting && (
-        <Afiche3D
-          className="ry-hero-afiche"
-          src400={ARTE.poster400}
-          src800={ARTE.poster800}
-          alt={ARTE.alt}
-          sizes="(min-width: 1024px) 340px, min(78vw, 340px)"
-          href={casting.href}
-          prioridad
-        />
-      )}
       </div>
       <span className="ry-scroll" aria-hidden="true" />
     </section>

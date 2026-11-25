@@ -4,45 +4,98 @@
  * Todo el texto de la página vive acá: se corrige sin abrir el JSX ni
  * entender React. Si algo se lee en pantalla, se edita en este archivo.
  *
- * Las consignas de la prueba SÍ se publican: lo que se busca no es
- * sorprender a nadie, es ver cómo escucha y cómo reacciona, y publicarlas
- * evita que la persona llegue con miedo a algo que no sabe qué es, que es lo
- * que hace que no venga. En RYTMOS la prueba depende del perfil (freestyle,
- * actuación o, sin nada preparado, una de las dos situaciones a elección).
+ * Desde el 25/11 el casting de RYTMOS es por selftape: la jornada presencial
+ * del lunes 23/11 en Parque Centenario ya se hizo, y la convocatoria sigue
+ * con un video de hasta un minuto que se manda por mail. Las consignas se
+ * publican completas: quien sabe exactamente qué grabar, graba y lo manda.
  */
 
+import { MAIL } from "../lib/contacto";
+
 /* ── La convocatoria vigente ───────────────────────────────────────────
-   RYTMOS, según el afiche oficial del casting. Antes fue la de Cuchillo Paz;
-   sus textos siguen en el historial de git y su afiche en
-   public/images/casting/cuchillo-paz-poster-*.webp. */
+   RYTMOS. Antes fue la de Cuchillo Paz; sus textos siguen en el historial de
+   git y su afiche en public/images/casting/cuchillo-paz-poster-*.webp. */
 
 export const CONVOCATORIA = {
   serie: "RYTMOS",
   slug: "rytmos",
+  /* La jornada presencial, ya hecha. La sigue citando /cesion, que es la
+     cesión que se firmó ese día. */
   fecha: "Lunes 23 de noviembre",
-  hora: "18:00 hs",
+  hora: "15:00 hs",
   lugar: "Parque Centenario",
   ciudad: "Buenos Aires",
   direccion: "Malena Luchetti",
+  /* La convocatoria de ahora. */
+  modalidad: "Selftape",
+  duracion: "1 minuto",
+  mail: MAIL,
+} as const;
+
+/* ── El selftape: la consigna, tal cual la dio la producción ──────────── */
+
+/** Lo que hace quien manda el video: decide qué improvisa. */
+export const PERFILES = ["Freestyler", "Actor / actriz"] as const;
+
+export const SELFTAPE = {
+  kicker: "Selftape",
+  titulo: "Mandá tu video",
+  /* Los pasos, en el orden en que pasan en el video. */
+  pasos: [
+    {
+      titulo: "Grabate con el celu en horizontal",
+      texto: "Con el fondo más neutro que puedas: una pared lisa, sin cosas atrás.",
+    },
+    {
+      titulo: "Decinos tu nombre y apellido",
+      texto: "Mirando a cámara, y contanos un poco sobre vos.",
+    },
+    {
+      titulo: "Improvisá según tu perfil",
+      texto:
+        "Si sos freestyler, freestyleá. Si sos actor o actriz, improvisá lo que te haga sentir más cómodx o un monólogo que te sepas muy bien.",
+    },
+    {
+      titulo: "Máximo 1 minuto",
+      texto: "Y mandalo por mail. Si pesa mucho, como link de Drive o WeTransfer.",
+    },
+  ],
+  /* Asunto y cuerpo del mail que arma el botón: un asunto parejo es lo que
+     permite encontrar los selftapes en la bandeja entre todo lo demás. */
+  asunto: (perfil: string, nombre: string) => `Selftape RYTMOS · ${perfil} · ${nombre}`,
+  cuerpo: (perfil: string, nombre: string) =>
+    [
+      "Hola Hivrido!",
+      "",
+      "Les mando mi selftape para el casting de RYTMOS.",
+      "",
+      `Nombre y apellido: ${nombre}`,
+      `Perfil: ${perfil}`,
+      "Edad: ",
+      "Teléfono / WhatsApp: ",
+      "Instagram: ",
+      "",
+      "(Adjuntá el video o pegá acá el link de Drive o WeTransfer.)",
+    ].join("\n"),
+  fino:
+    "Gmail admite adjuntos de hasta 25 MB. Si el video pesa más, subilo a Google Drive o WeTransfer y pegá el link con acceso abierto.",
 } as const;
 
 /* ── Lo que falta definir ─────────────────────────────────────────────── */
 
 /** Respuesta a "¿cuándo me avisan?". Cambiala cuando haya fecha real. */
 export const AVISO_RESPUESTA =
-  "Nos comunicamos con las personas seleccionadas en las semanas siguientes al casting, por el WhatsApp que dejes en el formulario. Si no te llamamos no significa que no sirvas: cada personaje tiene una edad y un perfil, y muchas veces la búsqueda se reabre.";
+  "Miramos todos los selftapes y nos comunicamos con las personas seleccionadas por mail o por el WhatsApp que nos dejes. Si no te llamamos no significa que no sirvas: cada personaje tiene una edad y un perfil, y muchas veces la búsqueda se reabre.";
 
 /* ── El arte ────────────────────────────────────────────────────────── */
 
-/* El afiche va debajo del hero, no dentro: es lo que contesta "¿qué es esto?"
-   apenas después de "¿cuándo y dónde?", y al quedar bajo el pliegue carga
-   diferido sin pelearle el LCP al título. */
 export const ARTE = {
   titulo: "La serie",
   texto:
     "RYTMOS es una serie argentina y buscamos caras nuevas. Si nunca actuaste, mejor: el casting está pensado para eso. Para escapar del infierno tenés que atravesarlo.",
-  /* El alt describe la escena, no repite el título: quien usa lector de
-     pantalla ya escuchó el nombre de la serie tres veces más arriba. */
+  /* El afiche es el de la jornada presencial: la leyenda aclara que esa
+     fecha ya pasó, para que nadie vaya al parque. */
+  leyenda: "Afiche de la jornada presencial del 23/11, ya realizada. El casting sigue abierto por selftape.",
   alt: "Afiche del casting: un joven con capucha y gorra frente a la entrada del Parque Centenario al atardecer, junto a una pared con grafitis.",
   poster400: "/images/casting/rytmos-poster-400.webp",
   poster800: "/images/casting/rytmos-poster-800.webp",
@@ -59,15 +112,15 @@ export const DATOS_CLAVE: {
   destacado?: boolean;
 }[] = [
   {
-    icono: "fila",
-    titulo: "Lunes 23 de noviembre, 18 hs",
+    icono: "camara",
+    titulo: "Es por selftape",
     texto:
-      "En Parque Centenario, Buenos Aires. Llegá con tiempo: puede haber espera. Si dejás tus datos en el formulario, te escribimos por WhatsApp.",
+      "Un video de hasta 1 minuto, grabado con tu celular en horizontal. No hace falta ir a ningún lado.",
   },
   {
-    icono: "dni",
-    titulo: "Traé DNI",
-    texto: "Lo necesitás para acreditarte. Sin documento no podemos anotarte.",
+    icono: "fila",
+    titulo: "Se manda por mail",
+    texto: `A ${MAIL}, con tu nombre en el asunto. El botón de arriba arma el mail solo: adjuntás el video y listo.`,
   },
   {
     icono: "gratis",
@@ -80,162 +133,107 @@ export const DATOS_CLAVE: {
     icono: "menores",
     titulo: "Menores de 18",
     texto:
-      "Solo pueden participar con su madre, padre o responsable presente en el lugar.",
-  },
-  {
-    icono: "camara",
-    titulo: "Se filma y se transmite",
-    texto:
-      "La jornada se registra en video y se transmite en vivo. Al acreditarte vas a firmar una cesión de imagen.",
+      "Pueden mandar su selftape con autorización de su madre, padre o responsable. Poné sus datos en el mail.",
   },
 ];
 
-/* ── 3 · Cómo va a ser ──────────────────────────────────────────────────
-   Esta sección y las dos que siguen están escritas en primera persona: no
-   habla la producción, habla la persona que va a estar del otro lado de la
-   cámara ese día. El cambio de voz es deliberado y no se corrige "para que
-   quede uniforme" con el resto de la página: es lo que convierte un
-   instructivo en alguien explicándote qué va a pasar.                     */
+/* ── 3 · Qué grabar ─────────────────────────────────────────────────── */
 
 export const COMO_VA_A_SER = {
-  titulo: "Cómo es la prueba",
-  lead: "Depende de lo que hagas. Elegí tu camino.",
-  /* Los tres caminos de la prueba de RYTMOS, tal como los define la
-     producción. Sin duración: no la informaron. */
+  titulo: "Qué grabar",
+  lead: "Arrancá diciendo tu nombre y apellido y contanos un poco sobre vos. Después, según lo que hagas:",
   momentos: [
     {
       etiqueta: "Freestyler",
-      titulo: "Improvisás",
+      titulo: "Freestyleá",
       duracion: "",
-      texto: "Vas a improvisar sobre una base que ponemos nosotros.",
+      texto: "Improvisá a tu manera: es tu momento para mostrar cómo fluís.",
       nota: "",
     },
     {
       etiqueta: "Actor · Actriz",
-      titulo: "Traé lo tuyo",
+      titulo: "Improvisá o traé un monólogo",
       duracion: "",
-      texto:
-        "Prepará algo con lo que te sientas cómodx: un monólogo, una anécdota o lo que quieras contarnos.",
+      texto: "Lo que te haga sentir más cómodx, o un monólogo que te sepas muy bien.",
       nota: "",
-    },
-    {
-      etiqueta: "Sin nada preparado",
-      titulo: "Elegí una situación",
-      duracion: "",
-      texto:
-        "Si no trajiste nada, te damos a elegir una de las dos situaciones de acá abajo para improvisar.",
-      nota: "La elegís vos.",
     },
   ],
   aclaraciones: [
+    "Máximo 1 minuto en total.",
     "No hace falta experiencia.",
-    "No hace falta book ni fotos.",
-    "No hace falta currículum.",
+    "No hace falta book ni currículum.",
   ],
 } as const;
 
-/* ── 4 · Las situaciones ────────────────────────────────────────────────
-   Cada situación se escribe en frases sueltas, no en un párrafo. Son beats:
-   una premisa, una complicación y el límite que no se puede cruzar. Leídas
-   en bloque se vuelven un enunciado; leídas una debajo de la otra se
-   entienden de una pasada, que es lo único que se necesita.
+/* ── 4 · Cómo grabarte ──────────────────────────────────────────────── */
 
-   El orden importa: el último renglón de cada una es siempre el obstáculo,
-   y es el que hay que retener.                                           */
-
-export const SITUACIONES = {
-  titulo: "Las situaciones",
-  lead: "Si no trajiste nada preparado, elegís una de estas dos y la improvisás.",
-  escenas: [
-    {
-      letra: "A",
-      nombre: "Te deben plata",
-      beats: [
-        "Alguien te debe plata.",
-        "Ya se la reclamaste dos veces.",
-        "Hoy vas a cobrarla por tercera vez.",
-      ],
-    },
-    {
-      letra: "B",
-      nombre: "No sos quien creías",
-      beats: [
-        "Te acabás de enterar de que tus padres te mintieron toda la vida.",
-        "No sos hijx de quien creías.",
-      ],
-    },
+export const GRABACION = {
+  titulo: "Cómo grabarte",
+  items: [
+    { cosa: "Horizontal", nota: "El celular acostado, nunca vertical" },
+    { cosa: "Fondo neutro", nota: "Pared lisa, sin cosas atrás" },
+    { cosa: "Luz de frente", nota: "Una ventana delante tuyo alcanza" },
+    { cosa: "Silencio", nota: "Sin tele ni música de fondo" },
+    { cosa: "Celu quieto", nota: "Apoyado, a la altura de tus ojos" },
   ],
+  cierre: "Con el celular que tengas alcanza.",
 } as const;
 
 /* ── 5 · Cómo prepararte ────────────────────────────────────────────────
    La sección existe para desarmar el ensayo, no para pedirlo. Por eso abre
-   con la prohibición y recién después da los tres consejos: si el orden se
-   invierte, se lee como una lista de tareas y la gente llega actuando.    */
+   con la prohibición y recién después da los consejos: si el orden se
+   invierte, se lee como una lista de tareas y la gente graba actuando.    */
 
 export const PREPARACION = {
   titulo: "Cómo prepararte",
   advertencia: "No ensayes frente al espejo. No sirve.",
   texto:
-    "Lo que buscamos no es que salga perfecto, es que salga verdadero. Si traés algo preparado, que sea tuyo. Si vas a improvisar, alcanza con entender qué querés conseguir. Eso es todo.",
+    "Lo que buscamos no es que salga perfecto, es que salga verdadero. Si traés algo preparado, que sea tuyo. Si vas a improvisar, alcanza con saber qué querés contar. Eso es todo.",
   subtitulo: "Tres cosas que sí ayudan",
   consejos: [
     {
-      titulo: "Escuchá",
+      titulo: "Hablale a alguien",
       texto:
-        "La escena es con otra persona. Si venís con todo decidido de casa, no vas a escuchar lo que te digo y se nota enseguida.",
+        "La cámara no es un público: imaginá a una persona del otro lado y contale a ella. La diferencia se nota enseguida.",
     },
     {
       titulo: "No te apures",
       texto:
-        "Los silencios están permitidos. Un silencio bien aguantado dice más que tres frases.",
+        "Un minuto alcanza. Los silencios están permitidos: un silencio bien aguantado dice más que tres frases.",
     },
     {
-      titulo: "Si te trabás, no pasa nada",
+      titulo: "Una buena toma alcanza",
       texto:
-        "Casi todos se traban en los primeros veinte segundos. Lo que miramos es lo que pasa después. Si te bloqueás, frenamos, tomás agua y arrancamos de nuevo. Pasa todo el tiempo.",
+        "No hace falta editar ni sumar efectos. Si te trabás, cortá y grabá de nuevo: mandanos la toma en la que más te reconozcas.",
     },
   ],
 } as const;
 
-/* ── 6 · Qué llevar ─────────────────────────────────────────────────────── */
-
-export const QUE_LLEVAR = {
-  titulo: "Qué llevar",
-  items: [
-    { cosa: "DNI", nota: "Obligatorio" },
-    { cosa: "Agua", nota: "Puede hacer calor" },
-    { cosa: "Paciencia", nota: "Puede haber espera" },
-  ],
-  cierre: "Nada más.",
-} as const;
-
-/* ── 7 · Preguntas ──────────────────────────────────────────────────────── */
+/* ── 6 · Preguntas ──────────────────────────────────────────────────────── */
 
 export const FAQ: { pregunta: string; respuesta: string }[] = [
+  {
+    pregunta: "¿Puedo participar si no fui al casting presencial?",
+    respuesta:
+      "Sí. La jornada en Parque Centenario ya pasó, pero el casting sigue abierto por selftape. Grabá tu video y mandalo por mail.",
+  },
   {
     pregunta: "¿Tengo que tener experiencia?",
     respuesta:
       "No. Buscamos caras nuevas. Mucha gente que queda nunca actuó antes, y esa es justamente la idea.",
   },
   {
-    pregunta: "¿Tengo que traer algo preparado?",
-    respuesta:
-      "Si sos actor o actriz, sí: un monólogo, una anécdota o lo que quieras contarnos, algo con lo que te sientas cómodx. Si sos freestyler, improvisás sobre una base que ponemos nosotros. Y si no trajiste nada, elegís una de las dos situaciones y la improvisás.",
+    pregunta: "¿Qué pongo en el mail?",
+    respuesta: `Mandalo a ${MAIL} con el asunto "Selftape RYTMOS", tu perfil y tu nombre. En el cuerpo: edad, teléfono o WhatsApp e Instagram. El botón de arriba lo arma solo.`,
   },
   {
-    pregunta: "¿Puedo elegir la situación?",
+    pregunta: "¿Y si el video pesa mucho?",
     respuesta:
-      "Sí. Si no trajiste nada preparado, elegís cualquiera de las dos. No hay una más fácil ni una que convenga.",
+      "Gmail admite adjuntos de hasta 25 MB. Si pesa más, subilo a Google Drive o WeTransfer y pegá el link en el mail, con acceso abierto para que lo podamos ver.",
   },
   {
-    pregunta: "¿Y si me quedo en blanco?",
-    respuesta:
-      "Pasa todo el tiempo y no descalifica a nadie. Frenamos, tomás agua y arrancamos de nuevo. Casi todo el mundo se traba en los primeros veinte segundos: lo que miramos es lo que pasa después.",
-  },
-  {
-    pregunta: "¿Puedo anotarme si no soy de Buenos Aires?",
-    respuesta:
-      "Sí. El casting es abierto. La prueba es presencial: el lunes 23 de noviembre a las 15 en Parque Centenario, Buenos Aires. La única condición es poder llegar.",
+    pregunta: "¿Puedo participar si no soy de Buenos Aires?",
+    respuesta: "Sí. Al ser por selftape, lo podés mandar desde donde estés.",
   },
   {
     pregunta: "¿Cuánto cuesta?",
@@ -246,21 +244,16 @@ export const FAQ: { pregunta: string; respuesta: string }[] = [
     pregunta: "¿Cuándo me avisan?",
     respuesta: AVISO_RESPUESTA,
   },
-  {
-    pregunta: "¿Voy a salir filmado?",
-    respuesta:
-      "Sí. La jornada se filma y se transmite en vivo, así que al acreditarte vas a firmar una cesión de derechos de imagen. Si sos menor de 18, la firma tu madre, padre o responsable.",
-  },
 ];
 
 /* ── Metadata ───────────────────────────────────────────────────────────── */
 
 export const SEO = {
-  title: "Casting abierto RYTMOS, serie argentina | Hivrido",
-  share: "Sé parte de RYTMOS | Hivrido",
+  title: "Casting abierto RYTMOS por selftape, serie argentina | Hivrido",
+  share: "Casting RYTMOS: mandá tu selftape | Hivrido",
   description:
-    "Casting abierto y gratuito para RYTMOS, una serie argentina: lunes 23 de noviembre a las 15 en Parque Centenario. Dirección de casting: Malena Luchetti. No hace falta experiencia.",
+    "Casting abierto y gratuito para RYTMOS, una serie argentina. Grabá un selftape de hasta 1 minuto y mandalo por mail. Dirección de casting: Malena Luchetti. No hace falta experiencia.",
   /* El que se ve al pegar el link en WhatsApp. Sale de scripts/build-casting-assets.mjs. */
   ogImage: "/images/casting/casting-rytmos.jpg",
-  ogImageAlt: "Casting abierto de RYTMOS: lunes 23 de noviembre, 18 hs, Parque Centenario",
+  ogImageAlt: "Casting abierto de RYTMOS, serie argentina",
 } as const;
