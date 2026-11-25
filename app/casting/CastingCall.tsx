@@ -145,7 +145,7 @@ export default function CastingCall() {
               <p className="mp-casting-done-text">
                 Se abrió tu mail con el asunto y tus datos. Completá lo que
                 falta, adjuntá el video (o el link de Drive o WeTransfer) y
-                enviálo.
+                envialo.
               </p>
               <a className="mp-casting-submit" href={gmailLink(sent)} target="_blank" rel="noopener noreferrer">
                 <MailIcon />
