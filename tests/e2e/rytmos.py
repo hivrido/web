@@ -96,8 +96,8 @@ class HomeRytmos(Base):
             self.assertEqual(ir.locator("svg").count(), 1, "lleva la campanita")
             self.assertEqual(page.locator(".ry-header a", has_text="Sumate al casting").get_attribute("href"), "/casting/")
             self.assertEqual(page.locator(".ry-hero a", has_text="Explorar Hivrido PLAY").count(), 0)
-            # El afiche es el de la jornada presencial, ya hecha: no va en el hero.
-            self.assertEqual(page.locator(".ry-hero .afiche3d-pieza").count(), 0)
+            self.assertEqual(page.locator(".ry-hero .afiche3d-pieza").get_attribute("href"), "/casting/")
+            self.assertIn("selftape", page.locator(".ry-hero .afiche3d-pieza img").get_attribute("src"))
             ir.click()
             page.wait_for_url(re.compile(r"/casting/$"))
         else:

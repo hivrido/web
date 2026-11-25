@@ -3,6 +3,8 @@ import Link from "next/link";
 import RytmosHeader from "./RytmosHeader";
 import Cuenta from "./Cuenta";
 import PanelSelftape from "./PanelSelftape";
+import Afiche3D from "../ui/Afiche3D";
+import { ARTE } from "../../casting/contenido";
 import Loop from "./Loop";
 import Precarga from "./Precarga";
 import LogoRytmos from "./LogoRytmos";
@@ -177,7 +179,7 @@ function Hero() {
       </div>
       <div className="ry-hero-shade" aria-hidden="true" />
 
-      <div className="ry-hero-inner">
+      <div className={`ry-hero-inner${casting ? " has-afiche" : ""}`}>
       <div className="ry-hero-content">
         <p className="hp-kicker"><span className="hp-kicker-dot" />Hivrido PLAY · Nueva serie</p>
         {/* Lo que viaja a la ficha (transicion.tsx) es el nombre, no el
@@ -219,6 +221,19 @@ function Hero() {
           {irAlCasting || (proximamente && avisame)}
         </div>
       </div>
+      {/* El flyer del casting, en 3D: a la derecha en escritorio, debajo de
+          los llamados en el teléfono. */}
+      {casting && (
+        <Afiche3D
+          className="ry-hero-afiche"
+          src400={ARTE.poster400}
+          src800={ARTE.poster800}
+          alt={ARTE.alt}
+          sizes="(min-width: 1024px) 340px, min(78vw, 340px)"
+          href={casting.href}
+          prioridad
+        />
+      )}
       </div>
       <span className="ry-scroll" aria-hidden="true" />
     </section>

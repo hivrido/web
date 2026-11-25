@@ -51,9 +51,9 @@ export const SELFTAPE = {
       texto: "Mirando a cámara, y contanos un poco sobre vos.",
     },
     {
-      titulo: "Improvisá según tu perfil",
+      titulo: "Elegí una de las 3 opciones",
       texto:
-        "Si sos freestyler, freestyleá. Si sos actor o actriz, improvisá lo que te haga sentir más cómodx o un monólogo que te sepas muy bien.",
+        "Si sos freestyler, freestyleá. Si sos actor o actriz, improvisá lo que te haga sentir más cómodx, o hacé un monólogo que te sepas muy bien.",
     },
     {
       titulo: "Máximo 1 minuto",
@@ -93,12 +93,11 @@ export const ARTE = {
   titulo: "La serie",
   texto:
     "RYTMOS es una serie argentina y buscamos caras nuevas. Si nunca actuaste, mejor: el casting está pensado para eso. Para escapar del infierno tenés que atravesarlo.",
-  /* El afiche es el de la jornada presencial: la leyenda aclara que esa
-     fecha ya pasó, para que nadie vaya al parque. */
-  leyenda: "Afiche de la jornada presencial del 23/11, ya realizada. El casting sigue abierto por selftape.",
-  alt: "Afiche del casting: un joven con capucha y gorra frente a la entrada del Parque Centenario al atardecer, junto a una pared con grafitis.",
-  poster400: "/images/casting/rytmos-poster-400.webp",
-  poster800: "/images/casting/rytmos-poster-800.webp",
+  /* El flyer del selftape. Sale de scripts/build-casting-assets.mjs; el de
+     la jornada presencial sigue en rytmos-poster-*.webp. */
+  alt: "Flyer del casting por selftape de RYTMOS: una claqueta, un celular grabando en horizontal sobre un trípode y la entrada del Parque Centenario al atardecer. Pide grabarse con el celu en horizontal, decir nombre y apellido, contar algo de uno e improvisar: freestyle, una improvisación o un monólogo. Máximo un minuto, por mail a Hivrido.",
+  poster400: "/images/casting/rytmos-selftape-poster-400.webp",
+  poster800: "/images/casting/rytmos-selftape-poster-800.webp",
 } as const;
 
 /* ── 2 · Datos clave ────────────────────────────────────────────────────── */
@@ -141,7 +140,7 @@ export const DATOS_CLAVE: {
 
 export const COMO_VA_A_SER = {
   titulo: "Qué grabar",
-  lead: "Arrancá diciendo tu nombre y apellido y contanos un poco sobre vos. Después, según lo que hagas:",
+  lead: "Arrancá diciendo tu nombre y apellido y contanos un poco sobre vos. Después, elegí una de estas 3 opciones:",
   momentos: [
     {
       etiqueta: "Freestyler",
@@ -152,9 +151,16 @@ export const COMO_VA_A_SER = {
     },
     {
       etiqueta: "Actor · Actriz",
-      titulo: "Improvisá o traé un monólogo",
+      titulo: "Improvisá",
       duracion: "",
-      texto: "Lo que te haga sentir más cómodx, o un monólogo que te sepas muy bien.",
+      texto: "Lo que te haga sentir más cómodx.",
+      nota: "",
+    },
+    {
+      etiqueta: "Monólogo",
+      titulo: "Uno que te sepas muy bien",
+      duracion: "",
+      texto: "Si preferís llevar algo armado, que sea un texto que tengas en el cuerpo.",
       nota: "",
     },
   ],
@@ -254,6 +260,6 @@ export const SEO = {
   description:
     "Casting abierto y gratuito para RYTMOS, una serie argentina. Grabá un selftape de hasta 1 minuto y mandalo por mail. Dirección de casting: Malena Luchetti. No hace falta experiencia.",
   /* El que se ve al pegar el link en WhatsApp. Sale de scripts/build-casting-assets.mjs. */
-  ogImage: "/images/casting/casting-rytmos.jpg",
+  ogImage: "/images/casting/casting-rytmos-selftape.jpg",
   ogImageAlt: "Casting abierto de RYTMOS, serie argentina",
 } as const;

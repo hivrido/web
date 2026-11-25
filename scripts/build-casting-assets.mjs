@@ -1,7 +1,8 @@
 /**
  * Genera las imágenes de /casting a partir del póster del casting vigente.
  *
- *     node scripts/build-casting-assets.mjs            # RYTMOS (el vigente)
+ *     node scripts/build-casting-assets.mjs            # RYTMOS por selftape (el vigente)
+ *     node scripts/build-casting-assets.mjs rytmos     # RYTMOS, jornada presencial
  *     node scripts/build-casting-assets.mjs cuchillo   # Cuchillo Paz
  *
  * Cada casting es una entrada de CASTINGS, abajo: póster, textos de la
@@ -51,6 +52,22 @@ const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
    Los textos son los mismos de app/casting/contenido.ts. Se copian a mano:
    este script es Node puro y no puede importar un módulo de TypeScript. */
 const CASTINGS = {
+  /* Desde el 25/11: el flyer del selftape. */
+  selftape: {
+    poster: path.join(root, "material", "rytmos", "afiche-selftape.png"),
+    slug: "rytmos-selftape",
+    card: false,
+    texto: {
+      arriba: "CASTING ABIERTO",
+      serie: "RYTMOS",
+      fecha: "SELFTAPE · MÁXIMO 1 MIN",
+      calle: "Grabate en horizontal y mandalo por mail",
+      zona: "Dirección de casting: Malena Luchetti",
+      claim: "NO HACE FALTA EXPERIENCIA.",
+      pie: "GRATIS · SIN BOOK NI FOTOS · DESDE DONDE ESTÉS",
+    },
+  },
+  /* La jornada presencial del 23/11, ya hecha. */
   rytmos: {
     poster: path.join(root, "material", "rytmos", "afiche-casting.png"),
     slug: "rytmos",
@@ -81,7 +98,7 @@ const CASTINGS = {
   },
 };
 
-const elegido = CASTINGS[process.argv[2] ?? "rytmos"];
+const elegido = CASTINGS[process.argv[2] ?? "selftape"];
 if (!elegido) throw new Error(`Casting desconocido. Opciones: ${Object.keys(CASTINGS).join(", ")}`);
 const { poster: POSTER, slug: SLUG, texto: TEXTO } = elegido;
 

@@ -42,7 +42,6 @@ export default function SeccionesCasting() {
               {ARTE.titulo}
             </h2>
             <p className="cst-arte-texto">{ARTE.texto}</p>
-            <p className="cst-arte-leyenda">{ARTE.leyenda}</p>
           </div>
         </div>
       </section>

@@ -47,8 +47,8 @@ export default function PanelSelftape({ titulo, detalle, href }: { titulo: strin
 
         <p className="ry-st-texto">
           Grabate con el celu en horizontal, decinos tu nombre y apellido,
-          contanos de vos e improvisá: freestyle, un monólogo o lo que te
-          haga sentir cómodx. Hasta un minuto, por mail.
+          contanos de vos y elegí: freestyle, improvisación o un monólogo
+          que te sepas muy bien. Hasta un minuto, por mail.
         </p>
 
         <Link href={href} className="ry-cd-link" data-medir="cuenta_click" data-medir-destino={href}>
