@@ -165,16 +165,17 @@ class HomeRytmos(Base):
         page.locator("nav.nav-drawer.open .nav-menu a", has_text="Casting").click()
         page.wait_for_url(re.compile(r"/casting/$"))
 
-    def test_sin_boton_flotante_y_con_panel_del_selftape(self):
+    def test_sin_boton_flotante_y_con_cuenta_del_selftape(self):
         page = self.pagina("/", movil=True)
         self.assertEqual(page.locator("a.wa-btn").count(), 0, "la home no lleva botón flotante")
-        self.assertEqual(page.locator(".ry-hero [role=timer]").count(), 0, "el casting presencial ya pasó: sin cuenta regresiva")
-        panel = page.locator(".ry-hero .ry-cd")
-        if panel.count() == 0:
-            self.skipTest("sin casting abierto")
-        self.assertIn("Selftape", panel.inner_text())
-        self.assertEqual(panel.locator(".ry-cd-digit").count(), 4)
-        self.assertEqual(panel.locator("a.ry-cd-link").get_attribute("href"), "/casting/")
+        cuenta = page.locator(".ry-hero .ry-cd [role=timer]")
+        if cuenta.count() == 0:
+            self.skipTest("el selftape ya cerró: el contador se retira con el deploy")
+        page.wait_for_timeout(1500)
+        digitos = cuenta.locator(".ry-cd-digit").all_inner_texts()
+        self.assertEqual(len(digitos), 4)
+        self.assertTrue(all(d.isdigit() for d in digitos), digitos)
+        self.assertEqual(cuenta.locator("a.ry-cd-link").get_attribute("href"), "/casting/")
         ancho = page.evaluate("document.documentElement.scrollWidth")
         self.assertLessEqual(ancho, 390, "sin desborde lateral en el teléfono")
 

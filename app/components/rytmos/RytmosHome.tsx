@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import RytmosHeader from "./RytmosHeader";
 import Cuenta from "./Cuenta";
-import PanelSelftape from "./PanelSelftape";
 import Afiche3D from "../ui/Afiche3D";
 import { ARTE } from "../../casting/contenido";
 import Loop from "./Loop";
@@ -209,10 +208,10 @@ function Hero() {
           {linea && <span className="hp-meta">{linea}</span>}
         </div>
         {S.tagline && <p className="ry-hero-tagline">{S.tagline}</p>}
-        {/* Con el casting abierto va la consigna del selftape; después, la
-            cuenta regresiva al estreno si hay fecha. */}
+        {/* El contador va al cierre del selftape mientras esté abierto;
+            después, al estreno si hay fecha. */}
         {casting ? (
-          <PanelSelftape titulo={casting.titulo} detalle={casting.detalle} href={casting.href} />
+          <Cuenta fecha={casting.cierre} titulo={casting.titulo} detalle={casting.detalle} fin="El casting cerró" href={casting.href} enlace="Cómo mandar tu selftape" />
         ) : (
           S.estreno && proximamente && <Cuenta fecha={S.estreno} titulo="Estreno" detalle={`${S.estreno.slice(8, 10)}/${S.estreno.slice(5, 7)}`} fin="Ya está en PLAY" href={RYTMOS_FICHA} enlace="Ver la ficha" />
         )}

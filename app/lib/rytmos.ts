@@ -90,8 +90,9 @@ export type Rytmos = {
       protagonista (sube en la página y crece). Solo con confirmación. */
   musicaProtagonista: boolean;
   /** Casting abierto. La jornada presencial ya pasó: la convocatoria sigue
-      por selftape, sin fecha de cierre. Para cerrarlo, se borra el campo. */
-  casting?: { titulo: string; detalle: string; href: string };
+      por selftape hasta `cierre` (ISO 8601 con zona), y la home le pone
+      cuenta regresiva. Pasado el cierre, el próximo deploy lo retira. */
+  casting?: { cierre: string; titulo: string; detalle: string; href: string };
   /** Equipo de la convocatoria, con su Instagram. Sin `rol`, no se inventa. */
   equipo: { nombre: string; rol?: string; instagram: string; foto?: string; principal?: boolean }[];
   prensa: Mencion[];
@@ -146,8 +147,11 @@ export const RYTMOS: Rytmos = {
   /* La jornada presencial (lunes 23/11, Parque Centenario) ya se hizo; desde
      el 25/11 la convocatoria sigue por selftape (ver app/casting/contenido.ts). */
   casting: {
-    titulo: "Casting online",
-    detalle: "Selftape por mail",
+    /* 72 hs desde que abrió el selftape: miércoles 25/11 a las 22 → sábado 28/11 a las 22.
+       El texto de /casting dice lo mismo (CONVOCATORIA.cierre, en contenido.ts). */
+    cierre: "2026-11-28T22:00:00-03:00",
+    titulo: "Selftape · cierra en",
+    detalle: "Sáb 28/11 · 22 hs",
     href: "/casting/",
   },
   /* Fotos: las de perfil de Instagram (public/images/rytmos/equipo/). */
@@ -192,9 +196,9 @@ export function estadoRytmos(r: Rytmos = RYTMOS, ahora = Date.now()) {
   return "Próximamente";
 }
 
-/** El casting a anunciar, si hay uno abierto. */
-export function castingAbierto(r: Rytmos = RYTMOS) {
-  return r.casting;
+/** El casting a anunciar, si todavía no cerró (se evalúa al construir). */
+export function castingAbierto(r: Rytmos = RYTMOS, ahora = Date.now()) {
+  return r.casting && Date.parse(r.casting.cierre) > ahora ? r.casting : undefined;
 }
 
 /** Variantes generadas por scripts/build-rytmos-images.mjs. */

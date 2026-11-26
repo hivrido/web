@@ -28,6 +28,10 @@ export const CONVOCATORIA = {
   direccion: "Malena Luchetti",
   /* La convocatoria de ahora. */
   modalidad: "Selftape",
+  /* Dura 72 hs. La cuenta regresiva de la home usa RYTMOS.casting.cierre
+     (app/lib/rytmos.ts): si cambia uno, cambia el otro. */
+  cierre: "sábado 28 de noviembre a las 22 hs",
+  cierreCorto: "Cierra sáb 28/11 · 22 hs",
   duracion: "1 minuto",
   mail: MAIL,
 } as const;
@@ -114,7 +118,7 @@ export const DATOS_CLAVE: {
     icono: "camara",
     titulo: "Es por selftape",
     texto:
-      "Un video de hasta 1 minuto, grabado con tu celular en horizontal. No hace falta ir a ningún lado.",
+      "Un video de hasta 1 minuto, grabado con tu celular en horizontal. No hace falta ir a ningún lado. Tenés 72 horas: se recibe hasta el sábado 28 de noviembre a las 22 hs.",
   },
   {
     icono: "fila",
@@ -221,7 +225,7 @@ export const FAQ: { pregunta: string; respuesta: string }[] = [
   {
     pregunta: "¿Puedo participar si no fui al casting presencial?",
     respuesta:
-      "Sí. La jornada en Parque Centenario ya pasó, pero el casting sigue abierto por selftape. Grabá tu video y mandalo por mail.",
+      "Sí. La jornada en Parque Centenario ya pasó, pero el casting sigue abierto por selftape durante 72 horas, hasta el sábado 28 de noviembre a las 22 hs. Grabá tu video y mandalo por mail.",
   },
   {
     pregunta: "¿Tengo que tener experiencia?",

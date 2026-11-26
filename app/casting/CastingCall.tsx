@@ -110,8 +110,8 @@ export default function CastingCall() {
 
           <p className="mp-casting-lead">
             Una serie argentina. La jornada presencial ya pasó y el casting
-            sigue abierto: grabá un selftape de hasta {C.duracion} y mandalo
-            por mail. Buscamos caras nuevas.
+            sigue abierto 72 horas: grabá un selftape de hasta {C.duracion} y
+            mandalo por mail antes del {C.cierre}. Buscamos caras nuevas.
           </p>
 
           <ol className="mp-casting-pasos" id="selftape">
@@ -127,6 +127,7 @@ export default function CastingCall() {
           </ol>
 
           <ul className="mp-casting-points">
+            <li>{C.cierreCorto}</li>
             <li>{C.modalidad} · Máx. {C.duracion}</li>
             <li>Gratis</li>
             <li>Dirección de casting: {C.direccion}</li>
